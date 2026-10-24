@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+    # A release tag rebuilds the demo too, so it shows the version it ships.
+    tags:
+      - '[0-9]*'
     paths:
       - 'doc/**'
       - 'vite-frontend/**'

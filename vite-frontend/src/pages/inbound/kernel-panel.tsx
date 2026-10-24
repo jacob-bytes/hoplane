@@ -609,11 +609,7 @@ export function KernelPanel({
                 <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={installing}
-                  onPress={doInstall}
-                >
+                <Button isLoading={installing} onPress={doInstall}>
                   安装
                 </Button>
               </ModalFooter>
@@ -705,16 +701,16 @@ export function KernelPanel({
                 </Button>
                 {removeFailed && (
                   <Button
-                    color="warning"
                     isLoading={busy === `${removeTarget?.id}-remove`}
+                    variant="warning"
                     onPress={() => doRemove(true)}
                   >
                     强制删除
                   </Button>
                 )}
                 <Button
-                  color="danger"
                   isLoading={busy === `${removeTarget?.id}-remove`}
+                  variant="destructive"
                   onPress={() => doRemove(false)}
                 >
                   卸载

@@ -655,11 +655,7 @@ export function NodeFormModal({
           <Button variant="ghost" onPress={() => setDialogVisible(false)}>
             取消
           </Button>
-          <Button
-            color="primary"
-            isLoading={submitLoading}
-            onPress={handleSubmit}
-          >
+          <Button isLoading={submitLoading} onPress={handleSubmit}>
             {submitLoading ? "提交中..." : form.id ? "保存" : "创建"}
           </Button>
         </ModalFooter>

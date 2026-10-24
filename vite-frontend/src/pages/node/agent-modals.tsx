@@ -244,8 +244,8 @@ export function UpgradeNodeModal({
                 取消
               </Button>
               <Button
-                color="warning"
                 isDisabled={releasesLoading}
+                variant="warning"
                 onPress={handleConfirmUpgrade}
               >
                 升级

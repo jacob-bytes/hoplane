@@ -534,8 +534,8 @@ export function RemoteSourcesSection({
                         保留节点
                       </Button>
                       <Button
-                        color="danger"
                         isLoading={deleting}
+                        variant="destructive"
                         onPress={() => remove(false)}
                       >
                         一起删除
@@ -556,7 +556,7 @@ export function RemoteSourcesSection({
                       <Button variant="ghost" onPress={onClose}>
                         取消
                       </Button>
-                      <Button color="primary" isLoading={saving} onPress={save}>
+                      <Button isLoading={saving} onPress={save}>
                         {draft.id
                           ? "保存"
                           : draft.kind === "file"

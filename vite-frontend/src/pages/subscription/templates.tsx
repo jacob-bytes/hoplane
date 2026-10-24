@@ -753,7 +753,7 @@ function Editor({
               <Button variant="ghost" onPress={() => setConfirmDelete(false)}>
                 取消
               </Button>
-              <Button color="danger" onPress={remove}>
+              <Button variant="destructive" onPress={remove}>
                 删除
               </Button>
             </>
@@ -773,7 +773,6 @@ function Editor({
               取消
             </Button>
             <Button
-              color="primary"
               isDisabled={
                 checking ||
                 (building &&
@@ -911,7 +910,6 @@ export function TemplatesModal({
               </ModalBody>
               <ModalFooter>
                 <Button
-                  color="primary"
                   startContent={<Plus className="h-4 w-4" />}
                   onPress={() => setEditing({ draft: blank() })}
                 >

@@ -194,10 +194,10 @@ export default function ChangePasswordPage() {
 
                 <Button
                   className="mt-2"
-                  color="warning"
                   disabled={loading}
                   isLoading={loading}
                   size="lg"
+                  variant="warning"
                   onPress={handleSubmit}
                 >
                   {loading ? "修改中..." : "立即修改账号密码"}

@@ -1730,7 +1730,6 @@ export default function ConfigPage() {
                     </span>
                     <Button
                       className="shrink-0"
-                      color="primary"
                       isLoading={announcementSaving}
                       size="sm"
                       onPress={saveAnnouncement}
@@ -1922,7 +1921,6 @@ export default function ConfigPage() {
                   检查更新
                 </Button>
                 <Button
-                  color="primary"
                   isDisabled={!canTriggerSystemUpgrade}
                   isLoading={systemUpgradeExecuting}
                   size="sm"
@@ -1948,7 +1946,6 @@ export default function ConfigPage() {
           </span>
           <Button
             className="shrink-0"
-            color="primary"
             isLoading={saving}
             size="sm"
             onPress={handleSave}
@@ -1977,11 +1974,7 @@ export default function ConfigPage() {
                 <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={exporting}
-                  onPress={handleExport}
-                >
+                <Button isLoading={exporting} onPress={handleExport}>
                   {exporting ? "导出中..." : "导出"}
                 </Button>
               </ModalFooter>
@@ -2010,7 +2003,6 @@ export default function ConfigPage() {
                   取消
                 </Button>
                 <Button
-                  color="primary"
                   isDisabled={importTypes.length === 0}
                   onPress={triggerImportFilePicker}
                 >
@@ -2067,7 +2059,6 @@ export default function ConfigPage() {
                   取消
                 </Button>
                 <Button
-                  color="primary"
                   isDisabled={systemUpgradeExecuting}
                   isLoading={systemUpgradeExecuting}
                   onPress={handleConfirmSystemUpgrade}

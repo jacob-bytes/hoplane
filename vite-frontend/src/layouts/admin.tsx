@@ -28,11 +28,6 @@ import { VersionFooter } from "@/components/version-footer";
 import { CommandPalette } from "@/components/command-palette";
 import { Avatar } from "@/components/ui/avatar";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -525,42 +520,32 @@ export default function AdminLayout({
 
           <CommandPalette />
 
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                isIconOnly
-                aria-label={
-                  density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
-                }
-                className={
-                  density === "compact"
-                    ? "shrink-0 bg-accent text-foreground"
-                    : "shrink-0 text-muted-foreground"
-                }
-                size="sm"
-                title={
-                  density === "compact" ? "当前：紧凑间距" : "当前：舒适间距"
-                }
-                variant="ghost"
-                onPress={() => {
-                  const next: Density =
-                    density === "compact" ? "comfortable" : "compact";
+          <Button
+            isIconOnly
+            aria-label={
+              density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
+            }
+            className={
+              density === "compact"
+                ? "shrink-0 bg-accent text-foreground"
+                : "shrink-0 text-muted-foreground"
+            }
+            size="sm"
+            variant="ghost"
+            onPress={() => {
+              const next: Density =
+                density === "compact" ? "comfortable" : "compact";
 
-                  setDensity(next);
-                  setDensityState(next);
-                }}
-              >
-                {density === "compact" ? (
-                  <Rows4 className="h-4 w-4" />
-                ) : (
-                  <Rows3 className="h-4 w-4" />
-                )}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              {density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"}
-            </TooltipContent>
-          </Tooltip>
+              setDensity(next);
+              setDensityState(next);
+            }}
+          >
+            {density === "compact" ? (
+              <Rows4 className="h-4 w-4" />
+            ) : (
+              <Rows3 className="h-4 w-4" />
+            )}
+          </Button>
 
           <Dropdown placement="bottom-end">
             <DropdownTrigger>

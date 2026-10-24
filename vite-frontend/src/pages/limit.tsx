@@ -376,11 +376,7 @@ export default function LimitPage({
                 <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={submitLoading}
-                  onPress={handleSubmit}
-                >
+                <Button isLoading={submitLoading} onPress={handleSubmit}>
                   {isEdit ? "保存修改" : "创建规则"}
                 </Button>
               </ModalFooter>
@@ -424,8 +420,8 @@ export default function LimitPage({
                   取消
                 </Button>
                 <Button
-                  color="danger"
                   isLoading={deleteLoading}
+                  variant="destructive"
                   onPress={confirmDelete}
                 >
                   删除

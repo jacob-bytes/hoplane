@@ -391,11 +391,7 @@ export function ForwardFormModal({
               <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
-              <Button
-                color="primary"
-                isLoading={submitLoading}
-                onPress={handleSubmit}
-              >
+              <Button isLoading={submitLoading} onPress={handleSubmit}>
                 {isEdit ? "保存修改" : "创建规则"}
               </Button>
             </ModalFooter>

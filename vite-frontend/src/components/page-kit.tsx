@@ -72,7 +72,6 @@ export function PageHeader({
           )}
           {primary && (
             <Button
-              color="primary"
               isDisabled={primary.disabled}
               size="sm"
               onPress={primary.onPress}
@@ -226,7 +225,6 @@ export function PageToolbar({
         {primary && (
           <Button
             className="shrink-0"
-            color="primary"
             isDisabled={primary.disabled}
             size="sm"
             onPress={primary.onPress}

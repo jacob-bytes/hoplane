@@ -366,7 +366,7 @@ export default function MySubscriptionsPage() {
                 <Button variant="ghost" onPress={close}>
                   取消
                 </Button>
-                <Button color="danger" isLoading={busy} onPress={reset}>
+                <Button isLoading={busy} variant="destructive" onPress={reset}>
                   重置
                 </Button>
               </ModalFooter>

@@ -1718,11 +1718,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             <Button variant="ghost" onPress={onUserModalClose}>
               取消
             </Button>
-            <Button
-              color="primary"
-              isLoading={userFormLoading}
-              onPress={handleSubmitUser}
-            >
+            <Button isLoading={userFormLoading} onPress={handleSubmitUser}>
               {isEdit ? "保存" : "创建"}
             </Button>
           </ModalFooter>
@@ -1915,7 +1911,6 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   <div className="flex flex-wrap items-center gap-2">
                     <Button
                       className="w-full sm:w-auto"
-                      color="primary"
                       isDisabled={batchTunnelSelections.size === 0}
                       isLoading={assignLoading}
                       onPress={handleBatchAssignTunnel}
@@ -2189,11 +2184,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             <Button variant="ghost" onPress={onEditTunnelModalClose}>
               取消
             </Button>
-            <Button
-              color="primary"
-              isLoading={editTunnelLoading}
-              onPress={handleUpdateTunnel}
-            >
+            <Button isLoading={editTunnelLoading} onPress={handleUpdateTunnel}>
               保存
             </Button>
           </ModalFooter>
@@ -2239,7 +2230,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             <Button variant="ghost" onPress={onDeleteModalClose}>
               取消
             </Button>
-            <Button color="danger" onPress={handleConfirmDelete}>
+            <Button variant="destructive" onPress={handleConfirmDelete}>
               删除
             </Button>
           </ModalFooter>
@@ -2287,7 +2278,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             <Button variant="ghost" onPress={onDeleteTunnelModalClose}>
               取消
             </Button>
-            <Button color="danger" onPress={handleConfirmRemoveTunnel}>
+            <Button variant="destructive" onPress={handleConfirmRemoveTunnel}>
               删除
             </Button>
           </ModalFooter>
@@ -2376,8 +2367,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               取消
             </Button>
             <Button
-              color="warning"
               isLoading={resetFlowLoading}
+              variant="warning"
               onPress={handleConfirmResetFlow}
             >
               重置
@@ -2470,8 +2461,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               取消
             </Button>
             <Button
-              color="warning"
               isLoading={resetTunnelFlowLoading}
+              variant="warning"
               onPress={handleConfirmResetTunnelFlow}
             >
               重置

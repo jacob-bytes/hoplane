@@ -209,7 +209,6 @@ export function NodeTuneModal({
                 取消
               </Button>
               <Button
-                color="primary"
                 isDisabled={!status || chosen.size === 0 || busy !== ""}
                 isLoading={busy === "apply"}
                 onPress={() => run("apply")}

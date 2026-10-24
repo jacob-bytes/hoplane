@@ -246,7 +246,6 @@ export function RouteModal({
         </ModalBody>
         <ModalFooter>
           <Button
-            color="primary"
             isDisabled={probing || nodeId === null}
             startContent={
               probing ? (

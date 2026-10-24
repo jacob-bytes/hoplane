@@ -2154,11 +2154,7 @@ export function MonitorView({
             <Button variant="ghost" onPress={() => setEditModalOpen(false)}>
               取消
             </Button>
-            <Button
-              color="primary"
-              isLoading={submitLoading}
-              onPress={handleSubmitMonitor}
-            >
+            <Button isLoading={submitLoading} onPress={handleSubmitMonitor}>
               {editingMonitor ? "更新" : "创建"}
             </Button>
           </ModalFooter>

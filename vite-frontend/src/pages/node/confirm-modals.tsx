@@ -56,7 +56,7 @@ export function RollbackNodeModal({
               <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
-              <Button color="secondary" onPress={confirmRollback}>
+              <Button variant="secondary" onPress={confirmRollback}>
                 回退
               </Button>
             </ModalFooter>
@@ -115,8 +115,8 @@ export function DeleteNodeModal({
                 取消
               </Button>
               <Button
-                color="danger"
                 isLoading={deleteLoading}
+                variant="destructive"
                 onPress={confirmDelete}
               >
                 {deleteLoading ? "删除中..." : "删除"}
@@ -177,8 +177,8 @@ export function BatchDeleteNodesModal({
                 取消
               </Button>
               <Button
-                color="danger"
                 isLoading={batchLoading}
+                variant="destructive"
                 onPress={handleBatchDelete}
               >
                 {batchLoading ? "删除中..." : "删除"}

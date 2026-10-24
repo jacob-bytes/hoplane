@@ -699,7 +699,7 @@ export function NodeGroupEditor({
               <Button variant="ghost" onPress={() => setConfirmDelete(false)}>
                 取消
               </Button>
-              <Button color="danger" isLoading={saving} onPress={remove}>
+              <Button isLoading={saving} variant="destructive" onPress={remove}>
                 删除
               </Button>
             </>
@@ -720,7 +720,7 @@ export function NodeGroupEditor({
             <Button variant="ghost" onPress={onClose}>
               取消
             </Button>
-            <Button color="primary" isLoading={saving} onPress={save}>
+            <Button isLoading={saving} onPress={save}>
               保存
             </Button>
           </>

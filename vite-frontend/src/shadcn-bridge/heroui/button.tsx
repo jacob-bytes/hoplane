@@ -2,6 +2,11 @@ import * as React from "react";
 import { Loader2Icon } from "lucide-react";
 
 import { Button as BaseButton } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 type HeroButtonColor =
@@ -23,7 +28,9 @@ type HeroButtonVariant =
   | "default"
   | "secondary"
   | "outline"
-  | "destructive";
+  | "destructive"
+  | "success"
+  | "warning";
 type HeroButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps
@@ -48,7 +55,9 @@ function mapVariant(
   | "outline"
   | "ghost"
   | "light"
-  | "flat" {
+  | "flat"
+  | "success"
+  | "warning" {
   if (variant === "bordered" || variant === "outline") {
     return "outline";
   }
@@ -59,7 +68,17 @@ function mapVariant(
     return "light";
   }
   if (variant === "default") {
-    return color === "danger" ? "destructive" : "default";
+    if (color === "danger") return "destructive";
+    if (color === "success") return "success";
+    if (color === "warning") return "warning";
+
+    return "default";
+  }
+  if (variant === "success") {
+    return "success";
+  }
+  if (variant === "warning") {
+    return "warning";
   }
   if (variant === "destructive") {
     return "destructive";
@@ -229,7 +248,7 @@ export const Button = React.forwardRef<
       onPress?.(event);
     };
 
-    return (
+    const button = (
       <BaseButton
         ref={ref}
         className={cn(
@@ -254,6 +273,21 @@ export const Button = React.forwardRef<
         {endContent}
       </BaseButton>
     );
+
+    const label = props["aria-label"];
+
+    // Icon-only buttons are unlabelled on screen; use the aria-label as the
+    // tooltip so every one of them explains itself on hover and focus.
+    if (isIconOnly && typeof label === "string" && label.length > 0) {
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild>{button}</TooltipTrigger>
+          <TooltipContent>{label}</TooltipContent>
+        </Tooltip>
+      );
+    }
+
+    return button;
   },
 );
 

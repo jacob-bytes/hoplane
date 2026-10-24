@@ -641,7 +641,6 @@ export default function ProfilePage() {
                   取消
                 </Button>
                 <Button
-                  color="primary"
                   isLoading={passwordLoading}
                   onPress={handlePasswordSubmit}
                 >

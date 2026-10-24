@@ -268,7 +268,6 @@ export function ImportModal({
             取消
           </Button>
           <Button
-            color="primary"
             isDisabled={!links.trim()}
             isLoading={saving}
             onPress={submit}
@@ -465,7 +464,7 @@ export function ExternalEditModal({
           <Button variant="ghost" onPress={onClose}>
             取消
           </Button>
-          <Button color="primary" isLoading={saving} onPress={submit}>
+          <Button isLoading={saving} onPress={submit}>
             保存
           </Button>
         </ModalFooter>

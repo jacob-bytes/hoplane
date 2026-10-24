@@ -1106,7 +1106,7 @@ function Editor({
         <Button variant="ghost" onPress={onClose}>
           取消
         </Button>
-        <Button color="primary" isLoading={saving} onPress={onSave}>
+        <Button isLoading={saving} onPress={onSave}>
           保存
         </Button>
       </ModalFooter>
@@ -1766,7 +1766,6 @@ export default function SubscriptionPage() {
                     重置链接和凭据
                   </Button>
                   <Button
-                    color="primary"
                     size="sm"
                     onPress={() => {
                       const s = detail;

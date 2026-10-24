@@ -168,11 +168,7 @@ export function PasskeyModal({
           />
         </ModalBody>
         <ModalFooter>
-          <Button
-            color="primary"
-            isLoading={busy}
-            onPress={() => void register()}
-          >
+          <Button isLoading={busy} onPress={() => void register()}>
             绑定新密钥
           </Button>
         </ModalFooter>

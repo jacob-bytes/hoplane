@@ -220,7 +220,6 @@ export function DeleteTunnelModal({
                 取消
               </Button>
               <Button
-                color="danger"
                 isDisabled={
                   deletePreviewLoading ||
                   (deleteHasForwardDependencies &&
@@ -228,6 +227,7 @@ export function DeleteTunnelModal({
                     (!deleteTargetTunnelId || deleteReplaceUnavailable))
                 }
                 isLoading={deleteLoading}
+                variant="destructive"
                 onPress={confirmDelete}
               >
                 {deleteLoading ? "删除中..." : deleteConfirmLabel}
@@ -451,7 +451,6 @@ export function BatchDeleteTunnelsModal({
                 取消
               </Button>
               <Button
-                color="danger"
                 isDisabled={
                   batchDeletePreviewLoading ||
                   (batchDeleteHasForwardDependencies &&
@@ -460,6 +459,7 @@ export function BatchDeleteTunnelsModal({
                       batchDeleteReplaceUnavailable))
                 }
                 isLoading={batchLoading}
+                variant="destructive"
                 onPress={handleBatchDelete}
               >
                 {batchLoading ? "删除中..." : batchDeleteConfirmLabel}

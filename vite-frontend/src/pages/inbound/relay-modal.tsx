@@ -526,16 +526,16 @@ export function RelayModal({
                 </Button>
                 {removeFailed && (
                   <Button
-                    color="warning"
                     isLoading={removeLoading}
+                    variant="warning"
                     onPress={() => remove(true)}
                   >
                     强制删除
                   </Button>
                 )}
                 <Button
-                  color="danger"
                   isLoading={removeLoading}
+                  variant="destructive"
                   onPress={() => remove(false)}
                 >
                   删除

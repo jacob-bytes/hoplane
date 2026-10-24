@@ -611,7 +611,6 @@ export function DiagnosisModal({
             <ModalFooter className="border-t border-divider">
               {currentDiagnosisForward && (
                 <Button
-                  color="primary"
                   isLoading={diagnosisLoading}
                   onPress={() => handleDiagnose(currentDiagnosisForward)}
                 >

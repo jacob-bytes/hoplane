@@ -257,7 +257,6 @@ export function LatencyTargetsModal({
             取消
           </Button>
           <Button
-            color="primary"
             isDisabled={pool.length === 0}
             isLoading={saving}
             onPress={save}

@@ -1080,11 +1080,7 @@ export function TunnelFormModal({
               <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
-              <Button
-                color="primary"
-                isLoading={submitLoading}
-                onPress={handleSubmit}
-              >
+              <Button isLoading={submitLoading} onPress={handleSubmit}>
                 {submitLoading
                   ? isEdit
                     ? "更新中..."

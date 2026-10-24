@@ -706,7 +706,6 @@ export default function GroupPage({
                   </Select>
                   <Button
                     className="whitespace-nowrap px-4"
-                    color="primary"
                     isLoading={savingPermission}
                     size="sm"
                     onPress={handleAssignPermission}
@@ -908,11 +907,7 @@ export default function GroupPage({
                 <Button variant="ghost" onPress={onTunnelGroupModalClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={savingGroup}
-                  onPress={saveTunnelGroup}
-                >
+                <Button isLoading={savingGroup} onPress={saveTunnelGroup}>
                   保存
                 </Button>
               </ModalFooter>
@@ -956,11 +951,7 @@ export default function GroupPage({
                 <Button variant="ghost" onPress={onUserGroupModalClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={savingGroup}
-                  onPress={saveUserGroup}
-                >
+                <Button isLoading={savingGroup} onPress={saveUserGroup}>
                   保存
                 </Button>
               </ModalFooter>
@@ -1007,11 +998,7 @@ export default function GroupPage({
                 <Button variant="ghost" onPress={onTunnelAssignModalClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={savingAssign}
-                  onPress={saveAssignTunnels}
-                >
+                <Button isLoading={savingAssign} onPress={saveAssignTunnels}>
                   保存
                 </Button>
               </ModalFooter>
@@ -1058,11 +1045,7 @@ export default function GroupPage({
                 <Button variant="ghost" onPress={onUserAssignModalClose}>
                   取消
                 </Button>
-                <Button
-                  color="primary"
-                  isLoading={savingAssign}
-                  onPress={saveAssignUsers}
-                >
+                <Button isLoading={savingAssign} onPress={saveAssignUsers}>
                   保存
                 </Button>
               </ModalFooter>

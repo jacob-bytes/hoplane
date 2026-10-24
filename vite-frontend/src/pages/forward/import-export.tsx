@@ -98,7 +98,6 @@ export function ExportModal({
             {exportData && (
               <div className="flex justify-between items-center">
                 <Button
-                  color="primary"
                   isDisabled={!selectedTunnelForExport}
                   isLoading={exportLoading}
                   size="sm"
@@ -121,7 +120,6 @@ export function ExportModal({
                   重新生成
                 </Button>
                 <Button
-                  color="secondary"
                   size="sm"
                   startContent={
                     <svg
@@ -134,6 +132,7 @@ export function ExportModal({
                       <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                     </svg>
                   }
+                  variant="secondary"
                   onPress={copyExportData}
                 >
                   复制
@@ -145,7 +144,6 @@ export function ExportModal({
             {!exportData && (
               <div className="text-right">
                 <Button
-                  color="primary"
                   isDisabled={!selectedTunnelForExport}
                   isLoading={exportLoading}
                   size="sm"
@@ -443,9 +441,9 @@ export function ImportModal({
             取消
           </Button>
           <Button
-            color="warning"
             isDisabled={!importData.trim() || !selectedTunnelForImport}
             isLoading={importLoading}
+            variant="warning"
             onPress={executeImport}
           >
             开始导入

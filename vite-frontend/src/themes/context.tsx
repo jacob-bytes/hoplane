@@ -174,7 +174,7 @@ export function useThemeContext(): ThemeContextValue {
  *
  * function MyPage() {
  *   const Button = useThemedComponent("Button", DefaultButton);
- *   return <Button color="primary">Click</Button>;
+ *   return <Button>Click</Button>;
  * }
  * ```
  */

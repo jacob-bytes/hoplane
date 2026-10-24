@@ -63,8 +63,8 @@ export function DeleteForwardModal({
                 取消
               </Button>
               <Button
-                color="danger"
                 isLoading={deleteLoading}
+                variant="destructive"
                 onPress={confirmDelete}
               >
                 删除
@@ -132,8 +132,8 @@ export function ResetFlowModal({
                 取消
               </Button>
               <Button
-                color="secondary"
                 isLoading={resetFlowLoading}
+                variant="secondary"
                 onPress={confirmResetFlow}
               >
                 清零
@@ -247,8 +247,8 @@ export function BatchDeleteModal({
                 取消
               </Button>
               <Button
-                color="danger"
                 isLoading={batchLoading}
+                variant="destructive"
                 onPress={handleBatchDelete}
               >
                 删除
@@ -321,7 +321,6 @@ export function BatchChangeTunnelModal({
                 取消
               </Button>
               <Button
-                color="primary"
                 isDisabled={!batchTargetTunnelId}
                 isLoading={batchLoading}
                 onPress={handleBatchChangeTunnel}

@@ -1528,8 +1528,8 @@ export default function InboundPage() {
                     取消
                   </Button>
                   <Button
-                    color="danger"
                     isLoading={batchDeleting}
+                    variant="destructive"
                     onPress={runBatchDelete}
                   >
                     删除

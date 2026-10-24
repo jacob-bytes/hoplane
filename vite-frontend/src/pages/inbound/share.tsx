@@ -126,7 +126,6 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
       <div className="flex gap-2">
         <Button
           className="flex-1"
-          color="primary"
           startContent={<Copy className="w-4 h-4" />}
           onPress={() =>
             copyText(

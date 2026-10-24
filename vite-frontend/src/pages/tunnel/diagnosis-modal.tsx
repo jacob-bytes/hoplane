@@ -620,7 +620,6 @@ export function TunnelDiagnosisModal({
             <ModalFooter className="border-t border-divider">
               {currentDiagnosisTunnel && (
                 <Button
-                  color="primary"
                   isLoading={diagnosisLoading}
                   onPress={() => handleDiagnose(currentDiagnosisTunnel)}
                 >
