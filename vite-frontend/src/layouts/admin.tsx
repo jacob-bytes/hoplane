@@ -408,6 +408,8 @@ export default function AdminLayout({
                     <div
                       className={`transition-all duration-300 overflow-hidden flex items-center ${isCollapsed ? "max-w-0 opacity-0 ml-0" : "max-w-[200px] opacity-100 ml-3"}`}
                     >
+                      {/* 13px only here: navigation chrome sits a step below
+                          the 14px body so long lists fit on a laptop. */}
                       <span className="relative z-10 whitespace-nowrap text-[13px]">
                         {item.label}
                       </span>
