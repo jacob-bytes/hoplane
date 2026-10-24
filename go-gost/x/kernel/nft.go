@@ -18,7 +18,7 @@ import (
 	"time"
 )
 
-const nftTable = "flvx_kernel"
+const nftTable = "hoplane_kernel"
 
 // nftRunner executes `nft` with a script on stdin (or arguments). It is a
 // variable so tests can capture scripts without root.
@@ -236,7 +236,7 @@ type nftState struct {
 	Epoch     string `json:"epoch"`
 }
 
-// nftCounters owns the flvx_kernel table. The epoch changes whenever the
+// nftCounters owns the hoplane_kernel table. The epoch changes whenever the
 // table is rebuilt so the panel knows the counters restarted from zero.
 type nftCounters struct {
 	mu        sync.Mutex
@@ -276,6 +276,7 @@ func (n *nftCounters) sync(ports []Port, users []int64) error {
 		n.lastErr = ""
 		return nil
 	}
+	dropLegacyNftTables(ctx, nftRunner)
 	if _, err := nftRunner(ctx, script, "-f", "-"); err != nil {
 		n.lastErr = err.Error()
 		return err
@@ -350,4 +351,19 @@ func newEpoch() string {
 	b := make([]byte, 8)
 	_, _ = rand.Read(b)
 	return hex.EncodeToString(b)
+}
+
+// legacyNftTables are the tables older agents (before the Hoplane rename)
+// created. They hold the same counters and whitelists under another name, so
+// leaving them behind would double-count traffic or keep ports filtered.
+var legacyNftTables = []string{"flvx", "flvx_kernel"}
+
+// dropLegacyNftTables removes them best-effort; a missing table is fine.
+func dropLegacyNftTables(ctx context.Context, run func(context.Context, string, ...string) ([]byte, error)) {
+	for _, table := range legacyNftTables {
+		if _, err := run(ctx, "", "list", "table", "inet", table); err != nil {
+			continue
+		}
+		_, _ = run(ctx, "", "delete", "table", "inet", table)
+	}
 }

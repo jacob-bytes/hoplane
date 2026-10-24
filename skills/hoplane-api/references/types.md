@@ -274,16 +274,16 @@ interface BackupExport {
 ## Client Helper Class
 
 ```typescript
-class FlvxClient {
+class HoplaneClient {
   private baseUrl: string;
   private username: string;
   private password: string;
   private token?: string;
 
   constructor(baseUrl?: string, username?: string, password?: string) {
-    this.baseUrl = baseUrl ?? process.env.FLVX_BASE_URL ?? "";
-    this.username = username ?? process.env.FLVX_USERNAME ?? "";
-    this.password = password ?? process.env.FLVX_PASSWORD ?? "";
+    this.baseUrl = baseUrl ?? process.env.HOPLANE_BASE_URL ?? "";
+    this.username = username ?? process.env.HOPLANE_USERNAME ?? "";
+    this.password = password ?? process.env.HOPLANE_PASSWORD ?? "";
   }
 
   private async ensureToken(): Promise<void> {

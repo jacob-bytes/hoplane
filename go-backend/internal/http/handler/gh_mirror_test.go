@@ -18,8 +18,8 @@ func fakeGitHubMirrorUpstream(t *testing.T, down *atomic.Bool) map[string]*atomi
 	t.Helper()
 	hits := map[string]*atomic.Int32{}
 	for _, p := range []string{
-		"/jacob-bytes/hoplane/releases/download/3.3.6/gost-amd64",
-		"/blob/gost-amd64",
+		"/jacob-bytes/hoplane/releases/download/3.3.6/hoplane-agent-amd64",
+		"/blob/hoplane-agent-amd64",
 		"/v2fly/geoip/releases/latest",
 		"/v2fly/geoip/releases/download/202610/geoip.dat",
 		"/repos/XTLS/Xray-core/releases",
@@ -36,10 +36,10 @@ func fakeGitHubMirrorUpstream(t *testing.T, down *atomic.Bool) map[string]*atomi
 			return
 		}
 		switch r.URL.Path {
-		case "/jacob-bytes/hoplane/releases/download/3.3.6/gost-amd64":
+		case "/jacob-bytes/hoplane/releases/download/3.3.6/hoplane-agent-amd64":
 			// GitHub sends release files on to its asset host.
-			http.Redirect(w, r, "/blob/gost-amd64", http.StatusFound)
-		case "/blob/gost-amd64":
+			http.Redirect(w, r, "/blob/hoplane-agent-amd64", http.StatusFound)
+		case "/blob/hoplane-agent-amd64":
 			_, _ = w.Write([]byte("agent-binary"))
 		case "/v2fly/geoip/releases/latest":
 			w.Header().Set("Location", "https://github.com/v2fly/geoip/releases/tag/202610")
@@ -88,7 +88,7 @@ func mirrorGet(t *testing.T, target string, header ...string) *httptest.Response
 func TestGithubMirrorCachesReleaseFiles(t *testing.T) {
 	var down atomic.Bool
 	hits := fakeGitHubMirrorUpstream(t, &down)
-	const file = "https://github.com/jacob-bytes/hoplane/releases/download/3.3.6/gost-amd64"
+	const file = "https://github.com/jacob-bytes/hoplane/releases/download/3.3.6/hoplane-agent-amd64"
 
 	for i := 0; i < 3; i++ {
 		rec := mirrorGet(t, file)
@@ -99,7 +99,7 @@ func TestGithubMirrorCachesReleaseFiles(t *testing.T) {
 			t.Fatalf("content length: %q", rec.Header().Get("Content-Length"))
 		}
 	}
-	if n := hits["/blob/gost-amd64"].Load(); n != 1 {
+	if n := hits["/blob/hoplane-agent-amd64"].Load(); n != 1 {
 		t.Fatalf("upstream fetched %d times, want 1", n)
 	}
 	// Slashes merged by nginx / ServeMux, and ranges, work too.

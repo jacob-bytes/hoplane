@@ -5,9 +5,9 @@ metadata:
   author: Hoplane Team
   version: "2.1.5"
   requires_env:
-    - FLVX_BASE_URL
-    - FLVX_USERNAME
-    - FLVX_PASSWORD
+    - HOPLANE_BASE_URL
+    - HOPLANE_USERNAME
+    - HOPLANE_PASSWORD
 ---
 
 # Hoplane API Operations
@@ -27,17 +27,17 @@ Operate Hoplane panel through REST API. All endpoints use POST method and return
 Set environment variables before starting:
 
 ```bash
-export FLVX_BASE_URL="https://your-panel.example.com"
-export FLVX_USERNAME="admin"
-export FLVX_PASSWORD="your-password"
+export HOPLANE_BASE_URL="https://your-panel.example.com"
+export HOPLANE_USERNAME="admin"
+export HOPLANE_PASSWORD="your-password"
 ```
 
 **Security tip:** Add to `~/.hoplane/.env` and source on demand:
 ```bash
 mkdir -p ~/.hoplane && cat > ~/.hoplane/.env << 'EOF'
-export FLVX_BASE_URL="https://panel.example.com"
-export FLVX_USERNAME="admin"
-export FLVX_PASSWORD="your-password"
+export HOPLANE_BASE_URL="https://panel.example.com"
+export HOPLANE_USERNAME="admin"
+export HOPLANE_PASSWORD="your-password"
 EOF
 chmod 600 ~/.hoplane/.env
 source ~/.hoplane/.env
@@ -58,7 +58,7 @@ Before ANY API call:
 1. Check if TOKEN is cached in current session
    ├─ Yes → Use cached token, proceed
    └─ No → 
-       1. Read FLVX_USERNAME and FLVX_PASSWORD from environment
+       1. Read HOPLANE_USERNAME and HOPLANE_PASSWORD from environment
        2. POST /api/v1/user/login with credentials
        3. Cache response.data.token in session memory
        4. Proceed with original request
@@ -67,9 +67,9 @@ Before ANY API call:
 ### Login Request
 
 ```bash
-curl -X POST "${FLVX_BASE_URL}/api/v1/user/login" \
+curl -X POST "${HOPLANE_BASE_URL}/api/v1/user/login" \
   -H "Content-Type: application/json" \
-  -d "{\"username\":\"${FLVX_USERNAME}\",\"password\":\"${FLVX_PASSWORD}\"}"
+  -d "{\"username\":\"${HOPLANE_USERNAME}\",\"password\":\"${HOPLANE_PASSWORD}\"}"
 ```
 
 **Response:**
@@ -132,9 +132,9 @@ User request → Check env vars → Auto-login if needed → Call API → Return
 
 ```bash
 #!/bin/bash
-BASE_URL="${FLVX_BASE_URL}"
-USERNAME="${FLVX_USERNAME}"
-PASSWORD="${FLVX_PASSWORD}"
+BASE_URL="${HOPLANE_BASE_URL}"
+USERNAME="${HOPLANE_USERNAME}"
+PASSWORD="${HOPLANE_PASSWORD}"
 
 # Login and get token
 TOKEN=$(curl -s -X POST "${BASE_URL}/api/v1/user/login" \
@@ -159,9 +159,9 @@ curl -s -X POST "${BASE_URL}/api/v1/node/list" \
 import os
 import requests
 
-BASE_URL = os.environ.get("FLVX_BASE_URL")
-USERNAME = os.environ.get("FLVX_USERNAME")
-PASSWORD = os.environ.get("FLVX_PASSWORD")
+BASE_URL = os.environ.get("HOPLANE_BASE_URL")
+USERNAME = os.environ.get("HOPLANE_USERNAME")
+PASSWORD = os.environ.get("HOPLANE_PASSWORD")
 
 # Login
 resp = requests.post(f"{BASE_URL}/api/v1/user/login", 
@@ -185,9 +185,9 @@ print(resp.json())
 ### Node.js (fetch)
 
 ```javascript
-const BASE_URL = process.env.FLVX_BASE_URL;
-const USERNAME = process.env.FLVX_USERNAME;
-const PASSWORD = process.env.FLVX_PASSWORD;
+const BASE_URL = process.env.HOPLANE_BASE_URL;
+const USERNAME = process.env.HOPLANE_USERNAME;
+const PASSWORD = process.env.HOPLANE_PASSWORD;
 
 // Login
 const loginRes = await fetch(`${BASE_URL}/api/v1/user/login`, {

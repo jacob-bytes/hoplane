@@ -86,17 +86,17 @@ test_install_script_recomputes_download_url_after_prompt() (
     "install.sh should build the final download URL after the interactive proxy choice"
 )
 
-test_update_flux_agent_asks_for_proxy_config() (
+test_update_hoplane_agent_asks_for_proxy_config() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
   SERVICE_MANAGER="systemd"
   INSTALL_DIR=$(mktemp -d)
-  cat > "$INSTALL_DIR/flux_agent" <<'EOF'
+  cat > "$INSTALL_DIR/hoplane_agent" <<'EOF'
 #!/bin/bash
 echo "old version"
 EOF
-  chmod +x "$INSTALL_DIR/flux_agent"
+  chmod +x "$INSTALL_DIR/hoplane_agent"
 
   local ask_called="0"
   local cleanup_called="0"
@@ -136,14 +136,14 @@ EOF
     chmod +x "$output"
   }
 
-  update_flux_agent >/dev/null
+  update_hoplane_agent >/dev/null
 
-  assert_equals "1" "$ask_called" "update_flux_agent should ask for proxy config before downloading"
-  assert_equals "1" "$cleanup_called" "update_flux_agent should clean up legacy gost before restarting the agent"
-  assert_equals "$(build_download_url)" "$DOWNLOAD_URL" "update_flux_agent should honor the prompted proxy choice"
+  assert_equals "1" "$ask_called" "update_hoplane_agent should ask for proxy config before downloading"
+  assert_equals "1" "$cleanup_called" "update_hoplane_agent should clean up legacy gost before restarting the agent"
+  assert_equals "$(build_download_url)" "$DOWNLOAD_URL" "update_hoplane_agent should honor the prompted proxy choice"
 )
 
-test_update_flux_agent_skips_proxy_prompt_when_not_installed() (
+test_update_hoplane_agent_skips_proxy_prompt_when_not_installed() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
@@ -156,23 +156,23 @@ test_update_flux_agent_skips_proxy_prompt_when_not_installed() (
   }
 
   local rc="0"
-  update_flux_agent >/dev/null || rc="$?"
+  update_hoplane_agent >/dev/null || rc="$?"
 
-  assert_equals "1" "$rc" "update_flux_agent should fail when the agent is not installed"
-  assert_equals "0" "$ask_called" "update_flux_agent should not prompt for proxy config when the agent is missing"
+  assert_equals "1" "$rc" "update_hoplane_agent should fail when the agent is not installed"
+  assert_equals "0" "$ask_called" "update_hoplane_agent should not prompt for proxy config when the agent is missing"
 )
 
-test_install_flux_agent_preserves_legacy_gost_when_download_fails() (
+test_install_hoplane_agent_preserves_legacy_gost_when_download_fails() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
   SERVICE_MANAGER="systemd"
   INSTALL_DIR=$(mktemp -d)
-  cat > "$INSTALL_DIR/flux_agent" <<'EOF'
+  cat > "$INSTALL_DIR/hoplane_agent" <<'EOF'
 #!/bin/bash
 echo "old version"
 EOF
-  chmod +x "$INSTALL_DIR/flux_agent"
+  chmod +x "$INSTALL_DIR/hoplane_agent"
   SERVER_ADDR="panel.example.com:443"
   SECRET="secret"
   DOWNLOAD_URL="https://example.com/gost"
@@ -190,29 +190,29 @@ EOF
   systemctl() { return 0; }
   curl() { return 0; }
 
-  ( install_flux_agent >/dev/null ) || rc="$?"
+  ( install_hoplane_agent >/dev/null ) || rc="$?"
 
-  assert_equals "1" "$rc" "install_flux_agent should fail when the download artifact is missing"
-  assert_equals "0" "$cleanup_called" "install_flux_agent should preserve legacy gost when download fails"
-  [[ -f "$INSTALL_DIR/flux_agent" ]] || fail "install_flux_agent should keep the existing flux_agent binary when download fails"
+  assert_equals "1" "$rc" "install_hoplane_agent should fail when the download artifact is missing"
+  assert_equals "0" "$cleanup_called" "install_hoplane_agent should preserve legacy gost when download fails"
+  [[ -f "$INSTALL_DIR/hoplane_agent" ]] || fail "install_hoplane_agent should keep the existing hoplane_agent binary when download fails"
 )
 
-test_update_flux_agent_preserves_legacy_gost_when_download_fails() (
+test_update_hoplane_agent_preserves_legacy_gost_when_download_fails() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
   SERVICE_MANAGER="systemd"
   INSTALL_DIR=$(mktemp -d)
-  cat > "$INSTALL_DIR/flux_agent" <<'EOF'
+  cat > "$INSTALL_DIR/hoplane_agent" <<'EOF'
 #!/bin/bash
 echo "old version"
 EOF
-  chmod +x "$INSTALL_DIR/flux_agent"
-  cat > "$INSTALL_DIR/flux_agent.new" <<'EOF'
+  chmod +x "$INSTALL_DIR/hoplane_agent"
+  cat > "$INSTALL_DIR/hoplane_agent.new" <<'EOF'
 #!/bin/bash
 echo "stale version"
 EOF
-  chmod +x "$INSTALL_DIR/flux_agent.new"
+  chmod +x "$INSTALL_DIR/hoplane_agent.new"
 
   local cleanup_called="0"
   local rc="0"
@@ -228,20 +228,20 @@ EOF
   systemctl() { return 0; }
   curl() { return 0; }
 
-  update_flux_agent >/dev/null || rc="$?"
+  update_hoplane_agent >/dev/null || rc="$?"
 
-  assert_equals "1" "$rc" "update_flux_agent should fail when the download artifact is missing"
-  assert_equals "0" "$cleanup_called" "update_flux_agent should preserve legacy gost when download fails"
-  [[ ! -f "$INSTALL_DIR/flux_agent.new" ]] || fail "update_flux_agent should remove stale download artifacts before retrying"
+  assert_equals "1" "$rc" "update_hoplane_agent should fail when the download artifact is missing"
+  assert_equals "0" "$cleanup_called" "update_hoplane_agent should preserve legacy gost when download fails"
+  [[ ! -f "$INSTALL_DIR/hoplane_agent.new" ]] || fail "update_hoplane_agent should remove stale download artifacts before retrying"
 )
 
-test_install_flux_agent_writes_json_safe_config() (
+test_install_hoplane_agent_writes_json_safe_config() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
   SERVICE_MANAGER="systemd"
   INSTALL_DIR=$(mktemp -d)
-  FLUX_AGENT_SYSTEMD_SERVICE_FILE="$INSTALL_DIR/flux_agent.service"
+  HOPLANE_AGENT_SYSTEMD_SERVICE_FILE="$INSTALL_DIR/hoplane_agent.service"
   SERVER_ADDR='panel"addr'
   SECRET='sec\ret"1'
   DOWNLOAD_URL="https://example.com/gost"
@@ -270,14 +270,14 @@ EOF
     chmod +x "$output"
   }
 
-  ( install_flux_agent >/dev/null 2>/dev/null ) || true
+  ( install_hoplane_agent >/dev/null 2>/dev/null ) || true
 
   local actual
   actual=$(<"$INSTALL_DIR/config.json")
   local expected=$'{\n  "addr": "panel\\"addr",\n  "secret": "sec\\\\ret\\"1"\n}'
 
-  assert_equals "$expected" "$actual" "install_flux_agent should JSON-escape config values"
-  grep -Fqx 'Environment=GODEBUG=disablethp=1' "$FLUX_AGENT_SYSTEMD_SERVICE_FILE" || \
+  assert_equals "$expected" "$actual" "install_hoplane_agent should JSON-escape config values"
+  grep -Fqx 'Environment=GODEBUG=disablethp=1' "$HOPLANE_AGENT_SYSTEMD_SERVICE_FILE" || \
     fail "systemd service should disable transparent huge pages for the Go heap"
 )
 
@@ -292,14 +292,14 @@ test_install_script_bootstraps_bash_for_alpine() (
     fail "install.sh should bootstrap Bash through apk on Alpine"
 )
 
-test_install_flux_agent_uses_openrc() (
+test_install_hoplane_agent_uses_openrc() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
   local temp_root
   temp_root=$(mktemp -d)
-  INSTALL_DIR="$temp_root/flux_agent"
-  FLUX_AGENT_OPENRC_SERVICE_FILE="$temp_root/init.d/flux_agent"
+  INSTALL_DIR="$temp_root/hoplane_agent"
+  HOPLANE_AGENT_OPENRC_SERVICE_FILE="$temp_root/init.d/hoplane_agent"
   SERVICE_MANAGER="openrc"
   SERVER_ADDR="panel.example.com:443"
   SECRET="secret"
@@ -342,34 +342,34 @@ EOF
     return 0
   }
 
-  install_flux_agent >/dev/null
+  install_hoplane_agent >/dev/null
 
-  [[ -x "$FLUX_AGENT_OPENRC_SERVICE_FILE" ]] || fail "OpenRC service file should be executable"
-  grep -Fq '#!/sbin/openrc-run' "$FLUX_AGENT_OPENRC_SERVICE_FILE" || \
+  [[ -x "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" ]] || fail "OpenRC service file should be executable"
+  grep -Fq '#!/sbin/openrc-run' "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" || \
     fail "OpenRC service should use openrc-run"
-  grep -Fq "command=\"$INSTALL_DIR/flux_agent\"" "$FLUX_AGENT_OPENRC_SERVICE_FILE" || \
-    fail "OpenRC service should launch the installed flux_agent binary"
-  grep -Fq 'command_background="yes"' "$FLUX_AGENT_OPENRC_SERVICE_FILE" || \
-    fail "OpenRC service should run flux_agent in the background"
+  grep -Fq "command=\"$INSTALL_DIR/hoplane_agent\"" "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" || \
+    fail "OpenRC service should launch the installed hoplane_agent binary"
+  grep -Fq 'command_background="yes"' "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" || \
+    fail "OpenRC service should run hoplane_agent in the background"
   if command -v openrc-run >/dev/null 2>&1; then
-    "$FLUX_AGENT_OPENRC_SERVICE_FILE" describe >/dev/null 2>&1
+    "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" describe >/dev/null 2>&1
   fi
-  [[ "$rc_update_calls" == *"add flux_agent default"* ]] || \
-    fail "OpenRC install should enable flux_agent in the default runlevel"
-  [[ "$rc_service_calls" == *"start"* ]] || fail "OpenRC install should start flux_agent"
-  [[ "$rc_service_calls" == *"status"* ]] || fail "OpenRC install should verify flux_agent status"
+  [[ "$rc_update_calls" == *"add hoplane_agent default"* ]] || \
+    fail "OpenRC install should enable hoplane_agent in the default runlevel"
+  [[ "$rc_service_calls" == *"start"* ]] || fail "OpenRC install should start hoplane_agent"
+  [[ "$rc_service_calls" == *"status"* ]] || fail "OpenRC install should verify hoplane_agent status"
 )
 
-test_remove_flux_agent_service_uses_openrc() (
+test_remove_hoplane_agent_service_uses_openrc() (
   set -euo pipefail
   load_script_without_main "$ROOT_DIR/install.sh"
 
   local temp_root
   temp_root=$(mktemp -d)
   SERVICE_MANAGER="openrc"
-  FLUX_AGENT_OPENRC_SERVICE_FILE="$temp_root/init.d/flux_agent"
-  mkdir -p "$(dirname "$FLUX_AGENT_OPENRC_SERVICE_FILE")"
-  : > "$FLUX_AGENT_OPENRC_SERVICE_FILE"
+  HOPLANE_AGENT_OPENRC_SERVICE_FILE="$temp_root/init.d/hoplane_agent"
+  mkdir -p "$(dirname "$HOPLANE_AGENT_OPENRC_SERVICE_FILE")"
+  : > "$HOPLANE_AGENT_OPENRC_SERVICE_FILE"
 
   local rc_service_calls=""
   local rc_update_calls=""
@@ -382,14 +382,14 @@ test_remove_flux_agent_service_uses_openrc() (
     return 0
   }
 
-  stop_flux_agent_service
-  disable_flux_agent_service
-  remove_flux_agent_service
+  stop_hoplane_agent_service
+  disable_hoplane_agent_service
+  remove_hoplane_agent_service
 
-  [[ "$rc_service_calls" == *"stop"* ]] || fail "OpenRC uninstall should stop flux_agent"
-  [[ "$rc_update_calls" == *"del flux_agent default"* ]] || \
-    fail "OpenRC uninstall should remove flux_agent from the default runlevel"
-  [[ ! -e "$FLUX_AGENT_OPENRC_SERVICE_FILE" ]] || fail "OpenRC uninstall should remove its service file"
+  [[ "$rc_service_calls" == *"stop"* ]] || fail "OpenRC uninstall should stop hoplane_agent"
+  [[ "$rc_update_calls" == *"del hoplane_agent default"* ]] || \
+    fail "OpenRC uninstall should remove hoplane_agent from the default runlevel"
+  [[ ! -e "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" ]] || fail "OpenRC uninstall should remove its service file"
 )
 
 test_cleanup_legacy_gost_installation_removes_service_and_binary() (
@@ -644,7 +644,7 @@ test_resolve_panel_deployment_uses_container_labels() (
     if [[ "$1" == "inspect" && "$2" == "-f" ]]; then
       case "$3" in
         *working_dir*) printf '%s\n' "$expected_dir" ;;
-        *) printf '%s\n' "flvx-panel" ;;
+        *) printf '%s\n' "hoplane-panel" ;;
       esac
     fi
   }
@@ -652,7 +652,7 @@ test_resolve_panel_deployment_uses_container_labels() (
   resolve_panel_deployment >/dev/null
 
   assert_equals "$expected_dir" "$PANEL_DEPLOY_DIR" "update should discover the Compose working directory from container labels"
-  assert_equals "flvx-panel" "$COMPOSE_PROJECT_NAME" "update should preserve the existing Compose project name"
+  assert_equals "hoplane-panel" "$COMPOSE_PROJECT_NAME" "update should preserve the existing Compose project name"
   assert_equals "$expected_dir" "$(pwd -P)" "update should run from the discovered deployment directory"
 )
 
@@ -679,7 +679,7 @@ test_backup_sqlite_for_update_pauses_copies_and_unpauses() (
   local destination calls log_path
   destination=$(mktemp -d)/sqlite
   log_path=$(mktemp)
-  PANEL_BACKEND_CONTAINER="flux-panel-backend"
+  PANEL_BACKEND_CONTAINER="hoplane-panel-backend"
   docker() {
     if [[ "$1" == "inspect" ]]; then
       printf 'true\n'
@@ -747,14 +747,14 @@ test_panel_install_script_uses_default_proxy() (
 test_install_script_respects_disabled_proxy
 test_install_script_asks_for_proxy_config
 test_install_script_recomputes_download_url_after_prompt
-test_update_flux_agent_asks_for_proxy_config
-test_update_flux_agent_skips_proxy_prompt_when_not_installed
-test_install_flux_agent_preserves_legacy_gost_when_download_fails
-test_update_flux_agent_preserves_legacy_gost_when_download_fails
-test_install_flux_agent_writes_json_safe_config
+test_update_hoplane_agent_asks_for_proxy_config
+test_update_hoplane_agent_skips_proxy_prompt_when_not_installed
+test_install_hoplane_agent_preserves_legacy_gost_when_download_fails
+test_update_hoplane_agent_preserves_legacy_gost_when_download_fails
+test_install_hoplane_agent_writes_json_safe_config
 test_install_script_bootstraps_bash_for_alpine
-test_install_flux_agent_uses_openrc
-test_remove_flux_agent_service_uses_openrc
+test_install_hoplane_agent_uses_openrc
+test_remove_hoplane_agent_service_uses_openrc
 test_cleanup_legacy_gost_installation_removes_service_and_binary
 test_cleanup_legacy_gost_installation_preserves_unrelated_gost
 test_cleanup_legacy_gost_installation_skips_systemd_on_openrc

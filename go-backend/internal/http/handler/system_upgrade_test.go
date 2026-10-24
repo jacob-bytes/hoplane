@@ -17,7 +17,7 @@ import (
 )
 
 func TestSelectComposeAssetUsesIPv6Template(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend"}
 	compose := []byte("networks:\n  gost-network:\n    enable_ipv6: true\n")
 
 	if got := exec.selectComposeAsset(compose); got != "docker-compose-v6.yml" {
@@ -105,7 +105,7 @@ func TestDownloadReleaseAssetRejectsOversizedBody(t *testing.T) {
 }
 
 func TestSelectComposeAssetUsesIPv6TemplateForYAMLVariants(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend"}
 	for _, compose := range [][]byte{
 		[]byte("networks:\n  gost-network:\n    enable_ipv6:true\n"),
 		[]byte("networks:\n  gost-network:\n    enable_ipv6: True\n"),
@@ -120,7 +120,7 @@ func TestSelectComposeAssetUsesIPv6TemplateForYAMLVariants(t *testing.T) {
 }
 
 func TestSelectComposeAssetFallsBackToIPv4Template(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend"}
 	compose := []byte("services:\n  backend:\n    image: test\n")
 
 	if got := exec.selectComposeAsset(compose); got != "docker-compose-v4.yml" {
@@ -131,11 +131,11 @@ func TestSelectComposeAssetFallsBackToIPv4Template(t *testing.T) {
 func TestUpdateEnvVersionReplacesExistingValue(t *testing.T) {
 	dir := t.TempDir()
 	envPath := filepath.Join(dir, ".env")
-	if err := os.WriteFile(envPath, []byte("FLUX_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o644); err != nil {
+	if err := os.WriteFile(envPath, []byte("HOPLANE_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 
-	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 	if err := exec.updateEnvVersion(envPath, "2.1.9"); err != nil {
 		t.Fatalf("updateEnvVersion() error = %v", err)
 	}
@@ -145,7 +145,7 @@ func TestUpdateEnvVersionReplacesExistingValue(t *testing.T) {
 		t.Fatalf("ReadFile() error = %v", err)
 	}
 
-	want := "FLUX_VERSION=2.1.9\nJWT_SECRET=test\n"
+	want := "HOPLANE_VERSION=2.1.9\nJWT_SECRET=test\n"
 	if string(data) != want {
 		t.Fatalf("env content = %q, want %q", string(data), want)
 	}
@@ -158,7 +158,7 @@ func TestUpdateEnvVersionAppendsMissingValue(t *testing.T) {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 
-	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 	if err := exec.updateEnvVersion(envPath, "2.1.9"); err != nil {
 		t.Fatalf("updateEnvVersion() error = %v", err)
 	}
@@ -168,7 +168,7 @@ func TestUpdateEnvVersionAppendsMissingValue(t *testing.T) {
 		t.Fatalf("ReadFile() error = %v", err)
 	}
 
-	want := "JWT_SECRET=test\nFLUX_VERSION=2.1.9\n"
+	want := "JWT_SECRET=test\nHOPLANE_VERSION=2.1.9\n"
 	if string(data) != want {
 		t.Fatalf("env content = %q, want %q", string(data), want)
 	}
@@ -184,7 +184,7 @@ func TestUpdateEnvVersionRejectsUnsafeValue(t *testing.T) {
 				t.Fatalf("WriteFile() error = %v", err)
 			}
 
-			exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+			exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 			if err := exec.updateEnvVersion(envPath, version); err == nil {
 				t.Fatal("expected unsafe version to fail validation")
 			}
@@ -209,7 +209,7 @@ func TestUpdateEnvVersionAcceptsVersionLabels(t *testing.T) {
 				t.Fatalf("WriteFile() error = %v", err)
 			}
 
-			exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+			exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 			if err := exec.updateEnvVersion(envPath, version); err != nil {
 				t.Fatalf("updateEnvVersion() error = %v", err)
 			}
@@ -220,11 +220,11 @@ func TestUpdateEnvVersionAcceptsVersionLabels(t *testing.T) {
 func TestUpdateEnvVersionPreservesFileMode(t *testing.T) {
 	dir := t.TempDir()
 	envPath := filepath.Join(dir, ".env")
-	if err := os.WriteFile(envPath, []byte("FLUX_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o600); err != nil {
+	if err := os.WriteFile(envPath, []byte("HOPLANE_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o600); err != nil {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 
-	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 	if err := exec.updateEnvVersion(envPath, "2.1.9"); err != nil {
 		t.Fatalf("updateEnvVersion() error = %v", err)
 	}
@@ -239,22 +239,22 @@ func TestUpdateEnvVersionPreservesFileMode(t *testing.T) {
 }
 
 func TestValidateBackendContainerNameRejectsUnsafeValue(t *testing.T) {
-	if err := validateBackendContainerName("flux-panel-backend;rm -rf /"); err == nil {
+	if err := validateBackendContainerName("hoplane-panel-backend;rm -rf /"); err == nil {
 		t.Fatal("expected unsafe container name to fail validation")
 	}
 }
 
 func TestBuildHelperRunArgsUsesDetachedContainer(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend"}
-	args, err := exec.buildHelperRunArgs("sha256:abc", "flvx-upgrade-helper")
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend"}
+	args, err := exec.buildHelperRunArgs("sha256:abc", "hoplane-upgrade-helper")
 	if err != nil {
 		t.Fatalf("buildHelperRunArgs() error = %v", err)
 	}
 	want := []string{
-		"run", "-d", "--rm", "--name", "flvx-upgrade-helper",
-		"--volumes-from", "flux-panel-backend",
+		"run", "-d", "--rm", "--name", "hoplane-upgrade-helper",
+		"--volumes-from", "hoplane-panel-backend",
 		"-v", "/var/run/docker.sock:/var/run/docker.sock",
-		"-e", "PANEL_DEPLOY_DIR=/opt/flvx-panel",
+		"-e", "PANEL_DEPLOY_DIR=/opt/hoplane-panel",
 		"--entrypoint", "/bin/sh", "sha256:abc",
 		"-c", exec.helperScript(),
 	}
@@ -265,8 +265,8 @@ func TestBuildHelperRunArgsUsesDetachedContainer(t *testing.T) {
 }
 
 func TestBuildHelperRunArgsRejectsUnsafeBackendContainer(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend;rm -rf /"}
-	if _, err := exec.buildHelperRunArgs("sha256:abc", "flvx-upgrade-helper"); err == nil {
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend;rm -rf /"}
+	if _, err := exec.buildHelperRunArgs("sha256:abc", "hoplane-upgrade-helper"); err == nil {
 		t.Fatal("expected unsafe backend container name to fail validation")
 	}
 }
@@ -305,19 +305,19 @@ func TestSystemUpgradeFailsFastBeforeMutatingFiles(t *testing.T) {
 	if err := os.WriteFile(composePath, []byte("services:\n  backend:\n    image: test\n"), 0o644); err != nil {
 		t.Fatalf("WriteFile() compose error = %v", err)
 	}
-	if err := os.WriteFile(envPath, []byte("FLUX_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o600); err != nil {
+	if err := os.WriteFile(envPath, []byte("HOPLANE_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o600); err != nil {
 		t.Fatalf("WriteFile() env error = %v", err)
 	}
 
 	fakeDockerDir := t.TempDir()
 	fakeDockerPath := filepath.Join(fakeDockerDir, "docker")
-	fakeDockerScript := "#!/bin/sh\ncase \"$1\" in\n  --version)\n    echo 'Docker version 27.0.0'\n    exit 0\n    ;;&\n  compose)\n    if [ \"$2\" = version ]; then\n      echo 'Docker Compose version v2.33.0'\n      exit 0\n    fi\n    exit 0\n    ;;&\n  inspect)\n    echo 'No such object: flux-panel-backend' >&2\n    exit 1\n    ;;&\n  *)\n    exit 0\n    ;;&\n esac\n"
+	fakeDockerScript := "#!/bin/sh\ncase \"$1\" in\n  --version)\n    echo 'Docker version 27.0.0'\n    exit 0\n    ;;&\n  compose)\n    if [ \"$2\" = version ]; then\n      echo 'Docker Compose version v2.33.0'\n      exit 0\n    fi\n    exit 0\n    ;;&\n  inspect)\n    echo 'No such object: hoplane-panel-backend' >&2\n    exit 1\n    ;;&\n  *)\n    exit 0\n    ;;&\n esac\n"
 	if err := os.WriteFile(fakeDockerPath, []byte(fakeDockerScript), 0o755); err != nil {
 		t.Fatalf("WriteFile() fake docker error = %v", err)
 	}
 	t.Setenv("PATH", fakeDockerDir+string(os.PathListSeparator)+os.Getenv("PATH"))
 	t.Setenv(panelDeployDirEnv, dir)
-	t.Setenv(panelBackendContainerEnv, "flux-panel-backend")
+	t.Setenv(panelBackendContainerEnv, "hoplane-panel-backend")
 
 	h := &Handler{}
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/system/upgrade", strings.NewReader(`{"channel":"stable"}`))
@@ -345,7 +345,7 @@ func TestSystemUpgradeFailsFastBeforeMutatingFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ReadFile() env error = %v", err)
 	}
-	if string(envData) != "FLUX_VERSION=2.1.8\nJWT_SECRET=test\n" {
+	if string(envData) != "HOPLANE_VERSION=2.1.8\nJWT_SECRET=test\n" {
 		t.Fatalf("env mutated unexpectedly: %q", string(envData))
 	}
 }
@@ -357,7 +357,7 @@ func TestUpgradeBackupUsesStablePathAndRestoreRestoresOriginal(t *testing.T) {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 
-	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 	backupPath, err := exec.backupFile(path)
 	if err != nil {
 		t.Fatalf("backupFile() error = %v", err)
@@ -384,11 +384,11 @@ func TestUpgradeBackupUsesStablePathAndRestoreRestoresOriginal(t *testing.T) {
 func TestRestoreBackupPreservesOriginalFileMode(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, ".env")
-	if err := os.WriteFile(path, []byte("FLUX_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o600); err != nil {
+	if err := os.WriteFile(path, []byte("HOPLANE_VERSION=2.1.8\nJWT_SECRET=test\n"), 0o600); err != nil {
 		t.Fatalf("WriteFile() error = %v", err)
 	}
 
-	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "flux-panel-backend"}
+	exec := &systemUpgradeExecutor{deployDir: dir, backendContainer: "hoplane-panel-backend"}
 	if _, err := exec.backupFile(path); err != nil {
 		t.Fatalf("backupFile() error = %v", err)
 	}
@@ -437,7 +437,7 @@ func TestSystemUpgradeVersionDataSurfacesLookupFailureReason(t *testing.T) {
 }
 
 func TestHelperRunArgsCarryComposeProject(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend", composeProject: "root"}
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend", composeProject: "root"}
 	args, err := exec.buildHelperRunArgs("sha256:abc", "helper")
 	if err != nil {
 		t.Fatal(err)
@@ -454,7 +454,7 @@ func TestHelperRunArgsCarryComposeProject(t *testing.T) {
 }
 
 func TestHelperRunsInHostDeployDir(t *testing.T) {
-	exec := &systemUpgradeExecutor{deployDir: "/opt/flvx-panel", backendContainer: "flux-panel-backend", hostDeployDir: "/root"}
+	exec := &systemUpgradeExecutor{deployDir: "/opt/hoplane-panel", backendContainer: "hoplane-panel-backend", hostDeployDir: "/root"}
 	args, err := exec.buildHelperRunArgs("sha256:abc", "helper")
 	if err != nil {
 		t.Fatal(err)
@@ -463,12 +463,12 @@ func TestHelperRunsInHostDeployDir(t *testing.T) {
 	// Compose resolves ./ against the directory it runs in as a host path,
 	// so the helper must work in the host directory itself.
 	if !strings.Contains(joined, "-v /root:/root") || !strings.Contains(joined, "-e PANEL_DEPLOY_DIR=/root") ||
-		strings.Contains(joined, "PANEL_DEPLOY_DIR=/opt/flvx-panel") {
+		strings.Contains(joined, "PANEL_DEPLOY_DIR=/opt/hoplane-panel") {
 		t.Fatalf("helper must run in the host deploy dir: %v", args)
 	}
 	exec.hostDeployDir = "/bad dir;x"
 	joined = strings.Join(mustArgs(t, exec), " ")
-	if !strings.Contains(joined, "-e PANEL_DEPLOY_DIR=/opt/flvx-panel") || strings.Contains(joined, "bad dir") {
+	if !strings.Contains(joined, "-e PANEL_DEPLOY_DIR=/opt/hoplane-panel") || strings.Contains(joined, "bad dir") {
 		t.Fatalf("unsafe host dirs must be ignored: %v", joined)
 	}
 }

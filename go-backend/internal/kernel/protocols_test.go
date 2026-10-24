@@ -152,9 +152,9 @@ func TestShareNewProtocols(t *testing.T) {
 		t.Fatalf("surge:\n%s", surge)
 	}
 
-	// FLVX_DUMP=dir writes matching server and client configs per kernel for
+	// HOPLANE_DUMP=dir writes matching server and client configs per kernel for
 	// checking with the real binaries.
-	if dir := os.Getenv("FLVX_DUMP"); dir != "" {
+	if dir := os.Getenv("HOPLANE_DUMP"); dir != "" {
 		for _, k := range []string{TypeXray, TypeSingbox} {
 			kin := newProtocolInbounds(t, k)
 			keps := make([]Endpoint, len(kin))

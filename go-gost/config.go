@@ -42,12 +42,19 @@ func LoadConfig(configPath string) (*Config, error) {
 	return &config, nil
 }
 
-// ApplyEnvConfig writes FLUX_AGENT_ADDR and FLUX_AGENT_SECRET into the
+// ApplyEnvConfig writes HOPLANE_AGENT_ADDR and HOPLANE_AGENT_SECRET into the
 // config file, creating it when missing. The Docker image is configured this
 // way; the ports the panel stored in the file are kept.
 func ApplyEnvConfig(configPath string) error {
-	addr := os.Getenv("FLUX_AGENT_ADDR")
-	secret := os.Getenv("FLUX_AGENT_SECRET")
+	addr := os.Getenv("HOPLANE_AGENT_ADDR")
+	secret := os.Getenv("HOPLANE_AGENT_SECRET")
+	if addr == "" {
+		// Containers created before the rename still carry the old names.
+		addr = os.Getenv("FLUX_AGENT_ADDR")
+	}
+	if secret == "" {
+		secret = os.Getenv("FLUX_AGENT_SECRET")
+	}
 	if addr == "" && secret == "" {
 		return nil
 	}

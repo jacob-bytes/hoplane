@@ -20,8 +20,8 @@ import (
 const (
 	panelDeployDirEnv                 = "PANEL_DEPLOY_DIR"
 	panelBackendContainerEnv          = "PANEL_BACKEND_CONTAINER"
-	defaultPanelDeployDir             = "/opt/flvx-panel"
-	defaultPanelBackendName           = "flux-panel-backend"
+	defaultPanelDeployDir             = "/opt/hoplane-panel"
+	defaultPanelBackendName           = "hoplane-panel-backend"
 	dockerSocketPath                  = "/var/run/docker.sock"
 	maxSystemUpgradeComposeAssetBytes = 1 << 20
 	systemUpgradeMessage              = "升级 helper 已启动，面板服务将短暂重启"
@@ -41,13 +41,13 @@ type systemUpgradeExecutor struct {
 	backendContainer string
 	// composeProject is the Compose project the running containers belong
 	// to. It need not match the deploy directory's name (e.g. installed
-	// from /root, deployed in /opt/flvx-panel); without it Compose would
-	// try to create a second flux-panel-backend and hit a name conflict.
+	// from /root, deployed in /opt/hoplane-panel); without it Compose would
+	// try to create a second hoplane-panel-backend and hit a name conflict.
 	composeProject string
 	// hostDeployDir is the host directory mounted at deployDir. Compose
 	// resolves relative bind mounts (./) against the directory it runs in
 	// as a host path, so the helper must run in the host path itself;
-	// running in deployDir would remount an empty /opt/flvx-panel.
+	// running in deployDir would remount an empty /opt/hoplane-panel.
 	hostDeployDir string
 }
 
@@ -151,7 +151,7 @@ func newSystemUpgradeExecutor() *systemUpgradeExecutor {
 }
 
 func currentPanelVersion() string {
-	version := strings.TrimSpace(os.Getenv("FLUX_VERSION"))
+	version := strings.TrimSpace(os.Getenv("HOPLANE_VERSION"))
 	if version == "" {
 		return "dev"
 	}
@@ -264,6 +264,14 @@ if ! docker compose pull backend frontend >> "$LOGFILE" 2>&1; then
   exit 1
 fi
 
+log "清理旧版本容器..."
+for legacy in flux-panel-backend flux-panel-postgres vite-frontend; do
+  if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -qx "$legacy"; then
+    log "移除旧版本容器: $legacy"
+    docker rm -f "$legacy" >> "$LOGFILE" 2>&1 || true
+  fi
+done
+
 log "等待旧容器释放资源..."
 sleep 3
 
@@ -317,17 +325,17 @@ func (e *systemUpgradeExecutor) updateEnvVersion(envPath, version string) error 
 	lines := strings.Split(string(data), "\n")
 	replaced := false
 	for i, line := range lines {
-		if strings.HasPrefix(line, "FLUX_VERSION=") {
-			lines[i] = "FLUX_VERSION=" + version
+		if strings.HasPrefix(line, "HOPLANE_VERSION=") {
+			lines[i] = "HOPLANE_VERSION=" + version
 			replaced = true
 		}
 	}
 	if !replaced {
 		trimmed := strings.TrimRight(strings.Join(lines, "\n"), "\n")
 		if trimmed == "" {
-			trimmed = "FLUX_VERSION=" + version
+			trimmed = "HOPLANE_VERSION=" + version
 		} else {
-			trimmed += "\nFLUX_VERSION=" + version
+			trimmed += "\nHOPLANE_VERSION=" + version
 		}
 		return writeFileWithMode(envPath, []byte(trimmed+"\n"), mode)
 	}
@@ -706,7 +714,7 @@ func (h *Handler) systemUpgrade(w http.ResponseWriter, r *http.Request) {
 	}
 	exec.composeProject = exec.detectComposeProject(r.Context())
 	exec.hostDeployDir = exec.detectHostDeployDir(r.Context())
-	helperName := fmt.Sprintf("flvx-upgrade-helper-%d", time.Now().Unix())
+	helperName := fmt.Sprintf("hoplane-upgrade-helper-%d", time.Now().Unix())
 	helperContainer, err := exec.startHelper(r.Context(), imageID, helperName)
 	if err != nil {
 		if restoreErr := exec.restoreUpgradeBackups(composePath, envPath); restoreErr != nil {

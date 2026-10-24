@@ -165,13 +165,13 @@ func TestFormatWebSocketDialErrorIncludesHTTPStatus(t *testing.T) {
 }
 
 func TestAgentUpgradeRestartScriptStopsLegacyGostService(t *testing.T) {
-	script := buildAgentRestartScript("/tmp/flux_agent.new", "/etc/flux_agent/flux_agent")
+	script := buildAgentRestartScript("/tmp/hoplane_agent.new", "/etc/hoplane_agent/hoplane_agent")
 
-	if !strings.Contains(script, "systemctl stop flux_agent") {
-		t.Fatalf("expected script to stop flux_agent, got %s", script)
+	if !strings.Contains(script, "systemctl stop hoplane_agent") {
+		t.Fatalf("expected script to stop hoplane_agent, got %s", script)
 	}
-	if !strings.Contains(script, "mv /tmp/flux_agent.new /etc/flux_agent/flux_agent") {
-		t.Fatalf("expected script to replace the flux_agent binary, got %s", script)
+	if !strings.Contains(script, "mv /tmp/hoplane_agent.new /etc/hoplane_agent/hoplane_agent") {
+		t.Fatalf("expected script to replace the hoplane_agent binary, got %s", script)
 	}
 	if !strings.Contains(script, "systemctl stop gost") {
 		t.Fatalf("expected script to stop the legacy gost service, got %s", script)
@@ -183,12 +183,12 @@ func TestAgentUpgradeRestartScriptStopsLegacyGostService(t *testing.T) {
 		t.Fatalf("expected script to remove the legacy gost binary, got %s", script)
 	}
 	if !strings.Contains(script, "WorkingDirectory=/etc/gost") {
-		t.Fatalf("expected script to scope cleanup to the legacy FLVX gost service definition, got %s", script)
+		t.Fatalf("expected script to scope cleanup to the legacy gost service definition, got %s", script)
 	}
-	if !strings.Contains(script, "systemctl start flux_agent") {
-		t.Fatalf("expected script to restart flux_agent, got %s", script)
+	if !strings.Contains(script, "systemctl start hoplane_agent") {
+		t.Fatalf("expected script to restart hoplane_agent, got %s", script)
 	}
-	if strings.Contains(script, "systemctl stop flux_agent && systemctl stop gost 2>/dev/null || true") {
+	if strings.Contains(script, "systemctl stop hoplane_agent && systemctl stop gost 2>/dev/null || true") {
 		t.Fatalf("expected legacy gost cleanup fallback to be scoped, got %s", script)
 	}
 	if runtime.GOARCH == "" {

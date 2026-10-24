@@ -17,7 +17,7 @@ export interface NodeHubState {
   install?: InstallRequest;
 }
 
-const TAB_KEY = "flvx_node_tab";
+const TAB_KEY = "hoplane_node_tab";
 
 function readTab(): NodeTab {
   try {

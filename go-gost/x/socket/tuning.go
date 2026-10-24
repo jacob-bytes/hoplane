@@ -74,7 +74,7 @@ var tuneGroups = []tuneGroup{
 var (
 	tuneProcRoot   = "/proc/sys"
 	tuneConfPath   = "/etc/sysctl.d/99-hoplane-tuning.conf"
-	tuneBackupPath = "/etc/flux_agent/tuning-backup.json"
+	tuneBackupPath = "/etc/hoplane_agent/tuning-backup.json"
 	tuneModprobe   = func(module string) error { return exec.Command("modprobe", module).Run() }
 	tuneWrite      = writeSysctl
 )

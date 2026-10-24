@@ -5,7 +5,7 @@
 
 export type GithubFlow = "login" | "bind";
 
-const STATE_KEY = "flyx_github_state";
+const STATE_KEY = "hoplane_github_state";
 
 /** The callback URL: what the OAuth App's callback URL must be set to. */
 export const githubCallbackUrl = () =>

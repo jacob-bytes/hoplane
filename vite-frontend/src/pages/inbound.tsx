@@ -87,7 +87,7 @@ type ConfirmAction = "delete" | "regenerate" | "reset";
 
 type PageTab = "inbounds" | "sources";
 
-const TAB_KEY = "flvx_inbound_tab";
+const TAB_KEY = "hoplane_inbound_tab";
 
 /** Remembers the selected tab; a convenience only, so storage errors are ignored. */
 function usePageTab(): [PageTab, (t: PageTab) => void] {

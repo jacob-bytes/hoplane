@@ -21,12 +21,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jacob-bytes/hoplane.git",
-    "directory": "skills/flvx-api"
+    "directory": "skills/hoplane-api"
   },
   "bugs": {
     "url": "https://github.com/jacob-bytes/hoplane/issues"
   },
-  "homepage": "https://github.com/jacob-bytes/hoplane/tree/main/skills/flvx-api#readme",
+  "homepage": "https://github.com/jacob-bytes/hoplane/tree/main/skills/hoplane-api#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"

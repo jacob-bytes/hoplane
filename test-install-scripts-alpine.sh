@@ -14,9 +14,9 @@ TEST_DIR=$(mktemp -d)
 export TEST_DIR
 
 cleanup() {
-  rc-service flux_agent stop >/dev/null 2>&1 || true
-  rc-update del flux_agent default >/dev/null 2>&1 || true
-  rm -f /etc/init.d/flux_agent
+  rc-service hoplane_agent stop >/dev/null 2>&1 || true
+  rc-update del hoplane_agent default >/dev/null 2>&1 || true
+  rm -f /etc/init.d/hoplane_agent
   rm -rf "$TEST_DIR"
 }
 trap cleanup EXIT
@@ -52,7 +52,7 @@ EOF
 # Substitute only the network download and optional tcpkill dependency.
 sed '/^# 执行主函数$/,$d' "$INSTALL_SCRIPT" > "$TEST_DIR/install.sh"
 cat >> "$TEST_DIR/install.sh" <<'EOF'
-INSTALL_DIR="$TEST_DIR/flux_agent"
+INSTALL_DIR="$TEST_DIR/hoplane_agent"
 ensure_download_url_initialized() {
   ensure_alpine_runtime_dependencies || return 1
   DOWNLOAD_URL="file://$TEST_DIR/agent"
@@ -64,23 +64,23 @@ chmod +x "$TEST_DIR/install.sh"
 cp "$TEST_DIR/install.sh" "$TEST_DIR/manage.sh"
 PROXY_ENABLED=false "$TEST_DIR/install.sh" -a http://127.0.0.1:9 -s alpine-test
 
-rc-service flux_agent status
-test -L /etc/runlevels/default/flux_agent
-test "$(cat "$TEST_DIR/working-directory")" = "$TEST_DIR/flux_agent"
-test -s "$TEST_DIR/flux_agent/config.json"
-rc-service flux_agent restart
-rc-service flux_agent status
+rc-service hoplane_agent status
+test -L /etc/runlevels/default/hoplane_agent
+test "$(cat "$TEST_DIR/working-directory")" = "$TEST_DIR/hoplane_agent"
+test -s "$TEST_DIR/hoplane_agent/config.json"
+rc-service hoplane_agent restart
+rc-service hoplane_agent status
 
 # Update must retain config and restart through OpenRC.
-cp "$TEST_DIR/flux_agent/config.json" "$TEST_DIR/config-before-update.json"
+cp "$TEST_DIR/hoplane_agent/config.json" "$TEST_DIR/config-before-update.json"
 cp "$TEST_DIR/manage.sh" "$TEST_DIR/update.sh"
 printf '2\n' | PROXY_ENABLED=false "$TEST_DIR/update.sh"
-cmp "$TEST_DIR/config-before-update.json" "$TEST_DIR/flux_agent/config.json"
-rc-service flux_agent status
+cmp "$TEST_DIR/config-before-update.json" "$TEST_DIR/hoplane_agent/config.json"
+rc-service hoplane_agent status
 
 printf '3\ny\n' | "$TEST_DIR/manage.sh"
-test ! -e /etc/init.d/flux_agent
-test ! -e /etc/runlevels/default/flux_agent
-test ! -e "$TEST_DIR/flux_agent"
+test ! -e /etc/init.d/hoplane_agent
+test ! -e /etc/runlevels/default/hoplane_agent
+test ! -e "$TEST_DIR/hoplane_agent"
 test ! -e "$TEST_DIR/systemctl-called"
 echo "Alpine installer lifecycle tests passed"

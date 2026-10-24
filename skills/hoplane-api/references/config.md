@@ -125,7 +125,7 @@ Update the site announcement (admin only).
 ## Example: Update Panel Name and Announcement
 
 ```bash
-curl -s -X POST "${FLVX_BASE_URL}/api/v1/config/update" \
+curl -s -X POST "${HOPLANE_BASE_URL}/api/v1/config/update" \
   -H "Authorization: ${TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{
@@ -137,7 +137,7 @@ curl -s -X POST "${FLVX_BASE_URL}/api/v1/config/update" \
 ## Example: Enable Cloudflare Turnstile Captcha
 
 ```bash
-curl -s -X POST "${FLVX_BASE_URL}/api/v1/config/update" \
+curl -s -X POST "${HOPLANE_BASE_URL}/api/v1/config/update" \
   -H "Authorization: ${TOKEN}" \
   -H "Content-Type: application/json" \
   -d '{

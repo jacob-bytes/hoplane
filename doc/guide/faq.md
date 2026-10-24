@@ -11,7 +11,7 @@
 ### 面板无法访问 (Connection Refused)？
 1. 检查防火墙是否放行了前端端口（默认 `6366`）。
 2. 检查容器是否正常运行: `docker ps`。
-3. 查看容器日志: `docker logs flux-panel-backend` 或 `docker logs vite-frontend`。
+3. 查看容器日志: `docker logs hoplane-panel-backend` 或 `docker logs vite-frontend`。
 
 ### 用 IP 访问时复制失败
 
@@ -29,8 +29,8 @@
 ### 服务器显示离线？
 1. 检查服务器与面板服务器之间的网络连通性。
 2. 确认在服务器端安装时输入的 **面板地址** 和 **密钥** 是否正确。
-3. 检查服务器端服务状态：`systemctl status flux_agent`（Alpine 用 `rc-service flux_agent status`）。
-4. 查看服务器端日志：`journalctl -u flux_agent -f`。
+3. 检查服务器端服务状态：`systemctl status hoplane_agent`（Alpine 用 `rc-service hoplane_agent status`）。
+4. 查看服务器端日志：`journalctl -u hoplane_agent -f`。
 
 ### 部署或升级服务器提示 “API rate limit exceeded”？
 
@@ -112,5 +112,5 @@ Xray 26.7.11 起，Reality 未设置“最低客户端版本”时默认只接�
 
 ### PostgreSQL 容器启动失败？
 1. 检查 `POSTGRES_PASSWORD` 是否已设置（不能为空）。
-2. 查看容器日志：`docker logs flux-panel-postgres`。
+2. 查看容器日志：`docker logs hoplane-panel-postgres`。
 3. 如果是首次启动后修改了密码，需要删除旧的数据卷重新初始化：`docker volume rm postgres_data`。

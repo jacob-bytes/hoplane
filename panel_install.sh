@@ -16,8 +16,8 @@ PINNED_VERSION=""
 # 镜像加速配置（可由面板传入或交互式询问）
 PROXY_ENABLED="${PROXY_ENABLED:-}"
 PROXY_URL="${PROXY_URL:-}"
-DEFAULT_PANEL_BACKEND_CONTAINER="flux-panel-backend"
-DEFAULT_PANEL_POSTGRES_CONTAINER="flux-panel-postgres"
+DEFAULT_PANEL_BACKEND_CONTAINER="hoplane-panel-backend"
+DEFAULT_PANEL_POSTGRES_CONTAINER="hoplane-panel-postgres"
 PANEL_SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/$(basename "${BASH_SOURCE[0]}")"
 
 # 镜像加速
@@ -101,8 +101,8 @@ resolve_version() {
     echo "$VERSION"
     return 0
   fi
-  if [[ -n "${FLUX_VERSION:-}" ]]; then
-    echo "$FLUX_VERSION"
+  if [[ -n "${HOPLANE_VERSION:-}" ]]; then
+    echo "$HOPLANE_VERSION"
     return 0
   fi
   if [[ -n "${PINNED_VERSION:-}" ]]; then
@@ -340,7 +340,7 @@ resolve_panel_deployment() {
   label_project=$(get_container_compose_label "$backend_container" "com.docker.compose.project")
 
   # Older in-panel upgrades ran Compose inside a helper container, which left
-  # the label pointing at the container path (/opt/flvx-panel) instead of the
+  # the label pointing at the container path (/opt/hoplane-panel) instead of the
   # real deployment. Prefer the current directory when only it has the files.
   if [[ -n "$label_dir" && ! -f "$label_dir/docker-compose.yml" && -f ".env" && -f "docker-compose.yml" ]]; then
     echo "⚠️ 容器标签记录的部署目录 $label_dir 中没有 docker-compose.yml，改用当前目录 $(pwd -P)"
@@ -395,6 +395,20 @@ resolve_panel_deployment() {
   if [[ -n "$PANEL_COMPOSE_PROJECT" ]]; then
     echo "📦 Compose 项目：$PANEL_COMPOSE_PROJECT"
   fi
+}
+
+# 0.1.0 及更早的面板用的是 flux-panel-* / vite-frontend 这套容器名。它们继续
+# 占着 6365/6366，新 compose 起不来，所以启动前先清掉；named volume 是显式
+# 命名（sqlite_data / postgres_data），不随 Compose 项目名变，数据不受影响。
+cleanup_legacy_panel_containers() {
+  command -v docker >/dev/null 2>&1 || return 0
+  local legacy
+  for legacy in flux-panel-backend flux-panel-postgres vite-frontend; do
+    if docker ps -a --format '{{.Names}}' 2>/dev/null | grep -qx "$legacy"; then
+      echo "🧹 移除旧版本容器：$legacy"
+      docker rm -f "$legacy" >/dev/null 2>&1 || true
+    fi
+  done
 }
 
 run_panel_compose() {
@@ -472,7 +486,7 @@ download_panel_update_compose() {
 }
 
 validate_panel_update_compose() {
-  if ! FLUX_VERSION="$LATEST_VERSION" run_panel_compose -f "$UPDATE_COMPOSE_CANDIDATE" config -q; then
+  if ! HOPLANE_VERSION="$LATEST_VERSION" run_panel_compose -f "$UPDATE_COMPOSE_CANDIDATE" config -q; then
     echo "❌ 新 Compose 配置校验失败，更新终止"
     return 1
   fi
@@ -517,8 +531,8 @@ backup_postgres_for_update() {
 
   postgres_db=$(get_env_var "POSTGRES_DB" || true)
   postgres_user=$(get_env_var "POSTGRES_USER" || true)
-  postgres_db=${postgres_db:-flux_panel}
-  postgres_user=${postgres_user:-flux_panel}
+  postgres_db=${postgres_db:-hoplane_panel}
+  postgres_user=${postgres_user:-hoplane_panel}
 
   if ! docker exec "$PANEL_POSTGRES_CONTAINER" pg_dump -U "$postgres_user" "$postgres_db" > "$destination"; then
     rm -f "$destination"
@@ -557,9 +571,9 @@ pull_panel_update_images() {
   local db_type="$1"
 
   if [[ "$db_type" == "postgres" ]]; then
-    FLUX_VERSION="$LATEST_VERSION" run_panel_compose -f "$UPDATE_COMPOSE_CANDIDATE" pull backend frontend postgres
+    HOPLANE_VERSION="$LATEST_VERSION" run_panel_compose -f "$UPDATE_COMPOSE_CANDIDATE" pull backend frontend postgres
   else
-    FLUX_VERSION="$LATEST_VERSION" run_panel_compose -f "$UPDATE_COMPOSE_CANDIDATE" pull backend frontend
+    HOPLANE_VERSION="$LATEST_VERSION" run_panel_compose -f "$UPDATE_COMPOSE_CANDIDATE" pull backend frontend
   fi
 }
 
@@ -569,7 +583,7 @@ activate_panel_update_files() {
     return 1
   fi
   UPDATE_COMPOSE_CANDIDATE=""
-  if ! upsert_env_var ".env" "FLUX_VERSION" "$LATEST_VERSION"; then
+  if ! upsert_env_var ".env" "HOPLANE_VERSION" "$LATEST_VERSION"; then
     echo "❌ 更新版本配置失败"
     return 1
   fi
@@ -701,8 +715,8 @@ get_config_params() {
       ;;
   esac
 
-  POSTGRES_DB="flux_panel"
-  POSTGRES_USER="flux_panel"
+  POSTGRES_DB="hoplane_panel"
+  POSTGRES_USER="hoplane_panel"
   POSTGRES_PASSWORD=$(generate_random)
 
   if [[ "$DB_TYPE" == "postgres" ]]; then
@@ -741,7 +755,7 @@ install_panel() {
 JWT_SECRET=$JWT_SECRET
 FRONTEND_PORT=$FRONTEND_PORT
 BACKEND_PORT=$BACKEND_PORT
-FLUX_VERSION=$RESOLVED_VERSION
+HOPLANE_VERSION=$RESOLVED_VERSION
 
 DB_TYPE=$DB_TYPE
 DATABASE_URL=$DATABASE_URL
@@ -750,6 +764,8 @@ POSTGRES_DB=$POSTGRES_DB
 POSTGRES_USER=$POSTGRES_USER
 POSTGRES_PASSWORD=$POSTGRES_PASSWORD
 EOF
+
+  cleanup_legacy_panel_containers
 
   echo "🚀 启动 docker 服务..."
   if [[ "$DB_TYPE" == "postgres" ]]; then
@@ -819,6 +835,8 @@ update_panel() {
     return 1
   fi
 
+  cleanup_legacy_panel_containers
+
   echo "🚀 原地重建更新后的服务..."
   if ! start_panel_after_update "$CURRENT_DB_TYPE"; then
     echo "🛑 新版本启动失败"
@@ -865,8 +883,8 @@ migrate_to_postgres() {
   postgres_user=$(get_env_var "POSTGRES_USER")
   postgres_password=$(get_env_var "POSTGRES_PASSWORD")
 
-  postgres_db=${postgres_db:-flux_panel}
-  postgres_user=${postgres_user:-flux_panel}
+  postgres_db=${postgres_db:-hoplane_panel}
+  postgres_user=${postgres_user:-hoplane_panel}
   postgres_password=${postgres_password:-$(generate_random)}
 
   upsert_env_var ".env" "POSTGRES_DB" "$postgres_db"
@@ -874,7 +892,7 @@ migrate_to_postgres() {
   upsert_env_var ".env" "POSTGRES_PASSWORD" "$postgres_password"
 
   echo "🛑 停止当前服务..."
-  docker stop -t 30 flux-panel-backend 2>/dev/null || true
+  docker stop -t 30 hoplane-panel-backend 2>/dev/null || true
   docker stop -t 10 vite-frontend 2>/dev/null || true
   echo "⏳ 等待数据同步..."
   sleep 5

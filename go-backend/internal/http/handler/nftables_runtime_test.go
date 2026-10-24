@@ -52,7 +52,7 @@ func (f *fakeNftablesManager) Reconcile(_ context.Context, cfg runtimenft.SSHCon
 	}
 	return runtimenft.ApplyResult{
 		NodeID: plan.NodeID,
-		Script: "table inet flvx {}",
+		Script: "table inet hoplane {}",
 		Hashes: runtimenft.PlanHashes(plan),
 	}, nil
 }

@@ -4,7 +4,7 @@ import { LayoutGrid, List } from "lucide-react";
 /** How a page shows its items: one per row, or as cards in a grid. */
 export type ViewMode = "list" | "card";
 
-const storageKey = (page: string) => `flvx_view_${page}`;
+const storageKey = (page: string) => `hoplane_view_${page}`;
 
 function readMode(page: string): ViewMode {
   try {

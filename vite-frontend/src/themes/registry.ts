@@ -23,8 +23,8 @@ const installed = new Map<string, ThemePackage>();
 let activeId: string | null = null;
 let injectedStyleEl: HTMLStyleElement | null = null;
 
-const STORAGE_KEY = "flvx:active-theme";
-const MODE_KEY = "flvx:theme"; // backwards-compat with old use-theme
+const STORAGE_KEY = "hoplane:active-theme";
+const MODE_KEY = "hoplane:theme"; // backwards-compat with old use-theme
 
 type ChangeListener = () => void;
 const changeListeners = new Set<ChangeListener>();
@@ -134,7 +134,7 @@ export function activateTheme(id: string): void {
   // Inject custom CSS
   if (pkg.css) {
     injectedStyleEl = document.createElement("style");
-    injectedStyleEl.setAttribute("data-flvx-theme", id);
+    injectedStyleEl.setAttribute("data-hoplane-theme", id);
     injectedStyleEl.textContent = pkg.css;
     document.head.appendChild(injectedStyleEl);
   }

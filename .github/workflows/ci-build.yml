@@ -89,13 +89,13 @@ jobs:
       postgres:
         image: postgres:17
         env:
-          POSTGRES_USER: flux_test
-          POSTGRES_PASSWORD: flux_test_pass
-          POSTGRES_DB: flux_test
+          POSTGRES_USER: hoplane_test
+          POSTGRES_PASSWORD: hoplane_test_pass
+          POSTGRES_DB: hoplane_test
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U flux_test -d flux_test"
+          --health-cmd "pg_isready -U hoplane_test -d hoplane_test"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
@@ -116,7 +116,7 @@ jobs:
 
       - name: Run PostgreSQL contract test
         env:
-          FLVX_POSTGRES_TEST_DSN: 'postgres://flux_test:flux_test_pass@127.0.0.1:5432/flux_test?sslmode=disable'
+          HOPLANE_POSTGRES_TEST_DSN: 'postgres://hoplane_test:hoplane_test_pass@127.0.0.1:5432/hoplane_test?sslmode=disable'
         run: go test ./tests/contract -run TestPostgresNodeCreateRepairsMissingIDDefaultContract -count=1
 
   agent:

@@ -4,18 +4,18 @@
 # binary back in place.
 set -e
 
-DATA_DIR=/etc/flux_agent
-BIN="$DATA_DIR/flux_agent"
+DATA_DIR=/etc/hoplane_agent
+BIN="$DATA_DIR/hoplane_agent"
 MARK="$DATA_DIR/.image_version"
 
 mkdir -p "$DATA_DIR"
 cd "$DATA_DIR"
 
-if [ ! -x "$BIN" ] || [ "$(cat "$MARK" 2>/dev/null)" != "$FLUX_AGENT_IMAGE_VERSION" ]; then
-  cp /usr/local/bin/flux_agent "$BIN.new"
+if [ ! -x "$BIN" ] || [ "$(cat "$MARK" 2>/dev/null)" != "$HOPLANE_AGENT_IMAGE_VERSION" ]; then
+  cp /usr/local/bin/hoplane_agent "$BIN.new"
   chmod 755 "$BIN.new"
   mv "$BIN.new" "$BIN"
-  echo "$FLUX_AGENT_IMAGE_VERSION" > "$MARK"
+  echo "$HOPLANE_AGENT_IMAGE_VERSION" > "$MARK"
 fi
 
 [ -f gost.json ] || echo '{}' > gost.json

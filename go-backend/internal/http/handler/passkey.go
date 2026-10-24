@@ -46,7 +46,11 @@ func (u passkeyUser) WebAuthnDisplayName() string                { return u.name
 func (u passkeyUser) WebAuthnCredentials() []webauthn.Credential { return u.credentials }
 
 func passkeyConfig() (*webauthn.WebAuthn, string) {
-	raw := strings.TrimSpace(os.Getenv("FLVX_WEBAUTHN_ORIGIN"))
+	raw := strings.TrimSpace(os.Getenv("HOPLANE_WEBAUTHN_ORIGIN"))
+	if raw == "" {
+		// Panels upgraded from a FLVX/Hoplane 0.1.0 compose still set the old name.
+		raw = strings.TrimSpace(os.Getenv("FLVX_WEBAUTHN_ORIGIN"))
+	}
 	u, err := url.Parse(raw)
 	if err != nil || u == nil || u.Host == "" || u.User != nil || u.Path != "" || u.RawQuery != "" || u.Fragment != "" {
 		return nil, ""

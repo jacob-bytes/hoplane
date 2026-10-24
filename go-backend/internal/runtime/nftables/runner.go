@@ -27,7 +27,7 @@ func NewSSHRunner() *SSHRunner {
 
 func (r *SSHRunner) Test(ctx context.Context, cfg SSHConfig) error {
 	nft := nftBinary(cfg)
-	tableName := fmt.Sprintf("flvx_capability_%d", time.Now().UnixNano())
+	tableName := fmt.Sprintf("hoplane_capability_%d", time.Now().UnixNano())
 	return r.run(ctx, cfg, buildCapabilityCheckCommand(nft, tableName))
 }
 
@@ -41,11 +41,11 @@ func buildCapabilityCheckCommand(nft, tableName string) string {
 			Protocols:  []string{"tcp", "udp"},
 		}},
 	})
-	script = strings.Replace(script, "table inet flvx {", "table inet "+tableName+" {", 1)
+	script = strings.Replace(script, "table inet hoplane {", "table inet "+tableName+" {", 1)
 	return "set -eu\n" +
 		"command -v nft >/dev/null 2>&1\n" +
 		nft + " --version >/dev/null 2>&1\n" +
-		"tmp=$(mktemp /tmp/flvx-nft-capability-XXXXXX.nft)\n" +
+		"tmp=$(mktemp /tmp/hoplane-nft-capability-XXXXXX.nft)\n" +
 		"trap 'rm -f \"$tmp\"' EXIT\n" +
 		"cat > \"$tmp\" <<'EOF'\n" + script + "\nEOF\n" +
 		"if ! " + nft + " -c -f \"$tmp\"; then\n" +
@@ -59,17 +59,25 @@ func (r *SSHRunner) ApplyScript(ctx context.Context, cfg SSHConfig, script strin
 	return r.run(ctx, cfg, command)
 }
 
+// buildApplyCommand validates the new ruleset with `nft -c` before applying,
+// and first drops the tables the pre-rename panel created: they hold the same
+// counters and whitelists under another name, so leaving them would double
+// count traffic or keep ports filtered.
 func buildApplyCommand(nft, script string) string {
+	legacyDrop := "for t in flvx flvx_kernel; do\n" +
+		"  if " + nft + " list table inet \"$t\" >/dev/null 2>&1; then " + nft + " delete table inet \"$t\"; fi\n" +
+		"done\n"
 	return "set -eu\n" +
-		"tmp=$(mktemp /tmp/flvx-nft-XXXXXX.nft)\n" +
-		"batch=$(mktemp /tmp/flvx-nft-batch-XXXXXX.nft) || { rm -f \"$tmp\"; exit 1; }\n" +
+		"tmp=$(mktemp /tmp/hoplane-nft-XXXXXX.nft)\n" +
+		"batch=$(mktemp /tmp/hoplane-nft-batch-XXXXXX.nft) || { rm -f \"$tmp\"; exit 1; }\n" +
 		"cleanup() {\n" +
 		"  rm -f \"$tmp\" \"$batch\"\n" +
 		"}\n" +
 		"trap cleanup EXIT\n" +
 		"cat > \"$tmp\" <<'EOF'\n" + script + "\nEOF\n" +
-		"if " + nft + " list table inet flvx >/dev/null 2>&1; then\n" +
-		"  { printf '%s\\n' 'delete table inet flvx'; cat \"$tmp\"; } > \"$batch\"\n" +
+		legacyDrop +
+		"if " + nft + " list table inet hoplane >/dev/null 2>&1; then\n" +
+		"  { printf '%s\\n' 'delete table inet hoplane'; cat \"$tmp\"; } > \"$batch\"\n" +
 		"else\n" +
 		"  cp \"$tmp\" \"$batch\"\n" +
 		"fi\n" +
@@ -81,7 +89,7 @@ func buildApplyCommand(nft, script string) string {
 }
 
 func (r *SSHRunner) ListTableJSON(ctx context.Context, cfg SSHConfig) ([]byte, error) {
-	return r.runOutput(ctx, cfg, nftBinary(cfg)+" -j list table inet flvx")
+	return r.runOutput(ctx, cfg, nftBinary(cfg)+" -j list table inet hoplane")
 }
 
 func (r *SSHRunner) run(ctx context.Context, cfg SSHConfig, command string) error {

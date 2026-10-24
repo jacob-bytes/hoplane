@@ -4,6 +4,16 @@
 
 完整的提交记录见 [GitHub Releases](https://github.com/jacob-bytes/hoplane/releases)。
 
+## 0.2.0
+
+2026-10-24
+
+- **标识符统一成 Hoplane**：环境变量改成 `HOPLANE_*`，容器与镜像改成 `hoplane-panel-backend` / `hoplane-panel-postgres` / `hoplane-frontend` / `hoplane-agent`，agent 装在 `/etc/hoplane_agent`、服务名 `hoplane_agent`，nftables 表改成 `inet hoplane` 与 `inet hoplane_kernel`，发布资产改成 `hoplane-agent-<arch>`，浏览器本地的主题与缓存键也换成 `hoplane:*`（首次打开会回到默认主题）
+- **旧部署仍能启动**：面板与 agent 还认旧的 `FLVX_*` / `FLUX_AGENT_*` 环境变量（含容器模式判断），集成方继续发 `X-FLVX-API-Client` 也照样生效
+- **旧痕迹自动清理**：agent 启动时删除旧的 `flvx` / `flvx_kernel` nft 表（否则流量会重复计数、白名单会继续拦端口）；agent 安装脚本停用并删除旧的 `flux_agent` 服务与 `/etc/flux_agent`；面板安装脚本和面板内升级在启动前都会移除旧的 `flux-panel-*` / `vite-frontend` 容器（数据卷是显式命名，不受影响）
+
+**升级**：需要升级 agent，而且建议**重装**而不是就地升级——安装目录、服务名、容器名都变了。面板升级后在 **服务器** 页对每台机器重新生成安装命令执行一遍即可，面板数据、订阅链接、节点配置都不受影响。
+
 ## 0.1.0
 
 2026-10-24

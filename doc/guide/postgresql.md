@@ -25,16 +25,16 @@ Hoplane 默认使用 SQLite 作为数据库，同时也内置了对 PostgreSQL �
 | 变量名 | 说明 | 默认值 | 示例 |
 |--------|------|--------|------|
 | `DB_TYPE` | 数据库类型，`sqlite` 或 `postgres` | `sqlite` | `postgres` |
-| `DATABASE_URL` | PostgreSQL 连接字符串（仅 `DB_TYPE=postgres` 时必填） | 空 | `postgres://flux_panel:密码@postgres:5432/flux_panel?sslmode=disable` |
+| `DATABASE_URL` | PostgreSQL 连接字符串（仅 `DB_TYPE=postgres` 时必填） | 空 | `postgres://hoplane_panel:密码@postgres:5432/hoplane_panel?sslmode=disable` |
 | `DB_PATH` | SQLite 数据库文件路径（仅 `DB_TYPE=sqlite` 时使用） | `/app/data/gost.db` | `/app/data/gost.db` |
 
 ### PostgreSQL 容器使用
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
-| `POSTGRES_DB` | 数据库名称 | `flux_panel` |
-| `POSTGRES_USER` | 数据库用户名 | `flux_panel` |
-| `POSTGRES_PASSWORD` | 数据库密码 | `flux_panel_change_me` |
+| `POSTGRES_DB` | 数据库名称 | `hoplane_panel` |
+| `POSTGRES_USER` | 数据库用户名 | `hoplane_panel` |
+| `POSTGRES_PASSWORD` | 数据库密码 | `hoplane_panel_change_me` |
 
 > ⚠️ **安全提示**：生产环境中请务必修改 `POSTGRES_PASSWORD` 为强密码，不要使用默认值！
 
@@ -56,10 +56,10 @@ FRONTEND_PORT=6366
 
 # PostgreSQL 配置
 DB_TYPE=postgres
-DATABASE_URL=postgres://flux_panel:替换为强密码@postgres:5432/flux_panel?sslmode=disable
+DATABASE_URL=postgres://hoplane_panel:替换为强密码@postgres:5432/hoplane_panel?sslmode=disable
 
-POSTGRES_DB=flux_panel
-POSTGRES_USER=flux_panel
+POSTGRES_DB=hoplane_panel
+POSTGRES_USER=hoplane_panel
 POSTGRES_PASSWORD=替换为强密码
 ```
 
@@ -78,10 +78,10 @@ docker compose up -d
 docker ps
 
 # 查看后端日志，确认连接 PostgreSQL 成功
-docker logs flux-panel-backend
+docker logs hoplane-panel-backend
 
 # 查看 PostgreSQL 容器状态
-docker logs flux-panel-postgres
+docker logs hoplane-panel-postgres
 ```
 
 ---
@@ -132,7 +132,7 @@ docker compose up -d postgres
 
 ```bash
 # 检查 PostgreSQL 健康状态
-docker inspect --format='{{.State.Health.Status}}' flux-panel-postgres
+docker inspect --format='{{.State.Health.Status}}' hoplane-panel-postgres
 # 输出 "healthy" 表示就绪
 ```
 
@@ -178,8 +178,8 @@ docker compose up -d
 在目标 PostgreSQL 服务器上创建数据库和用户：
 
 ```sql
-CREATE USER flux_panel WITH PASSWORD '你的强密码';
-CREATE DATABASE flux_panel OWNER flux_panel;
+CREATE USER hoplane_panel WITH PASSWORD '你的强密码';
+CREATE DATABASE hoplane_panel OWNER hoplane_panel;
 ```
 
 ### 2. 配置连接
@@ -188,7 +188,7 @@ CREATE DATABASE flux_panel OWNER flux_panel;
 
 ```bash
 DB_TYPE=postgres
-DATABASE_URL=postgres://flux_panel:你的强密码@数据库地址:5432/flux_panel?sslmode=disable
+DATABASE_URL=postgres://hoplane_panel:你的强密码@数据库地址:5432/hoplane_panel?sslmode=disable
 ```
 
 > 📌 如果 PostgreSQL 在远程服务器且启用了 SSL，请将 `sslmode=disable` 改为 `sslmode=require` 或 `sslmode=verify-full`。
@@ -209,30 +209,30 @@ docker compose up -d backend frontend
 
 ```bash
 # 备份（在 Docker 环境下）
-docker exec flux-panel-postgres pg_dump -U flux_panel flux_panel > backup_$(date +%Y%m%d_%H%M%S).sql
+docker exec hoplane-panel-postgres pg_dump -U hoplane_panel hoplane_panel > backup_$(date +%Y%m%d_%H%M%S).sql
 
 # 恢复
-docker exec -i flux-panel-postgres psql -U flux_panel flux_panel < backup_20260101_120000.sql
+docker exec -i hoplane-panel-postgres psql -U hoplane_panel hoplane_panel < backup_20260101_120000.sql
 ```
 
 ### 定时备份（cron）
 
-创建备份脚本 `/opt/flvx/backup.sh`：
+创建备份脚本 `/opt/hoplane/backup.sh`：
 
 ```bash
 #!/bin/bash
-BACKUP_DIR="/opt/flvx/backups"
+BACKUP_DIR="/opt/hoplane/backups"
 mkdir -p "$BACKUP_DIR"
-docker exec flux-panel-postgres pg_dump -U flux_panel flux_panel | gzip > "$BACKUP_DIR/flvx_$(date +%Y%m%d_%H%M%S).sql.gz"
+docker exec hoplane-panel-postgres pg_dump -U hoplane_panel hoplane_panel | gzip > "$BACKUP_DIR/hoplane_$(date +%Y%m%d_%H%M%S).sql.gz"
 # 清理 30 天前的备份
-find "$BACKUP_DIR" -name "flvx_*.sql.gz" -mtime +30 -delete
+find "$BACKUP_DIR" -name "hoplane_*.sql.gz" -mtime +30 -delete
 ```
 
 添加 cron 任务（每天凌晨 3 点执行）：
 
 ```bash
-chmod +x /opt/flvx/backup.sh
-echo "0 3 * * * /opt/flvx/backup.sh" | crontab -
+chmod +x /opt/hoplane/backup.sh
+echo "0 3 * * * /opt/hoplane/backup.sh" | crontab -
 ```
 
 ---
@@ -258,7 +258,7 @@ echo "0 3 * * * /opt/flvx/backup.sh" | crontab -
 **A**: 查看后端容器的 `DB_TYPE` 环境变量：
 
 ```bash
-docker exec flux-panel-backend printenv DB_TYPE
+docker exec hoplane-panel-backend printenv DB_TYPE
 ```
 
 ### Q: 可以同时使用 SQLite 和 PostgreSQL 吗？

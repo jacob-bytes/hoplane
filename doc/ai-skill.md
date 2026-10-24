@@ -31,9 +31,9 @@ ln -sf $(pwd)/skills/hoplane-api ~/.agents/skills/
 设置环境变量：
 
 ```bash
-export FLVX_BASE_URL="https://your-panel.example.com"
-export FLVX_USERNAME="admin"
-export FLVX_PASSWORD="your-password"
+export HOPLANE_BASE_URL="https://your-panel.example.com"
+export HOPLANE_USERNAME="admin"
+export HOPLANE_PASSWORD="your-password"
 ```
 
 或使用凭证文件：
@@ -41,9 +41,9 @@ export FLVX_PASSWORD="your-password"
 ```bash
 mkdir -p ~/.hoplane
 cat > ~/.hoplane/.env << 'EOF'
-export FLVX_BASE_URL="https://panel.example.com"
-export FLVX_USERNAME="admin"
-export FLVX_PASSWORD="your-password"
+export HOPLANE_BASE_URL="https://panel.example.com"
+export HOPLANE_USERNAME="admin"
+export HOPLANE_PASSWORD="your-password"
 EOF
 chmod 600 ~/.hoplane/.env
 source ~/.hoplane/.env
@@ -64,9 +64,9 @@ npm install -g @jacob-bytes/hoplane-api
 
 **使用:**
 ```bash
-export FLVX_BASE_URL="https://panel.example.com"
-export FLVX_USERNAME="admin"
-export FLVX_PASSWORD="your-password"
+export HOPLANE_BASE_URL="https://panel.example.com"
+export HOPLANE_USERNAME="admin"
+export HOPLANE_PASSWORD="your-password"
 
 opencode
 ```
@@ -119,9 +119,9 @@ Claude Code 是 Anthropic 官方的命令行工具，支持通过 CLAUDE.md 扩�
 你可以通过 REST API 操作 Hoplane 面板。
 
 ## 环境变量
-- FLVX_BASE_URL: 面板地址
-- FLVX_USERNAME: 用户名
-- FLVX_PASSWORD: 密码
+- HOPLANE_BASE_URL: 面板地址
+- HOPLANE_USERNAME: 用户名
+- HOPLANE_PASSWORD: 密码
 
 ## 认证规则
 - Authorization 头使用原始 JWT token，不加 "Bearer " 前缀
@@ -162,8 +162,8 @@ cat > ~/.claude/CLAUDE.md << 'EOF'
 
 使用 Hoplane REST API 操作流量转发面板。
 
-环境变量: FLVX_BASE_URL, FLVX_USERNAME, FLVX_PASSWORD
-调用方式: curl -X POST "$FLVX_BASE_URL/api/v1/..." -H "Authorization: $TOKEN"
+环境变量: HOPLANE_BASE_URL, HOPLANE_USERNAME, HOPLANE_PASSWORD
+调用方式: curl -X POST "$HOPLANE_BASE_URL/api/v1/..." -H "Authorization: $TOKEN"
 注意: Authorization 不要加 Bearer 前缀
 EOF
 ```
@@ -201,7 +201,7 @@ cat ~/.agents/skills/hoplane-api/SKILL.md >> ~/.claude/CLAUDE.md
 
 - ⚠️ 环境变量在进程列表中可见
 - 使用 `~/.hoplane/.env` 文件并设置 `chmod 600`
-- 添加 `export HISTIGNORE="*FLVX_PASSWORD*"` 防止密码进入历史记录
+- 添加 `export HISTIGNORE="*HOPLANE_PASSWORD*"` 防止密码进入历史记录
 - Token 仅在会话内存中缓存，不写入磁盘
 
 ## 发布

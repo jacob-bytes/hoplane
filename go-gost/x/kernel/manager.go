@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-const defaultBaseDir = "/etc/flux_agent/kernels"
+const defaultBaseDir = "/etc/hoplane_agent/kernels"
 
 type instance struct {
 	req     ApplyRequest
@@ -44,11 +44,15 @@ var (
 	defaultManagerOnce sync.Once
 )
 
-// Default returns the process-wide manager rooted at FLVX_KERNEL_DIR or
-// /etc/flux_agent/kernels.
+// Default returns the process-wide manager rooted at HOPLANE_KERNEL_DIR or
+// /etc/hoplane_agent/kernels.
 func Default() *Manager {
 	defaultManagerOnce.Do(func() {
-		dir := strings.TrimSpace(os.Getenv("FLVX_KERNEL_DIR"))
+		dir := strings.TrimSpace(os.Getenv("HOPLANE_KERNEL_DIR"))
+		if dir == "" {
+			// Agents installed before the rename pass the old name.
+			dir = strings.TrimSpace(os.Getenv("FLVX_KERNEL_DIR"))
+		}
 		if dir == "" {
 			dir = defaultBaseDir
 		}

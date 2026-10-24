@@ -19,10 +19,10 @@ function isChunkLoadError(error: unknown): boolean {
  */
 export function reloadOnce(): boolean {
   try {
-    const last = Number(sessionStorage.getItem("flvx_chunk_reload") || 0);
+    const last = Number(sessionStorage.getItem("hoplane_chunk_reload") || 0);
 
     if (Date.now() - last < 60000) return false;
-    sessionStorage.setItem("flvx_chunk_reload", String(Date.now()));
+    sessionStorage.setItem("hoplane_chunk_reload", String(Date.now()));
   } catch {
     return false;
   }

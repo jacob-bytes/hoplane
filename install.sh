@@ -50,9 +50,9 @@ get_architecture() {
 }
 
 # 安装目录
-INSTALL_DIR="/etc/flux_agent"
-FLUX_AGENT_SYSTEMD_SERVICE_FILE="/etc/systemd/system/flux_agent.service"
-FLUX_AGENT_OPENRC_SERVICE_FILE="/etc/init.d/flux_agent"
+INSTALL_DIR="/etc/hoplane_agent"
+HOPLANE_AGENT_SYSTEMD_SERVICE_FILE="/etc/systemd/system/hoplane_agent.service"
+HOPLANE_AGENT_OPENRC_SERVICE_FILE="/etc/init.d/hoplane_agent"
 LEGACY_GOST_BINARY="/usr/local/bin/gost"
 LEGACY_GOST_CONFIG_DIR="/etc/gost"
 LEGACY_GOST_SERVICE_FILE_ETC="/etc/systemd/system/gost.service"
@@ -177,8 +177,8 @@ resolve_version() {
     echo "$VERSION"
     return 0
   fi
-  if [[ -n "${FLUX_VERSION:-}" ]]; then
-    echo "$FLUX_VERSION"
+  if [[ -n "${HOPLANE_VERSION:-}" ]]; then
+    echo "$HOPLANE_VERSION"
     return 0
   fi
   if [[ -n "${PINNED_VERSION:-}" ]]; then
@@ -197,7 +197,7 @@ resolve_version() {
 # 构建下载地址
 build_download_url() {
     local ARCH=$(get_architecture)
-    echo "https://github.com/${REPO}/releases/download/${RESOLVED_VERSION}/gost-${ARCH}"
+    echo "https://github.com/${REPO}/releases/download/${RESOLVED_VERSION}/hoplane-agent-${ARCH}"
 }
 
 ensure_download_url_initialized() {
@@ -313,7 +313,7 @@ json_escape() {
   printf '%s' "$value"
 }
 
-write_flux_agent_config() {
+write_hoplane_agent_config() {
   local path="$1"
   printf '{\n  "addr": "%s",\n  "secret": "%s"\n}\n' \
     "$(json_escape "$SERVER_ADDR")" \
@@ -351,60 +351,60 @@ ensure_service_manager() {
   return 1
 }
 
-flux_agent_service_exists() {
+hoplane_agent_service_exists() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      [[ -f "$FLUX_AGENT_SYSTEMD_SERVICE_FILE" ]] || \
-        systemctl list-units --full -all 2>/dev/null | grep -Fq "flux_agent.service"
+      [[ -f "$HOPLANE_AGENT_SYSTEMD_SERVICE_FILE" ]] || \
+        systemctl list-units --full -all 2>/dev/null | grep -Fq "hoplane_agent.service"
       ;;
     openrc)
-      [[ -f "$FLUX_AGENT_OPENRC_SERVICE_FILE" ]]
+      [[ -f "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" ]]
       ;;
   esac
 }
 
-stop_flux_agent_service() {
+stop_hoplane_agent_service() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      systemctl stop flux_agent 2>/dev/null || true
+      systemctl stop hoplane_agent 2>/dev/null || true
       ;;
     openrc)
-      rc-service flux_agent stop 2>/dev/null || true
+      rc-service hoplane_agent stop 2>/dev/null || true
       ;;
   esac
 }
 
-disable_flux_agent_service() {
+disable_hoplane_agent_service() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      systemctl disable flux_agent 2>/dev/null || true
+      systemctl disable hoplane_agent 2>/dev/null || true
       ;;
     openrc)
-      rc-update del flux_agent default 2>/dev/null || true
+      rc-update del hoplane_agent default 2>/dev/null || true
       ;;
   esac
 }
 
-write_flux_agent_service() {
+write_hoplane_agent_service() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      mkdir -p "$(dirname "$FLUX_AGENT_SYSTEMD_SERVICE_FILE")"
-      cat > "$FLUX_AGENT_SYSTEMD_SERVICE_FILE" <<EOF
+      mkdir -p "$(dirname "$HOPLANE_AGENT_SYSTEMD_SERVICE_FILE")"
+      cat > "$HOPLANE_AGENT_SYSTEMD_SERVICE_FILE" <<EOF
 [Unit]
-Description=Flux_agent Proxy Service
+Description=Hoplane Agent Proxy Service
 After=network.target
 
 [Service]
 WorkingDirectory=$INSTALL_DIR
-ExecStart=$INSTALL_DIR/flux_agent
+ExecStart=$INSTALL_DIR/hoplane_agent
 Environment=GODEBUG=disablethp=1
 Restart=on-failure
 StandardOutput=null
@@ -415,13 +415,13 @@ WantedBy=multi-user.target
 EOF
       ;;
     openrc)
-      mkdir -p "$(dirname "$FLUX_AGENT_OPENRC_SERVICE_FILE")"
-      cat > "$FLUX_AGENT_OPENRC_SERVICE_FILE" <<EOF
+      mkdir -p "$(dirname "$HOPLANE_AGENT_OPENRC_SERVICE_FILE")"
+      cat > "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" <<EOF
 #!/sbin/openrc-run
 
-name="flux_agent"
-description="Flux_agent Proxy Service"
-command="$INSTALL_DIR/flux_agent"
+name="hoplane_agent"
+description="Hoplane Agent Proxy Service"
+command="$INSTALL_DIR/hoplane_agent"
 directory="$INSTALL_DIR"
 command_background="yes"
 pidfile="/run/\${RC_SVCNAME}.pid"
@@ -432,89 +432,89 @@ depend() {
   need net
 }
 EOF
-      chmod +x "$FLUX_AGENT_OPENRC_SERVICE_FILE"
+      chmod +x "$HOPLANE_AGENT_OPENRC_SERVICE_FILE"
       ;;
   esac
 }
 
-enable_and_start_flux_agent_service() {
+enable_and_start_hoplane_agent_service() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
       systemctl daemon-reload
-      systemctl enable flux_agent
-      systemctl start flux_agent
+      systemctl enable hoplane_agent
+      systemctl start hoplane_agent
       ;;
     openrc)
-      rc-update add flux_agent default
-      rc-service flux_agent start
+      rc-update add hoplane_agent default
+      rc-service hoplane_agent start
       ;;
   esac
 }
 
-start_flux_agent_service() {
+start_hoplane_agent_service() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      systemctl start flux_agent
+      systemctl start hoplane_agent
       ;;
     openrc)
-      rc-service flux_agent start
+      rc-service hoplane_agent start
       ;;
   esac
 }
 
-flux_agent_service_is_active() {
+hoplane_agent_service_is_active() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      systemctl is-active --quiet flux_agent
+      systemctl is-active --quiet hoplane_agent
       ;;
     openrc)
-      rc-service flux_agent status >/dev/null 2>&1
+      rc-service hoplane_agent status >/dev/null 2>&1
       ;;
   esac
 }
 
-flux_agent_service_status() {
+hoplane_agent_service_status() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      systemctl is-active flux_agent 2>/dev/null || true
+      systemctl is-active hoplane_agent 2>/dev/null || true
       ;;
     openrc)
-      rc-service flux_agent status 2>/dev/null || true
+      rc-service hoplane_agent status 2>/dev/null || true
       ;;
   esac
 }
 
-remove_flux_agent_service() {
+remove_hoplane_agent_service() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      rm -f "$FLUX_AGENT_SYSTEMD_SERVICE_FILE"
+      rm -f "$HOPLANE_AGENT_SYSTEMD_SERVICE_FILE"
       systemctl daemon-reload 2>/dev/null || true
       ;;
     openrc)
-      rm -f "$FLUX_AGENT_OPENRC_SERVICE_FILE"
+      rm -f "$HOPLANE_AGENT_OPENRC_SERVICE_FILE"
       ;;
   esac
 }
 
-flux_agent_service_status_hint() {
+hoplane_agent_service_status_hint() {
   ensure_service_manager || return 1
 
   case "$SERVICE_MANAGER" in
     systemd)
-      echo "systemctl status flux_agent --no-pager"
+      echo "systemctl status hoplane_agent --no-pager"
       ;;
     openrc)
-      echo "rc-service flux_agent status"
+      echo "rc-service hoplane_agent status"
       ;;
   esac
 }
@@ -567,6 +567,42 @@ cleanup_legacy_gost_installation() {
 }
 
 
+# 0.1.0 及更早（FLVX / FLYX）装的是 flux_agent：单元名、安装目录都和现在
+# 不同。留着它会继续连面板、继续占端口，所以升级时先把它停掉清干净。
+cleanup_legacy_hoplane_agent() {
+  local legacy_dir="/etc/flux_agent"
+  local legacy_systemd="/etc/systemd/system/flux_agent.service"
+  local legacy_openrc="/etc/init.d/flux_agent"
+  local cleaned="0"
+
+  if [[ "$SERVICE_MANAGER" == "systemd" ]] && \
+    systemctl list-units --full -all 2>/dev/null | grep -Fq "flux_agent.service"; then
+    systemctl stop flux_agent 2>/dev/null || true
+    systemctl disable flux_agent 2>/dev/null || true
+  elif [[ "$SERVICE_MANAGER" == "openrc" && -f "$legacy_openrc" ]]; then
+    rc-service flux_agent stop 2>/dev/null || true
+    rc-update del flux_agent default 2>/dev/null || true
+  fi
+
+  for legacy_file in "$legacy_systemd" "$legacy_openrc"; do
+    if [[ -f "$legacy_file" ]]; then
+      rm -f "$legacy_file"
+      cleaned="1"
+    fi
+  done
+  if [[ -d "$legacy_dir" ]]; then
+    rm -rf "$legacy_dir"
+    cleaned="1"
+  fi
+
+  if [[ "$cleaned" == "1" && "$SERVICE_MANAGER" == "systemd" ]]; then
+    systemctl daemon-reload 2>/dev/null || true
+  fi
+  if [[ "$cleaned" == "1" ]]; then
+    echo "🧹 已移除旧版本的 agent（flux_agent）"
+  fi
+}
+
 # 获取用户输入的配置参数
 get_config_params() {
   if [[ -z "$SERVER_ADDR" || -z "$SECRET" ]]; then
@@ -597,8 +633,8 @@ while getopts "a:s:" opt; do
 done
 
 # 安装功能
-install_flux_agent() {
-  echo "🚀 开始安装 flux_agent..."
+install_hoplane_agent() {
+  echo "🚀 开始安装 hoplane_agent..."
 
   ask_proxy_config
   ensure_download_url_initialized || exit 1
@@ -611,19 +647,19 @@ install_flux_agent() {
 
   mkdir -p "$INSTALL_DIR"
 
-  local tmp_binary="$INSTALL_DIR/flux_agent.new"
+  local tmp_binary="$INSTALL_DIR/hoplane_agent.new"
 
   # 停止并禁用已有服务
-  if flux_agent_service_exists; then
-    echo "🔍 检测到已存在的flux_agent服务"
-    stop_flux_agent_service
+  if hoplane_agent_service_exists; then
+    echo "🔍 检测到已存在的hoplane_agent服务"
+    stop_hoplane_agent_service
     echo "🛑 停止服务"
-    disable_flux_agent_service
+    disable_hoplane_agent_service
     echo "🚫 禁用自启"
   fi
 
-  # 下载 flux_agent
-  echo "⬇️ 下载 flux_agent 中..."
+  # 下载 hoplane_agent
+  echo "⬇️ 下载 hoplane_agent 中..."
   rm -f "$tmp_binary"
   curl -L "$DOWNLOAD_URL" -o "$tmp_binary"
   if [[ ! -f "$tmp_binary" || ! -s "$tmp_binary" ]]; then
@@ -632,17 +668,18 @@ install_flux_agent() {
     exit 1
   fi
   cleanup_legacy_gost_installation
-  mv "$tmp_binary" "$INSTALL_DIR/flux_agent"
-  chmod +x "$INSTALL_DIR/flux_agent"
+  cleanup_legacy_hoplane_agent
+  mv "$tmp_binary" "$INSTALL_DIR/hoplane_agent"
+  chmod +x "$INSTALL_DIR/hoplane_agent"
   echo "✅ 下载完成"
 
   # 打印版本
-  echo "🔎 flux_agent 版本：$($INSTALL_DIR/flux_agent -V)"
+  echo "🔎 hoplane_agent 版本：$($INSTALL_DIR/hoplane_agent -V)"
 
   # 写入 config.json (安装时总是创建新的)
   CONFIG_FILE="$INSTALL_DIR/config.json"
   echo "📄 创建新配置: config.json"
-  write_flux_agent_config "$CONFIG_FILE"
+  write_hoplane_agent_config "$CONFIG_FILE"
 
   # 写入 gost.json
   GOST_CONFIG="$INSTALL_DIR/gost.json"
@@ -659,29 +696,29 @@ EOF
   chmod 600 "$INSTALL_DIR"/*.json
 
   # 创建 systemd 或 OpenRC 服务
-  write_flux_agent_service
+  write_hoplane_agent_service
 
   # 启动服务
-  enable_and_start_flux_agent_service
+  enable_and_start_hoplane_agent_service
 
   # 检查状态
   echo "🔄 检查服务状态..."
-  if flux_agent_service_is_active; then
-    echo "✅ 安装完成，flux_agent服务已启动并设置为开机启动。"
+  if hoplane_agent_service_is_active; then
+    echo "✅ 安装完成，hoplane_agent服务已启动并设置为开机启动。"
     echo "📁 配置目录: $INSTALL_DIR"
-    echo "🔧 服务状态: $(flux_agent_service_status)"
+    echo "🔧 服务状态: $(hoplane_agent_service_status)"
   else
-    echo "❌ flux_agent服务启动失败，请执行以下命令查看状态："
-    flux_agent_service_status_hint
+    echo "❌ hoplane_agent服务启动失败，请执行以下命令查看状态："
+    hoplane_agent_service_status_hint
   fi
 }
 
 # 更新功能
-update_flux_agent() {
-  echo "🔄 开始更新 flux_agent..."
+update_hoplane_agent() {
+  echo "🔄 开始更新 hoplane_agent..."
   
   if [[ ! -d "$INSTALL_DIR" ]]; then
-    echo "❌ flux_agent 未安装，请先选择安装。"
+    echo "❌ hoplane_agent 未安装，请先选择安装。"
     return 1
   fi
 
@@ -696,55 +733,56 @@ update_flux_agent() {
   
   # 先下载新版本
   echo "⬇️ 下载最新版本..."
-  rm -f "$INSTALL_DIR/flux_agent.new"
-  curl -L "$DOWNLOAD_URL" -o "$INSTALL_DIR/flux_agent.new"
-  if [[ ! -f "$INSTALL_DIR/flux_agent.new" || ! -s "$INSTALL_DIR/flux_agent.new" ]]; then
+  rm -f "$INSTALL_DIR/hoplane_agent.new"
+  curl -L "$DOWNLOAD_URL" -o "$INSTALL_DIR/hoplane_agent.new"
+  if [[ ! -f "$INSTALL_DIR/hoplane_agent.new" || ! -s "$INSTALL_DIR/hoplane_agent.new" ]]; then
     echo "❌ 下载失败。"
     return 1
   fi
   cleanup_legacy_gost_installation
+  cleanup_legacy_hoplane_agent
 
   # 停止服务
-  if flux_agent_service_exists; then
-    echo "🛑 停止 flux_agent 服务..."
-    stop_flux_agent_service
+  if hoplane_agent_service_exists; then
+    echo "🛑 停止 hoplane_agent 服务..."
+    stop_hoplane_agent_service
   fi
 
   # 替换文件
-  mv "$INSTALL_DIR/flux_agent.new" "$INSTALL_DIR/flux_agent"
-  chmod +x "$INSTALL_DIR/flux_agent"
+  mv "$INSTALL_DIR/hoplane_agent.new" "$INSTALL_DIR/hoplane_agent"
+  chmod +x "$INSTALL_DIR/hoplane_agent"
   
   # 打印版本
-  echo "🔎 新版本：$($INSTALL_DIR/flux_agent -V)"
+  echo "🔎 新版本：$($INSTALL_DIR/hoplane_agent -V)"
 
   # 重启服务
   echo "🔄 重启服务..."
-  start_flux_agent_service
+  start_hoplane_agent_service
   
   echo "✅ 更新完成，服务已重新启动。"
 }
 
 # 卸载功能
-uninstall_flux_agent() {
-  echo "🗑️ 开始卸载 flux_agent..."
+uninstall_hoplane_agent() {
+  echo "🗑️ 开始卸载 hoplane_agent..."
   ensure_service_manager || return 1
   
-  read -p "确认卸载 flux_agent 吗？此操作将删除所有相关文件 (y/N): " confirm
+  read -p "确认卸载 hoplane_agent 吗？此操作将删除所有相关文件 (y/N): " confirm
   if [[ "$confirm" != "y" && "$confirm" != "Y" ]]; then
     echo "❌ 取消卸载"
     return 0
   fi
 
   # 停止并禁用服务
-  if flux_agent_service_exists; then
+  if hoplane_agent_service_exists; then
     echo "🛑 停止并禁用服务..."
-    stop_flux_agent_service
-    disable_flux_agent_service
+    stop_hoplane_agent_service
+    disable_hoplane_agent_service
   fi
 
   # 删除服务文件
-  if [[ -f "$FLUX_AGENT_SYSTEMD_SERVICE_FILE" || -f "$FLUX_AGENT_OPENRC_SERVICE_FILE" ]]; then
-    remove_flux_agent_service
+  if [[ -f "$HOPLANE_AGENT_SYSTEMD_SERVICE_FILE" || -f "$HOPLANE_AGENT_OPENRC_SERVICE_FILE" ]]; then
+    remove_hoplane_agent_service
     echo "🧹 删除服务文件"
   fi
 
@@ -761,7 +799,7 @@ uninstall_flux_agent() {
 main() {
   # 如果提供了命令行参数，直接执行安装
   if [[ -n "$SERVER_ADDR" && -n "$SECRET" ]]; then
-    install_flux_agent
+    install_hoplane_agent
     delete_self
     exit 0
   fi
@@ -773,17 +811,17 @@ main() {
     
     case $choice in
       1)
-        install_flux_agent
+        install_hoplane_agent
         delete_self
         exit 0
         ;;
       2)
-        update_flux_agent
+        update_hoplane_agent
         delete_self
         exit 0
         ;;
       3)
-        uninstall_flux_agent
+        uninstall_hoplane_agent
         delete_self
         exit 0
         ;;

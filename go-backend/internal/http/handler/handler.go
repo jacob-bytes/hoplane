@@ -1431,7 +1431,11 @@ func (h *Handler) apiClientCaptchaBypassEnabled(r *http.Request) bool {
 		return false
 	}
 
-	client := strings.ToLower(strings.TrimSpace(r.Header.Get("X-FLVX-API-Client")))
+	client := strings.ToLower(strings.TrimSpace(r.Header.Get("X-HOPLANE-API-Client")))
+	if client == "" {
+		// Integrations written against 0.1.0 still send the old header.
+		client = strings.ToLower(strings.TrimSpace(r.Header.Get("X-FLVX-API-Client")))
+	}
 	switch client {
 	case "whmcs", "whmcs-module":
 		return true

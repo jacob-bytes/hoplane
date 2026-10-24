@@ -1401,7 +1401,7 @@ func (w *WebSocketReporter) handleUpgradeAgent(data interface{}) error {
 	fmt.Printf("📦 开始下载升级包: %s\n", downloadURL)
 
 	// 下载新版本二进制
-	const binaryPath = "/etc/flux_agent/flux_agent"
+	const binaryPath = "/etc/hoplane_agent/hoplane_agent"
 	tmpPath := binaryPath + ".new"
 	backupPath := binaryPath + ".old"
 
@@ -1517,7 +1517,7 @@ func (w *WebSocketReporter) handleUpgradeAgent(data interface{}) error {
 
 	// 执行重启脚本
 	// 使用 systemd-run 在独立的 transient unit 中运行重启脚本，
-	// 避免 systemctl stop 杀死 flux_agent cgroup 内所有进程（包括此脚本自身）导致 mv 未执行。
+	// 避免 systemctl stop 杀死 hoplane_agent cgroup 内所有进程（包括此脚本自身）导致 mv 未执行。
 	script := buildAgentRestartScript(tmpPath, binaryPath)
 	cmd := exec.Command("systemd-run", "--quiet", "/bin/sh", "-c", script)
 	if err := cmd.Start(); err != nil {
@@ -1531,7 +1531,7 @@ func (w *WebSocketReporter) handleUpgradeAgent(data interface{}) error {
 }
 
 func (w *WebSocketReporter) handleRollbackAgent(data interface{}) error {
-	const binaryPath = "/etc/flux_agent/flux_agent"
+	const binaryPath = "/etc/hoplane_agent/hoplane_agent"
 	backupPath := binaryPath + ".old"
 
 	// 检查备份文件是否存在
@@ -1561,7 +1561,7 @@ func (w *WebSocketReporter) handleRollbackAgent(data interface{}) error {
 	}
 
 	// 执行回退脚本（同升级逻辑，使用 systemd-run 避免 cgroup 问题）
-	script := fmt.Sprintf("sleep 1 && systemctl stop flux_agent && cp %s %s && systemctl start flux_agent", backupPath, binaryPath)
+	script := fmt.Sprintf("sleep 1 && systemctl stop hoplane_agent && cp %s %s && systemctl start hoplane_agent", backupPath, binaryPath)
 	cmd := exec.Command("systemd-run", "--quiet", "/bin/sh", "-c", script)
 	if err := cmd.Start(); err != nil {
 		return fmt.Errorf("启动回退脚本失败: %v", err)
@@ -1573,7 +1573,7 @@ func (w *WebSocketReporter) handleRollbackAgent(data interface{}) error {
 
 func buildAgentRestartScript(tmpPath, binaryPath string) string {
 	return fmt.Sprintf(
-		"sleep 1 && systemctl stop flux_agent && legacy_service='' && for service_file in /etc/systemd/system/gost.service /lib/systemd/system/gost.service /usr/lib/systemd/system/gost.service; do if [ -f \"$service_file\" ] && grep -Fq \"WorkingDirectory=/etc/gost\" \"$service_file\" && (grep -Fq \"ExecStart=/etc/gost/gost\" \"$service_file\" || (grep -Fq \"ExecStart=/usr/local/bin/gost\" \"$service_file\" && [ -f /etc/gost/config.json ] && [ -f /etc/gost/gost.json ])); then legacy_service=\"$service_file\"; break; fi; done && if [ -n \"$legacy_service\" ]; then (systemctl stop gost 2>/dev/null || true) && (systemctl disable gost 2>/dev/null || true) && rm -f /usr/local/bin/gost /etc/gost/gost \"$legacy_service\" && (systemctl daemon-reload 2>/dev/null || true); fi && mv %s %s && systemctl start flux_agent",
+		"sleep 1 && systemctl stop hoplane_agent && legacy_service='' && for service_file in /etc/systemd/system/gost.service /lib/systemd/system/gost.service /usr/lib/systemd/system/gost.service; do if [ -f \"$service_file\" ] && grep -Fq \"WorkingDirectory=/etc/gost\" \"$service_file\" && (grep -Fq \"ExecStart=/etc/gost/gost\" \"$service_file\" || (grep -Fq \"ExecStart=/usr/local/bin/gost\" \"$service_file\" && [ -f /etc/gost/config.json ] && [ -f /etc/gost/gost.json ])); then legacy_service=\"$service_file\"; break; fi; done && if [ -n \"$legacy_service\" ]; then (systemctl stop gost 2>/dev/null || true) && (systemctl disable gost 2>/dev/null || true) && rm -f /usr/local/bin/gost /etc/gost/gost \"$legacy_service\" && (systemctl daemon-reload 2>/dev/null || true); fi && mv %s %s && systemctl start hoplane_agent",
 		tmpPath,
 		binaryPath,
 	)
@@ -2128,7 +2128,7 @@ func icmpPing(target string, timeout time.Duration) (time.Duration, error) {
 		Body: &icmp.Echo{
 			ID:   id,
 			Seq:  seq,
-			Data: []byte("FLVX-PING"),
+			Data: []byte("HOPLANE-PING"),
 		},
 	}
 	wb, err := wm.Marshal(nil)

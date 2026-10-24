@@ -1,5 +1,5 @@
 # Node agent image. The release job builds it from the same UPX-compressed
-# binaries it publishes (gost-amd64 / gost-arm64 next to this file); run
+# binaries it publishes (hoplane-agent-amd64 / hoplane-agent-arm64 next to this file); run
 # with --network host so forwards can listen on any port.
 FROM debian:bookworm-slim
 
@@ -11,12 +11,12 @@ RUN apt-get update \
 ARG TARGETARCH
 ARG VERSION=dev
 # Artifacts lose the exec bit on upload.
-COPY --chmod=755 gost-${TARGETARCH} /usr/local/bin/flux_agent
-COPY --chmod=755 entrypoint.sh /usr/local/bin/flux-agent-entrypoint
+COPY --chmod=755 gost-${TARGETARCH} /usr/local/bin/hoplane_agent
+COPY --chmod=755 entrypoint.sh /usr/local/bin/hoplane-agent-entrypoint
 
-ENV FLUX_AGENT_CONTAINER=1 \
-    FLUX_AGENT_IMAGE_VERSION=${VERSION}
+ENV HOPLANE_AGENT_CONTAINER=1 \
+    HOPLANE_AGENT_IMAGE_VERSION=${VERSION}
 
-VOLUME /etc/flux_agent
-WORKDIR /etc/flux_agent
-ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/flux-agent-entrypoint"]
+VOLUME /etc/hoplane_agent
+WORKDIR /etc/hoplane_agent
+ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/hoplane-agent-entrypoint"]
