@@ -893,7 +893,7 @@ migrate_to_postgres() {
 
   echo "🛑 停止当前服务..."
   docker stop -t 30 hoplane-panel-backend 2>/dev/null || true
-  docker stop -t 10 vite-frontend 2>/dev/null || true
+  docker stop -t 10 hoplane-frontend 2>/dev/null || true
   echo "⏳ 等待数据同步..."
   sleep 5
   $DOCKER_CMD down

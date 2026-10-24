@@ -142,3 +142,26 @@ jobs:
 
       - name: Vet
         run: go vet ./...
+
+  image-names:
+    name: Check Compose Image Names
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # A rename that lands in only one place ships a compose file pointing at
+      # an image the release never builds; installing then fails on pull.
+      - name: Compose images must be the ones the release builds
+        run: |
+          set -eu
+          built=$(grep -ohE '^[[:space:]]*-t .*/\$\{OWNER\}/[a-z0-9-]+:' .github/workflows/docker-build.yml \
+            | sed -E 's#.*\$\{OWNER\}/([a-z0-9-]+):#\1#' | sort -u)
+          used=$(grep -ohE 'ghcr\.io/[a-z0-9-]+/[a-z0-9-]+:' docker-compose-v4.yml docker-compose-v6.yml \
+            | sed -E 's#.*/##; s#:##' | sort -u)
+          echo "release builds: $(echo "$built" | tr '\n' ' ')"
+          echo "compose uses:   $(echo "$used" | tr '\n' ' ')"
+          missing=$(comm -13 <(printf '%s\n' "$built") <(printf '%s\n' "$used"))
+          if [ -n "$missing" ]; then
+            echo "::error::compose references images the release does not build: $(echo "$missing" | tr '\n' ' ')"
+            exit 1
+          fi
