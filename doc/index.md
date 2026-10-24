@@ -5,6 +5,9 @@ hero:
   name: Hoplane
   text: 转发 + 节点搭建面板
   tagline: 在一个面板里管理服务器、节点与中转，一键部署 Xray / sing-box / Snell 节点并对接中转
+  image:
+    src: /logo.png
+    alt: Hoplane
   actions:
     - theme: brand
       text: 快速上手
