@@ -18,8 +18,8 @@ export const MetricCard = ({
   bottomContent,
 }: MetricCardProps) => {
   return (
-    <Card className="h-48 flex flex-col justify-between overflow-hidden">
-      <CardBody className="!p-4 md:!p-6 h-full flex flex-col justify-between overflow-visible">
+    <Card className="flex h-auto min-w-0 flex-col justify-between overflow-hidden sm:h-48">
+      <CardBody className="flex h-full min-w-0 flex-col justify-between overflow-visible !p-4">
         <div className="flex flex-col space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-muted-foreground truncate">
@@ -29,7 +29,7 @@ export const MetricCard = ({
               {icon}
             </div>
           </div>
-          <p className="text-2xl lg:text-3xl font-bold text-foreground truncate mt-2">
+          <p className="mt-2 truncate text-2xl font-semibold tracking-tight text-foreground tabular lg:text-3xl">
             {value}
           </p>
         </div>

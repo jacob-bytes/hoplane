@@ -644,16 +644,13 @@ function UserDashboard() {
             <DropdownTrigger>
               <Button
                 isIconOnly
-                className="rounded-full w-10 h-10 min-w-0 bg-primary text-white font-bold text-sm shadow-[0_4px_12px_rgba(0,122,255,0.3)]"
+                className="h-9 w-9 min-w-0 rounded-full bg-primary text-sm font-semibold text-primary-foreground"
                 variant="solid"
               >
                 {username.slice(0, 2).toUpperCase()}
               </Button>
             </DropdownTrigger>
-            <DropdownMenu
-              aria-label="用户菜单"
-              className="bg-white/80 dark:bg-zinc-900/80  border border-white/50 dark:border-white/10 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
-            >
+            <DropdownMenu aria-label="用户菜单" className="min-w-48">
               <DropdownItem
                 key="profile"
                 startContent={

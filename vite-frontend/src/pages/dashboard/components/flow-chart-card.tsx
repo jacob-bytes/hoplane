@@ -48,7 +48,7 @@ export const FlowChartCard = ({
         {statisticsFlowsCount === 0 ? (
           <PageEmptyState className="h-48" message="暂无流量统计数据" />
         ) : (
-          <div className="h-64 lg:h-80 w-full">
+          <div className="h-64 w-full text-primary lg:h-80">
             <ResponsiveContainer height="100%" width="100%">
               <LineChart
                 data={chartData}
@@ -57,12 +57,12 @@ export const FlowChartCard = ({
                 <XAxis
                   axisLine={false}
                   dataKey="time"
-                  tick={{ fill: "currentColor", opacity: 0.5, fontSize: 12 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   tickLine={false}
                 />
                 <YAxis
                   axisLine={false}
-                  tick={{ fill: "currentColor", opacity: 0.5, fontSize: 12 }}
+                  tick={{ fill: "var(--muted-foreground)", fontSize: 11 }}
                   tickFormatter={(value: number | string) => {
                     const v = typeof value === "number" ? value : Number(value);
 
@@ -98,7 +98,7 @@ export const FlowChartCard = ({
                         : 0;
 
                       return (
-                        <div className="bg-white/20 dark:bg-black/20 -3xl border border-white/50 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] p-4">
+                        <div className="rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-md">
                           <p className="font-medium text-foreground">{`时间: ${label ?? ""}`}</p>
                           <p className="text-primary font-semibold mt-1">{`流量: ${formatFlow(flowValue)}`}</p>
                         </div>
@@ -107,9 +107,16 @@ export const FlowChartCard = ({
 
                     return null;
                   }}
-                  cursor={{ fill: "rgba(0, 122, 255, 0.05)" }}
+                  cursor={{ fill: "var(--muted)" }}
                 />
-                <Line dataKey="flow" stroke="#007aff" type="monotone" />
+                <Line
+                  dataKey="flow"
+                  dot={false}
+                  isAnimationActive={false}
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  type="monotone"
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>

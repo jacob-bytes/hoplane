@@ -239,7 +239,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
       <div aria-hidden className="h-[calc(4rem+var(--safe-area-bottom))]" />
 
       {/* 底部Tabbar */}
-      <nav className="bg-white/20 dark:bg-zinc-900/20 -2xl border-t border-white/80 dark:border-white/10 h-[calc(4rem+var(--safe-area-bottom))] flex-shrink-0 flex items-center justify-around px-2 fixed bottom-0 left-0 right-0 z-30">
+      <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-[calc(4rem+var(--safe-area-bottom))] flex-shrink-0 items-center justify-around border-t border-border bg-card px-2">
         {filteredTabItems.map((item) => {
           const isActive =
             location.pathname === item.path ||
@@ -269,10 +269,10 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
                 ${isMonitorBlocked ? "opacity-60" : ""}
                 ${
                   isActive
-                    ? "text-primary-600 dark:text-primary-400"
+                    ? "text-primary"
                     : isMonitorBlocked
-                      ? "text-gray-500 dark:text-gray-400"
-                      : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      ? "text-muted-foreground"
+                      : "text-muted-foreground hover:text-foreground"
                 }
               `}
               onClick={() => handleTabClick(item.path)}

@@ -52,6 +52,11 @@
 - ✅ 阶段一：令牌 + 原语 + 壳层 + 概览页
 - ✅ 批次二：服务器 / 隧道 / 订阅 / 用户（颜色纪律：计量条、类型标签、延迟色、开关）
 - ✅ 批次三：节点 / 中转 / 配置（弹窗、Select、Dropdown 换成 flat 面；行内动作按钮降级为描边/文字；配置分组收紧）
+- ✅ 批次四：H5 与图表（底栏从玻璃改实底、卡片允许收缩；recharts 轴线/tooltip/线条改用 token，并关掉线条动画）
+
+> 截图方法备注：`--window-size=390` 的 headless 截图不会应用移动端 viewport，
+> 看起来像溢出；用 CDP 的 `Emulation.setDeviceMetricsOverride` 实测
+> `scrollWidth == clientWidth == 390`，页面本身没有横向溢出。
 
 ## 下一阶段（按价值排序）
 

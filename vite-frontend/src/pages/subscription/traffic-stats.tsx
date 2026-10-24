@@ -16,10 +16,10 @@ import {
 import { getMySubscriptionTraffic, getSubscriptionTraffic } from "@/api";
 import { Segmented } from "@/pages/subscription/controls";
 
-const DOWN = "#2563eb";
-const UP = "#ea580c";
-const DOWN_TEXT = "text-blue-700 dark:text-blue-400";
-const UP_TEXT = "text-orange-700 dark:text-orange-400";
+const DOWN = "var(--primary)";
+const UP = "var(--secondary)";
+const DOWN_TEXT = "text-primary";
+const UP_TEXT = "text-secondary";
 
 const RANGES: Array<[SubTrafficRange, string]> = [
   ["hour", "小时"],
@@ -205,7 +205,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
                     if (!active || !p) return null;
 
                     return (
-                      <div className="rounded-xl border border-divider bg-card px-3 py-2 text-xs shadow-lg">
+                      <div className="rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md">
                         <p className="font-medium">{p.long}</p>
                         <p className={`mt-1 ${DOWN_TEXT}`}>
                           下载 {bytes(p.down)}

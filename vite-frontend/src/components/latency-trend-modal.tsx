@@ -27,9 +27,9 @@ const RANGES = [
 ];
 
 const COLORS = [
-  "#10b981",
-  "#3b82f6",
-  "#f59e0b",
+  "var(--success)",
+  "var(--primary)",
+  "var(--warning)",
   "#ef4444",
   "#8b5cf6",
   "#06b6d4",
@@ -144,7 +144,11 @@ export function LatencyTrendModal({
             <div className="h-52 sm:h-64">
               <ResponsiveContainer height="100%" width="100%">
                 <LineChart data={rows}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid
+                    stroke="var(--border)"
+                    strokeDasharray="3 3"
+                    vertical={false}
+                  />
                   <XAxis
                     dataKey="t"
                     fontSize={11}
