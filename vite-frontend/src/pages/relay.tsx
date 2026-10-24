@@ -96,11 +96,32 @@ function RelayLines({
             >
               {relayLabel(l)}
             </span>
-            {entry && (
-              <span className="hidden min-w-0 flex-1 truncate font-mono text-[11px] text-muted-foreground md:block">
-                {l.shareHost || entry.Host}:{entry.Port}
+            <span
+              className="hidden min-w-0 flex-1 truncate font-mono text-[11px] text-muted-foreground md:block"
+              title={
+                entry
+                  ? `${l.shareHost || entry.Host}:${entry.Port}${l.remoteAddr ? ` → ${l.remoteAddr}` : ""}`
+                  : undefined
+              }
+            >
+              {entry ? `${l.shareHost || entry.Host}:${entry.Port}` : "-"}
+              {l.remoteAddr ? ` → ${l.remoteAddr}` : ""}
+            </span>
+            {(l.forwardName || l.tunnelName) && (
+              <span
+                className="hidden max-w-[12rem] shrink-0 truncate text-[11px] text-muted-foreground md:block"
+                title={l.forwardName || l.tunnelName}
+              >
+                {l.forwardName || l.tunnelName}
               </span>
             )}
+            <Chip
+              className="hidden shrink-0 md:inline-flex"
+              size="sm"
+              variant="flat"
+            >
+              {l.mode === "tunnel" ? "隧道" : "端口"}
+            </Chip>
             <span className="shrink-0 text-xs">
               {renderLatency(l) ?? (
                 <span className="font-mono text-muted-foreground">
@@ -423,12 +444,20 @@ function LinesView() {
                   </div>,
                   <div key="lines" className="min-w-0">
                     {lineList || (
-                      <div className="flex items-center gap-2">
-                        <Chip size="sm" variant="flat">
-                          未配置
-                        </Chip>
-                        <span className="truncate text-xs text-muted-foreground">
-                          点击这一行添加中转
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <Chip size="sm" variant="flat">
+                            未配置
+                          </Chip>
+                          <span className="truncate text-xs text-muted-foreground">
+                            点击这一行添加中转
+                          </span>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className="shrink-0 text-xs text-muted-foreground/50"
+                        >
+                          —
                         </span>
                       </div>
                     )}
