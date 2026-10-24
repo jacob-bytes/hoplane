@@ -52,7 +52,7 @@ export function Chip({
       className={cn(
         variant === "flat" || variant === "light" ? "bg-opacity-15" : "",
         variant === "bordered" ? "border-current bg-transparent" : "",
-        size === "sm" ? "px-2 py-0 text-[10px]" : "",
+        size === "sm" ? "px-2 py-0 text-[11px]" : "",
         size === "lg" ? "px-3 py-1 text-sm" : "",
         className,
       )}

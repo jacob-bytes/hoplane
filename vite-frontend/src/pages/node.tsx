@@ -117,7 +117,7 @@ import {
 
 const PAGE = "node";
 
-const NODE_COLUMNS = "minmax(0,1fr) 232px 96px 112px 132px 24px";
+const NODE_COLUMNS = "minmax(0,1fr) 232px 96px 116px 176px 24px";
 
 export default function NodePage({
   embedded = false,
@@ -1662,11 +1662,14 @@ export default function NodePage({
               }
             >
               {!card && (
-                <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+                <div
+                  className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+                  data-slot="list-head"
+                >
                   <div className="min-w-0">名称</div>
                   <div className="min-w-0">CPU / 内存 / 磁盘</div>
-                  <div className="min-w-0">网速</div>
-                  <div className="min-w-0">本月流量</div>
+                  <div className="min-w-0 text-right">网速</div>
+                  <div className="min-w-0 text-right">本月流量</div>
                   <div className="min-w-0">延迟</div>
                   <div />
                 </div>
@@ -1800,7 +1803,7 @@ export default function NodePage({
                                                 到期提醒
                                               </div>
                                               <button
-                                                className="text-[10px] text-muted-foreground hover:text-muted-foreground transition-colors"
+                                                className="text-[11px] text-muted-foreground hover:text-muted-foreground transition-colors"
                                                 type="button"
                                                 onClick={(e) => {
                                                   e.stopPropagation();
@@ -1814,7 +1817,7 @@ export default function NodePage({
                                             </div>
                                             <div className="flex flex-wrap gap-1.5">
                                               <Chip
-                                                className="text-[10px] h-5 px-1 flex-shrink-0"
+                                                className="text-[11px] h-5 px-1 flex-shrink-0"
                                                 color={expiryMeta.tone}
                                                 size="sm"
                                                 title={`${formatNodeRenewalTime(expiryMeta.nextDueTime)} (${getNodeRenewalCycleLabel(node.renewalCycle)})`}
@@ -2271,7 +2274,7 @@ export default function NodePage({
                                   />
                                   <div className="min-w-0">
                                     <div className="flex items-center gap-1.5">
-                                      <span className="truncate text-[13.5px] font-medium text-foreground">
+                                      <span className="truncate text-sm font-medium text-foreground">
                                         {node.name}
                                       </span>
                                       {!isRemoteNode && showExpiry && (
@@ -2308,6 +2311,7 @@ export default function NodePage({
                                 ),
                                 !isRemoteNode && (
                                   <NodeSpeed
+                                    align="end"
                                     info={
                                       online ? (node.systemInfo ?? null) : null
                                     }
@@ -2315,6 +2319,7 @@ export default function NodePage({
                                 ),
                                 !isRemoteNode && (
                                   <NodeMonth
+                                    align="end"
                                     month={monthTraffic[String(node.id)]}
                                   />
                                 ),

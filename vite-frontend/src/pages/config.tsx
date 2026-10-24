@@ -1548,13 +1548,13 @@ export default function ConfigPage() {
     .join(" · ");
 
   return (
-    <AnimatedPage className="mx-auto max-w-3xl px-3 py-6 lg:px-6">
+    <AnimatedPage className="mx-auto w-full max-w-3xl px-6 py-6">
       <PageHeader
         description="面板名称、登录安全、通知、备份与升级"
         title="网站配置"
       />
 
-      <div className="space-y-2">
+      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
         <ConfigSection
           {...sectionProps("basic")}
           summary={`${configs.app_name || "未设置名称"} · ${

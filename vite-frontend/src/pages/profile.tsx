@@ -105,7 +105,7 @@ interface ShortcutItem {
 function Avatar({ name, large }: { name: string; large?: boolean }) {
   return (
     <div
-      className={`flex shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary font-semibold text-white shadow-sm ${large ? "h-16 w-16 text-2xl" : "h-12 w-12 text-lg"}`}
+      className={`flex shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground ${large ? "h-16 w-16 text-2xl" : "h-12 w-12 text-lg"}`}
     >
       {(name || "?").slice(0, 1).toUpperCase()}
     </div>
@@ -135,7 +135,7 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
           onClick={item.onPress}
         >
           <IconTile icon={item.icon} tone={item.tone} />
-          <span className="min-w-0 flex-1 truncate text-[15px]">
+          <span className="min-w-0 flex-1 truncate text-base">
             {item.label}
           </span>
           <span
@@ -441,10 +441,10 @@ export default function ProfilePage() {
 
   const logoutButton = (
     <Button
-      className="w-full gap-2"
+      className="w-full gap-2 border-danger/30 text-danger hover:bg-danger/10"
       color="danger"
       startContent={<LogOut className="h-4 w-4" />}
-      variant="flat"
+      variant="bordered"
       onPress={handleLogout}
     >
       退出登录
@@ -521,7 +521,7 @@ export default function ProfilePage() {
         <VersionFooter
           containerClassName="mt-8 text-center"
           poweredClassName="text-xs text-muted-foreground"
-          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
+          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white"
           version={
             isWebViewFunc() ? siteConfig.app_version : siteConfig.version
           }

@@ -242,7 +242,7 @@ export function LatencyTrendModal({
                         {p.maxMs ? `${p.maxMs} ms` : "-"}
                       </td>
                       <td
-                        className={`py-1.5 text-right ${p.lossPct >= 5 ? "text-rose-600" : ""}`}
+                        className={`py-1.5 text-right ${p.lossPct >= 5 ? "text-danger" : ""}`}
                       >
                         {p.lossPct}%
                       </td>

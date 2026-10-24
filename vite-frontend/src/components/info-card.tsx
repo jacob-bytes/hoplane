@@ -20,9 +20,9 @@ export const CARD_GRID =
 export type CardTone = "success" | "danger" | "warning" | "default";
 
 const PILL: Record<CardTone, [string, string]> = {
-  success: ["bg-emerald-500/20 text-emerald-600", "bg-emerald-500"],
-  danger: ["bg-rose-500/20 text-rose-600", "bg-rose-500"],
-  warning: ["bg-amber-500/20 text-amber-600", "bg-amber-500"],
+  success: ["bg-success/20 text-success", "bg-success"],
+  danger: ["bg-danger/20 text-danger", "bg-danger"],
+  warning: ["bg-warning/20 text-warning", "bg-warning"],
   default: ["bg-default-200/70 text-muted-foreground", "bg-default-400"],
 };
 

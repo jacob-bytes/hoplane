@@ -53,9 +53,9 @@ interface Props {
 
 /** The latency tiles' status colours are too dark on a dark page. */
 const DARK_LABEL: Record<string, string> = {
-  success: "dark:text-emerald-400",
-  warning: "dark:text-amber-400",
-  danger: "dark:text-rose-400",
+  success: "dark:text-success-400",
+  warning: "dark:text-warning-400",
+  danger: "dark:text-danger-400",
   default: "dark:text-muted-foreground",
 };
 

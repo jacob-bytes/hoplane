@@ -424,7 +424,7 @@ export function AdminOverview() {
   const shownNodes = [...nodes].sort((a, b) => a.status - b.status).slice(0, 6);
 
   return (
-    <AnimatedPage className="space-y-4 px-3 py-6 lg:px-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] space-y-4 px-6 py-6">
       <div>
         <h1 className="text-lg font-semibold">概览</h1>
         <p className="text-xs text-muted-foreground">

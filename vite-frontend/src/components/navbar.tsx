@@ -79,7 +79,7 @@ export const Navbar = () => {
           {/* WebView设置图标 */}
           {isWebView && (
             <button
-              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="p-2 text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-muted-foreground transition-colors"
               title="面板设置"
               onClick={() => navigate("/config")}
             >

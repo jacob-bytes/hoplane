@@ -1415,6 +1415,7 @@ export default function SubscriptionPage() {
     <div
       key={s.id}
       className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:bg-card lg:grid lg:gap-4 lg:px-4 lg:hover:bg-muted/40 lg:[grid-template-columns:var(--list-cols)]"
+      data-slot="list-row"
       role="button"
       tabIndex={0}
       onClick={() => setDetail(s)}
@@ -1431,7 +1432,7 @@ export default function SubscriptionPage() {
       />
       <div className="min-w-0 flex-1 lg:flex-none">
         <div className="flex items-center gap-1.5">
-          <span className="truncate text-[13.5px] font-medium text-foreground">
+          <span className="truncate text-sm font-medium text-foreground">
             {s.name}
           </span>
           {stateChip(s)}
@@ -1460,7 +1461,7 @@ export default function SubscriptionPage() {
   );
 
   return (
-    <AnimatedPage className="space-y-4 px-3 py-6 lg:px-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] space-y-4 px-6 py-6">
       <PageHeader
         description={
           tab === "subs"
@@ -1549,7 +1550,10 @@ export default function SubscriptionPage() {
             }
           >
             {viewMode !== "card" && (
-              <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+              <div
+                className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+                data-slot="list-head"
+              >
                 <div />
                 <div>订阅</div>
                 <div>用量</div>

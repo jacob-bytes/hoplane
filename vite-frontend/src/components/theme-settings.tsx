@@ -59,23 +59,23 @@ export const ThemeSettings: React.FC = () => {
   return (
     <Card className="shadow-md">
       <CardBody className="p-6">
-        <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-5">
+        <h2 className="text-lg font-medium text-foreground dark:text-white mb-5">
           主题设置
         </h2>
 
         {/* ── Mode toggle ────────────────────────────────────── */}
         <div className="mb-6">
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          <p className="text-sm font-medium text-foreground dark:text-muted-foreground mb-3">
             外观模式
           </p>
-          <div className="inline-flex rounded-lg border border-gray-200 dark:border-gray-600 p-1 gap-1">
+          <div className="inline-flex rounded-lg border border-border dark:border-border p-1 gap-1">
             {MODE_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                   mode === opt.value
                     ? "bg-primary text-white shadow-sm"
-                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700/50"
+                    : "text-muted-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-default-300"
                 }`}
                 type="button"
                 onClick={() => handleModeChange(opt.value)}
@@ -89,9 +89,9 @@ export const ThemeSettings: React.FC = () => {
 
         {/* ── Theme grid ─────────────────────────────────────── */}
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          <p className="text-sm font-medium text-foreground dark:text-muted-foreground mb-3">
             选择主题
-            <span className="ml-2 text-xs text-gray-400 dark:text-gray-500 font-normal">
+            <span className="ml-2 text-xs text-muted-foreground dark:text-muted-foreground font-normal">
               共 {themes.length} 个可用主题
             </span>
           </p>
@@ -117,7 +117,7 @@ export const ThemeSettings: React.FC = () => {
                   className={`relative rounded-xl text-left transition-all duration-200 border-2 overflow-hidden ${
                     isActive
                       ? "border-primary shadow-lg shadow-primary/15 scale-[1.01]"
-                      : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 hover:shadow-md"
+                      : "border-border dark:border-border hover:border-border dark:hover:border-border hover:shadow-md"
                   }`}
                   type="button"
                   onClick={() => handleThemeSelect(theme.id)}
@@ -140,21 +140,21 @@ export const ThemeSettings: React.FC = () => {
                   {/* Info */}
                   <div className="p-3">
                     <div className="flex items-center gap-2">
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                      <p className="text-sm font-semibold text-foreground dark:text-white truncate">
                         {theme.name}
                       </p>
                       {isActive && (
-                        <span className="shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/15 text-primary">
+                        <span className="shrink-0 px-1.5 py-0.5 rounded text-[11px] font-bold bg-primary/15 text-primary">
                           当前
                         </span>
                       )}
                     </div>
                     {theme.description && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                      <p className="text-xs text-muted-foreground dark:text-muted-foreground mt-0.5 truncate">
                         {theme.description}
                       </p>
                     )}
-                    <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1">
+                    <p className="text-[11px] text-muted-foreground dark:text-muted-foreground mt-1">
                       {theme.author} · v{theme.version}
                     </p>
                   </div>
@@ -173,7 +173,7 @@ export const ThemeSettings: React.FC = () => {
         {activeThemeId && activeThemeId !== "default" && (
           <div className="pt-2">
             <Button
-              className="text-gray-500 dark:text-gray-400"
+              className="text-muted-foreground dark:text-muted-foreground"
               size="sm"
               variant="light"
               onPress={handleReset}

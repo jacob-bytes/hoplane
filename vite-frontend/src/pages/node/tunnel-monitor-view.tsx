@@ -634,7 +634,7 @@ function TunnelTopologyPathRow({ path }: { path: TunnelTopologyPath }) {
               title={hop.errorMessage}
             >
               <span
-                className={`mb-1 text-[10px] font-mono leading-none ${colorClass}`}
+                className={`mb-1 text-[11px] font-mono leading-none ${colorClass}`}
               >
                 {hop.latency >= 0 && !hop.errorMessage
                   ? `${hop.latency.toFixed(0)}ms`
@@ -648,7 +648,7 @@ function TunnelTopologyPathRow({ path }: { path: TunnelTopologyPath }) {
                 />
               </div>
               <span
-                className={`mt-1.5 text-[10px] font-mono leading-none ${hop.errorMessage || hop.loss > 0 ? "text-warning" : "text-muted-foreground"}`}
+                className={`mt-1.5 text-[11px] font-mono leading-none ${hop.errorMessage || hop.loss > 0 ? "text-warning" : "text-muted-foreground"}`}
               >
                 {hop.errorMessage ? "探测失败" : `${hop.loss.toFixed(0)}% 丢包`}
               </span>
@@ -683,7 +683,7 @@ function TopologyNodeChip({
       <span className="flex items-center gap-1.5">
         <span>{name}</span>
         {isAlternative ? (
-          <span className="rounded-full bg-warning/20 px-1.5 py-0.5 text-[9px] font-semibold leading-none text-warning">
+          <span className="rounded-full bg-warning/20 px-1.5 py-0.5 text-[11px] font-semibold leading-none text-warning">
             备选
           </span>
         ) : null}
@@ -1419,7 +1419,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 <CardBody className="py-3 px-5 flex-1 flex flex-col justify-end gap-3 z-10 w-full overflow-hidden">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <div className="text-[11px] text-muted-foreground flex items-center gap-1">
                         <Zap className="w-3 h-3" />
                         入口→出口
                       </div>
@@ -1430,13 +1430,13 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <div className="text-[11px] text-muted-foreground flex items-center gap-1">
                         <Globe className="w-3 h-3" />
                         出口→测试目标
                       </div>
                       <div
                         aria-label={`测试目标 ${targetLabel}`}
-                        className="text-[10px] text-muted-foreground truncate"
+                        className="text-[11px] text-muted-foreground truncate"
                       >
                         {targetLabel}
                       </div>

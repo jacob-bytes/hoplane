@@ -351,7 +351,7 @@ function ServerCard({
 
         <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted dark:bg-muted/30 border border-divider mt-1 w-full">
           <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+            <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
               <span className="text-primary-500 inline-block font-bold">↑</span>
               <span>上传</span>
             </div>
@@ -363,7 +363,7 @@ function ServerCard({
           </div>
           <div className="w-px h-6 bg-divider mx-2" />
           <div className="flex flex-col gap-0.5 items-end min-w-0 flex-1">
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+            <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
               <span>下载</span>
               <span className="text-success-500 inline-block font-bold">↓</span>
             </div>

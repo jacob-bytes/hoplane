@@ -36,7 +36,7 @@ export const AnnouncementBanner = ({
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="mb-1 mt-1.5 text-[15px] font-semibold tracking-tight text-foreground sm:mb-1.5">
+            <h3 className="mb-1 mt-1.5 text-base font-semibold tracking-tight text-foreground sm:mb-1.5">
               公告
             </h3>
             <div className="break-words text-sm leading-relaxed text-foreground/80">

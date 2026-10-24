@@ -1548,7 +1548,10 @@ export default function TunnelPage({
                 } as React.CSSProperties
               }
             >
-              <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+              <div
+                className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+                data-slot="list-head"
+              >
                 <div>隧道</div>
                 <div>线路</div>
                 <div />
@@ -1608,7 +1611,7 @@ export default function TunnelPage({
                             />
                             <div className="min-w-0">
                               <div className="flex items-center gap-1.5">
-                                <span className="truncate text-[13.5px] font-medium text-foreground">
+                                <span className="truncate text-sm font-medium text-foreground">
                                   {tunnel.name}
                                 </span>
                                 <Chip size="sm" variant="flat">

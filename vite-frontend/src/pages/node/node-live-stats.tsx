@@ -76,7 +76,7 @@ export function NodeLiveStats({
         <NodeMeters info={info} />
         <div className="grid grid-cols-2 divide-x divide-divider rounded-lg bg-muted/60 py-1.5 text-[11px] tabular-nums">
           <div className="min-w-0 px-2.5">
-            <div className="text-[10px] text-muted-foreground">网速</div>
+            <div className="text-[11px] text-muted-foreground">网速</div>
             <div className="flex flex-wrap items-center gap-x-2 font-medium">
               <span className="flex items-center gap-1 whitespace-nowrap">
                 {upIcon}
@@ -89,10 +89,10 @@ export function NodeLiveStats({
             </div>
           </div>
           <div className="min-w-0 px-2.5" title={split}>
-            <div className="text-[10px] text-muted-foreground">本月流量</div>
+            <div className="text-[11px] text-muted-foreground">本月流量</div>
             <div className="flex flex-wrap items-baseline gap-x-1.5">
               <span className="font-semibold">{total}</span>
-              <span className="whitespace-nowrap text-[10px] text-muted-foreground">
+              <span className="whitespace-nowrap text-[11px] text-muted-foreground">
                 {split}
               </span>
             </div>
@@ -129,17 +129,29 @@ export function NodeMeters({ info }: { info: NodeSystemInfo | null }) {
 }
 
 /** Up/down rate, two lines. */
-export function NodeSpeed({ info }: { info: NodeSystemInfo | null }) {
+export function NodeSpeed({
+  info,
+  align = "start",
+}: {
+  info: NodeSystemInfo | null;
+  align?: "start" | "end";
+}) {
   const up = info ? (info.netOutSpeed ?? info.uploadSpeed) : undefined;
   const down = info ? (info.netInSpeed ?? info.downloadSpeed) : undefined;
 
   return (
-    <div className="space-y-0.5 text-[11px] font-medium leading-tight tabular-nums">
-      <div className="flex items-center gap-1">
+    <div
+      className={`space-y-0.5 text-[11px] font-medium leading-tight tabular-nums ${align === "end" ? "text-right" : ""}`}
+    >
+      <div
+        className={`flex items-center gap-1 ${align === "end" ? "justify-end" : ""}`}
+      >
         <ArrowUp className="h-3 w-3 shrink-0 text-muted-foreground" />
         {rate(up)}
       </div>
-      <div className="flex items-center gap-1">
+      <div
+        className={`flex items-center gap-1 ${align === "end" ? "justify-end" : ""}`}
+      >
         <ArrowDown className="h-3 w-3 shrink-0 text-muted-foreground" />
         {rate(down)}
       </div>
@@ -148,16 +160,26 @@ export function NodeSpeed({ info }: { info: NodeSystemInfo | null }) {
 }
 
 /** This month's traffic, total plus the up/down split. */
-export function NodeMonth({ month }: { month?: [number, number] }) {
+export function NodeMonth({
+  month,
+  align = "start",
+}: {
+  month?: [number, number];
+  align?: "start" | "end";
+}) {
   return (
-    <div className="space-y-0.5 leading-tight tabular-nums">
-      <div className="flex items-baseline gap-1.5 text-[11px]">
-        <span className="text-[10px] text-muted-foreground">本月</span>
+    <div
+      className={`space-y-0.5 leading-tight tabular-nums ${align === "end" ? "text-right" : ""}`}
+    >
+      <div
+        className={`flex items-baseline gap-1.5 text-[11px] ${align === "end" ? "justify-end" : ""}`}
+      >
+        <span className="text-[11px] text-muted-foreground">本月</span>
         <span className="font-semibold">
           {month ? bytes(month[0] + month[1]) : "—"}
         </span>
       </div>
-      <div className="text-[10px] text-muted-foreground">
+      <div className="text-[11px] text-muted-foreground">
         {month ? `↑${bytes(month[1])} ↓${bytes(month[0])}` : ""}
       </div>
     </div>

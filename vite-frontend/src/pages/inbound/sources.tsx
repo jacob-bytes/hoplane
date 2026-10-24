@@ -306,7 +306,7 @@ export function RemoteSourcesSection({
                     <span className="truncate font-medium">{s.name}</span>
                     {s.role && (
                       <span
-                        className={`shrink-0 rounded-full px-1.5 py-0.5 text-[10px] ${s.role === "relay" ? "bg-secondary-100 text-secondary-700 dark:bg-secondary-500/20" : "bg-warning-100 text-warning-700 dark:bg-warning-500/20"}`}
+                        className={`shrink-0 rounded-full px-1.5 py-0.5 text-[11px] ${s.role === "relay" ? "bg-secondary-100 text-secondary-700 dark:bg-secondary-500/20" : "bg-warning-100 text-warning-700 dark:bg-warning-500/20"}`}
                       >
                         {s.role === "relay" ? "中转" : "落地"}
                       </span>

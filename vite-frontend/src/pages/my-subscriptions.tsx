@@ -46,16 +46,16 @@ function status(s: UserSubscription): [string, string] {
     case "disabled":
       return ["已停用", "bg-default-200 text-muted-foreground"];
     case "expired":
-      return ["已到期", "bg-rose-500/15 text-rose-600"];
+      return ["已到期", "bg-danger/15 text-danger"];
     case "over_quota":
-      return ["流量已用完", "bg-rose-500/15 text-rose-600"];
+      return ["流量已用完", "bg-danger/15 text-danger"];
   }
   if (s.trafficLimit && used >= s.trafficLimit * 0.9) {
-    return ["流量快用完", "bg-amber-500/15 text-amber-600"];
+    return ["流量快用完", "bg-warning/15 text-warning"];
   }
-  if (left < 3 * DAY) return ["快到期", "bg-amber-500/15 text-amber-600"];
+  if (left < 3 * DAY) return ["快到期", "bg-warning/15 text-warning"];
 
-  return ["正常", "bg-emerald-500/15 text-emerald-600"];
+  return ["正常", "bg-success/15 text-success"];
 }
 
 function expiryText(s: UserSubscription) {
@@ -294,7 +294,7 @@ export default function MySubscriptionsPage() {
   const several = items.length > 1;
 
   return (
-    <AnimatedPage className="space-y-4 px-3 py-6 lg:px-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] space-y-4 px-6 py-6">
       <PageHeader
         description="管理员分配给你的订阅：一键导入客户端，查看流量和到期时间"
         title="我的订阅"

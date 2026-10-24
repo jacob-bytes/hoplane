@@ -476,7 +476,7 @@ export default function PanelSharingPage() {
   );
 
   return (
-    <AnimatedPage className="px-3 lg:px-6 py-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       <PageHeader
         description="分享本地服务器给其他面板，或导入别人的服务器"
         primary={

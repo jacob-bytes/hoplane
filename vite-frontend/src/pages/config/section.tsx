@@ -24,7 +24,7 @@ export function ConfigSection({
 }) {
   return (
     <section
-      className="scroll-mt-4 overflow-hidden rounded-xl border border-border bg-card shadow-xs"
+      className="scroll-mt-4 border-b border-border last:border-b-0"
       id={`config-${id}`}
     >
       <button
@@ -38,7 +38,7 @@ export function ConfigSection({
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             {title}
             {changed && (
-              <span className="rounded-full bg-warning/10 px-1.5 py-0.5 text-[10px] font-normal text-warning-700 dark:text-warning-400">
+              <span className="rounded-full bg-warning/10 px-1.5 py-0.5 text-[11px] font-normal text-warning-700 dark:text-warning-400">
                 未保存
               </span>
             )}

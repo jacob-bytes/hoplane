@@ -131,7 +131,7 @@ function UserDashboard() {
       badgeClassName:
         diffDays <= 7
           ? "bg-warning/10 text-warning-700 dark:text-warning-500"
-          : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
+          : "bg-success/10 text-success dark:bg-success/20 dark:text-success-300",
       nextDueTime,
     };
   };
@@ -630,7 +630,7 @@ function UserDashboard() {
   }
 
   return (
-    <AnimatedPage className="px-3 lg:px-6 py-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       {/* 顶部个人状态和下拉菜单 */}
       <div className="flex justify-between items-center mb-4">
         <div>
@@ -933,7 +933,7 @@ function UserDashboard() {
                           </h3>
                           <div className="flex flex-wrap items-center gap-2 mt-1">
                             <span
-                              className={`px-2 py-1 rounded-md text-xs font-medium ${tunnel.tunnelFlow === 1 ? "bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300" : "bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300"}`}
+                              className={`px-2 py-1 rounded-md text-xs font-medium ${tunnel.tunnelFlow === 1 ? "bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-300" : "bg-warning/10 dark:bg-warning/20 text-warning dark:text-warning-300"}`}
                             >
                               {tunnel.tunnelFlow === 1
                                 ? "单向计费"
@@ -1059,7 +1059,7 @@ function UserDashboard() {
               {groupedForwards().map((group) => (
                 <div
                   key={group.tunnelName}
-                  className="border border-gray-200 dark:border-border rounded-lg p-3 lg:p-4"
+                  className="border border-border dark:border-border rounded-lg p-3 lg:p-4"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">
@@ -1124,13 +1124,13 @@ function UserDashboard() {
                             </div>
                           </div>
 
-                          <div className="pt-2 border-t border-gray-200 dark:border-border">
+                          <div className="pt-2 border-t border-border dark:border-border">
                             <div className="grid grid-cols-3 gap-1 text-xs">
                               <div className="text-center">
                                 <div className="text-muted-foreground mb-1">
                                   上传
                                 </div>
-                                <div className="font-medium text-green-600 dark:text-green-400 truncate">
+                                <div className="font-medium text-success dark:text-success-400 truncate">
                                   {formatFlow(forward.inFlow || 0)}
                                 </div>
                               </div>
@@ -1138,7 +1138,7 @@ function UserDashboard() {
                                 <div className="text-muted-foreground mb-1">
                                   下载
                                 </div>
-                                <div className="font-medium text-orange-600 dark:text-orange-400 truncate">
+                                <div className="font-medium text-warning dark:text-warning-400 truncate">
                                   {formatFlow(forward.outFlow || 0)}
                                 </div>
                               </div>

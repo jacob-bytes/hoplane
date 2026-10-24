@@ -240,7 +240,7 @@ export default function IndexPage() {
           initial={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <Card className="w-full bg-white/20 dark:bg-zinc-900/20 -3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-white/80 dark:border-white/10 rounded-[32px] p-2 sm:p-4">
+          <Card className="w-full bg-white/20 dark:bg-default-300 -3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-white/80 dark:border-white/10 rounded-[32px] p-2 sm:p-4">
             <CardHeader className="pb-0 pt-6 px-6 flex-col items-center">
               <BrandLogo className="w-14 h-14 rounded-xl mb-4" size={56} />
               <h1 className="text-2xl font-bold tracking-tight text-foreground">
@@ -332,7 +332,7 @@ export default function IndexPage() {
         <VersionFooter
           containerClassName="fixed inset-x-0 bottom-4 text-center py-4"
           poweredClassName="text-xs text-muted-foreground"
-          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-rose-500/90 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
+          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-danger/90 px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white"
           version={isWebView ? siteConfig.app_version : siteConfig.version}
           versionClassName="text-xs text-muted-foreground mt-1"
         />
@@ -356,7 +356,7 @@ export default function IndexPage() {
               }}
             />
             {/* 验证码容器 */}
-            <div className="mb-4 relative z-50 bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-xl">
+            <div className="mb-4 relative z-50 bg-white dark:bg-default-300 p-6 rounded-lg shadow-xl">
               <div className="mb-4 text-center text-sm font-medium text-foreground">
                 请完成安全验证
               </div>

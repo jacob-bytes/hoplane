@@ -51,7 +51,7 @@ export function PageHeader({
           {title}
         </h1>
         {description && (
-          <p className="mt-1 text-[13px] leading-5 text-muted-foreground">
+          <p className="mt-1 text-sm leading-5 text-muted-foreground">
             {description}
           </p>
         )}
@@ -338,7 +338,10 @@ export function ListTable({
       style={{ "--list-cols": columns } as React.CSSProperties}
     >
       {head && (
-        <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+        <div
+          className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          data-slot="list-head"
+        >
           {head.map((cell, i) => (
             <div key={i} className="min-w-0 truncate">
               {cell}
@@ -400,6 +403,7 @@ export function ListRow({
     <div
       aria-pressed={selectMode ? selected : undefined}
       className={rowClass}
+      data-slot="list-row"
       role="button"
       tabIndex={0}
       onClick={activate}
@@ -445,7 +449,7 @@ export function ListRow({
         )}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-1.5">
-            <span className="truncate text-[13.5px] font-medium text-foreground">
+            <span className="truncate text-sm font-medium text-foreground">
               {title}
             </span>
             {badges}
@@ -489,7 +493,7 @@ export function ListGroup({
   return (
     <section className="space-y-2">
       {title && (
-        <h2 className="flex items-baseline gap-2 px-1 text-[13px] font-medium text-muted-foreground">
+        <h2 className="flex items-baseline gap-2 px-1 text-sm font-medium text-muted-foreground">
           {title}
           {count !== undefined && (
             <span className="text-xs font-normal text-muted-foreground">
@@ -507,7 +511,10 @@ export function ListGroup({
         }
       >
         {columns && head && (
-          <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+          <div
+            className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+            data-slot="list-head"
+          >
             {head.map((cell, i) => (
               <div key={i} className="min-w-0 truncate">
                 {cell}
@@ -574,6 +581,8 @@ export function PageShell({
   return embedded ? (
     <div>{children}</div>
   ) : (
-    <AnimatedPage className="px-3 lg:px-6 py-6">{children}</AnimatedPage>
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
+      {children}
+    </AnimatedPage>
   );
 }

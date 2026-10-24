@@ -235,7 +235,7 @@ export function DiagnosisModal({
                                   return (
                                     <tr
                                       key={index}
-                                      className={`hover:bg-muted dark:hover:bg-gray-700/50 ${
+                                      className={`hover:bg-muted dark:hover:bg-default-300 ${
                                         isDiagnosing
                                           ? "bg-warning-50 dark:bg-warning-900/20"
                                           : isSuccess

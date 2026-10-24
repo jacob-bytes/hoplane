@@ -18,32 +18,26 @@ import {
 const ROUTES: Record<string, [string, string]> = {
   "电信 CN2 GIA": [
     "CN2 GIA",
-    "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+    "bg-warning/15 text-warning dark:text-warning-400",
   ],
-  "电信 CN2 GT": [
-    "CN2 GT",
-    "bg-orange-500/15 text-orange-700 dark:text-orange-400",
-  ],
+  "电信 CN2 GT": ["CN2 GT", "bg-warning/15 text-warning dark:text-warning-400"],
   "电信 163": ["163", "bg-default-200/70 text-muted-foreground"],
   "联通 9929": [
     "9929",
-    "bg-violet-500/15 text-violet-700 dark:text-violet-400",
+    "bg-secondary/15 text-secondary dark:text-secondary-400",
   ],
-  "联通 4837": ["4837", "bg-sky-500/15 text-sky-700 dark:text-sky-400"],
-  "移动 CMIN2": [
-    "CMIN2",
-    "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
-  ],
-  "移动 CMI": ["CMI", "bg-teal-500/15 text-teal-700 dark:text-teal-400"],
+  "联通 4837": ["4837", "bg-primary/15 text-primary dark:text-primary-400"],
+  "移动 CMIN2": ["CMIN2", "bg-success/15 text-success dark:text-success-400"],
+  "移动 CMI": ["CMI", "bg-success/15 text-success dark:text-success-400"],
 };
 
 const NET_CLASS: Record<string, string> = {
-  CN2: "text-amber-600",
+  CN2: "text-warning",
   "163": "text-muted-foreground",
-  "4837": "text-sky-600",
-  "9929": "text-violet-600",
-  CMIN2: "text-emerald-600",
-  CMI: "text-teal-600",
+  "4837": "text-primary",
+  "9929": "text-secondary",
+  CMIN2: "text-success",
+  CMI: "text-success",
   CT: "text-muted-foreground",
 };
 
@@ -63,7 +57,7 @@ export function RouteTag({
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded px-1 font-sans text-[10px] font-medium leading-4 ${cls}`}
+      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded px-1 font-sans text-[11px] font-medium leading-4 ${cls}`}
       title={`回程 ${route}`}
     >
       {short ? tag : route}
@@ -202,12 +196,12 @@ export function RouteModal({
                           <span className="shrink-0 font-medium">{p.name}</span>
                         )}
                         {label && (
-                          <span className="w-9 shrink-0 rounded bg-muted px-1 text-center text-[10px] text-muted-foreground">
+                          <span className="w-9 shrink-0 rounded bg-muted px-1 text-center text-[11px] text-muted-foreground">
                             {label}
                           </span>
                         )}
                         {leg.error ? (
-                          <span className="min-w-0 text-xs text-rose-600">
+                          <span className="min-w-0 text-xs text-danger">
                             {leg.error}
                           </span>
                         ) : leg.route && leg.route !== "未识别" ? (

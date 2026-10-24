@@ -4,6 +4,7 @@ import { registerSW } from "virtual:pwa-register";
 import toast from "react-hot-toast";
 
 import App from "./App.tsx";
+import { applyDensity } from "./lib/density";
 import { ErrorBoundary, reloadOnce } from "./components/error-boundary";
 import { IS_DEMO, installDemo } from "./demo";
 import { DemoBanner } from "./demo/banner";
@@ -85,6 +86,8 @@ const updateSW = registerSW({
 
 // The demo is static files on GitHub Pages: hash routes need no server.
 const Router = IS_DEMO ? HashRouter : BrowserRouter;
+
+applyDensity();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Router>

@@ -40,9 +40,9 @@ export const getNodeExpiryMeta = (
       label: "已过期",
       tone: "danger" as const,
       accentClassName:
-        "border-red-300/80 bg-red-50/70 shadow-red-100 dark:border-red-500/40 dark:bg-red-950/20",
+        "border-danger/30 bg-danger/10 shadow-red-100 dark:border-danger dark:bg-danger/10",
       bannerClassName:
-        "bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-300",
+        "bg-danger/10 text-danger dark:bg-danger/10 dark:text-danger-300",
       isHighlighted: true,
       sortWeight: 0,
       nextDueTime: renewal.nextDueTime,
@@ -55,9 +55,9 @@ export const getNodeExpiryMeta = (
       label: renewal.label,
       tone: "warning" as const,
       accentClassName:
-        "border-amber-300/80 bg-amber-50/80 shadow-amber-100 dark:border-amber-500/40 dark:bg-amber-950/20",
+        "border-warning/30 bg-warning/10 shadow-amber-100 dark:border-warning dark:bg-warning/10",
       bannerClassName:
-        "bg-amber-50 text-amber-700 dark:bg-amber-950/30 dark:text-amber-300",
+        "bg-warning/10 text-warning dark:bg-warning/10 dark:text-warning-300",
       isHighlighted: true,
       sortWeight: 1,
       nextDueTime: renewal.nextDueTime,

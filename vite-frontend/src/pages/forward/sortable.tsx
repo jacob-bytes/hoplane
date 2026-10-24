@@ -203,7 +203,9 @@ export const ForwardPageShell = ({
   embedded ? (
     <div>{children}</div>
   ) : (
-    <AnimatedPage className="px-3 lg:px-6 py-6">{children}</AnimatedPage>
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
+      {children}
+    </AnimatedPage>
   );
 
 export const getForwardDisplayFlow = (forward: Forward): number => {

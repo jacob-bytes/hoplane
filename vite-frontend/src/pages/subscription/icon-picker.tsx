@@ -305,7 +305,7 @@ export function IconPicker({
                   onClick={() => pick(icon.url)}
                 >
                   <GroupIcon size="h-9 w-9" src={icon.url} />
-                  <span className="w-full truncate text-[10px] text-muted-foreground">
+                  <span className="w-full truncate text-[11px] text-muted-foreground">
                     {icon.name.replace(/\.(png|jpe?g|svg|webp|gif)$/i, "")}
                   </span>
                 </button>

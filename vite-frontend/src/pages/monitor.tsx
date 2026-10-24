@@ -209,7 +209,7 @@ function MonitorOverview() {
   ];
 
   return (
-    <AnimatedPage className="px-3 lg:px-6 py-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       <PageHeader description="服务器资源与隧道质量的实时状态" title="监控" />
 
       <div className="mb-4 grid grid-cols-3 gap-2 sm:max-w-2xl">

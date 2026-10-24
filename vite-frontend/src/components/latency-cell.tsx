@@ -182,7 +182,7 @@ function Tile({
       <span className="flex w-full items-baseline gap-1 whitespace-nowrap font-mono text-sm font-semibold">
         {valueText(point)}
         {loss > 0 && (
-          <span className="text-[10px] font-normal opacity-80">丢{loss}%</span>
+          <span className="text-[11px] font-normal opacity-80">丢{loss}%</span>
         )}
       </span>
       {/* Always its own line so tiles line up whatever the width. */}
@@ -208,7 +208,7 @@ function V6Route({ point }: { point: InboundProbePoint }) {
 
   return (
     <span className="inline-flex items-center gap-0.5">
-      <span className="text-[10px] opacity-70">v6</span>
+      <span className="text-[11px] opacity-70">v6</span>
       <RouteTag short route={point.routeV6} />
     </span>
   );

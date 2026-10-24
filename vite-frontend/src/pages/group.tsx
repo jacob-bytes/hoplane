@@ -486,7 +486,7 @@ export default function GroupPage({
 
   if (!isAdmin) {
     return (
-      <div className="px-3 lg:px-6 py-6">
+      <div className="mx-auto w-full max-w-[1440px] px-6 py-6">
         <EmptyHint text="权限不足，只有管理员可以访问分组管理页面。" />
       </div>
     );

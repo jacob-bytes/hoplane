@@ -29,7 +29,7 @@ export default function UserHubPage() {
     : "/user";
 
   return (
-    <AnimatedPage className="px-3 py-6 lg:px-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       <PageHeader description={HELP[tab]} title="用户" />
       <PageTabs
         tabs={TABS}

@@ -621,7 +621,10 @@ export default function InboundPage() {
     : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card";
   const listTemplate = "10px minmax(0,1fr) 112px 96px 176px 48px";
   const listHead = !card && (
-    <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+    <div
+      className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+      data-slot="list-head"
+    >
       <div />
       <div>名称</div>
       <div>延迟</div>
@@ -849,6 +852,7 @@ export default function InboundPage() {
             ? "bg-primary/5 max-lg:border-primary/40"
             : "hover:bg-accent/40 lg:hover:bg-muted/40"
         }`}
+        data-slot="list-row"
         role="button"
         tabIndex={0}
         onClick={activate}
@@ -956,7 +960,7 @@ export default function InboundPage() {
     ];
 
   return (
-    <AnimatedPage className="px-3 lg:px-6 py-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       <PageHeader
         description="客户端最终连上的节点：在自己的服务器上搭建，或导入现成的"
         title="节点"
