@@ -32,8 +32,11 @@ function colorVariant(color: ChipColor) {
   if (color === "secondary") {
     return "secondary" as const;
   }
+  if (color === "primary") {
+    return "default" as const;
+  }
 
-  return "default" as const;
+  return "outline" as const;
 }
 
 export function Chip({

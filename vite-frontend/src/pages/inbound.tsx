@@ -675,7 +675,7 @@ export default function InboundPage() {
         {item.outboundIpStrategy && item.outboundIpStrategy !== "auto" && (
           <Chip
             className="shrink-0 whitespace-nowrap"
-            color="primary"
+            color="default"
             size="sm"
             variant="flat"
           >
@@ -692,7 +692,7 @@ export default function InboundPage() {
         {item.relayCount > 0 && (
           <Chip
             className="shrink-0 whitespace-nowrap"
-            color="secondary"
+            color="default"
             size="sm"
             variant="flat"
           >
@@ -717,7 +717,7 @@ export default function InboundPage() {
         {item.splitRules?.length > 0 && (
           <Chip
             className="shrink-0 whitespace-nowrap"
-            color="primary"
+            color="default"
             size="sm"
             variant="flat"
           >
@@ -887,17 +887,17 @@ export default function InboundPage() {
           onClick={(e) => e.stopPropagation()}
         >
           <Button
-            color="primary"
+            color="default"
             size="sm"
-            variant="flat"
+            variant="bordered"
             onPress={() => setSharing(item)}
           >
             分享
           </Button>
           <Button
-            color="secondary"
+            color="default"
             size="sm"
-            variant="flat"
+            variant="light"
             onPress={() => setRelaying(item)}
           >
             中转

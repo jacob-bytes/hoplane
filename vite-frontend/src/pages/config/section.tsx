@@ -24,13 +24,13 @@ export function ConfigSection({
 }) {
   return (
     <section
-      className="scroll-mt-4 rounded-xl border border-divider bg-card shadow-sm"
+      className="scroll-mt-4 overflow-hidden rounded-xl border border-border bg-card shadow-xs"
       id={`config-${id}`}
     >
       <button
         aria-controls={`config-${id}-body`}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 px-3 py-3 text-left"
+        className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors duration-150 hover:bg-accent/40"
         type="button"
         onClick={onToggle}
       >
@@ -38,7 +38,7 @@ export function ConfigSection({
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             {title}
             {changed && (
-              <span className="rounded-full bg-warning-100 px-1.5 py-0.5 text-[10px] font-normal text-warning-700 dark:bg-warning-900/40 dark:text-warning-300">
+              <span className="rounded-full bg-warning/10 px-1.5 py-0.5 text-[10px] font-normal text-warning-700 dark:text-warning-400">
                 未保存
               </span>
             )}
@@ -57,7 +57,7 @@ export function ConfigSection({
       </button>
       {open && (
         <div
-          className="space-y-4 border-t border-divider px-3 py-4"
+          className="space-y-4 border-t border-border px-4 py-4"
           id={`config-${id}-body`}
         >
           {children}
