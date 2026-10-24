@@ -11,7 +11,7 @@ RUN apt-get update \
 ARG TARGETARCH
 ARG VERSION=dev
 # Artifacts lose the exec bit on upload.
-COPY --chmod=755 gost-${TARGETARCH} /usr/local/bin/hoplane_agent
+COPY --chmod=755 hoplane-agent-${TARGETARCH} /usr/local/bin/hoplane_agent
 COPY --chmod=755 entrypoint.sh /usr/local/bin/hoplane-agent-entrypoint
 
 ENV HOPLANE_AGENT_CONTAINER=1 \

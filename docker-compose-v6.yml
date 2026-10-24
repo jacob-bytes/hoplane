@@ -27,7 +27,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/opt/hoplane-panel
     networks:
-      - gost-network
+      - hoplane-network
     stop_grace_period: 30s
     stop_signal: SIGTERM
     healthcheck:
@@ -53,7 +53,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - gost-network
+      - hoplane-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hoplane_panel} -d ${POSTGRES_DB:-hoplane_panel}"]
       interval: 10s
@@ -76,7 +76,7 @@ services:
       backend:
         condition: service_healthy
     networks:
-      - gost-network
+      - hoplane-network
 
 
 volumes:
@@ -89,8 +89,8 @@ volumes:
 
 
 networks:
-  gost-network:
-    name: gost-network
+  hoplane-network:
+    name: hoplane-network
     driver: bridge
     enable_ipv6: true
     ipam:

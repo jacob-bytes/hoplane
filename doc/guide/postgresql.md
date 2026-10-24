@@ -141,7 +141,7 @@ docker inspect --format='{{.State.Health.Status}}' hoplane-panel-postgres
 ```bash
 source .env
 docker run --rm \
-  --network gost-network \
+  --network hoplane-network \
   -v sqlite_data:/sqlite \
   dimitri/pgloader:latest \
   pgloader /sqlite/gost.db "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
@@ -250,7 +250,7 @@ echo "0 3 * * * /opt/hoplane/backup.sh" | crontab -
 
 **A**: 
 1. 确认 PostgreSQL 容器已完全就绪（状态为 `healthy`）。
-2. 确认 `--network gost-network` 参数正确，使 pgloader 容器与 PostgreSQL 在同一网络中。
+2. 确认 `--network hoplane-network` 参数正确，使 pgloader 容器与 PostgreSQL 在同一网络中。
 3. 如果数据库已有表结构，pgloader 可能会报冲突。可以先清空目标数据库后重试。
 
 ### Q: 如何查看当前使用的数据库类型？

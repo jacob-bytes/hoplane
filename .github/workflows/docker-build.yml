@@ -132,25 +132,25 @@ jobs:
       - name: Upload GOST AMD64 artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gost-binary-amd64
+          name: hoplane-agent-binary-amd64
           path: ./go-gost/hoplane-agent-amd64
 
       - name: Upload GOST ARM64 artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gost-binary-arm64
+          name: hoplane-agent-binary-arm64
           path: ./go-gost/hoplane-agent-arm64
 
       - name: Upload GOST AMD64 checksum artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gost-checksum-amd64
+          name: hoplane-agent-checksum-amd64
           path: ./go-gost/hoplane-agent-amd64.sha256
 
       - name: Upload GOST ARM64 checksum artifact
         uses: actions/upload-artifact@v6
         with:
-          name: gost-checksum-arm64
+          name: hoplane-agent-checksum-arm64
           path: ./go-gost/hoplane-agent-arm64.sha256
 
   build-agent-image:
@@ -171,7 +171,7 @@ jobs:
       - name: Download GOST binaries
         uses: actions/download-artifact@v7
         with:
-          pattern: gost-binary-*
+          pattern: hoplane-agent-binary-*
           path: ./go-gost/docker
           merge-multiple: true
 
@@ -312,25 +312,25 @@ jobs:
       - name: Download GOST AMD64 binary
         uses: actions/download-artifact@v7
         with:
-          name: gost-binary-amd64
+          name: hoplane-agent-binary-amd64
           path: ./artifacts/amd64
 
       - name: Download GOST ARM64 binary
         uses: actions/download-artifact@v7
         with:
-          name: gost-binary-arm64
+          name: hoplane-agent-binary-arm64
           path: ./artifacts/arm64
 
       - name: Download GOST AMD64 checksum
         uses: actions/download-artifact@v7
         with:
-          name: gost-checksum-amd64
+          name: hoplane-agent-checksum-amd64
           path: ./artifacts/
 
       - name: Download GOST ARM64 checksum
         uses: actions/download-artifact@v7
         with:
-          name: gost-checksum-arm64
+          name: hoplane-agent-checksum-arm64
           path: ./artifacts/
 
       - name: Prepare release files
@@ -429,25 +429,25 @@ jobs:
       - name: Download GOST AMD64 binary
         uses: actions/download-artifact@v7
         with:
-          name: gost-binary-amd64
+          name: hoplane-agent-binary-amd64
           path: ./artifacts/amd64
 
       - name: Download GOST ARM64 binary
         uses: actions/download-artifact@v7
         with:
-          name: gost-binary-arm64
+          name: hoplane-agent-binary-arm64
           path: ./artifacts/arm64
 
       - name: Download GOST AMD64 checksum
         uses: actions/download-artifact@v7
         with:
-          name: gost-checksum-amd64
+          name: hoplane-agent-checksum-amd64
           path: ./artifacts/
 
       - name: Download GOST ARM64 checksum
         uses: actions/download-artifact@v7
         with:
-          name: gost-checksum-arm64
+          name: hoplane-agent-checksum-arm64
           path: ./artifacts/
 
       - name: Rename binaries

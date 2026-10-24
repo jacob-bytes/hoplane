@@ -20,6 +20,8 @@ Hoplane 是 [FLYX](https://github.com/kure29/flyx) 的 fork，从 FLYX 3.3.41（
 | 内核配置里的 tag | `hoplane-u<id>`、`hoplane-ipv4-resolver` 等 | `flvx-*` |
 | 浏览器本地键 | `hoplane:theme`、`hoplane_login_rows_*` 等 | `flvx:*`、`flyx_*` |
 | sysctl 调优文件 | `/etc/sysctl.d/99-hoplane-tuning.conf` | `99-flyx-tuning.conf` |
+| Docker 网络 | `hoplane-network` | `gost-network` |
+| CI 构建产物 | `hoplane-agent-binary-*`、`hoplane-agent-checksum-*` | `gost-binary-*`、`gost-checksum-*` |
 | 临时文件 | `/tmp/hoplane-nft-*`、`hoplane-upgrade-helper-*`、`hoplane-github-cache` | `flvx-*` |
 
 环境变量：
