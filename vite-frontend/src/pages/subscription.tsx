@@ -1414,7 +1414,7 @@ export default function SubscriptionPage() {
   const row = (s: SubscriptionItem) => (
     <div
       key={s.id}
-      className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-card px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
+      className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:bg-card lg:grid lg:gap-4 lg:px-4 lg:hover:bg-muted/40 lg:[grid-template-columns:var(--list-cols)]"
       role="button"
       tabIndex={0}
       onClick={() => setDetail(s)}
@@ -1429,9 +1429,11 @@ export default function SubscriptionPage() {
       <span
         className={`h-2 w-2 shrink-0 rounded-full ${s.active ? "bg-success" : "bg-default-300"}`}
       />
-      <div className="min-w-0 flex-1">
+      <div className="min-w-0 flex-1 lg:flex-none">
         <div className="flex items-center gap-1.5">
-          <span className="truncate font-medium">{s.name}</span>
+          <span className="truncate text-[13.5px] font-medium text-foreground">
+            {s.name}
+          </span>
           {stateChip(s)}
         </div>
         <div className="truncate text-xs text-muted-foreground">
@@ -1440,12 +1442,15 @@ export default function SubscriptionPage() {
           {s.expireTime ? ` · ${expiryLabel(s.expireTime)}` : ""}
           {s.remark ? ` · ${s.remark}` : ""}
         </div>
-        <div className="mt-1.5">
+        <div className="mt-1.5 lg:hidden">
           <Usage compact s={s} />
         </div>
       </div>
+      <div className="hidden min-w-0 lg:block">
+        <Usage compact s={s} />
+      </div>
       <div
-        className="flex shrink-0 items-center gap-2"
+        className="flex shrink-0 items-center gap-2 max-lg:ml-auto lg:justify-end"
         role="presentation"
         onClick={(e) => e.stopPropagation()}
       >
@@ -1533,9 +1538,24 @@ export default function SubscriptionPage() {
             className={
               viewMode === "card"
                 ? CARD_GRID
-                : "grid grid-cols-1 gap-2 2xl:grid-cols-2"
+                : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+            }
+            style={
+              viewMode === "card"
+                ? undefined
+                : ({
+                    "--list-cols": "14px minmax(0,1fr) 240px 96px",
+                  } as React.CSSProperties)
             }
           >
+            {viewMode !== "card" && (
+              <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+                <div />
+                <div>订阅</div>
+                <div>用量</div>
+                <div className="text-right">操作</div>
+              </div>
+            )}
             {shownSubs.map(viewMode === "card" ? subCard : row)}
           </div>
         </>
