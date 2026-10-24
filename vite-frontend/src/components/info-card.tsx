@@ -152,7 +152,7 @@ export function InfoCard({
                 isDisabled={a.disabled}
                 isLoading={a.loading}
                 size="sm"
-                variant="flat"
+                variant="secondary"
                 onPress={a.onPress}
               >
                 {a.label}

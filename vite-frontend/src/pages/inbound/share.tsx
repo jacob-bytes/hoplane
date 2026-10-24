@@ -3,13 +3,13 @@ import type { InboundApiItem, InboundShareEntry } from "@/api/types";
 import axios from "axios";
 import QRCode from "qrcode";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Copy, QrCode } from "lucide-react";
 
 import { copyWithToast } from "@/utils/clipboard";
 import { getInboundShare } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import {
   Modal,
   ModalBody,
@@ -88,13 +88,13 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
     <div className="rounded-xl border border-divider p-4 space-y-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2 min-w-0">
-          <Chip
+          <Badge
             color={entry.kind === "relay" ? "secondary" : "primary"}
             size="sm"
             variant="flat"
           >
             {entry.kind === "relay" ? "中转" : "直连"}
-          </Chip>
+          </Badge>
           <span className="font-medium truncate">{entry.name}</span>
         </div>
         <p className="text-xs text-muted-foreground font-mono mt-1 break-all">

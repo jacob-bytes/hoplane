@@ -1,7 +1,7 @@
 import type { BatchOperationFailure, SpeedLimitApiItem } from "@/api/types";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
   DndContext,
   pointerWithin,
@@ -34,7 +34,7 @@ import {
 import { formatTraffic } from "@/utils/traffic";
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
@@ -2779,24 +2779,24 @@ export default function ForwardPage({
             badges={
               <>
                 {forward.status !== 1 && (
-                  <Chip
+                  <Badge
                     className="shrink-0"
                     color={forward.status === -1 ? "danger" : "default"}
                     size="sm"
                     variant="flat"
                   >
                     {statusDisplay.text}
-                  </Chip>
+                  </Badge>
                 )}
                 {hasMultipleAddresses(forward.remoteAddr) && (
-                  <Chip className="shrink-0" size="sm" variant="flat">
+                  <Badge className="shrink-0" size="sm" variant="flat">
                     {getStrategyDisplay(forward.strategy).text}
-                  </Chip>
+                  </Badge>
                 )}
                 {showTunnel && ratio !== 1 && (
-                  <Chip className="shrink-0" size="sm" variant="flat">
+                  <Badge className="shrink-0" size="sm" variant="flat">
                     {formatTunnelTrafficRatio(ratio)}
-                  </Chip>
+                  </Badge>
                 )}
               </>
             }
@@ -2809,9 +2809,9 @@ export default function ForwardPage({
                           {forward.name}
                         </span>
                         {forward.status !== 1 && (
-                          <Chip size="sm" variant="flat">
+                          <Badge size="sm" variant="flat">
                             {statusDisplay.text}
-                          </Chip>
+                          </Badge>
                         )}
                       </div>
                       <div className="truncate text-xs text-muted-foreground">
@@ -2923,7 +2923,7 @@ export default function ForwardPage({
             className="shrink-0"
             color={filterCount > 0 ? "primary" : "default"}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={() => setIsSearchModalOpen(true)}
           >
             {filterCount > 0 ? `筛选 · ${filterCount}` : "筛选"}
@@ -3003,9 +3003,9 @@ export default function ForwardPage({
                       {group.userName}
                     </span>
                     {isSelfGroup && (
-                      <Chip size="sm" variant="flat">
+                      <Badge size="sm" variant="flat">
                         我的
-                      </Chip>
+                      </Badge>
                     )}
                     <span className="text-xs text-muted-foreground">
                       {groupForwardCount} 条规则

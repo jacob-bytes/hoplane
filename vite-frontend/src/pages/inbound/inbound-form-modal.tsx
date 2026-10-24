@@ -6,7 +6,7 @@ import type {
 } from "@/api/types";
 
 import { useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import {
   ACME_DNS_LABELS,
@@ -427,7 +427,7 @@ export function InboundFormModal({
                     <Button
                       color="warning"
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={() =>
                         onInstallKernel(Number(form.nodeId), form.kernelType)
                       }
@@ -1143,7 +1143,7 @@ export function InboundFormModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button color="primary" isLoading={saving} onPress={submit}>

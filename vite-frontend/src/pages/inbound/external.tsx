@@ -2,7 +2,7 @@ import type { RemoteSourceRole, RemoteSyncResult } from "@/api";
 import type { InboundApiItem } from "@/api/types";
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { importInbounds, saveRemoteSource, updateExternalInbound } from "@/api";
 import {
@@ -264,7 +264,7 @@ export function ImportModal({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={onClose}>
+          <Button variant="ghost" onPress={onClose}>
             取消
           </Button>
           <Button
@@ -462,7 +462,7 @@ export function ExternalEditModal({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={onClose}>
+          <Button variant="ghost" onPress={onClose}>
             取消
           </Button>
           <Button color="primary" isLoading={saving} onPress={submit}>

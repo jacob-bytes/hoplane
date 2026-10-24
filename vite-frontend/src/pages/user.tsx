@@ -1,7 +1,7 @@
 import type { SubscriptionItem } from "@/api";
 
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { parseDate } from "@internationalized/date";
 
 import { ActionSheet } from "@/components/action-sheet";
@@ -26,7 +26,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@/shadcn-bridge/heroui/modal";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { RadioGroup, Radio } from "@/shadcn-bridge/heroui/radio";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
@@ -1244,34 +1244,34 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 badges={
                   <>
                     {user.status !== 1 && (
-                      <Chip
+                      <Badge
                         className="shrink-0"
                         color="secondary"
                         size="sm"
                         variant="flat"
                       >
                         已禁用
-                      </Chip>
+                      </Badge>
                     )}
                     {expStatus && expStatus.color !== "success" && (
-                      <Chip
+                      <Badge
                         className="shrink-0"
                         color={expStatus.color}
                         size="sm"
                         variant="flat"
                       >
                         {expStatus.text}
-                      </Chip>
+                      </Badge>
                     )}
                     {user.disabledByQuota ? (
-                      <Chip
+                      <Badge
                         className="shrink-0"
                         color="danger"
                         size="sm"
                         variant="flat"
                       >
                         配额超额
-                      </Chip>
+                      </Badge>
                     ) : null}
                   </>
                 }
@@ -1282,19 +1282,19 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                         {user.name || user.user}
                       </span>
                       {user.status !== 1 && (
-                        <Chip className="shrink-0" size="sm" variant="flat">
+                        <Badge className="shrink-0" size="sm" variant="flat">
                           已禁用
-                        </Chip>
+                        </Badge>
                       )}
                       {user.disabledByQuota ? (
-                        <Chip
+                        <Badge
                           className="shrink-0"
                           color="danger"
                           size="sm"
                           variant="flat"
                         >
                           配额超额
-                        </Chip>
+                        </Badge>
                       ) : null}
                     </div>
                     {user.name && user.name !== user.user && (
@@ -1591,13 +1591,13 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       </p>
                     </div>
                     {editingUser.disabledByQuota ? (
-                      <Chip color="danger" size="sm" variant="flat">
+                      <Badge color="danger" size="sm" variant="flat">
                         配额已触发禁用
-                      </Chip>
+                      </Badge>
                     ) : (
-                      <Chip color="success" size="sm" variant="flat">
+                      <Badge color="success" size="sm" variant="flat">
                         配额正常
-                      </Chip>
+                      </Badge>
                     )}
                   </div>
 
@@ -1627,7 +1627,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       color="warning"
                       isLoading={quotaResetLoading}
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={() => handleQuotaReset("daily")}
                     >
                       重置每日配额
@@ -1636,7 +1636,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       color="warning"
                       isLoading={quotaResetLoading}
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={() => handleQuotaReset("monthly")}
                     >
                       重置每月配额
@@ -1645,7 +1645,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       color="primary"
                       isLoading={quotaResetLoading}
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={() => handleQuotaReset("all")}
                     >
                       全部重置并恢复
@@ -1696,7 +1696,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onUserModalClose}>
+            <Button variant="ghost" onPress={onUserModalClose}>
               取消
             </Button>
             <Button
@@ -1828,14 +1828,14 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                                 {tunnel.name}
                               </span>
                               {isAssigned && (
-                                <Chip
+                                <Badge
                                   className="shrink-0"
                                   color="default"
                                   size="sm"
                                   variant="flat"
                                 >
                                   已分配
-                                </Chip>
+                                </Badge>
                               )}
                             </div>
 
@@ -1905,9 +1905,9 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       分配权限
                     </Button>
                     {batchTunnelSelections.size > 0 && (
-                      <Chip color="primary" size="sm" variant="flat">
+                      <Badge color="primary" size="sm" variant="flat">
                         已选 {batchTunnelSelections.size} 个隧道
-                      </Chip>
+                      </Badge>
                     )}
                   </div>
                 </div>
@@ -1942,24 +1942,24 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                             {userTunnel.tunnelName}
                           </span>
                           {userTunnel.status !== 1 && (
-                            <Chip
+                            <Badge
                               className="shrink-0"
                               color="secondary"
                               size="sm"
                               variant="flat"
                             >
                               已禁用
-                            </Chip>
+                            </Badge>
                           )}
                           {userTunnel.speedLimitName && (
-                            <Chip
+                            <Badge
                               className="shrink-0"
                               color="secondary"
                               size="sm"
                               variant="flat"
                             >
                               {userTunnel.speedLimitName}
-                            </Chip>
+                            </Badge>
                           )}
                         </div>
                         <div className="mt-1 text-xs text-muted-foreground">
@@ -1977,14 +1977,14 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                         <div className="mt-2 flex flex-wrap gap-2">
                           <Button
                             size="sm"
-                            variant="flat"
+                            variant="secondary"
                             onPress={() => handleEditTunnel(userTunnel)}
                           >
                             编辑
                           </Button>
                           <Button
                             size="sm"
-                            variant="flat"
+                            variant="secondary"
                             onPress={() => handleResetTunnelFlow(userTunnel)}
                           >
                             重置流量
@@ -1992,7 +1992,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           <Button
                             color="danger"
                             size="sm"
-                            variant="flat"
+                            variant="secondary"
                             onPress={() => handleRemoveTunnel(userTunnel)}
                           >
                             删除
@@ -2170,7 +2170,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onEditTunnelModalClose}>
+            <Button variant="ghost" onPress={onEditTunnelModalClose}>
               取消
             </Button>
             <Button
@@ -2220,7 +2220,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onDeleteModalClose}>
+            <Button variant="ghost" onPress={onDeleteModalClose}>
               取消
             </Button>
             <Button color="danger" onPress={handleConfirmDelete}>
@@ -2268,7 +2268,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onDeleteTunnelModalClose}>
+            <Button variant="ghost" onPress={onDeleteTunnelModalClose}>
               取消
             </Button>
             <Button color="danger" onPress={handleConfirmRemoveTunnel}>
@@ -2356,7 +2356,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onResetFlowModalClose}>
+            <Button variant="ghost" onPress={onResetFlowModalClose}>
               取消
             </Button>
             <Button
@@ -2450,7 +2450,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={onResetTunnelFlowModalClose}>
+            <Button variant="ghost" onPress={onResetTunnelFlowModalClose}>
               取消
             </Button>
             <Button

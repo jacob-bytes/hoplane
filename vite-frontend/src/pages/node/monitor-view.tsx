@@ -28,7 +28,7 @@ import {
   Server,
   ArrowLeft,
 } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { CHART_SERIES } from "@/lib/chart-theme";
 import { formatTraffic } from "@/utils/traffic";
@@ -55,7 +55,7 @@ import {
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import {
   Dropdown,
   DropdownTrigger,
@@ -563,7 +563,7 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
           <Button
             isLoading={loading}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={() => nodeId && onRefresh(nodeId)}
           >
             <RefreshCw className="w-4 h-4 mr-1" />
@@ -1438,7 +1438,7 @@ export function MonitorView({
                 startContent={
                   refreshing ? undefined : <RefreshCw className="h-4 w-4" />
                 }
-                variant="flat"
+                variant="secondary"
                 onPress={onRefresh}
               >
                 刷新
@@ -1511,7 +1511,7 @@ export function MonitorView({
           <div className="flex items-center gap-3 flex-wrap">
             <Button
               size="sm"
-              variant="flat"
+              variant="secondary"
               onPress={() => (onBack ? onBack() : setDetailNodeId(null))}
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
@@ -1524,7 +1524,7 @@ export function MonitorView({
               <h3 className="text-lg font-semibold">
                 {detailNode?.name || `服务器 #${detailNodeId}`}
               </h3>
-              <Chip
+              <Badge
                 color={
                   detailNode?.connectionStatus === "online"
                     ? "success"
@@ -1534,7 +1534,7 @@ export function MonitorView({
                 variant="flat"
               >
                 {detailNode?.connectionStatus === "online" ? "在线" : "离线"}
-              </Chip>
+              </Badge>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground ml-auto">
               <div
@@ -1671,7 +1671,7 @@ export function MonitorView({
                     {resolvedActiveMonitorId != null && (
                       <Button
                         size="sm"
-                        variant="flat"
+                        variant="secondary"
                         onPress={() => {
                           void loadMonitorResults(resolvedActiveMonitorId, {
                             rangeMs: serviceMonitorRangeMs,
@@ -1685,7 +1685,7 @@ export function MonitorView({
                     <Button
                       color="primary"
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={() => handleOpenEditModal()}
                     >
                       <Plus className="w-4 h-4 mr-1" />
@@ -1751,9 +1751,9 @@ export function MonitorView({
                       {resolvedActiveMonitor && (
                         <div className="flex items-center justify-between gap-3 rounded-xl border border-divider bg-muted px-3 py-2">
                           <div className="flex items-center gap-3 min-w-0 flex-wrap">
-                            <Chip color="primary" size="sm" variant="flat">
+                            <Badge color="primary" size="sm" variant="flat">
                               {resolvedActiveMonitor.type.toUpperCase()}
-                            </Chip>
+                            </Badge>
                             <span className="font-mono text-xs text-muted-foreground">
                               {resolvedActiveMonitor.target}
                             </span>
@@ -1767,14 +1767,14 @@ export function MonitorView({
                               </span>
                             ) : null}
                             {activeStale ? (
-                              <Chip color="warning" size="sm" variant="flat">
+                              <Badge color="warning" size="sm" variant="flat">
                                 陈旧
-                              </Chip>
+                              </Badge>
                             ) : null}
                             {resolvedActiveMonitor.enabled !== 1 ? (
-                              <Chip color="default" size="sm" variant="flat">
+                              <Badge color="default" size="sm" variant="flat">
                                 已禁用
-                              </Chip>
+                              </Badge>
                             ) : null}
                           </div>
                           <Dropdown>
@@ -1785,7 +1785,7 @@ export function MonitorView({
                                 startContent={
                                   <MoreHorizontal className="h-4 w-4" />
                                 }
-                                variant="flat"
+                                variant="secondary"
                               >
                                 操作
                               </Button>
@@ -1947,7 +1947,7 @@ export function MonitorView({
                 </Select>
                 <Button
                   size="sm"
-                  variant="flat"
+                  variant="secondary"
                   onPress={() =>
                     resultsMonitorId != null &&
                     handleRunMonitor(resultsMonitorId)
@@ -1959,7 +1959,7 @@ export function MonitorView({
                 <Button
                   isLoading={resultsLoading}
                   size="sm"
-                  variant="flat"
+                  variant="secondary"
                   onPress={() => void loadResultsForModal()}
                 >
                   <RefreshCw className="w-4 h-4 mr-1" />
@@ -2151,7 +2151,7 @@ export function MonitorView({
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={() => setEditModalOpen(false)}>
+            <Button variant="ghost" onPress={() => setEditModalOpen(false)}>
               取消
             </Button>
             <Button

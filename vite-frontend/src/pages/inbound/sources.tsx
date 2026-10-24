@@ -5,7 +5,7 @@ import type {
 } from "@/api";
 
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { FileUp, RefreshCw } from "lucide-react";
 
 import {
@@ -252,7 +252,7 @@ export function RemoteSourcesSection({
         <h2 className="text-sm font-semibold text-muted-foreground">订阅源</h2>
         <Button
           size="sm"
-          variant="light"
+          variant="ghost"
           onPress={() =>
             setDraft({
               name: "",
@@ -351,7 +351,7 @@ export function RemoteSourcesSection({
                     }
                     isLoading={refreshing === s.id}
                     size="sm"
-                    variant="flat"
+                    variant="secondary"
                     onPress={() => {
                       if (s.kind !== "file") {
                         void refresh(s);
@@ -521,14 +521,14 @@ export function RemoteSourcesSection({
                         删除这个订阅源？它导入的节点可以保留，也可以一起删除
                       </p>
                       <Button
-                        variant="light"
+                        variant="ghost"
                         onPress={() => setConfirmDelete(false)}
                       >
                         取消
                       </Button>
                       <Button
                         isDisabled={deleting}
-                        variant="flat"
+                        variant="secondary"
                         onPress={() => remove(true)}
                       >
                         保留节点
@@ -547,13 +547,13 @@ export function RemoteSourcesSection({
                         <Button
                           className="mr-auto"
                           color="danger"
-                          variant="light"
+                          variant="ghost"
                           onPress={() => setConfirmDelete(true)}
                         >
                           删除
                         </Button>
                       )}
-                      <Button variant="light" onPress={onClose}>
+                      <Button variant="ghost" onPress={onClose}>
                         取消
                       </Button>
                       <Button color="primary" isLoading={saving} onPress={save}>

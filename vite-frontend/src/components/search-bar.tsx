@@ -39,7 +39,7 @@ export function SearchBar({
               className="text-muted-foreground"
               color="default"
               size="sm"
-              variant="flat"
+              variant="secondary"
               onPress={onOpen}
             >
               <SearchIcon className="w-4 h-4" />
@@ -71,7 +71,7 @@ export function SearchBar({
               className="text-muted-foreground shrink-0"
               color="default"
               size="sm"
-              variant="light"
+              variant="ghost"
               onPress={() => {
                 onClose();
                 onChange("");

@@ -83,7 +83,7 @@ export function NodeFilterModal({
             <ModalFooter>
               <Button
                 color="default"
-                variant="flat"
+                variant="secondary"
                 onPress={resetNodeFilterMode}
               >
                 重置

@@ -1,7 +1,7 @@
 import type { NodeRoute, NodeRouteHop } from "@/api/types";
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Loader2, RefreshCw } from "lucide-react";
 
 import { getNodeRoute, probeNodeRoute } from "@/api";

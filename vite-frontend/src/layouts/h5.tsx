@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { Button } from "@/shadcn-bridge/heroui/button";
@@ -198,7 +198,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
                 : "text-muted-foreground"
             }
             size="sm"
-            variant="light"
+            variant="ghost"
             onPress={() => {
               const next = density === "compact" ? "comfortable" : "compact";
 

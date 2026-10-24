@@ -2,7 +2,7 @@ import type { InboundApiItem, SplitCategory } from "@/api/types";
 import type { SplitRuleForm } from "./split-rules";
 
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { splitFormFromItem, splitPayload } from "./presets";
 import { DROP_NOTICE, savedDespiteDrop } from "./save-recovery";
@@ -212,7 +212,7 @@ function SplitForm({
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="light" onPress={onClose}>
+        <Button variant="ghost" onPress={onClose}>
           取消
         </Button>
         <Button color="primary" isLoading={saving} onPress={submit}>

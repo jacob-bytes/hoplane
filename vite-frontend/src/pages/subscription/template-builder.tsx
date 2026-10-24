@@ -5,7 +5,7 @@ import type {
 } from "@/api";
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 
 import {
@@ -582,7 +582,7 @@ export function TemplateBuilder({
             isDisabled={!custom.value.trim()}
             size="sm"
             startContent={<Plus className="h-4 w-4" />}
-            variant="flat"
+            variant="secondary"
             onPress={() => {
               updateRules([
                 {
@@ -618,7 +618,7 @@ export function TemplateBuilder({
                 value.groups.some((x) => x.name === g.name)
               }
               size="sm"
-              variant="flat"
+              variant="secondary"
               onPress={() =>
                 onChange({ ...value, groups: [...value.groups, { ...g }] })
               }
@@ -684,7 +684,7 @@ export function TemplateBuilder({
           <Button
             isDisabled={value.groups.length >= 20}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={() => {
               let i = value.groups.length + 1;
 
@@ -732,7 +732,7 @@ export function TemplateBuilder({
             isDisabled={!activeLibrary}
             isLoading={applying}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={applyLibrary}
           >
             一键套用
@@ -743,7 +743,7 @@ export function TemplateBuilder({
               !value.groups.some((g) => g.icon)
             }
             size="sm"
-            variant="light"
+            variant="ghost"
             onPress={() =>
               onChange({
                 ...value,

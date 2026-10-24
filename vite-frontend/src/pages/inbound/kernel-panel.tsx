@@ -6,7 +6,7 @@ import type {
 } from "@/api/types";
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Plus } from "lucide-react";
 
 import { groupItems } from "./group";
@@ -23,7 +23,7 @@ import {
 } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -289,7 +289,7 @@ export function KernelPanel({
         <Button
           color="primary"
           size="sm"
-          variant="flat"
+          variant="secondary"
           onPress={() => openInstall()}
         >
           安装内核
@@ -320,15 +320,15 @@ export function KernelPanel({
                     {g.title}
                   </span>
                   {!online && (
-                    <Chip size="sm" variant="flat">
+                    <Badge size="sm" variant="flat">
                       离线
-                    </Chip>
+                    </Badge>
                   )}
                   <Button
                     className="h-7 min-w-0 gap-1 px-2 text-xs text-primary dark:text-primary"
                     size="sm"
                     startContent={<Plus className="h-3.5 w-3.5" />}
-                    variant="light"
+                    variant="ghost"
                     onPress={() => openInstall(g.items[0].nodeId)}
                   >
                     内核
@@ -606,7 +606,7 @@ export function KernelPanel({
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>
+                <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
                 <Button
@@ -657,7 +657,7 @@ export function KernelPanel({
               </ModalBody>
               <ModalFooter>
                 <Button
-                  variant="flat"
+                  variant="secondary"
                   onPress={() => logsFor && openLogs(logsFor)}
                 >
                   刷新
@@ -700,7 +700,7 @@ export function KernelPanel({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>
+                <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
                 {removeFailed && (

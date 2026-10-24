@@ -1,7 +1,7 @@
 import type { InboundApiItem, InboundRelayApiItem } from "@/api/types";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import {
   markPageCached,
@@ -30,7 +30,7 @@ import { RelayModal } from "@/pages/inbound/relay-modal";
 import TunnelPage from "@/pages/tunnel";
 import { TunnelMonitorView } from "@/components/lazy-charts";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 
 type RelayTab = "lines" | "tunnels" | "rules" | "quality";
 
@@ -115,13 +115,13 @@ function RelayLines({
                 {l.forwardName || l.tunnelName}
               </span>
             )}
-            <Chip
+            <Badge
               className="hidden shrink-0 md:inline-flex"
               size="sm"
               variant="flat"
             >
               {l.mode === "tunnel" ? "隧道" : "端口"}
-            </Chip>
+            </Badge>
             <span className="shrink-0 text-xs">
               {renderLatency(l) ?? (
                 <span className="font-mono text-muted-foreground">
@@ -366,9 +366,9 @@ function LinesView() {
                   }
                   badges={
                     i.relayOnly && (
-                      <Chip size="sm" variant="flat">
+                      <Badge size="sm" variant="flat">
                         仅中转
-                      </Chip>
+                      </Badge>
                     )
                   }
                   headerRight={
@@ -376,7 +376,7 @@ function LinesView() {
                       <Button
                         className="h-7 min-w-0 px-2.5 text-xs"
                         size="sm"
-                        variant="light"
+                        variant="ghost"
                         onPress={() => setEditing(i)}
                       >
                         管理
@@ -416,9 +416,9 @@ function LinesView() {
                 key={i.id}
                 badges={
                   i.relayOnly && (
-                    <Chip className="shrink-0" size="sm" variant="flat">
+                    <Badge className="shrink-0" size="sm" variant="flat">
                       仅中转
-                    </Chip>
+                    </Badge>
                   )
                 }
                 cells={[
@@ -432,9 +432,9 @@ function LinesView() {
                           {i.name}
                         </span>
                         {i.relayOnly && (
-                          <Chip className="shrink-0" size="sm" variant="flat">
+                          <Badge className="shrink-0" size="sm" variant="flat">
                             仅中转
-                          </Chip>
+                          </Badge>
                         )}
                       </div>
                       <div className="truncate text-xs text-muted-foreground">
@@ -446,9 +446,9 @@ function LinesView() {
                     {lineList || (
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex min-w-0 items-center gap-2">
-                          <Chip size="sm" variant="flat">
+                          <Badge size="sm" variant="flat">
                             未配置
-                          </Chip>
+                          </Badge>
                           <span className="truncate text-xs text-muted-foreground">
                             点击这一行添加中转
                           </span>

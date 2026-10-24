@@ -2,7 +2,7 @@ import type { MonitorNodeApiItem } from "@/api/types";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { AnimatedPage } from "@/components/animated-page";
 import { PageHeader, PageTabs, PageToolbar } from "@/components/page-kit";

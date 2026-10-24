@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { ActionSheet } from "@/components/action-sheet";
 import {
@@ -373,7 +373,7 @@ export default function LimitPage({
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>
+                <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
                 <Button
@@ -420,7 +420,7 @@ export default function LimitPage({
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>
+                <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
                 <Button

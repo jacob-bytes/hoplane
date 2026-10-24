@@ -106,7 +106,7 @@ export function LatencySettings({
             <Button
               color="primary"
               size="sm"
-              variant="flat"
+              variant="secondary"
               onPress={() =>
                 add(
                   PRESETS.filter((p) => RECOMMENDED.includes(p.name)).map(
@@ -187,7 +187,7 @@ export function LatencySettings({
                   aria-label="上移"
                   isDisabled={i === 0}
                   size="sm"
-                  variant="light"
+                  variant="ghost"
                   onPress={() => move(i, -1)}
                 >
                   <ArrowUp className="h-3.5 w-3.5" />
@@ -197,7 +197,7 @@ export function LatencySettings({
                   aria-label="下移"
                   isDisabled={i === targets.length - 1}
                   size="sm"
-                  variant="light"
+                  variant="ghost"
                   onPress={() => move(i, 1)}
                 >
                   <ArrowDown className="h-3.5 w-3.5" />
@@ -207,7 +207,7 @@ export function LatencySettings({
                   aria-label="删除"
                   color="danger"
                   size="sm"
-                  variant="light"
+                  variant="ghost"
                   onPress={() => save(targets.filter((_, j) => j !== i))}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
@@ -221,7 +221,7 @@ export function LatencySettings({
       <div className="flex flex-wrap gap-2">
         <Dropdown>
           <DropdownTrigger>
-            <Button isDisabled={full} size="sm" variant="flat">
+            <Button isDisabled={full} size="sm" variant="secondary">
               添加预设
             </Button>
           </DropdownTrigger>
@@ -242,7 +242,7 @@ export function LatencySettings({
           isDisabled={full}
           size="sm"
           startContent={<Plus className="h-3.5 w-3.5" />}
-          variant="flat"
+          variant="secondary"
           onPress={() =>
             save([...targets, { name: "", host: "", port: 80, enabled: true }])
           }

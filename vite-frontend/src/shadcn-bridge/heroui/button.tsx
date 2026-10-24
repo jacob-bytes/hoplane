@@ -12,12 +12,18 @@ type HeroButtonColor =
   | "warning"
   | "danger";
 type HeroButtonVariant =
+  // HeroUI names (kept for older call sites)
   | "solid"
   | "light"
   | "flat"
   | "ghost"
   | "bordered"
-  | "shadow";
+  | "shadow"
+  // shadcn/ui names
+  | "default"
+  | "secondary"
+  | "outline"
+  | "destructive";
 type HeroButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps
@@ -43,11 +49,20 @@ function mapVariant(
   | "ghost"
   | "light"
   | "flat" {
-  if (variant === "bordered") {
+  if (variant === "bordered" || variant === "outline") {
     return "outline";
   }
+  if (variant === "secondary") {
+    return "flat";
+  }
   if (variant === "ghost") {
-    return "ghost";
+    return "light";
+  }
+  if (variant === "default") {
+    return color === "danger" ? "destructive" : "default";
+  }
+  if (variant === "destructive") {
+    return "destructive";
   }
   if (variant === "light") {
     return "light";

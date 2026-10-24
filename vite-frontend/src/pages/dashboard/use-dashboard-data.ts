@@ -1,7 +1,7 @@
 import type { ForwardApiItem, NodeApiItem } from "@/api/types";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import {
   getAnnouncement,

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import {
   Modal,
@@ -141,13 +141,13 @@ export function NodeTuneModal({
                                 {g.name}
                               </span>
                               {g.applied ? (
-                                <Chip color="success" size="sm" variant="flat">
+                                <Badge color="success" size="sm" variant="flat">
                                   已生效
-                                </Chip>
+                                </Badge>
                               ) : !supported ? (
-                                <Chip size="sm" variant="flat">
+                                <Badge size="sm" variant="flat">
                                   系统不支持
-                                </Chip>
+                                </Badge>
                               ) : null}
                               <button
                                 className="ml-auto text-xs text-primary"
@@ -199,13 +199,13 @@ export function NodeTuneModal({
                   className="mr-auto"
                   isDisabled={busy !== ""}
                   isLoading={busy === "restore"}
-                  variant="light"
+                  variant="ghost"
                   onPress={() => run("restore")}
                 >
                   恢复默认
                 </Button>
               )}
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

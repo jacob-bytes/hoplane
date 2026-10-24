@@ -60,7 +60,7 @@ export function ActionSheet({
                 className="w-full min-w-0 px-1"
                 color={a.color}
                 isDisabled={a.disabled}
-                variant="flat"
+                variant="secondary"
                 onPress={() => {
                   onClose();
                   a.onPress();

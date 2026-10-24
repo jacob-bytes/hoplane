@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Github } from "lucide-react";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
@@ -114,7 +114,7 @@ export function GithubBindingModal({
           />
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={onClose}>
+          <Button variant="ghost" onPress={onClose}>
             取消
           </Button>
           <Button

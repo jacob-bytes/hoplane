@@ -5,7 +5,7 @@ import type {
 } from "@/api/types";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
   DndContext,
   KeyboardSensor,
@@ -26,7 +26,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
@@ -1566,26 +1566,26 @@ export default function TunnelPage({
                       <ListRow
                         badges={
                           <>
-                            <Chip
+                            <Badge
                               className="shrink-0 whitespace-nowrap"
                               color="secondary"
                               size="sm"
                               variant="flat"
                             >
                               {getTunnelTypeDisplay(tunnel.type).text}
-                            </Chip>
+                            </Badge>
                             {tunnel.engine === "realm" && (
-                              <Chip
+                              <Badge
                                 className="shrink-0"
                                 color="primary"
                                 size="sm"
                                 variant="flat"
                               >
                                 realm
-                              </Chip>
+                              </Badge>
                             )}
                             {bestExit && (
-                              <Chip
+                              <Badge
                                 className="shrink-0"
                                 color={
                                   bestExit.status === "waiting"
@@ -1596,7 +1596,7 @@ export default function TunnelPage({
                                 variant="flat"
                               >
                                 最优出口
-                              </Chip>
+                              </Badge>
                             )}
                           </>
                         }
@@ -1613,13 +1613,13 @@ export default function TunnelPage({
                                 <span className="truncate text-sm font-medium text-foreground">
                                   {tunnel.name}
                                 </span>
-                                <Chip size="sm" variant="flat">
+                                <Badge size="sm" variant="flat">
                                   {getTunnelTypeDisplay(tunnel.type).text}
-                                </Chip>
+                                </Badge>
                                 {tunnel.engine === "realm" && (
-                                  <Chip size="sm" variant="flat">
+                                  <Badge size="sm" variant="flat">
                                     realm
-                                  </Chip>
+                                  </Badge>
                                 )}
                               </div>
                               <div className="truncate text-xs text-muted-foreground">

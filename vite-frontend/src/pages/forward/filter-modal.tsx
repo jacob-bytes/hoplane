@@ -141,7 +141,7 @@ export function ForwardFilterModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="flat" onPress={resetSearchParams}>
+              <Button variant="secondary" onPress={resetSearchParams}>
                 重置
               </Button>
             </ModalFooter>

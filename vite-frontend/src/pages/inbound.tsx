@@ -7,7 +7,7 @@ import type {
 } from "@/api/types";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ChevronDown, Copy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -74,7 +74,7 @@ import {
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import {
   Modal,
   ModalBody,
@@ -735,7 +735,7 @@ export default function InboundPage() {
     const badges = (
       <>
         {item.outboundIpStrategy && item.outboundIpStrategy !== "auto" && (
-          <Chip
+          <Badge
             className="shrink-0 whitespace-nowrap"
             color="default"
             size="sm"
@@ -749,20 +749,20 @@ export default function InboundPage() {
                 prefer_ipv6: "优先 IPv6",
               }[item.outboundIpStrategy]
             }
-          </Chip>
+          </Badge>
         )}
         {item.relayCount > 0 && (
-          <Chip
+          <Badge
             className="shrink-0 whitespace-nowrap"
             color="default"
             size="sm"
             variant="flat"
           >
             {item.relayCount} 中转
-          </Chip>
+          </Badge>
         )}
         {item.outboundId > 0 && (
-          <Chip
+          <Badge
             className="shrink-0 whitespace-nowrap"
             color={item.outboundMissing ? "danger" : "warning"}
             size="sm"
@@ -774,27 +774,31 @@ export default function InboundPage() {
             variant="flat"
           >
             {item.outboundMissing ? "出站已删除" : "链式"}
-          </Chip>
+          </Badge>
         )}
         {item.splitRules?.length > 0 && (
-          <Chip
+          <Badge
             className="shrink-0 whitespace-nowrap"
             color="default"
             size="sm"
             variant="flat"
           >
             分流
-          </Chip>
+          </Badge>
         )}
         {item.relayOnly && (
-          <Chip className="shrink-0 whitespace-nowrap" size="sm" variant="flat">
+          <Badge
+            className="shrink-0 whitespace-nowrap"
+            size="sm"
+            variant="flat"
+          >
             仅中转
-          </Chip>
+          </Badge>
         )}
         {kernelBad && (
-          <Chip color="warning" size="sm" variant="flat">
+          <Badge color="warning" size="sm" variant="flat">
             内核{KERNEL_STATUS[item.kernelStatus]?.label ?? "异常"}
-          </Chip>
+          </Badge>
         )}
       </>
     );
@@ -955,7 +959,7 @@ export default function InboundPage() {
           <Button
             color="default"
             size="sm"
-            variant="bordered"
+            variant="outline"
             onPress={() => setSharing(item)}
           >
             分享
@@ -963,7 +967,7 @@ export default function InboundPage() {
           <Button
             color="default"
             size="sm"
-            variant="light"
+            variant="ghost"
             onPress={() => setRelaying(item)}
           >
             中转
@@ -1086,7 +1090,7 @@ export default function InboundPage() {
                   color="primary"
                   isDisabled={filtered.length === 0}
                   size="sm"
-                  variant="flat"
+                  variant="secondary"
                   onPress={toggleSelectAll}
                 >
                   {allFilteredSelected ? "取消全选" : "全选"}
@@ -1095,7 +1099,7 @@ export default function InboundPage() {
                   color="success"
                   isDisabled={selectedIds.size === 0 || batchToggling}
                   size="sm"
-                  variant="flat"
+                  variant="secondary"
                   onPress={() => runBatchToggle(true)}
                 >
                   启用
@@ -1104,7 +1108,7 @@ export default function InboundPage() {
                   color="warning"
                   isDisabled={selectedIds.size === 0 || batchToggling}
                   size="sm"
-                  variant="flat"
+                  variant="secondary"
                   onPress={() => runBatchToggle(false)}
                 >
                   停用
@@ -1113,12 +1117,12 @@ export default function InboundPage() {
                   color="danger"
                   isDisabled={selectedIds.size === 0}
                   size="sm"
-                  variant="flat"
+                  variant="secondary"
                   onPress={() => setBatchDeleteOpen(true)}
                 >
                   删除
                 </Button>
-                <Button size="sm" variant="light" onPress={exitSelectMode}>
+                <Button size="sm" variant="ghost" onPress={exitSelectMode}>
                   完成
                 </Button>
               </div>
@@ -1142,7 +1146,7 @@ export default function InboundPage() {
                   <Button
                     color="primary"
                     size="sm"
-                    variant="flat"
+                    variant="secondary"
                     onPress={() =>
                       navigate("/node", {
                         state: { tab: "kernels" } satisfies NodeHubState,
@@ -1175,9 +1179,9 @@ export default function InboundPage() {
                       count={g.items.length}
                       extra={
                         off > 0 ? (
-                          <Chip size="sm" variant="flat">
+                          <Badge size="sm" variant="flat">
                             {off} 个已停用
-                          </Chip>
+                          </Badge>
                         ) : undefined
                       }
                       title={g.title}
@@ -1303,29 +1307,29 @@ export default function InboundPage() {
         {sheetItem && (
           <div className="space-y-2">
             <div className="flex flex-wrap gap-1.5">
-              <Chip color="primary" size="sm" variant="flat">
+              <Badge color="primary" size="sm" variant="flat">
                 {describeInbound(sheetItem)}
-              </Chip>
-              <Chip size="sm" variant="flat">
+              </Badge>
+              <Badge size="sm" variant="flat">
                 {sheetItem.external
                   ? "导入"
                   : (KERNEL_LABELS[sheetItem.kernelType] ??
                     sheetItem.kernelType)}
-              </Chip>
+              </Badge>
               {sheetItem.relayOnly && (
-                <Chip size="sm" variant="flat">
+                <Badge size="sm" variant="flat">
                   仅中转
-                </Chip>
+                </Badge>
               )}
               {sheetItem.acceptProxyProtocol && (
-                <Chip size="sm" variant="flat">
+                <Badge size="sm" variant="flat">
                   真实 IP
-                </Chip>
+                </Badge>
               )}
               {sheetItem.relayWhitelist && (
-                <Chip color="warning" size="sm" variant="flat">
+                <Badge color="warning" size="sm" variant="flat">
                   白名单
-                </Chip>
+                </Badge>
               )}
             </div>
             <div className="flex justify-between text-sm">
@@ -1427,7 +1431,7 @@ export default function InboundPage() {
                             isIconOnly
                             aria-label={`复制${k}`}
                             size="sm"
-                            variant="light"
+                            variant="ghost"
                             onPress={() => copyText(v)}
                           >
                             <Copy className="w-3.5 h-3.5" />
@@ -1476,7 +1480,7 @@ export default function InboundPage() {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="light" onPress={onClose}>
+                  <Button variant="ghost" onPress={onClose}>
                     取消
                   </Button>
                   <Button
@@ -1523,7 +1527,7 @@ export default function InboundPage() {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="light" onPress={onClose}>
+                  <Button variant="ghost" onPress={onClose}>
                     取消
                   </Button>
                   <Button

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { ListPageSkeleton } from "@/components/page-state";
 import {
@@ -905,7 +905,7 @@ export default function GroupPage({
                 </Select>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onTunnelGroupModalClose}>
+                <Button variant="ghost" onPress={onTunnelGroupModalClose}>
                   取消
                 </Button>
                 <Button
@@ -953,7 +953,7 @@ export default function GroupPage({
                 </Select>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onUserGroupModalClose}>
+                <Button variant="ghost" onPress={onUserGroupModalClose}>
                   取消
                 </Button>
                 <Button
@@ -1004,7 +1004,7 @@ export default function GroupPage({
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onTunnelAssignModalClose}>
+                <Button variant="ghost" onPress={onTunnelAssignModalClose}>
                   取消
                 </Button>
                 <Button
@@ -1055,7 +1055,7 @@ export default function GroupPage({
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onUserAssignModalClose}>
+                <Button variant="ghost" onPress={onUserAssignModalClose}>
                   取消
                 </Button>
                 <Button

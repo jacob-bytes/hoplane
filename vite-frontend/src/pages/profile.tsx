@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import {
   ChevronRight,
@@ -41,6 +41,7 @@ import { getAdminFlag, getSessionName } from "@/utils/session";
 import { PasskeyModal } from "@/components/passkey-manager";
 import { GithubBindingModal } from "@/components/github-binding";
 import { PageHeader } from "@/components/page-kit";
+import { Avatar } from "@/components/ui/avatar";
 import { useH5Mode } from "@/hooks/useH5Mode";
 
 interface PasswordForm {
@@ -100,16 +101,6 @@ interface ShortcutItem {
   icon: LucideIcon;
   tone: Tone;
   onPress: () => void;
-}
-
-function Avatar({ name, large }: { name: string; large?: boolean }) {
-  return (
-    <div
-      className={`flex shrink-0 items-center justify-center rounded-full bg-primary font-semibold text-primary-foreground ${large ? "h-16 w-16 text-2xl" : "h-12 w-12 text-lg"}`}
-    >
-      {(name || "?").slice(0, 1).toUpperCase()}
-    </div>
-  );
 }
 
 function RoleChip({ isAdmin }: { isAdmin: boolean }) {
@@ -181,7 +172,7 @@ function SecurityPanel({ items }: { items: SecurityItem[] }) {
             <Button
               className="min-w-16"
               size="sm"
-              variant="bordered"
+              variant="outline"
               onPress={item.onPress}
             >
               {item.action}
@@ -444,7 +435,7 @@ export default function ProfilePage() {
       className="w-full gap-2 border-danger/30 text-danger hover:bg-danger/10"
       color="danger"
       startContent={<LogOut className="h-4 w-4" />}
-      variant="bordered"
+      variant="outline"
       onPress={handleLogout}
     >
       退出登录
@@ -458,7 +449,7 @@ export default function ProfilePage() {
           <PageHeader title="更多" />
 
           <div className="flex items-center gap-4 rounded-xl bg-card px-4 py-4 shadow-sm">
-            <Avatar name={username} />
+            <Avatar name={username} size="md" />
             <div className="min-w-0 flex-1 space-y-1">
               <div className="truncate text-lg font-semibold">{username}</div>
               <RoleChip isAdmin={isAdmin} />
@@ -501,7 +492,7 @@ export default function ProfilePage() {
 
           <section className="overflow-hidden rounded-xl border border-border bg-card">
             <div className="flex items-center gap-4 p-5">
-              <Avatar large name={username} />
+              <Avatar name={username} size="lg" />
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="truncate text-base font-semibold">
@@ -533,7 +524,7 @@ export default function ProfilePage() {
                 color="danger"
                 size="sm"
                 startContent={<LogOut className="h-4 w-4" />}
-                variant="bordered"
+                variant="outline"
                 onPress={handleLogout}
               >
                 退出登录
@@ -646,7 +637,7 @@ export default function ProfilePage() {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="default" variant="light" onPress={onClose}>
+                <Button color="default" variant="ghost" onPress={onClose}>
                   取消
                 </Button>
                 <Button

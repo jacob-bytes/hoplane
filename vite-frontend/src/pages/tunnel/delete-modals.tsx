@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Radio, RadioGroup } from "@/shadcn-bridge/heroui/radio";
@@ -216,7 +216,7 @@ export function DeleteTunnelModal({
               )}
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button
@@ -331,9 +331,9 @@ export function BatchDeleteTunnelsModal({
                               {item.forwardCount} 条规则依赖
                             </p>
                           </div>
-                          <Chip color="warning" size="sm" variant="flat">
+                          <Badge color="warning" size="sm" variant="flat">
                             有关联
-                          </Chip>
+                          </Badge>
                         </div>
 
                         {item.sampleForwards.length > 0 ? (
@@ -447,7 +447,7 @@ export function BatchDeleteTunnelsModal({
               )}
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
 import { copyWithToast } from "@/utils/clipboard";
@@ -645,7 +645,7 @@ function UserDashboard() {
               <Button
                 isIconOnly
                 className="h-9 w-9 min-w-0 rounded-full bg-primary text-sm font-semibold text-primary-foreground"
-                variant="solid"
+                variant="default"
               >
                 {username.slice(0, 2).toUpperCase()}
               </Button>
@@ -1195,7 +1195,7 @@ function UserDashboard() {
                   <Button
                     isLoading={item.copying}
                     size="sm"
-                    variant="light"
+                    variant="ghost"
                     onPress={() => copyAddress(item)}
                   >
                     复制

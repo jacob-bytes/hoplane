@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 /** Shown when the browser refuses both copy methods (typically plain HTTP). */
 export const COPY_BLOCKED_HINT =

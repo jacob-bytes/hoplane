@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import {
@@ -79,14 +79,14 @@ export function DiagnosisModal({
                   <span className="text-small text-muted-foreground truncate flex-1 min-w-0">
                     {currentDiagnosisForward.name}
                   </span>
-                  <Chip
+                  <Badge
                     className="flex-shrink-0"
                     color="primary"
                     size="sm"
                     variant="flat"
                   >
                     规则服务
-                  </Chip>
+                  </Badge>
                 </div>
               )}
             </ModalHeader>
@@ -104,9 +104,9 @@ export function DiagnosisModal({
                             : "?"}
                         </span>
                       </div>
-                      <Chip color="primary" size="sm" variant="flat">
+                      <Badge color="primary" size="sm" variant="flat">
                         流式更新中
-                      </Chip>
+                      </Badge>
                     </div>
                   )}
 
@@ -270,7 +270,7 @@ export function DiagnosisModal({
                                         </div>
                                       </td>
                                       <td className="px-3 py-2 text-center">
-                                        <Chip
+                                        <Badge
                                           color={
                                             isDiagnosing
                                               ? "warning"
@@ -286,7 +286,7 @@ export function DiagnosisModal({
                                             : isSuccess
                                               ? "成功"
                                               : "失败"}
-                                        </Chip>
+                                        </Badge>
                                       </td>
                                       <td className="px-3 py-2 text-center">
                                         {isSuccess ? (
@@ -318,14 +318,14 @@ export function DiagnosisModal({
                                       </td>
                                       <td className="px-3 py-2 text-center">
                                         {isSuccess && quality ? (
-                                          <Chip
+                                          <Badge
                                             className="text-xs whitespace-nowrap"
                                             color={quality.color as any}
                                             size="sm"
                                             variant="flat"
                                           >
                                             {quality.text}
-                                          </Chip>
+                                          </Badge>
                                         ) : (
                                           <span className="text-muted-foreground">
                                             -
@@ -451,7 +451,7 @@ export function DiagnosisModal({
                                         {result.targetIp}:{result.targetPort}
                                       </div>
                                     </div>
-                                    <Chip
+                                    <Badge
                                       className="flex-shrink-0"
                                       color={
                                         isDiagnosing
@@ -468,7 +468,7 @@ export function DiagnosisModal({
                                         : isSuccess
                                           ? "成功"
                                           : "失败"}
-                                    </Chip>
+                                    </Badge>
                                   </div>
 
                                   {isSuccess ? (
@@ -498,14 +498,14 @@ export function DiagnosisModal({
                                       <div className="text-center">
                                         {quality && (
                                           <>
-                                            <Chip
+                                            <Badge
                                               className="text-xs whitespace-nowrap"
                                               color={quality.color as any}
                                               size="sm"
                                               variant="flat"
                                             >
                                               {quality.text}
-                                            </Chip>
+                                            </Badge>
                                             <div className="text-xs text-muted-foreground mt-0.5">
                                               质量
                                             </div>

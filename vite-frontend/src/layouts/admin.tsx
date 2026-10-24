@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -26,6 +26,12 @@ import { Button } from "@/shadcn-bridge/heroui/button";
 import { BrandLogo } from "@/components/brand-logo";
 import { VersionFooter } from "@/components/version-footer";
 import { CommandPalette } from "@/components/command-palette";
+import { Avatar } from "@/components/ui/avatar";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import {
   Dropdown,
   DropdownItem,
@@ -452,7 +458,7 @@ export default function AdminLayout({
               aria-label="打开菜单"
               className="-ml-1 shrink-0"
               size="sm"
-              variant="light"
+              variant="ghost"
               onPress={toggleMobileMenu}
             >
               <svg
@@ -480,7 +486,7 @@ export default function AdminLayout({
                 aria-label={isCollapsed ? "展开侧栏" : "收起侧栏"}
                 className="shrink-0 text-muted-foreground"
                 size="sm"
-                variant="light"
+                variant="ghost"
                 onPress={toggleCollapse}
               >
                 {isCollapsed ? (
@@ -519,33 +525,42 @@ export default function AdminLayout({
 
           <CommandPalette />
 
-          <Button
-            isIconOnly
-            aria-label={
-              density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
-            }
-            className={
-              density === "compact"
-                ? "shrink-0 bg-accent text-foreground"
-                : "shrink-0 text-muted-foreground"
-            }
-            size="sm"
-            title={density === "compact" ? "当前：紧凑间距" : "当前：舒适间距"}
-            variant="light"
-            onPress={() => {
-              const next: Density =
-                density === "compact" ? "comfortable" : "compact";
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                isIconOnly
+                aria-label={
+                  density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
+                }
+                className={
+                  density === "compact"
+                    ? "shrink-0 bg-accent text-foreground"
+                    : "shrink-0 text-muted-foreground"
+                }
+                size="sm"
+                title={
+                  density === "compact" ? "当前：紧凑间距" : "当前：舒适间距"
+                }
+                variant="ghost"
+                onPress={() => {
+                  const next: Density =
+                    density === "compact" ? "comfortable" : "compact";
 
-              setDensity(next);
-              setDensityState(next);
-            }}
-          >
-            {density === "compact" ? (
-              <Rows4 className="h-4 w-4" />
-            ) : (
-              <Rows3 className="h-4 w-4" />
-            )}
-          </Button>
+                  setDensity(next);
+                  setDensityState(next);
+                }}
+              >
+                {density === "compact" ? (
+                  <Rows4 className="h-4 w-4" />
+                ) : (
+                  <Rows3 className="h-4 w-4" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"}
+            </TooltipContent>
+          </Tooltip>
 
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
@@ -554,9 +569,7 @@ export default function AdminLayout({
                 className="flex shrink-0 items-center gap-2 rounded-lg py-1 pl-1 pr-2 text-sm transition-colors hover:bg-accent"
                 type="button"
               >
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-[11px] font-semibold uppercase text-primary-foreground">
-                  {sessionName.slice(0, 1)}
-                </span>
+                <Avatar name={sessionName} size="sm" />
                 <span className="hidden max-w-[10rem] truncate text-muted-foreground sm:block">
                   {sessionName}
                 </span>

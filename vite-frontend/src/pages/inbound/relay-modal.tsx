@@ -5,7 +5,7 @@ import type {
 } from "@/api/types";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import {
   createInboundRelay,
@@ -17,7 +17,7 @@ import {
 } from "@/api";
 import { RelayLatencyCell } from "@/components/relay-latency";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -308,7 +308,7 @@ export function RelayModal({
                           <div className="flex justify-end gap-2">
                             <Button
                               size="sm"
-                              variant="light"
+                              variant="ghost"
                               onPress={() => setEditing(null)}
                             >
                               取消
@@ -317,7 +317,7 @@ export function RelayModal({
                               color="primary"
                               isLoading={saving}
                               size="sm"
-                              variant="flat"
+                              variant="secondary"
                               onPress={saveEdit}
                             >
                               保存
@@ -334,7 +334,7 @@ export function RelayModal({
                               <span className="min-w-0 font-medium truncate">
                                 {rel.name}
                               </span>
-                              <Chip
+                              <Badge
                                 className="shrink-0 whitespace-nowrap"
                                 size="sm"
                                 variant="flat"
@@ -342,25 +342,25 @@ export function RelayModal({
                                 {rel.mode === "tunnel"
                                   ? "隧道转发"
                                   : "端口转发"}
-                              </Chip>
+                              </Badge>
                               {!rel.forwardExists ? (
-                                <Chip
+                                <Badge
                                   className="shrink-0 whitespace-nowrap"
                                   color="danger"
                                   size="sm"
                                   variant="flat"
                                 >
                                   转发已删除
-                                </Chip>
+                                </Badge>
                               ) : rel.forwardStatus !== 1 ? (
-                                <Chip
+                                <Badge
                                   className="shrink-0 whitespace-nowrap"
                                   color="warning"
                                   size="sm"
                                   variant="flat"
                                 >
                                   转发已暂停
-                                </Chip>
+                                </Badge>
                               ) : null}
                             </div>
                             <p className="text-xs text-muted-foreground font-mono mt-0.5 break-all">
@@ -382,7 +382,7 @@ export function RelayModal({
                           )}
                           <Button
                             size="sm"
-                            variant="flat"
+                            variant="secondary"
                             onPress={() =>
                               setEditing({
                                 id: rel.id,
@@ -396,7 +396,7 @@ export function RelayModal({
                           <Button
                             color="danger"
                             size="sm"
-                            variant="flat"
+                            variant="secondary"
                             onPress={() => {
                               setRemoveFailed(false);
                               setRemoving(rel);
@@ -484,7 +484,7 @@ export function RelayModal({
                       isDisabled={!form.tunnelId}
                       isLoading={creating}
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={create}
                     >
                       创建中转
@@ -523,7 +523,7 @@ export function RelayModal({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={close}>
+                <Button variant="ghost" onPress={close}>
                   取消
                 </Button>
                 {removeFailed && (

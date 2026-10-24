@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, HashRouter } from "react-router-dom";
 import { registerSW } from "virtual:pwa-register";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import App from "./App.tsx";
 import { applyDensity } from "./lib/density";
@@ -54,33 +54,12 @@ const updateSW = registerSW({
     window.addEventListener("pageshow", check);
   },
   onNeedRefresh() {
-    toast(
-      (t) => (
-        <div className="flex flex-col gap-3">
-          <span className="text-sm font-medium text-foreground">
-            发现新版本，是否立即刷新以应用更新？
-          </span>
-          <div className="flex gap-2 justify-end">
-            <button
-              className="px-3 py-1.5 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-md transition-colors"
-              onClick={() => {
-                updateSW(true);
-                toast.dismiss(t.id);
-              }}
-            >
-              刷新
-            </button>
-            <button
-              className="px-3 py-1.5 text-xs font-medium bg-default-200 text-foreground hover:bg-default-300 rounded-md transition-colors"
-              onClick={() => toast.dismiss(t.id)}
-            >
-              稍后
-            </button>
-          </div>
-        </div>
-      ),
-      { id: "sw-update", duration: Infinity, position: "bottom-right" },
-    );
+    toast("发现新版本，是否立即刷新以应用更新？", {
+      id: "sw-update",
+      duration: Infinity,
+      action: { label: "刷新", onClick: () => updateSW(true) },
+      cancel: { label: "稍后", onClick: () => toast.dismiss("sw-update") },
+    });
   },
 });
 

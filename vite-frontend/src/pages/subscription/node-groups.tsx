@@ -8,7 +8,7 @@ import type {
 import type { InboundApiItem } from "@/api/types";
 
 import { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 import { deleteNodeGroup, previewNodeGroup, saveNodeGroup } from "@/api";
@@ -16,7 +16,7 @@ import { EmptyHint } from "@/components/page-kit";
 import { PROTOCOL_LABELS } from "@/pages/inbound/presets";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
   ModalBody,
@@ -176,9 +176,9 @@ export function NodeGroupList({
             <div className="flex items-center gap-1.5">
               <span className="truncate font-medium">{g.name}</span>
               {g.subscriptions.length === 0 && (
-                <Chip size="sm" variant="flat">
+                <Badge size="sm" variant="flat">
                   未使用
-                </Chip>
+                </Badge>
               )}
             </div>
             <div className="truncate text-xs text-muted-foreground">
@@ -205,7 +205,7 @@ export function NodeGroupList({
               aria-label={`上移 ${g.name}`}
               isDisabled={i === 0}
               size="sm"
-              variant="light"
+              variant="ghost"
               onPress={() => onMove(i, -1)}
             >
               <ArrowUp className="h-4 w-4" />
@@ -215,7 +215,7 @@ export function NodeGroupList({
               aria-label={`下移 ${g.name}`}
               isDisabled={i === groups.length - 1}
               size="sm"
-              variant="light"
+              variant="ghost"
               onPress={() => onMove(i, 1)}
             >
               <ArrowDown className="h-4 w-4" />
@@ -611,7 +611,7 @@ export function NodeGroupEditor({
                 {!o.script && (
                   <Button
                     size="sm"
-                    variant="flat"
+                    variant="secondary"
                     onPress={() => setOpts({ script: SCRIPT_EXAMPLE })}
                   >
                     插入示例
@@ -621,7 +621,7 @@ export function NodeGroupEditor({
                   <Button
                     color="primary"
                     size="sm"
-                    variant="flat"
+                    variant="secondary"
                     onPress={() => setPage("preview")}
                   >
                     试运行并预览
@@ -696,7 +696,7 @@ export function NodeGroupEditor({
               <span className="mr-auto self-center text-xs text-danger">
                 删除这个节点组？
               </span>
-              <Button variant="light" onPress={() => setConfirmDelete(false)}>
+              <Button variant="ghost" onPress={() => setConfirmDelete(false)}>
                 取消
               </Button>
               <Button color="danger" isLoading={saving} onPress={remove}>
@@ -709,7 +709,7 @@ export function NodeGroupEditor({
               color="danger"
               isDisabled={usedBy.length > 0}
               title={usedBy.length > 0 ? "有订阅在用，先在订阅里取消选择" : ""}
-              variant="light"
+              variant="ghost"
               onPress={() => setConfirmDelete(true)}
             >
               删除
@@ -717,7 +717,7 @@ export function NodeGroupEditor({
           ))}
         {!confirmDelete && (
           <>
-            <Button variant="light" onPress={onClose}>
+            <Button variant="ghost" onPress={onClose}>
               取消
             </Button>
             <Button color="primary" isLoading={saving} onPress={save}>

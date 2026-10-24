@@ -53,7 +53,7 @@ export function RollbackNodeModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button color="secondary" onPress={confirmRollback}>
@@ -111,7 +111,7 @@ export function DeleteNodeModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button
@@ -173,7 +173,7 @@ export function BatchDeleteNodesModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

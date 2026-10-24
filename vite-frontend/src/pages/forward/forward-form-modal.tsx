@@ -388,7 +388,7 @@ export function ForwardFormModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

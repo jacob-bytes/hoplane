@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { motion } from "framer-motion";
 
@@ -306,7 +306,7 @@ export default function IndexPage() {
                   <Button
                     className="h-12 rounded-xl"
                     disabled={loading}
-                    variant="bordered"
+                    variant="outline"
                     onPress={() => void handlePasskeyLogin()}
                   >
                     选择通行证密钥登录
@@ -316,7 +316,7 @@ export default function IndexPage() {
                   <Button
                     className="h-12 rounded-xl"
                     disabled={loading}
-                    variant="bordered"
+                    variant="outline"
                     onPress={() => void handleGithubLogin()}
                   >
                     使用 GitHub 登录

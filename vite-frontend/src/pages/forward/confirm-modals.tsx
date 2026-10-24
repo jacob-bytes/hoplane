@@ -59,7 +59,7 @@ export function DeleteForwardModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button
@@ -126,7 +126,7 @@ export function ResetFlowModal({
             <ModalFooter>
               <Button
                 isDisabled={resetFlowLoading}
-                variant="light"
+                variant="ghost"
                 onPress={onClose}
               >
                 取消
@@ -195,7 +195,7 @@ export function AddressListModal({
                 <Button
                   isLoading={item.copying}
                   size="sm"
-                  variant="light"
+                  variant="ghost"
                   onPress={() => copyAddress(item)}
                 >
                   复制
@@ -243,7 +243,7 @@ export function BatchDeleteModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button
@@ -317,7 +317,7 @@ export function BatchChangeTunnelModal({
               </Select>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

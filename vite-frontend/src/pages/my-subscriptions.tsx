@@ -1,7 +1,7 @@
 import type { UserSubscription } from "@/api";
 
 import { useCallback, useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ChevronDown, Copy, QrCode, RefreshCw } from "lucide-react";
 
 import { getMySubscriptions, resetMySubscription } from "@/api";
@@ -203,18 +203,23 @@ function SubscriptionCard({
           className="flex-1"
           color="primary"
           startContent={<Copy className="h-4 w-4" />}
-          variant="flat"
+          variant="secondary"
           onPress={() => copyText(link(s), "订阅链接已复制")}
         >
           复制订阅链接
         </Button>
-        <Button isIconOnly aria-label="二维码" variant="flat" onPress={onQr}>
+        <Button
+          isIconOnly
+          aria-label="二维码"
+          variant="secondary"
+          onPress={onQr}
+        >
           <QrCode className="h-4 w-4" />
         </Button>
         <Button
           color="danger"
           startContent={<RefreshCw className="h-4 w-4" />}
-          variant="flat"
+          variant="secondary"
           onPress={onReset}
         >
           重置链接
@@ -358,7 +363,7 @@ export default function MySubscriptionsPage() {
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={close}>
+                <Button variant="ghost" onPress={close}>
                   取消
                 </Button>
                 <Button color="danger" isLoading={busy} onPress={reset}>

@@ -439,7 +439,7 @@ export function ImportModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={() => setImportModalOpen(false)}>
+          <Button variant="ghost" onPress={() => setImportModalOpen(false)}>
             取消
           </Button>
           <Button

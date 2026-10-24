@@ -652,7 +652,7 @@ export function NodeFormModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={() => setDialogVisible(false)}>
+          <Button variant="ghost" onPress={() => setDialogVisible(false)}>
             取消
           </Button>
           <Button

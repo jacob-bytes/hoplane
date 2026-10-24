@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { finishGithubBind, finishGithubLogin } from "@/api";
 import { PageLoadingState } from "@/components/page-state";

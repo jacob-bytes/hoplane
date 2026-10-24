@@ -15,7 +15,7 @@ import type { InboundApiItem } from "@/api/types";
 
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ArrowDown, ArrowUp, Copy, LayoutTemplate, X } from "lucide-react";
 
 import {
@@ -50,7 +50,7 @@ import {
 import { copyText, panelOrigin } from "@/pages/inbound/share";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { SubTrafficStats } from "@/components/lazy-charts";
 import {
@@ -625,7 +625,7 @@ function Editor({
                         aria-label={`上移 ${g.name}`}
                         isDisabled={i === 0}
                         size="sm"
-                        variant="light"
+                        variant="ghost"
                         onPress={() => moveGroup(i, -1)}
                       >
                         <ArrowUp className="h-4 w-4" />
@@ -635,7 +635,7 @@ function Editor({
                         aria-label={`下移 ${g.name}`}
                         isDisabled={i === pickedGroups.length - 1}
                         size="sm"
-                        variant="light"
+                        variant="ghost"
                         onPress={() => moveGroup(i, 1)}
                       >
                         <ArrowDown className="h-4 w-4" />
@@ -644,7 +644,7 @@ function Editor({
                         isIconOnly
                         aria-label={`移除 ${g.name}`}
                         size="sm"
-                        variant="light"
+                        variant="ghost"
                         onPress={() =>
                           setGroupIds(draft.groupIds.filter((x) => x !== g.id))
                         }
@@ -1102,7 +1102,7 @@ function Editor({
         )}
       </ModalBody>
       <ModalFooter>
-        <Button variant="light" onPress={onClose}>
+        <Button variant="ghost" onPress={onClose}>
           取消
         </Button>
         <Button color="primary" isLoading={saving} onPress={onSave}>
@@ -1354,14 +1354,14 @@ export default function SubscriptionPage() {
       .join("、") || "未选节点组";
   const stateChip = (s: SubscriptionItem) =>
     !s.enabled ? (
-      <Chip size="sm" variant="flat">
+      <Badge size="sm" variant="flat">
         已停用
-      </Chip>
+      </Badge>
     ) : (
       !s.active && (
-        <Chip color="danger" size="sm" variant="flat">
+        <Badge color="danger" size="sm" variant="flat">
           {s.overQuota ? "流量用完" : "已过期"}
-        </Chip>
+        </Badge>
       )
     );
   const actions = (s: SubscriptionItem) => (
@@ -1370,7 +1370,7 @@ export default function SubscriptionPage() {
         isIconOnly
         aria-label={`复制 ${s.name} 的订阅链接`}
         size="sm"
-        variant="flat"
+        variant="secondary"
         onPress={() => copyText(url(s), "订阅链接已复制")}
       >
         <Copy className="h-4 w-4" />
@@ -1403,9 +1403,9 @@ export default function SubscriptionPage() {
       ]}
       badges={
         s.options.rules && (
-          <Chip color="primary" size="sm" variant="flat">
+          <Badge color="primary" size="sm" variant="flat">
             分流
-          </Chip>
+          </Badge>
         )
       }
       headerRight={
@@ -1663,7 +1663,7 @@ export default function SubscriptionPage() {
                         }
                         isLoading={resettingTraffic}
                         size="sm"
-                        variant="flat"
+                        variant="secondary"
                         onPress={resetTraffic}
                       >
                         重置流量
@@ -1702,7 +1702,7 @@ export default function SubscriptionPage() {
                         className="w-full"
                         color="primary"
                         startContent={<Copy className="h-4 w-4" />}
-                        variant="flat"
+                        variant="secondary"
                         onPress={() => copyText(url(detail), "订阅链接已复制")}
                       >
                         复制订阅链接（自动识别客户端）
@@ -1737,7 +1737,7 @@ export default function SubscriptionPage() {
                   <Button
                     color="danger"
                     size="sm"
-                    variant="light"
+                    variant="ghost"
                     onPress={() => setConfirm("delete")}
                   >
                     删除
@@ -1745,7 +1745,7 @@ export default function SubscriptionPage() {
                   <Button
                     color="warning"
                     size="sm"
-                    variant="light"
+                    variant="ghost"
                     onPress={() => setConfirm("reset")}
                   >
                     重置链接和凭据
@@ -1855,7 +1855,7 @@ export default function SubscriptionPage() {
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="light" onPress={onClose}>
+                <Button variant="ghost" onPress={onClose}>
                   取消
                 </Button>
                 <Button

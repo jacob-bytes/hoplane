@@ -5,7 +5,7 @@ import type {
 } from "axios";
 
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 /**
  * The online demo (VITE_DEMO=true builds, published with the docs): the

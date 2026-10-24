@@ -11,7 +11,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { Tab, Tabs } from "@/shadcn-bridge/heroui/tabs";
@@ -64,7 +64,7 @@ export function InstallCommandModal({
         className="absolute top-2 right-2"
         color="primary"
         size="sm"
-        variant="flat"
+        variant="secondary"
         onPress={() => handleCopyCommand(command)}
       >
         复制
@@ -218,14 +218,14 @@ export function UpgradeNodeModal({
                               ? new Date(r.publishedAt).toLocaleDateString()
                               : ""}
                             {r.channel === "dev" && (
-                              <Chip
+                              <Badge
                                 className="ml-1 shrink-0 whitespace-nowrap"
                                 color="warning"
                                 size="sm"
                                 variant="flat"
                               >
                                 测试
-                              </Chip>
+                              </Badge>
                             )}
                           </span>
                         </div>
@@ -241,7 +241,7 @@ export function UpgradeNodeModal({
               )}
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

@@ -64,7 +64,7 @@ export function PageHeader({
               isDisabled={secondary.disabled}
               size="sm"
               startContent={secondary.icon}
-              variant="bordered"
+              variant="outline"
               onPress={secondary.onPress}
             >
               {secondary.label}
@@ -282,7 +282,7 @@ export function SelectionBar({
     <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-background/95 px-3 py-2 shadow-sm ">
       <span className="text-sm text-muted-foreground">已选 {count} 个</span>
       <div className="ml-auto flex flex-wrap justify-end gap-2">
-        <Button size="sm" variant="flat" onPress={onToggleAll}>
+        <Button size="sm" variant="secondary" onPress={onToggleAll}>
           {allSelected ? "取消全选" : "全选"}
         </Button>
         {actions.map((a) => (
@@ -291,13 +291,13 @@ export function SelectionBar({
             color={a.danger ? "danger" : "default"}
             isDisabled={a.disabled || count === 0}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={a.onPress}
           >
             {a.label}
           </Button>
         ))}
-        <Button size="sm" variant="light" onPress={onExit}>
+        <Button size="sm" variant="ghost" onPress={onExit}>
           完成
         </Button>
       </div>
@@ -579,7 +579,7 @@ export function EmptyHint({
         <Button
           color="primary"
           size="sm"
-          variant="flat"
+          variant="secondary"
           onPress={action.onPress}
         >
           {action.label}

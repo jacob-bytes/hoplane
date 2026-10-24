@@ -73,7 +73,7 @@ export class ErrorBoundary extends Component<
         <Button
           color="primary"
           size="sm"
-          variant="flat"
+          variant="secondary"
           onPress={() => window.location.reload()}
         >
           重新加载

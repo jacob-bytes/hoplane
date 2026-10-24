@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Divider } from "@/shadcn-bridge/heroui/divider";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
 import { getTunnelForwardMode } from "@/pages/tunnel/helpers";
@@ -212,25 +212,25 @@ export function TunnelFormModal({
                         <div className="flex items-center justify-between">
                           <span>{node.name}</span>
                           <div className="flex items-center gap-2">
-                            <Chip
+                            <Badge
                               color={node.status === 1 ? "success" : "default"}
                               size="sm"
                               variant="flat"
                             >
                               {node.status === 1 ? "在线" : "离线"}
-                            </Chip>
+                            </Badge>
                             {form.outNodeId &&
                               form.outNodeId.some(
                                 (ct) => ct.nodeId === node.id,
                               ) && (
-                                <Chip color="danger" size="sm" variant="flat">
+                                <Badge color="danger" size="sm" variant="flat">
                                   已选为出口
-                                </Chip>
+                                </Badge>
                               )}
                             {getSelectedChainNodeIds().includes(node.id) && (
-                              <Chip color="primary" size="sm" variant="flat">
+                              <Badge color="primary" size="sm" variant="flat">
                                 已选为转发链
-                              </Chip>
+                              </Badge>
                             )}
                           </div>
                         </div>
@@ -264,7 +264,7 @@ export function TunnelFormModal({
                             />
                           </svg>
                         }
-                        variant="flat"
+                        variant="secondary"
                         onPress={() => {
                           // 添加新的一跳（一个空组，或包含占位节点）
                           setForm((prev) => ({
@@ -322,7 +322,7 @@ export function TunnelFormModal({
                                 <Button
                                   color="danger"
                                   size="sm"
-                                  variant="light"
+                                  variant="ghost"
                                   onPress={() => removeChainNode(groupIndex)}
                                 >
                                   移除
@@ -394,7 +394,7 @@ export function TunnelFormModal({
                                             {node.name}
                                           </span>
                                           <div className="flex items-center gap-2">
-                                            <Chip
+                                            <Badge
                                               color={
                                                 node.status === 1
                                                   ? "success"
@@ -406,29 +406,29 @@ export function TunnelFormModal({
                                               {node.status === 1
                                                 ? "在线"
                                                 : "离线"}
-                                            </Chip>
+                                            </Badge>
                                             {form.inNodeId.some(
                                               (ct) => ct.nodeId === node.id,
                                             ) && (
-                                              <Chip
+                                              <Badge
                                                 color="warning"
                                                 size="sm"
                                                 variant="flat"
                                               >
                                                 已选为入口
-                                              </Chip>
+                                              </Badge>
                                             )}
                                             {form.outNodeId &&
                                               form.outNodeId.some(
                                                 (ct) => ct.nodeId === node.id,
                                               ) && (
-                                                <Chip
+                                                <Badge
                                                   color="danger"
                                                   size="sm"
                                                   variant="flat"
                                                 >
                                                   已选为出口
-                                                </Chip>
+                                                </Badge>
                                               )}
                                             {/* 显示是否在其他跳数中被选择 */}
                                             {(form.chainNodes || []).some(
@@ -440,13 +440,13 @@ export function TunnelFormModal({
                                                     ct.nodeId !== -1,
                                                 ),
                                             ) && (
-                                              <Chip
+                                              <Badge
                                                 color="primary"
                                                 size="sm"
                                                 variant="flat"
                                               >
                                                 已选为其他跳
-                                              </Chip>
+                                              </Badge>
                                             )}
                                           </div>
                                         </div>
@@ -683,7 +683,7 @@ export function TunnelFormModal({
                                     <div className="flex items-center justify-between">
                                       <span>{node.name}</span>
                                       <div className="flex items-center gap-2">
-                                        <Chip
+                                        <Badge
                                           color={
                                             node.status === 1
                                               ? "success"
@@ -693,28 +693,28 @@ export function TunnelFormModal({
                                           variant="flat"
                                         >
                                           {node.status === 1 ? "在线" : "离线"}
-                                        </Chip>
+                                        </Badge>
                                         {form.inNodeId.some(
                                           (ct) => ct.nodeId === node.id,
                                         ) && (
-                                          <Chip
+                                          <Badge
                                             color="warning"
                                             size="sm"
                                             variant="flat"
                                           >
                                             已选为入口
-                                          </Chip>
+                                          </Badge>
                                         )}
                                         {getSelectedChainNodeIds().includes(
                                           node.id,
                                         ) && (
-                                          <Chip
+                                          <Badge
                                             color="primary"
                                             size="sm"
                                             variant="flat"
                                           >
                                             已选为转发链
-                                          </Chip>
+                                          </Badge>
                                         )}
                                       </div>
                                     </div>
@@ -1088,7 +1088,7 @@ export function TunnelFormModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onPress={onClose}>
                 取消
               </Button>
               <Button

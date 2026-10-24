@@ -43,7 +43,7 @@ export const AnnouncementModal = ({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button variant="flat" onPress={onDontShowAgain}>
+          <Button variant="secondary" onPress={onDontShowAgain}>
             不再提示
           </Button>
         </ModalFooter>

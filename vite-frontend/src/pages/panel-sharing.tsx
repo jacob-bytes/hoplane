@@ -1,11 +1,11 @@
 import type { RowStatus } from "@/components/page-kit";
 
 import { useState, useEffect, useCallback } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 
 import { copyWithToast } from "@/utils/clipboard";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { AnimatedPage } from "@/components/animated-page";
 import { ActionSheet } from "@/components/action-sheet";
 import { PageLoadingState } from "@/components/page-state";
@@ -518,14 +518,14 @@ export default function PanelSharingPage() {
                   key={share.id}
                   badges={
                     status !== "ok" && (
-                      <Chip
+                      <Badge
                         className="shrink-0"
                         color={status === "bad" ? "danger" : "default"}
                         size="sm"
                         variant="flat"
                       >
                         {statusTitle}
-                      </Chip>
+                      </Badge>
                     )
                   }
                   meta={[
@@ -650,9 +650,9 @@ export default function PanelSharingPage() {
               sheetShare.usedPortDetails.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {sheetShare.usedPortDetails.map((item) => (
-                    <Chip key={item.runtimeId} size="sm" variant="flat">
+                    <Badge key={item.runtimeId} size="sm" variant="flat">
                       {item.port} / {item.role || "预留"}
-                    </Chip>
+                    </Badge>
                   ))}
                 </div>
               )}
@@ -836,7 +836,7 @@ export default function PanelSharingPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={() => setCreateShareOpen(false)}>
+            <Button variant="ghost" onPress={() => setCreateShareOpen(false)}>
               取消
             </Button>
             <Button color="primary" onPress={handleCreateShare}>
@@ -943,7 +943,7 @@ export default function PanelSharingPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={() => setEditShareOpen(false)}>
+            <Button variant="ghost" onPress={() => setEditShareOpen(false)}>
               取消
             </Button>
             <Button color="primary" onPress={handleEditShare}>
@@ -983,7 +983,7 @@ export default function PanelSharingPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="light" onPress={() => setImportNodeOpen(false)}>
+            <Button variant="ghost" onPress={() => setImportNodeOpen(false)}>
               取消
             </Button>
             <Button color="primary" onPress={handleImportNode}>

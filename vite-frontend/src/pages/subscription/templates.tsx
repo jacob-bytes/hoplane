@@ -11,7 +11,7 @@ import type {
 } from "@/api";
 
 import { useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ChevronLeft, Plus } from "lucide-react";
 
 import {
@@ -556,7 +556,7 @@ function Editor({
                     <Button
                       isLoading={checking}
                       size="sm"
-                      variant="flat"
+                      variant="secondary"
                       onPress={refresh}
                     >
                       立即更新
@@ -564,7 +564,7 @@ function Editor({
                   )}
                   <Button
                     size="sm"
-                    variant="flat"
+                    variant="secondary"
                     onPress={() => {
                       // A pasted copy: editable, no longer follows the URL.
                       setDraft({
@@ -660,7 +660,7 @@ function Editor({
               }
               isLoading={checking}
               size="sm"
-              variant="flat"
+              variant="secondary"
               onPress={runCheck}
             >
               {building ? "生成并预览" : fromUrl ? "获取并检查" : "检查"}
@@ -750,7 +750,7 @@ function Editor({
               <span className="mr-auto self-center text-xs text-danger">
                 删除这个模板？
               </span>
-              <Button variant="light" onPress={() => setConfirmDelete(false)}>
+              <Button variant="ghost" onPress={() => setConfirmDelete(false)}>
                 取消
               </Button>
               <Button color="danger" onPress={remove}>
@@ -761,7 +761,7 @@ function Editor({
             <Button
               className="mr-auto"
               color="danger"
-              variant="light"
+              variant="ghost"
               onPress={() => setConfirmDelete(true)}
             >
               删除
@@ -769,7 +769,7 @@ function Editor({
           ))}
         {!confirmDelete && (
           <>
-            <Button variant="light" onPress={onBack}>
+            <Button variant="ghost" onPress={onBack}>
               取消
             </Button>
             <Button

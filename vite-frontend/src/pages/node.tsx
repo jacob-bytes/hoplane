@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import {
   DndContext,
   KeyboardSensor,
@@ -22,7 +22,7 @@ import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
@@ -1903,7 +1903,7 @@ export default function NodePage({
                                               </button>
                                             </div>
                                             <div className="flex flex-wrap gap-1.5">
-                                              <Chip
+                                              <Badge
                                                 className="text-[11px] h-5 px-1 flex-shrink-0"
                                                 color={expiryMeta.tone}
                                                 size="sm"
@@ -1911,7 +1911,7 @@ export default function NodePage({
                                                 variant="flat"
                                               >
                                                 {expiryMeta.label}
-                                              </Chip>
+                                              </Badge>
                                             </div>
                                             <div className="rounded-lg border border-divider/80 bg-muted/80 px-3 py-2 text-xs leading-5 text-foreground">
                                               {formatNodeRenewalTime(
@@ -2097,14 +2097,14 @@ export default function NodePage({
                                           <div className="flex flex-wrap gap-1">
                                             {remoteUsage.usedPorts.map(
                                               (port) => (
-                                                <Chip
+                                                <Badge
                                                   key={`${node.id}-port-${port}`}
                                                   className="font-mono shrink-0 whitespace-nowrap"
                                                   size="sm"
                                                   variant="flat"
                                                 >
                                                   {port}
-                                                </Chip>
+                                                </Badge>
                                               ),
                                             )}
                                           </div>
@@ -2192,7 +2192,7 @@ export default function NodePage({
                                         className="min-h-8"
                                         color="primary"
                                         size="sm"
-                                        variant="flat"
+                                        variant="secondary"
                                         onPress={() => onOpenMonitor(node.id)}
                                       >
                                         监控
@@ -2203,7 +2203,7 @@ export default function NodePage({
                                       color="success"
                                       isLoading={node.copyLoading}
                                       size="sm"
-                                      variant="flat"
+                                      variant="secondary"
                                       onPress={() => openInstallSelector(node)}
                                     >
                                       安装
@@ -2211,7 +2211,7 @@ export default function NodePage({
                                     <Button
                                       className="min-h-8 bg-muted text-foreground"
                                       size="sm"
-                                      variant="flat"
+                                      variant="secondary"
                                       onPress={() => setTargetNodes([node])}
                                     >
                                       测试点
@@ -2224,7 +2224,7 @@ export default function NodePage({
                                       }
                                       isLoading={node.upgradeLoading}
                                       size="sm"
-                                      variant="flat"
+                                      variant="secondary"
                                       onPress={() =>
                                         openUpgradeModal("single", node.id)
                                       }
@@ -2239,7 +2239,7 @@ export default function NodePage({
                                       }
                                       isLoading={node.rollbackLoading}
                                       size="sm"
-                                      variant="flat"
+                                      variant="secondary"
                                       onPress={() => handleRollbackNode(node)}
                                     >
                                       回退
@@ -2251,7 +2251,7 @@ export default function NodePage({
                                         node.connectionStatus !== "online"
                                       }
                                       size="sm"
-                                      variant="flat"
+                                      variant="secondary"
                                       onPress={() => setTuneNode(node)}
                                     >
                                       调优
@@ -2260,7 +2260,7 @@ export default function NodePage({
                                       className="min-h-8"
                                       color="primary"
                                       size="sm"
-                                      variant="flat"
+                                      variant="secondary"
                                       onPress={() => handleEdit(node)}
                                     >
                                       编辑
@@ -2271,7 +2271,7 @@ export default function NodePage({
                                   className="min-h-8"
                                   color="danger"
                                   size="sm"
-                                  variant="flat"
+                                  variant="secondary"
                                   onPress={() => handleDelete(node)}
                                 >
                                   删除
@@ -2323,23 +2323,23 @@ export default function NodePage({
                         badges={
                           <>
                             {isRemoteNode && (
-                              <Chip
+                              <Badge
                                 className="shrink-0"
                                 size="sm"
                                 variant="flat"
                               >
                                 远程
-                              </Chip>
+                              </Badge>
                             )}
                             {showExpiry && (
-                              <Chip
+                              <Badge
                                 className="shrink-0"
                                 color={expiryMeta.tone}
                                 size="sm"
                                 variant="flat"
                               >
                                 {expiryMeta.label}
-                              </Chip>
+                              </Badge>
                             )}
                           </>
                         }
@@ -2365,23 +2365,23 @@ export default function NodePage({
                                         {node.name}
                                       </span>
                                       {!isRemoteNode && showExpiry && (
-                                        <Chip
+                                        <Badge
                                           className="shrink-0"
                                           color={expiryMeta.tone}
                                           size="sm"
                                           variant="flat"
                                         >
                                           {expiryMeta.label}
-                                        </Chip>
+                                        </Badge>
                                       )}
                                       {isRemoteNode && (
-                                        <Chip
+                                        <Badge
                                           className="shrink-0"
                                           size="sm"
                                           variant="flat"
                                         >
                                           远程
-                                        </Chip>
+                                        </Badge>
                                       )}
                                     </div>
                                     <div className="truncate text-xs text-muted-foreground tabular">

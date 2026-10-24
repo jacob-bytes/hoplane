@@ -10,7 +10,7 @@
 import type { ThemeMode } from "@/themes/registry";
 
 import React from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
 import { Button } from "@/shadcn-bridge/heroui/button";
@@ -175,7 +175,7 @@ export const ThemeSettings: React.FC = () => {
             <Button
               className="text-muted-foreground dark:text-muted-foreground"
               size="sm"
-              variant="light"
+              variant="ghost"
               onPress={handleReset}
             >
               ↩ 恢复默认主题

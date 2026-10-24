@@ -1,7 +1,7 @@
 import type { Node } from "@/pages/node/types";
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { Pin } from "lucide-react";
 
 import { getConfigByName, setNodeLatencyTargets } from "@/api";
@@ -253,7 +253,7 @@ export function LatencyTargetsModal({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button variant="light" onPress={onClose}>
+          <Button variant="ghost" onPress={onClose}>
             取消
           </Button>
           <Button

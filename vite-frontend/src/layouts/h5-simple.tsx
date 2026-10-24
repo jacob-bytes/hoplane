@@ -25,7 +25,7 @@ export default function H5SimpleLayout({
       {/* 顶部导航栏 */}
       <header className="bg-white/20 dark:bg-default-300  shadow-sm border-b border-white/80 dark:border-white/10 h-14 safe-top flex-shrink-0 flex items-center justify-between px-4 relative z-10">
         <div className="flex items-center gap-2">
-          <Button isIconOnly size="sm" variant="light" onPress={handleBack}>
+          <Button isIconOnly size="sm" variant="ghost" onPress={handleBack}>
             <BackIcon className="w-5 h-5" />
           </Button>
           <BrandLogo size={20} />

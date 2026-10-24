@@ -33,7 +33,7 @@ import {
   WifiOff,
   ArrowRight,
 } from "lucide-react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { CHART_SERIES } from "@/lib/chart-theme";
 import { formatTraffic } from "@/utils/traffic";
@@ -46,7 +46,7 @@ import {
 } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
-import { Chip } from "@/shadcn-bridge/heroui/chip";
+import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
   EmptyHint,
@@ -275,7 +275,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
           <Button
             isLoading={loading}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={() => onRefresh(tunnelId)}
           >
             <RefreshCw className="w-4 h-4 mr-1" />
@@ -399,7 +399,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
           <Button
             isLoading={loading}
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={() => onRefresh(tunnelId)}
           >
             <RefreshCw className="w-4 h-4 mr-1" />
@@ -675,7 +675,7 @@ function TopologyNodeChip({
   borderColor?: string;
 }) {
   return (
-    <Chip
+    <Badge
       className={`shrink-0 font-mono shadow-sm ${borderColor}`}
       size="sm"
       variant="flat"
@@ -688,7 +688,7 @@ function TopologyNodeChip({
           </span>
         ) : null}
       </span>
-    </Chip>
+    </Badge>
   );
 }
 
@@ -1178,7 +1178,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
         <div className="flex items-center gap-3 flex-wrap">
           <Button
             size="sm"
-            variant="flat"
+            variant="secondary"
             onPress={() => {
               setDetailTunnelId(null);
               setQualityHistory([]);
@@ -1193,13 +1193,13 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
               className={`w-5 h-5 ${detailTunnel.status === 1 ? "text-success" : "text-muted-foreground"}`}
             />
             <h3 className="text-lg font-semibold">{detailTunnel.name}</h3>
-            <Chip
+            <Badge
               color={detailTunnel.status === 1 ? "success" : "danger"}
               size="sm"
               variant="flat"
             >
               {detailTunnel.status === 1 ? "启用" : "禁用"}
-            </Chip>
+            </Badge>
           </div>
         </div>
 
@@ -1356,7 +1356,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           startContent={
             tunnelsLoading ? undefined : <RefreshCw className="h-4 w-4" />
           }
-          variant="flat"
+          variant="secondary"
           onPress={() => loadTunnels()}
         >
           刷新
@@ -1518,9 +1518,9 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 key={tunnel.id}
                 badges={
                   !isEnabled && (
-                    <Chip className="shrink-0" size="sm" variant="flat">
+                    <Badge className="shrink-0" size="sm" variant="flat">
                       禁用
-                    </Chip>
+                    </Badge>
                   )
                 }
                 meta={meta}

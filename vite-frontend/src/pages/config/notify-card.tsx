@@ -1,5 +1,5 @@
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 import { testNotify } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
@@ -287,7 +287,7 @@ export function NotifySettings({
           className="shrink-0"
           isLoading={testing}
           size="sm"
-          variant="flat"
+          variant="secondary"
           onPress={runTest}
         >
           发送测试

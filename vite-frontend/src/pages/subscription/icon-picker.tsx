@@ -1,7 +1,7 @@
 import type { SubIconLibrary, SubIconLibraryIcon } from "@/api";
 
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 import { ChevronLeft, Search, Trash2 } from "lucide-react";
 
 import {
@@ -337,7 +337,7 @@ export function IconPicker({
               <Button
                 isDisabled={!customValid}
                 size="sm"
-                variant="flat"
+                variant="secondary"
                 onPress={() => pick(custom.trim())}
               >
                 使用
@@ -351,7 +351,7 @@ export function IconPicker({
               <Button
                 isDisabled={!value}
                 size="sm"
-                variant="light"
+                variant="ghost"
                 onPress={() => pick("")}
               >
                 恢复默认
@@ -377,7 +377,7 @@ export function IconPicker({
                 isDisabled={!/^https?:\/\/\S+$/.test(newLibrary.trim())}
                 isLoading={adding}
                 size="sm"
-                variant="flat"
+                variant="secondary"
                 onPress={addLibrary}
               >
                 添加

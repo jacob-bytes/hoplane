@@ -237,7 +237,7 @@ export function SplitRulesEditor({
                     aria-label="上移"
                     isDisabled={i === 0}
                     size="sm"
-                    variant="light"
+                    variant="ghost"
                     onPress={() => move(i, -1)}
                   >
                     <ArrowUp className="h-3.5 w-3.5" />
@@ -247,7 +247,7 @@ export function SplitRulesEditor({
                     aria-label="下移"
                     isDisabled={i === rules.length - 1}
                     size="sm"
-                    variant="light"
+                    variant="ghost"
                     onPress={() => move(i, 1)}
                   >
                     <ArrowDown className="h-3.5 w-3.5" />
@@ -256,7 +256,7 @@ export function SplitRulesEditor({
                     color="danger"
                     size="sm"
                     startContent={<Trash2 className="h-3.5 w-3.5" />}
-                    variant="light"
+                    variant="ghost"
                     onPress={() => {
                       onChange(rules.filter((_, j) => j !== i));
                       setOpen(null);
