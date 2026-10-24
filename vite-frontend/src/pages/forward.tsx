@@ -80,7 +80,7 @@ import {
   parseNyFormatData,
 } from "@/pages/forward/import-format";
 import { buildForwardOrder, FORWARD_ORDER_KEY } from "@/pages/forward/order";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -2844,7 +2844,7 @@ export default function ForwardPage({
   };
 
   if ((loading && !pageCached(PAGE)) || !groupPreferenceHydrated) {
-    return <PageLoadingState message="正在加载..." />;
+    return <ListPageSkeleton />;
   }
 
   return (

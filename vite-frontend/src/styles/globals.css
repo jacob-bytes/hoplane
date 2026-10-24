@@ -288,6 +288,36 @@ body {
   line-height: 1rem;
 }
 
+/* List rows ease in, 20ms apart, so a page change feels alive. */
+@keyframes listItemIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.list-enter > * {
+  animation: listItemIn 180ms ease-out both;
+}
+
+.list-enter > *:nth-child(2) { animation-delay: 20ms; }
+.list-enter > *:nth-child(3) { animation-delay: 40ms; }
+.list-enter > *:nth-child(4) { animation-delay: 60ms; }
+.list-enter > *:nth-child(5) { animation-delay: 80ms; }
+.list-enter > *:nth-child(6) { animation-delay: 100ms; }
+.list-enter > *:nth-child(7) { animation-delay: 120ms; }
+.list-enter > *:nth-child(8) { animation-delay: 140ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .list-enter > * {
+    animation: none;
+  }
+}
+
 /* Compact density: tighten list rows and their headers only. */
 [data-density="compact"] [data-slot="list-row"] {
   padding-top: 0.5rem;

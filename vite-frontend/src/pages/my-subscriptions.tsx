@@ -7,7 +7,7 @@ import { ChevronDown, Copy, QrCode, RefreshCw } from "lucide-react";
 import { getMySubscriptions, resetMySubscription } from "@/api";
 import { AnimatedPage } from "@/components/animated-page";
 import { EmptyHint, PageHeader } from "@/components/page-kit";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -288,8 +288,7 @@ export default function MySubscriptionsPage() {
     }
   };
 
-  if (loading && !pageCached(PAGE))
-    return <PageLoadingState message="正在加载..." />;
+  if (loading && !pageCached(PAGE)) return <ListPageSkeleton />;
 
   const several = items.length > 1;
 

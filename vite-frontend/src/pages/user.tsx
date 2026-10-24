@@ -64,7 +64,7 @@ import {
   removeMonitorPermission,
 } from "@/api";
 import { DeleteIcon } from "@/components/icons";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -1173,7 +1173,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
       />
 
       {loading && !pageCached(PAGE) ? (
-        <PageLoadingState message="正在加载..." />
+        <ListPageSkeleton />
       ) : users.length === 0 ? (
         searchKeyword.trim() ? (
           <EmptyHint text="没有匹配的用户" />

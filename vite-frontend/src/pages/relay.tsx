@@ -12,7 +12,7 @@ import { useVisiblePolling } from "@/hooks/use-visible-polling";
 import { latestProbe } from "@/utils/latest-probe";
 import { getInboundList, getInboundRelays, probeInboundRelays } from "@/api";
 import { AnimatedPage } from "@/components/animated-page";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   EmptyHint,
   ListRow,
@@ -249,7 +249,7 @@ function LinesView() {
     return m;
   }, [relays]);
 
-  if (loading) return <PageLoadingState message="正在加载..." />;
+  if (loading) return <ListPageSkeleton />;
 
   const q = query.trim().toLowerCase();
   const shown = inbounds.filter(
@@ -294,7 +294,7 @@ function LinesView() {
           className={
             card
               ? CARD_GRID
-              : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
           }
           style={
             card

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -556,7 +556,7 @@ export default function GroupPage({
         }}
       />
       {loading && !pageCached(PAGE) ? (
-        <PageLoadingState message="正在加载..." />
+        <ListPageSkeleton />
       ) : (
         <>
           {activeTab === "tunnel" && (

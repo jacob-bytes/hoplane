@@ -25,7 +25,7 @@ import {
   updateSpeedLimit,
   deleteSpeedLimit,
 } from "@/api";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -228,7 +228,7 @@ export default function LimitPage({
   };
 
   if (loading && !pageCached(PAGE)) {
-    return <PageLoadingState message="正在加载..." />;
+    return <ListPageSkeleton />;
   }
 
   const sheetRule = rules.find((r) => r.id === sheetRuleId) ?? null;

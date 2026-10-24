@@ -7,6 +7,7 @@ import { ChevronRight, LogOut, Rows3, Rows4, UserRound } from "lucide-react";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { BrandLogo } from "@/components/brand-logo";
 import { VersionFooter } from "@/components/version-footer";
+import { CommandPalette } from "@/components/command-palette";
 import {
   Dropdown,
   DropdownItem,
@@ -411,7 +412,7 @@ export default function AdminLayout({
                     aria-current={isActive ? "page" : undefined}
                     aria-disabled={isMonitorBlocked}
                     className={`
-                       w-full flex items-center px-2.5 py-2 rounded-lg text-left
+                       group w-full flex items-center px-2.5 py-2 rounded-lg text-left
                        relative min-h-[40px] overflow-hidden transition-colors duration-150
                        [@media(max-height:760px)]:min-h-[36px] [@media(max-height:760px)]:py-1.5
                        ${isMonitorBlocked ? "opacity-60" : ""}
@@ -567,7 +568,13 @@ export default function AdminLayout({
             aria-label="面包屑"
             className="flex min-w-0 flex-1 items-center gap-1.5 text-sm"
           >
-            <span className="text-muted-foreground">后台</span>
+            <button
+              className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
+              type="button"
+              onClick={() => navigate("/dashboard")}
+            >
+              后台
+            </button>
             {currentSection && (
               <>
                 <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
@@ -581,6 +588,8 @@ export default function AdminLayout({
               {currentLabel}
             </span>
           </nav>
+
+          <CommandPalette />
 
           <Button
             isIconOnly

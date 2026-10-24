@@ -46,7 +46,7 @@ import { LatencyCell, probePoints } from "@/components/latency-cell";
 import { RouteModal } from "@/components/route-modal";
 import { LatencyTrendModal } from "@/components/lazy-charts";
 import { LatencyTargetsModal } from "@/pages/node/latency-targets-modal";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import { ActionSheet } from "@/components/action-sheet";
 import {
   EmptyHint,
@@ -1250,6 +1250,9 @@ export default function NodePage({
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
 
+    // A manual reorder only makes sense on the unsorted list.
+    if (sort) setSort(null);
+
     if (!active || !over || active.id === over.id) return;
     if (!nodeOrder || nodeOrder.length === 0) return;
 
@@ -1510,6 +1513,63 @@ export default function NodePage({
     [activeTab, filteredLocalNodes, filteredRemoteNodes],
   );
 
+  const [sort, setSort] = useState<{
+    key: "name" | "cpu" | "mem" | "disk" | "speed" | "month";
+    dir: "asc" | "desc";
+  } | null>(null);
+
+  const orderedNodes = useMemo(() => {
+    if (!sort) return displayNodes;
+    const metric = (n: (typeof displayNodes)[number]) => {
+      const info = n.systemInfo;
+      const month = monthTraffic[String(n.id)];
+
+      switch (sort.key) {
+        case "cpu":
+          return info?.cpuUsage ?? -1;
+        case "mem":
+          return info?.memoryUsage ?? -1;
+        case "disk":
+          return info?.diskUsage ?? -1;
+        case "speed":
+          return (info?.netInSpeed ?? 0) + (info?.netOutSpeed ?? 0);
+        case "month":
+          return month ? month[0] + month[1] : -1;
+        default:
+          return 0;
+      }
+    };
+    const sorted = [...displayNodes].sort((a, b) => {
+      if (sort.key === "name") return a.name.localeCompare(b.name, "zh-CN");
+
+      return metric(a) - metric(b);
+    });
+
+    return sort.dir === "asc" ? sorted : sorted.reverse();
+  }, [displayNodes, monthTraffic, sort]);
+
+  const toggleSort = (key: NonNullable<typeof sort>["key"]) => {
+    setSort((prev) =>
+      prev?.key === key
+        ? { key, dir: prev.dir === "asc" ? "desc" : "asc" }
+        : { key, dir: key === "name" ? "asc" : "desc" },
+    );
+  };
+
+  const sortButton = (key: NonNullable<typeof sort>["key"], label: string) => (
+    <button
+      aria-label={`按${label}排序`}
+      className="inline-flex items-center gap-1 transition-colors hover:text-foreground"
+      type="button"
+      onClick={() => toggleSort(key)}
+    >
+      {label}
+      <span className="text-[9px] leading-none">
+        {sort?.key === key ? (sort.dir === "asc" ? "▲" : "▼") : ""}
+      </span>
+    </button>
+  );
+
   const canBatchUpgrade = activeTab === "local";
   const canUseExpiryFilter = activeTab === "local";
   const hasKeywordSearch = currentSearchKeyword.trim().length > 0;
@@ -1627,7 +1687,7 @@ export default function NodePage({
       )}
 
       {loading ? (
-        <PageLoadingState message="正在加载..." />
+        <ListPageSkeleton />
       ) : nodeList.length === 0 ? (
         <EmptyHint
           action={{ key: "add", label: "新建服务器", onPress: handleAdd }}
@@ -1653,7 +1713,7 @@ export default function NodePage({
               className={
                 card
                   ? CARD_GRID
-                  : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+                  : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
               }
               style={
                 card
@@ -1666,15 +1726,25 @@ export default function NodePage({
                   className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                   data-slot="list-head"
                 >
-                  <div className="min-w-0">名称</div>
-                  <div className="min-w-0">CPU / 内存 / 磁盘</div>
-                  <div className="min-w-0 text-right">网速</div>
-                  <div className="min-w-0 text-right">本月流量</div>
+                  <div className="min-w-0">{sortButton("name", "名称")}</div>
+                  <div className="flex min-w-0 items-center gap-2">
+                    {sortButton("cpu", "CPU")}
+                    <span className="text-muted-foreground/40">/</span>
+                    {sortButton("mem", "内存")}
+                    <span className="text-muted-foreground/40">/</span>
+                    {sortButton("disk", "磁盘")}
+                  </div>
+                  <div className="min-w-0 text-right">
+                    {sortButton("speed", "网速")}
+                  </div>
+                  <div className="min-w-0 text-right">
+                    {sortButton("month", "本月流量")}
+                  </div>
                   <div className="min-w-0">延迟</div>
                   <div />
                 </div>
               )}
-              {displayNodes.map((node) => {
+              {orderedNodes.map((node) => {
                 if (card) {
                   const isRemoteNode = node.isRemote === 1;
                   const remoteUsage = isRemoteNode

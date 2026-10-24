@@ -334,7 +334,7 @@ export function ListTable({
 }) {
   return (
     <div
-      className={`flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card ${className ?? ""}`}
+      className={`flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card list-enter ${className ?? ""}`}
       style={{ "--list-cols": columns } as React.CSSProperties}
     >
       {head && (
@@ -503,7 +503,7 @@ export function ListGroup({
         </h2>
       )}
       <div
-        className="flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+        className="list-enter flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
         style={
           columns
             ? ({ "--list-cols": columns } as React.CSSProperties)

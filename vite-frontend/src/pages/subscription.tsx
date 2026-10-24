@@ -39,7 +39,7 @@ import {
 } from "@/components/page-kit";
 import { CARD_GRID, InfoCard } from "@/components/info-card";
 import { useViewMode } from "@/components/view-mode";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -1304,7 +1304,7 @@ export default function SubscriptionPage() {
     }
   };
 
-  if (loading) return <PageLoadingState message="正在加载..." />;
+  if (loading) return <ListPageSkeleton />;
 
   const groupName = new Map(groups.map((g) => [g.id, g.name]));
   const q = query.trim().toLowerCase();
@@ -1527,6 +1527,16 @@ export default function SubscriptionPage() {
         />
       ) : subs.length === 0 ? (
         <EmptyHint
+          action={
+            inbounds.length === 0
+              ? undefined
+              : {
+                  key: "add",
+                  label: "新建订阅",
+                  onPress: () =>
+                    setDraft(draftFrom(undefined, sources, groups)),
+                }
+          }
           text={
             inbounds.length === 0
               ? "还没有节点。先在“节点”里搭建或导入，订阅里才会有内容"
@@ -1539,7 +1549,7 @@ export default function SubscriptionPage() {
             className={
               viewMode === "card"
                 ? CARD_GRID
-                : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+                : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
             }
             style={
               viewMode === "card"

@@ -30,7 +30,7 @@ import {
   StaggerItem,
   StaggerList,
 } from "@/components/animated-page";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import { PageHeader, PageTabs, PageToolbar } from "@/components/page-kit";
 import { CARD_GRID, type CardTone, InfoCard } from "@/components/info-card";
 import { useViewMode } from "@/components/view-mode";
@@ -618,7 +618,7 @@ export default function InboundPage() {
 
   const gridClass = card
     ? CARD_GRID
-    : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card";
+    : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card";
   const listTemplate = "10px minmax(0,1fr) 112px 96px 176px 48px";
   const listHead = !card && (
     <div
@@ -941,7 +941,7 @@ export default function InboundPage() {
   };
 
   if (loading) {
-    return <PageLoadingState message="正在加载..." />;
+    return <ListPageSkeleton />;
   }
 
   const sheetItem = inbounds.find((i) => i.id === sheetFor) ?? null;

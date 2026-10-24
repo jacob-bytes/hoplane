@@ -42,7 +42,7 @@ import {
   previewBatchTunnelDelete,
   previewTunnelDelete,
 } from "@/api";
-import { PageLoadingState } from "@/components/page-state";
+import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
   pageCached,
@@ -1452,7 +1452,7 @@ export default function TunnelPage({
   const sheetTunnel = tunnels.find((t) => t.id === sheetTunnelId) ?? null;
 
   if (loading && !pageCached(PAGE)) {
-    return <PageLoadingState message="正在加载..." />;
+    return <ListPageSkeleton />;
   }
 
   return (
@@ -1541,7 +1541,7 @@ export default function TunnelPage({
             strategy={rectSortingStrategy}
           >
             <div
-              className="flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
               style={
                 {
                   "--list-cols": "minmax(0,1fr) minmax(0,1.2fr) 24px",
