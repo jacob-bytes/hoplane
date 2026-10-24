@@ -596,8 +596,13 @@ export default function AdminLayout({
             aria-label={
               density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
             }
-            className="shrink-0 text-muted-foreground"
+            className={
+              density === "compact"
+                ? "shrink-0 bg-accent text-foreground"
+                : "shrink-0 text-muted-foreground"
+            }
             size="sm"
+            title={density === "compact" ? "当前：紧凑间距" : "当前：舒适间距"}
             variant="light"
             onPress={() => {
               const next: Density =

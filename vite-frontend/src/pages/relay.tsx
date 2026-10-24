@@ -91,15 +91,20 @@ function RelayLines({
               title={ok ? "转发正常" : "转发已暂停或被删除"}
             />
             <span
-              className="min-w-0 flex-1 truncate text-sm text-foreground"
+              className="shrink-0 truncate text-sm text-foreground"
               title={l.name || l.tunnelName}
             >
               {relayLabel(l)}
             </span>
+            {entry && (
+              <span className="hidden min-w-0 flex-1 truncate font-mono text-[11px] text-muted-foreground md:block">
+                {l.shareHost || entry.Host}:{entry.Port}
+              </span>
+            )}
             <span className="shrink-0 text-xs">
               {renderLatency(l) ?? (
                 <span className="font-mono text-muted-foreground">
-                  {entry ? `${l.shareHost || entry.Host}:${entry.Port}` : "-"}
+                  {entry ? `${entry.Port}` : "-"}
                 </span>
               )}
             </span>
@@ -300,7 +305,7 @@ function LinesView() {
             card
               ? undefined
               : ({
-                  "--list-cols": "minmax(0,1fr) 34rem",
+                  "--list-cols": "minmax(14rem,18rem) minmax(0,1fr)",
                 } as React.CSSProperties)
           }
         >
@@ -424,9 +429,14 @@ function LinesView() {
                   </div>,
                   <div key="lines" className="min-w-0">
                     {lineList || (
-                      <Chip size="sm" variant="flat">
-                        未配置
-                      </Chip>
+                      <div className="flex items-center gap-2">
+                        <Chip size="sm" variant="flat">
+                          未配置
+                        </Chip>
+                        <span className="truncate text-xs text-muted-foreground">
+                          点击这一行添加中转
+                        </span>
+                      </div>
                     )}
                   </div>,
                 ]}

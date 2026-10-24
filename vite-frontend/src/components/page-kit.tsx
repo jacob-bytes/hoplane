@@ -424,6 +424,7 @@ export function ListRow({
       {cells && (
         <div
           className="hidden items-center gap-4 px-4 py-3 lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          data-slot="list-row-body"
           role="row"
         >
           {cells.map((cell, i) => (
@@ -437,6 +438,7 @@ export function ListRow({
         className={
           cells ? "flex items-center gap-3 px-3 py-3 lg:hidden" : "contents"
         }
+        data-slot="list-row-body"
       >
         {selectMode && (
           <div
