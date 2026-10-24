@@ -107,7 +107,8 @@ function mapSize(size: ModalSize | undefined) {
     return "w-[95vw] max-w-[95vw] h-[95vh] max-h-[95vh]";
   }
 
-  return "max-w-lg";
+  // Default to a width that fits a two-column form without scrolling.
+  return "max-w-xl";
 }
 
 export interface ModalProps {
