@@ -370,7 +370,7 @@ export default function AdminLayout({
                        ${isMonitorBlocked ? "opacity-60" : ""}
                        ${
                          isActive
-                           ? "text-foreground font-medium"
+                           ? "text-primary font-medium"
                            : isMonitorBlocked
                              ? "text-muted-foreground font-normal"
                              : "text-muted-foreground hover:text-foreground font-normal"
@@ -388,14 +388,16 @@ export default function AdminLayout({
                   >
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 rounded-lg bg-accent"
+                        className="absolute inset-0 rounded-lg bg-primary/10"
                         layoutId="sidebar-active"
                         transition={{
                           type: "spring",
                           stiffness: 380,
                           damping: 30,
                         }}
-                      />
+                      >
+                        <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-primary" />
+                      </motion.div>
                     )}
                     {!isActive && (
                       <motion.div
