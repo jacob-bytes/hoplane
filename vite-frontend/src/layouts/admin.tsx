@@ -2,7 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { ChevronRight, LogOut, Rows3, Rows4, UserRound } from "lucide-react";
+import {
+  ChevronRight,
+  LogOut,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Rows3,
+  Rows4,
+  UserRound,
+} from "lucide-react";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { BrandLogo } from "@/components/brand-logo";
@@ -473,63 +481,19 @@ export default function AdminLayout({
 
         {/* 底部账号操作、版权信息和折叠按钮 */}
         <div className="px-5 py-4 [@media(max-height:760px)]:py-3 [@media(max-height:760px)]:gap-2 mt-auto flex-shrink-0 flex flex-col gap-3 overflow-hidden whitespace-nowrap box-border">
-          {/* Version and the collapse button share a row so short
-              laptop screens still fit the whole menu. */}
+          {/* The collapse control moved to the header, so only the version
+              stays here; it hides itself when the sidebar is collapsed. */}
           <div
-            className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between gap-2"}`}
+            className={`min-w-0 overflow-hidden transition-all duration-300 ${
+              isCollapsed ? "hidden" : "flex items-center"
+            }`}
           >
-            <div
-              className={`min-w-0 transition-all duration-300 overflow-hidden flex items-center ${isCollapsed ? "max-w-0 opacity-0 hidden" : "max-w-[200px] opacity-100"}`}
-            >
-              <VersionFooter
-                poweredClassName="text-xs text-muted-foreground"
-                updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground"
-                version={siteConfig.version}
-                versionClassName="text-xs text-muted-foreground"
-              />
-            </div>
-
-            {/* 桌面端折叠按钮 */}
-            {!isMobile && (
-              <Button
-                isIconOnly
-                aria-label={isCollapsed ? "展开侧栏" : "收起侧栏"}
-                className="flex h-9 w-9 min-w-0 flex-shrink-0 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
-                size="sm"
-                variant="light"
-                onPress={toggleCollapse}
-              >
-                {isCollapsed ? (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M13 5l7 7-7 7M5 5l7 7-7 7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M11 19l-7-7 7-7m8 14l-7-7 7-7"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                )}
-              </Button>
-            )}
+            <VersionFooter
+              poweredClassName="text-xs text-muted-foreground"
+              updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold tracking-wide text-primary-foreground"
+              version={siteConfig.version}
+              versionClassName="text-xs text-muted-foreground"
+            />
           </div>
         </div>
       </aside>
@@ -563,6 +527,28 @@ export default function AdminLayout({
                 />
               </svg>
             </Button>
+          )}
+          {isMobile && (
+            <span aria-hidden className="h-5 w-px shrink-0 bg-border" />
+          )}
+          {!isMobile && (
+            <>
+              <Button
+                isIconOnly
+                aria-label={isCollapsed ? "展开侧栏" : "收起侧栏"}
+                className="shrink-0 text-muted-foreground"
+                size="sm"
+                variant="light"
+                onPress={toggleCollapse}
+              >
+                {isCollapsed ? (
+                  <PanelLeftOpen className="h-4 w-4" />
+                ) : (
+                  <PanelLeftClose className="h-4 w-4" />
+                )}
+              </Button>
+              <span aria-hidden className="h-5 w-px shrink-0 bg-border" />
+            </>
           )}
           <nav
             aria-label="面包屑"
