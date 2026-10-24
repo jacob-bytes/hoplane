@@ -503,7 +503,7 @@ export default function AdminLayout({
         className={`relative flex min-w-0 flex-1 flex-col ${isMobile ? "min-h-0" : "h-full overflow-hidden"}`}
       >
         {/* 顶栏：移动端菜单按钮 + 面包屑 */}
-        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border px-3 lg:px-6">
+        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border pl-3 pr-3 lg:pr-6">
           {isMobile && (
             <Button
               isIconOnly
@@ -529,7 +529,7 @@ export default function AdminLayout({
             </Button>
           )}
           {isMobile && (
-            <span aria-hidden className="h-5 w-px shrink-0 bg-border" />
+            <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-border" />
           )}
           {!isMobile && (
             <>
@@ -547,7 +547,7 @@ export default function AdminLayout({
                   <PanelLeftClose className="h-4 w-4" />
                 )}
               </Button>
-              <span aria-hidden className="h-5 w-px shrink-0 bg-border" />
+              <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-border" />
             </>
           )}
           <nav

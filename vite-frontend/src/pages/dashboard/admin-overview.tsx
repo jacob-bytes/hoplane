@@ -144,17 +144,17 @@ function Metric({
 
   return (
     <button
-      className="rounded-xl border border-border bg-card p-4 text-left shadow-xs transition-[box-shadow,border-color] duration-150 hover:border-default-300 hover:shadow-sm lg:p-5"
+      className="rounded-xl border border-border bg-card p-4 text-left shadow-xs transition-[box-shadow,border-color] duration-150 hover:border-default-300 hover:shadow-sm"
       type="button"
       onClick={onPress}
     >
       <div className="flex items-center justify-between gap-2">
         <span className="truncate text-sm text-muted-foreground">{label}</span>
-        <span className={`flex-shrink-0 rounded-lg p-2 ${chip}`}>
-          <Icon className={`h-4 w-4 lg:h-5 lg:w-5 ${iconColor}`} />
+        <span className={`flex-shrink-0 rounded-md p-1.5 ${chip}`}>
+          <Icon className={`h-4 w-4 ${iconColor}`} />
         </span>
       </div>
-      <div className="mt-2 text-2xl font-bold lg:text-3xl">
+      <div className="mt-1 text-2xl font-semibold tabular-nums">
         {value}
         {total !== undefined && (
           <span className="ml-1 text-base font-normal text-muted-foreground">
@@ -162,7 +162,7 @@ function Metric({
           </span>
         )}
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
+      <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-muted">
         {total !== undefined && total > 0 && (
           <div
             className={`h-full rounded-full ${bar}`}
@@ -170,7 +170,7 @@ function Metric({
           />
         )}
       </div>
-      <div className="mt-1.5 flex items-center justify-between gap-2 text-xs">
+      <div className="mt-1.5 flex items-center justify-between gap-2 text-[11px]">
         <span
           className={`truncate ${
             footTone === "danger"

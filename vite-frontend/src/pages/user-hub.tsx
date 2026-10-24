@@ -14,6 +14,12 @@ const TABS = [
   { key: "/limit", label: "限速" },
 ];
 
+const TITLES: Record<string, string> = {
+  "/user": "用户",
+  "/group": "分组",
+  "/limit": "限速",
+};
+
 const HELP: Record<string, string> = {
   "/user": "面板账号，分配隧道权限、流量和到期时间",
   "/group": "把隧道和用户编组，再按组授予隧道使用权限",
@@ -30,7 +36,7 @@ export default function UserHubPage() {
 
   return (
     <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
-      <PageHeader description={HELP[tab]} title="用户" />
+      <PageHeader description={HELP[tab]} title={TITLES[tab]} />
       <PageTabs
         tabs={TABS}
         value={tab}
