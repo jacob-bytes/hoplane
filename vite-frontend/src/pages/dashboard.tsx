@@ -711,7 +711,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
+              className="h-4 w-4 text-muted-foreground"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -763,7 +763,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
+              className="h-4 w-4 text-muted-foreground"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -783,7 +783,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
+              className="h-4 w-4 text-muted-foreground"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -817,7 +817,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
+              className="h-4 w-4 text-muted-foreground"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
