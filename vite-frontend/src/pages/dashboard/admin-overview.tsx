@@ -541,208 +541,181 @@ export function AdminOverview() {
         />
       </div>
 
-      <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
-        <div className="flex flex-col gap-4">
-          <Panel
-            badge={
-              issues.length > 0 && (
-                <span className="rounded-full bg-danger-50 px-2 text-xs font-semibold text-danger dark:bg-danger-500/20">
-                  {issues.length}
-                </span>
-              )
-            }
-            title="需要处理"
-          >
-            {groups.length === 0 ? (
-              <p className="py-3 text-center text-sm text-success-600">
-                一切正常
-              </p>
-            ) : (
-              <div className="space-y-2.5">
-                {groups.map((g) => {
-                  const danger = g.level === "danger";
-                  const meta = KINDS[g.kind];
-                  const Icon = danger ? CircleAlert : TriangleAlert;
-                  const hint =
-                    g.kind === "probe" && g.items[0].detail
-                      ? `${meta.hint}：${g.items[0].detail}`
-                      : meta.hint;
+      <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
+        <Panel
+          badge={
+            issues.length > 0 && (
+              <span className="rounded-full bg-danger/10 px-2 text-xs font-semibold text-danger">
+                {issues.length}
+              </span>
+            )
+          }
+          title="需要处理"
+        >
+          {groups.length === 0 ? (
+            <p className="py-3 text-center text-sm text-success-600">
+              一切正常
+            </p>
+          ) : (
+            <div className="divide-y divide-border">
+              {groups.map((g) => {
+                const danger = g.level === "danger";
+                const meta = KINDS[g.kind];
+                const Icon = danger ? CircleAlert : TriangleAlert;
+                const hint =
+                  g.kind === "probe" && g.items[0].detail
+                    ? `${meta.hint}：${g.items[0].detail}`
+                    : meta.hint;
 
-                  return (
-                    <button
-                      key={g.kind}
-                      className="flex w-full items-start gap-3 rounded-lg border border-border bg-card p-3 text-left transition-colors duration-150 hover:border-default-300 hover:bg-accent/40"
-                      type="button"
-                      onClick={() => navigate(meta.path)}
+                return (
+                  <button
+                    key={g.kind}
+                    className="flex w-full items-center gap-3 py-2.5 text-left transition-colors hover:text-foreground"
+                    type="button"
+                    onClick={() => navigate(meta.path)}
+                  >
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${danger ? "bg-danger/10 text-danger" : "bg-warning/10 text-warning"}`}
                     >
-                      <span
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-white ${danger ? "bg-danger" : "bg-warning"}`}
-                      >
-                        <Icon className="h-4 w-4" />
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-medium">
+                        {meta.label(g.items.length)}
                       </span>
-                      <span className="min-w-0 flex-1">
-                        <span className="block text-sm font-semibold">
-                          {meta.label(g.items.length)}
-                        </span>
-                        <span className="block truncate text-xs text-muted-foreground">
-                          {hint}
-                        </span>
-                        <span className="mt-1.5 flex flex-wrap gap-1.5">
-                          {g.items.slice(0, 6).map((it) => (
-                            <span
-                              key={it.name}
-                              className="max-w-[12rem] truncate rounded-full border border-divider bg-card px-2 py-0.5 text-xs text-foreground"
-                              title={it.detail}
-                            >
-                              {it.name}
-                            </span>
-                          ))}
-                          {g.items.length > 6 && (
-                            <span className="rounded-full border border-divider bg-card px-2 py-0.5 text-xs text-muted-foreground">
-                              +{g.items.length - 6}
-                            </span>
-                          )}
-                        </span>
+                      <span className="block truncate text-xs text-muted-foreground">
+                        {hint}
                       </span>
-                      <span className="hidden shrink-0 items-center self-center text-xs text-muted-foreground sm:flex">
-                        去处理
-                        <ChevronRight className="h-3.5 w-3.5" />
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </Panel>
-
-          {nodes.length > 0 && (
-            <Panel
-              action={
-                <button
-                  className="flex items-center text-xs text-primary"
-                  type="button"
-                  onClick={() => navigate("/node")}
-                >
-                  查看全部
-                  <ChevronRight className="h-3.5 w-3.5" />
-                </button>
-              }
-              className="flex-1"
-              title="服务器状态"
-            >
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
-                {shownNodes.map((n) => {
-                  const up = n.status === 1;
-                  const ip = String(n.serverIpV4 || n.serverIp || "");
-
-                  return (
-                    <button
-                      key={n.id}
-                      className="flex items-center gap-2.5 rounded-lg border border-border px-3 py-2 text-left transition-colors hover:bg-muted"
-                      type="button"
-                      onClick={() => navigate("/node")}
-                    >
-                      <span
-                        className={`h-2 w-2 shrink-0 rounded-full ${up ? "bg-success" : "bg-danger"}`}
-                      />
-                      <span className="min-w-0">
-                        <span className="block truncate text-sm font-medium">
-                          {n.name}
-                        </span>
-                        <span className="block truncate font-mono text-xs text-muted-foreground">
-                          {up ? "在线" : "离线"}
-                          {ip ? ` · ${ip}` : ""}
-                        </span>
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </Panel>
-          )}
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <Panel
-            action={<span className="text-xs text-muted-foreground">累计</span>}
-            title="节点流量"
-          >
-            <div className="mb-3 grid grid-cols-2 gap-2">
-              {(
-                [
-                  ["↑ 上传", up],
-                  ["↓ 下载", down],
-                ] as Array<[string, number]>
-              ).map(([label, bytes]) => (
-                <div key={label} className="rounded-xl bg-muted/70 px-3 py-2">
-                  <div className="text-xs text-muted-foreground">{label}</div>
-                  <div className="font-mono text-base font-semibold">
-                    {formatTraffic(bytes)}
-                  </div>
-                </div>
-              ))}
+                    </span>
+                    <span className="hidden shrink-0 items-center gap-0.5 text-xs text-muted-foreground sm:flex">
+                      去处理
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            {top.length === 0 ? (
-              <p className="py-1 text-center text-xs text-muted-foreground">
-                还没有流量数据（导入的节点不统计流量）
-              </p>
-            ) : (
-              <div className="space-y-2.5">
-                {top.map((i) => {
-                  const total = i.uploadBytes + i.downloadBytes;
-
-                  return (
-                    <div key={i.id}>
-                      <div className="mb-1 flex items-center justify-between gap-2 text-xs">
-                        <span className="truncate">{i.name}</span>
-                        <span className="shrink-0 font-mono text-muted-foreground">
-                          {formatTraffic(total)}
-                        </span>
-                      </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-                        <div
-                          className="h-full rounded-full bg-primary"
-                          style={{
-                            width: `${Math.max(4, (total / topMax) * 100)}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </Panel>
-
-          {expiring.length > 0 && (
-            <Panel className="flex-1" title="即将到期">
-              <div className="divide-y divide-border">
-                {expiring.map((e) => {
-                  const days = Math.ceil((e.at - now) / DAY);
-
-                  return (
-                    <button
-                      key={e.key}
-                      className="flex w-full items-center gap-2.5 py-2 text-left text-sm"
-                      type="button"
-                      onClick={() => navigate(e.path)}
-                    >
-                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
-                        {e.kind}
-                      </span>
-                      <span className="min-w-0 flex-1 truncate">{e.name}</span>
-                      <span
-                        className={`shrink-0 text-xs ${days <= 3 ? "text-warning-600" : "text-muted-foreground"}`}
-                      >
-                        {daysLeft(e.at)}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </Panel>
           )}
-        </div>
+        </Panel>
+
+        <Panel
+          action={
+            <span className="text-xs text-muted-foreground">
+              {formatTraffic(up + down)}
+            </span>
+          }
+          title="节点流量"
+        >
+          <div className="mb-2 flex items-center gap-5 text-sm">
+            <span className="text-muted-foreground">
+              ↑ <span className="text-foreground">{formatTraffic(up)}</span>
+            </span>
+            <span className="text-muted-foreground">
+              ↓ <span className="text-foreground">{formatTraffic(down)}</span>
+            </span>
+          </div>
+          {top.length === 0 ? (
+            <p className="py-1 text-center text-xs text-muted-foreground">
+              还没有流量数据（导入的节点不统计流量）
+            </p>
+          ) : (
+            <div className="divide-y divide-border">
+              {top.map((i) => {
+                const total = i.uploadBytes + i.downloadBytes;
+
+                return (
+                  <div key={i.id} className="py-2">
+                    <div className="flex items-baseline justify-between gap-2 text-sm">
+                      <span className="min-w-0 truncate">{i.name}</span>
+                      <span className="shrink-0 font-mono text-xs text-muted-foreground">
+                        {formatTraffic(total)}
+                      </span>
+                    </div>
+                    <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-muted">
+                      <div
+                        className="h-full rounded-full bg-primary"
+                        style={{
+                          width: `${Math.max(4, (total / topMax) * 100)}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Panel>
+
+        {nodes.length > 0 && (
+          <Panel
+            action={
+              <button
+                className="flex items-center text-xs text-primary"
+                type="button"
+                onClick={() => navigate("/node")}
+              >
+                查看全部
+                <ChevronRight className="h-3.5 w-3.5" />
+              </button>
+            }
+            title="服务器状态"
+          >
+            <div className="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+              {shownNodes.map((n) => {
+                const up = n.status === 1;
+                const ip = String(n.serverIpV4 || n.serverIp || "");
+
+                return (
+                  <button
+                    key={n.id}
+                    className="flex min-w-0 items-center gap-2.5 py-2 text-left transition-colors hover:text-foreground"
+                    type="button"
+                    onClick={() => navigate("/node")}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 shrink-0 rounded-full ${up ? "bg-success" : "bg-danger"}`}
+                    />
+                    <span className="min-w-0 flex-1 truncate text-sm">
+                      {n.name}
+                    </span>
+                    <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
+                      {ip || (up ? "在线" : "离线")}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </Panel>
+        )}
+
+        {expiring.length > 0 && (
+          <Panel title="即将到期">
+            <div className="divide-y divide-border">
+              {expiring.map((e) => {
+                const days = Math.ceil((e.at - now) / DAY);
+
+                return (
+                  <button
+                    key={e.key}
+                    className="flex w-full items-center gap-2.5 py-2.5 text-left text-sm transition-colors hover:text-foreground"
+                    type="button"
+                    onClick={() => navigate(e.path)}
+                  >
+                    <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
+                      {e.kind}
+                    </span>
+                    <span className="min-w-0 flex-1 truncate">{e.name}</span>
+                    <span
+                      className={`shrink-0 text-xs ${days <= 3 ? "text-warning" : "text-muted-foreground"}`}
+                    >
+                      {daysLeft(e.at)}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </Panel>
+        )}
       </div>
     </AnimatedPage>
   );

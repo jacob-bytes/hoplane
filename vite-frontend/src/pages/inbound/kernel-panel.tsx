@@ -7,7 +7,7 @@ import type {
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Plus } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 
 import { groupItems } from "./group";
 import { eligibleNodes } from "./inbound-form-modal";
@@ -247,22 +247,21 @@ export function KernelPanel({
     return (
       <button
         key={k.id}
-        className="flex min-w-0 items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-2 text-left transition-colors hover:bg-accent/40"
+        className="flex min-w-0 items-center gap-2 rounded-md py-1.5 pl-6 pr-2 text-left transition-colors hover:bg-accent/40"
         type="button"
         onClick={() => setSheetFor(k.id)}
       >
         <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dot}`} />
-        <span className="min-w-0 flex-1">
-          <span className="block truncate text-sm font-medium text-foreground">
-            {kernelName(k.kernelType)}
-          </span>
-          <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
-            {k.installedVersion ? shortVersion(k.installedVersion) : k.version}
-            {" · "}
-            {!k.synced && !k.lastError ? "待同步" : st.label} · {k.inboundCount}{" "}
-            个入站
-          </span>
+        <span className="shrink-0 text-sm font-medium text-foreground">
+          {kernelName(k.kernelType)}
         </span>
+        <span className="min-w-0 flex-1 truncate text-[11px] text-muted-foreground">
+          {k.installedVersion ? shortVersion(k.installedVersion) : k.version}
+          {" · "}
+          {!k.synced && !k.lastError ? "待同步" : st.label} · {k.inboundCount}{" "}
+          个入站
+        </span>
+        <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
       </button>
     );
   };
@@ -291,13 +290,16 @@ export function KernelPanel({
           </CardBody>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 items-start">
+        <div className="overflow-hidden rounded-xl border border-border bg-card">
           {nodeGroups.map((g) => {
             const online = g.items[0]?.nodeOnline;
 
             return (
-              <Card key={g.key} className="shadow-sm overflow-hidden">
-                <div className="flex items-center gap-2 pb-0 pl-3 pr-1.5 pt-2">
+              <div
+                key={g.key}
+                className="border-b border-border last:border-b-0"
+              >
+                <div className="flex items-center gap-2 px-4 pb-1 pt-2.5">
                   <span
                     className={`h-2 w-2 shrink-0 rounded-full ${
                       online ? "bg-success" : "bg-default-300"
@@ -321,11 +323,9 @@ export function KernelPanel({
                     内核
                   </Button>
                 </div>
-                <div className="flex flex-col gap-2 p-3">
-                  {g.items.map(renderKernel)}
-                </div>
+                <div className="px-2 pb-2">{g.items.map(renderKernel)}</div>
                 {g.items.some((k) => k.lastError) && (
-                  <div className="space-y-1 px-3 pb-3">
+                  <div className="space-y-1 px-4 pb-3">
                     {g.items
                       .filter((k) => k.lastError)
                       .map((k) => (
@@ -338,7 +338,7 @@ export function KernelPanel({
                       ))}
                   </div>
                 )}
-              </Card>
+              </div>
             );
           })}
         </div>
