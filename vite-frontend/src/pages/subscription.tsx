@@ -836,7 +836,7 @@ function Editor({
                         <span className="text-muted-foreground">→</span>
                       )}
                       <span
-                        className={`rounded-lg px-2 py-1 ${s === "中转节点" ? "bg-secondary-100 text-secondary-700 dark:bg-secondary-500/20" : s === "落地节点" ? "bg-warning-100 text-warning-700 dark:bg-warning-500/20" : "bg-card text-muted-foreground"}`}
+                        className={`rounded-lg px-2 py-1 ${s === "中转节点" ? "bg-muted text-muted-foreground" : s === "落地节点" ? "bg-warning/10 text-warning-700 dark:text-warning-400" : "bg-card text-muted-foreground"}`}
                       >
                         {s}
                       </span>
@@ -1041,7 +1041,7 @@ function Editor({
                           </span>
                           {p.chain && (
                             <span
-                              className={`shrink-0 rounded-full px-1.5 py-0.5 ${p.chain === "landing" ? "bg-warning-100 text-warning-700 dark:bg-warning-500/20" : "bg-secondary-100 text-secondary-700 dark:bg-secondary-500/20"}`}
+                              className={`shrink-0 rounded-full px-1.5 py-0.5 ${p.chain === "landing" ? "bg-warning/10 text-warning-700 dark:text-warning-400" : "bg-muted text-muted-foreground"}`}
                             >
                               {p.chain === "landing" ? "落地" : "中转"}
                             </span>
@@ -1819,7 +1819,7 @@ function ChainRoleButtons({
               ? r === "landing"
                 ? "border-warning bg-warning-50 text-warning-700 dark:bg-warning-500/20"
                 : r === "relay"
-                  ? "border-secondary bg-secondary-50 text-secondary-700 dark:bg-secondary-500/20"
+                  ? "border-primary bg-primary/5 text-primary"
                   : "border-default-400 bg-muted text-foreground"
               : "border-border text-muted-foreground hover:border-default-400 dark:border-border"
           }`}

@@ -20,10 +20,16 @@ const CARD_POINTS = 3;
 type Tone = "success" | "warning" | "danger" | "default";
 
 export const TONE: Record<Tone, [string, string]> = {
-  success: ["bg-emerald-500/15 text-emerald-600", "bg-emerald-500"],
-  warning: ["bg-amber-500/15 text-amber-600", "bg-amber-500"],
-  danger: ["bg-rose-500/15 text-rose-600", "bg-rose-500"],
-  default: ["bg-default-200/70 text-muted-foreground", "bg-default-400"],
+  success: [
+    "bg-success/10 text-success-700 dark:text-success-400",
+    "bg-success",
+  ],
+  warning: [
+    "bg-warning/10 text-warning-700 dark:text-warning-400",
+    "bg-warning",
+  ],
+  danger: ["bg-destructive/10 text-destructive", "bg-destructive"],
+  default: ["bg-muted text-muted-foreground", "bg-default-400"],
 };
 
 const RANK: Record<Tone, number> = {
@@ -292,7 +298,9 @@ export function LatencyCell({
                 {note ? `${note} · ` : ""}
                 {more > 0 ? `共 ${points.length} 个 · ` : ""}
                 {hiddenBad > 0 && (
-                  <span className="text-rose-600">{hiddenBad} 个异常 · </span>
+                  <span className="text-destructive">
+                    {hiddenBad} 个异常 ·{" "}
+                  </span>
                 )}
                 {probe ? ago(probe.checkedAt) : ""}
               </span>

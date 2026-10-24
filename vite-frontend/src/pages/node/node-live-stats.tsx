@@ -15,7 +15,7 @@ function bytes(v: number): string {
 }
 
 function tone(v: number): string {
-  return v >= 85 ? "bg-danger" : v >= 60 ? "bg-warning" : "bg-success";
+  return v >= 85 ? "bg-danger" : v >= 60 ? "bg-warning" : "bg-primary/70";
 }
 
 function Meter({ label, value }: { label: string; value?: number }) {
@@ -64,8 +64,10 @@ export function NodeLiveStats({
     </>
   );
   const rate = (v?: number) => (v === undefined ? "—" : `${bytes(v)}/s`);
-  const upIcon = <ArrowUp className="h-3 w-3 shrink-0 text-emerald-500" />;
-  const downIcon = <ArrowDown className="h-3 w-3 shrink-0 text-sky-500" />;
+  const upIcon = <ArrowUp className="h-3 w-3 shrink-0 text-muted-foreground" />;
+  const downIcon = (
+    <ArrowDown className="h-3 w-3 shrink-0 text-muted-foreground" />
+  );
   const total = month ? bytes(month[0] + month[1]) : "—";
   const split = month ? `↑${bytes(month[1])} ↓${bytes(month[0])}` : "";
 

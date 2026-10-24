@@ -1710,12 +1710,12 @@ export default function NodePage({
                                     </h3>
                                     <div
                                       className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0
-                                      ${connectionStatusMeta.color === "success" ? "bg-emerald-500/20 text-emerald-600" : "bg-rose-500/20 text-rose-600"}
+                                      ${connectionStatusMeta.color === "success" ? "bg-success/10 text-success-700 dark:text-success-400" : "bg-destructive/10 text-destructive"}
                                     `}
                                       title={connectionStatusMeta.text}
                                     >
                                       <span
-                                        className={`h-1.5 w-1.5 rounded-full ${connectionStatusMeta.color === "success" ? "bg-emerald-500" : "bg-rose-500"}`}
+                                        className={`h-1.5 w-1.5 rounded-full ${connectionStatusMeta.color === "success" ? "bg-success" : "bg-destructive"}`}
                                       />
                                       {connectionStatusMeta.text}
                                     </div>
