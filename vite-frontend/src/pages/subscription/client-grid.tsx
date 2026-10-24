@@ -45,7 +45,7 @@ export function SubClientGrid({
         return (
           <div
             key={c.key}
-            className="relative flex h-11 items-center rounded-xl border border-divider transition-colors hover:bg-default-100"
+            className="relative flex h-11 items-center rounded-xl border border-divider transition-colors hover:bg-muted"
           >
             <button
               className="h-full min-w-0 flex-1 truncate pl-3 pr-9 text-left text-sm font-medium"
@@ -63,7 +63,7 @@ export function SubClientGrid({
             </button>
             <button
               aria-label={`复制 ${c.label} 订阅链接`}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-default-400 hover:bg-default-200 hover:text-default-600"
+              className="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-muted-foreground hover:bg-default-200 hover:text-muted-foreground"
               type="button"
               onClick={() => copyText(url, `${c.label} 订阅已复制`)}
             >

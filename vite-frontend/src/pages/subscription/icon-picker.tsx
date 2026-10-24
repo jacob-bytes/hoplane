@@ -34,9 +34,7 @@ export function GroupIcon({
   useEffect(() => setFailed(false), [src]);
 
   if (!src || failed)
-    return (
-      <span aria-hidden className={`${size} shrink-0 rounded bg-default-100`} />
-    );
+    return <span aria-hidden className={`${size} shrink-0 rounded bg-muted`} />;
 
   return (
     <img
@@ -233,7 +231,7 @@ export function IconPicker({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={isOpen}
       placement="center"
@@ -245,7 +243,7 @@ export function IconPicker({
         <ModalHeader className="flex items-center gap-2">
           <button
             aria-label="返回"
-            className="rounded-lg p-1 text-default-500 hover:bg-default-100"
+            className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
             type="button"
             onClick={onClose}
           >
@@ -279,8 +277,8 @@ export function IconPicker({
               </button>
             )}
           </div>
-          <label className="flex items-center gap-2 rounded-xl border border-divider bg-content1 px-3 py-2">
-            <Search className="h-4 w-4 text-default-400" />
+          <label className="flex items-center gap-2 rounded-xl border border-divider bg-card px-3 py-2">
+            <Search className="h-4 w-4 text-muted-foreground" />
             <input
               className="min-w-0 flex-1 bg-transparent text-sm outline-none"
               placeholder="搜索图标名称，例如 YouTube"
@@ -291,7 +289,7 @@ export function IconPicker({
         </div>
         <ModalBody className="space-y-4 pb-4">
           {loading ? (
-            <p className="py-6 text-center text-sm text-default-400">
+            <p className="py-6 text-center text-sm text-muted-foreground">
               正在加载图标库…
             </p>
           ) : error ? (
@@ -301,24 +299,24 @@ export function IconPicker({
               {shown.slice(0, 300).map((icon) => (
                 <button
                   key={icon.url}
-                  className={`flex flex-col items-center gap-1 rounded-lg p-1.5 text-center hover:bg-default-100 ${value === icon.url ? "bg-primary/10 ring-1 ring-primary" : ""}`}
+                  className={`flex flex-col items-center gap-1 rounded-lg p-1.5 text-center hover:bg-muted ${value === icon.url ? "bg-primary/10 ring-1 ring-primary" : ""}`}
                   title={icon.name}
                   type="button"
                   onClick={() => pick(icon.url)}
                 >
                   <GroupIcon size="h-9 w-9" src={icon.url} />
-                  <span className="w-full truncate text-[10px] text-default-500">
+                  <span className="w-full truncate text-[10px] text-muted-foreground">
                     {icon.name.replace(/\.(png|jpe?g|svg|webp|gif)$/i, "")}
                   </span>
                 </button>
               ))}
               {!shown.length && (
-                <p className="col-span-full py-6 text-center text-sm text-default-400">
+                <p className="col-span-full py-6 text-center text-sm text-muted-foreground">
                   没有匹配的图标
                 </p>
               )}
               {shown.length > 300 && (
-                <p className="col-span-full text-center text-xs text-default-400">
+                <p className="col-span-full text-center text-xs text-muted-foreground">
                   只显示前 300 个，请输入名称搜索
                 </p>
               )}
@@ -346,7 +344,7 @@ export function IconPicker({
               </Button>
             </div>
             <div className="flex items-center justify-between gap-2">
-              <span className="flex items-center gap-2 text-xs text-default-500">
+              <span className="flex items-center gap-2 text-xs text-muted-foreground">
                 默认 <GroupIcon src={fallback} />
                 {!fallback && "无图标"}
               </span>
@@ -363,7 +361,7 @@ export function IconPicker({
 
           <div className="space-y-2 rounded-xl border border-divider p-3">
             <p className="text-sm font-medium">添加图标库</p>
-            <p className="text-xs text-default-500">
+            <p className="text-xs text-muted-foreground">
               填写图标订阅 JSON 地址（Quantumult X / Loon / BoxJs 通用格式，含
               name 和 icons），由面板下载。
             </p>

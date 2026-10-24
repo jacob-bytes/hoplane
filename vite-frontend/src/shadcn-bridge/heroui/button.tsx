@@ -84,22 +84,17 @@ function mapSize(
 
 const solidColorClassMap: Partial<Record<HeroButtonColor, string>> = {
   default:
-    "bg-default/10 dark:bg-default/20 backdrop-blur-md text-default-800 dark:text-default-300 hover:bg-default/20 dark:hover:bg-default/30",
-  success:
-    "bg-success/10 dark:bg-success/20 backdrop-blur-md text-success-700 dark:text-success-400 hover:bg-success/20 dark:hover:bg-success/30",
-  warning:
-    "bg-warning/10 dark:bg-warning/20 backdrop-blur-md text-warning-700 dark:text-warning-400 hover:bg-warning/20 dark:hover:bg-warning/30",
-  primary:
-    "bg-primary/10 dark:bg-primary/20 backdrop-blur-md text-primary-700 dark:text-primary-400 hover:bg-primary/20 dark:hover:bg-primary/30",
-  secondary:
-    "bg-secondary/10 dark:bg-secondary/20 backdrop-blur-md text-secondary-700 dark:text-secondary-400 hover:bg-secondary/20 dark:hover:bg-secondary/30",
-  danger:
-    "bg-danger/10 dark:bg-danger/20 backdrop-blur-md text-danger-700 dark:text-danger-400 hover:bg-danger/20 dark:hover:bg-danger/30",
+    "bg-default-100 text-foreground hover:bg-default-200/80 dark:bg-default-100 dark:hover:bg-default-200",
+  primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+  success: "bg-success text-white hover:bg-success/90",
+  warning: "bg-warning text-white hover:bg-warning/90",
+  danger: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
 };
 
 const borderedColorClassMap: Record<HeroButtonColor, string> = {
   default:
-    "bg-default/10 dark:bg-default/20 backdrop-blur-md text-default-700 dark:text-default-300 hover:bg-default/20 dark:hover:bg-default/30",
+    "bg-default/10 dark:bg-default/20  text-foreground dark:text-default-300 hover:bg-default/20 dark:hover:bg-default/30",
   primary:
     "border-primary text-primary hover:bg-primary-50 dark:border-primary-500/60 dark:text-primary-300 dark:hover:bg-primary-900/20",
   secondary:
@@ -114,7 +109,7 @@ const borderedColorClassMap: Record<HeroButtonColor, string> = {
 
 const lightColorClassMap: Record<HeroButtonColor, string> = {
   default:
-    "text-default-700 hover:bg-default-100 dark:text-default-600 dark:hover:bg-default-200/40",
+    "text-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-default-200/40",
   primary:
     "text-primary hover:bg-primary-100/70 dark:text-primary-300 dark:hover:bg-primary-900/30",
   secondary:
@@ -129,26 +124,26 @@ const lightColorClassMap: Record<HeroButtonColor, string> = {
 
 const flatColorClassMap: Record<HeroButtonColor, string> = {
   default:
-    "bg-default/10 dark:bg-default/20 backdrop-blur-md text-default-700 dark:text-default-300 hover:bg-default/20 dark:hover:bg-default/30",
+    "bg-default/10 dark:bg-default/20  text-foreground dark:text-default-300 hover:bg-default/20 dark:hover:bg-default/30",
   primary:
-    "bg-primary/10 dark:bg-primary/20 backdrop-blur-md text-primary-700 dark:text-primary-400 hover:bg-primary/20 dark:hover:bg-primary/30",
+    "bg-primary/10 dark:bg-primary/20  text-primary-700 dark:text-primary-400 hover:bg-primary/20 dark:hover:bg-primary/30",
   secondary:
-    "bg-secondary/10 dark:bg-secondary/20 backdrop-blur-md text-secondary-700 dark:text-secondary-400 hover:bg-secondary/20 dark:hover:bg-secondary/30",
+    "bg-secondary/10 dark:bg-secondary/20  text-secondary-700 dark:text-secondary-400 hover:bg-secondary/20 dark:hover:bg-secondary/30",
   success:
-    "bg-success/10 dark:bg-success/20 backdrop-blur-md text-success-700 dark:text-success-400 hover:bg-success/20 dark:hover:bg-success/30",
+    "bg-success/10 dark:bg-success/20  text-success-700 dark:text-success-400 hover:bg-success/20 dark:hover:bg-success/30",
   warning:
-    "bg-warning/10 dark:bg-warning/20 backdrop-blur-md text-warning-700 dark:text-warning-400 hover:bg-warning/20 dark:hover:bg-warning/30",
+    "bg-warning/10 dark:bg-warning/20  text-warning-700 dark:text-warning-400 hover:bg-warning/20 dark:hover:bg-warning/30",
   danger:
-    "bg-danger/10 dark:bg-danger/20 backdrop-blur-md text-danger-700 dark:text-danger-400 hover:bg-danger/20 dark:hover:bg-danger/30",
+    "bg-danger/10 dark:bg-danger/20  text-danger-700 dark:text-danger-400 hover:bg-danger/20 dark:hover:bg-danger/30",
 };
 
 const shadowColorClassMap: Record<HeroButtonColor, string> = {
-  default: "shadow-md shadow-default-400/40",
-  primary: "shadow-md shadow-primary-500/35",
-  secondary: "shadow-md shadow-secondary-500/35",
-  success: "shadow-md shadow-success-500/35",
-  warning: "shadow-md shadow-warning-500/40",
-  danger: "shadow-md shadow-danger-500/35",
+  default: "shadow-xs",
+  primary: "shadow-xs",
+  secondary: "shadow-xs",
+  success: "shadow-xs",
+  warning: "shadow-xs",
+  danger: "shadow-xs",
 };
 
 function mapColorClass(

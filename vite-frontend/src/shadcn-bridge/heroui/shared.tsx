@@ -37,7 +37,7 @@ export function FieldContainer({
       ) : null}
       {children}
       {description ? (
-        <p className="text-xs text-default-500">{description}</p>
+        <p className="text-xs text-muted-foreground">{description}</p>
       ) : null}
       {isInvalid && errorMessage ? (
         <p className="text-xs text-danger">{errorMessage}</p>

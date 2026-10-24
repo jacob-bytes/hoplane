@@ -302,7 +302,7 @@ export default function LimitPage({
         {sheetRule && (
           <div className="space-y-2 text-sm">
             <div className="flex justify-between gap-3">
-              <span className="shrink-0 text-default-500">速度限制</span>
+              <span className="shrink-0 text-muted-foreground">速度限制</span>
               <span className="font-mono text-xs leading-5">
                 {sheetRule.speed} Mbps
               </span>
@@ -315,7 +315,7 @@ export default function LimitPage({
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={modalOpen}
         placement="center"
@@ -330,7 +330,7 @@ export default function LimitPage({
                 <h2 className="text-xl font-bold">
                   {isEdit ? "编辑限速规则" : "新建限速规则"}
                 </h2>
-                <p className="text-small text-default-500">
+                <p className="text-small text-muted-foreground">
                   {isEdit ? "修改现有限速规则的配置信息" : "创建新的限速规则"}
                 </p>
               </ModalHeader>
@@ -351,7 +351,7 @@ export default function LimitPage({
                   <Input
                     endContent={
                       <div className="pointer-events-none flex items-center">
-                        <span className="text-default-400 text-small">
+                        <span className="text-muted-foreground text-small">
                           Mbps
                         </span>
                       </div>
@@ -393,7 +393,7 @@ export default function LimitPage({
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={deleteModalOpen}
         placement="center"
@@ -408,14 +408,14 @@ export default function LimitPage({
                 <h2 className="text-lg font-bold text-danger">确认删除</h2>
               </ModalHeader>
               <ModalBody>
-                <p className="text-default-600">
+                <p className="text-muted-foreground">
                   确定要删除限速规则{" "}
                   <span className="font-semibold text-foreground">
                     &quot;{ruleToDelete?.name}&quot;
                   </span>{" "}
                   吗？
                 </p>
-                <p className="text-small text-default-500 mt-2">
+                <p className="text-small text-muted-foreground mt-2">
                   此操作无法撤销，删除后该规则将永久消失。
                 </p>
               </ModalBody>

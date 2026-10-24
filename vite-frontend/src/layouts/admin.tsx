@@ -309,13 +309,13 @@ export default function AdminLayout({
 
   return (
     <div
-      className={`flex ${isMobile ? "min-h-screen p-0" : "h-screen p-6 gap-6 [@media(max-height:760px)]:p-4 [@media(max-height:760px)]:gap-4"} bg-mesh-gradient overflow-hidden`}
+      className={`flex ${isMobile ? "min-h-screen p-0" : "h-screen p-3 gap-3 [@media(max-height:760px)]:p-2 [@media(max-height:760px)]:gap-2"} bg-background overflow-hidden`}
     >
       {/* 移动端遮罩层 */}
       {isMobile && mobileMenuVisible && (
         <button
           aria-label="关闭菜单"
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40"
+          className="fixed inset-0 bg-foreground/20 z-40"
           type="button"
           onClick={hideMobileMenu}
         />
@@ -324,30 +324,29 @@ export default function AdminLayout({
       {/* 左侧菜单栏 */}
       <aside
         className={`
-        ${isMobile ? "fixed h-screen top-0 left-0 rounded-r-3xl" : "relative h-full rounded-3xl"}
+        ${isMobile ? "fixed h-screen top-0 left-0 rounded-r-xl" : "relative h-full rounded-xl"}
         ${isMobile && !mobileMenuVisible ? "-translate-x-full" : "translate-x-0"}
-        ${isMobile ? "w-64" : isCollapsed ? "w-20" : "w-[260px]"}
-        bg-white/70 dark:bg-zinc-900/70 backdrop-blur-3xl
-        shadow-[0_10px_30px_rgba(0,0,0,0.1)]
-        border border-white/80 dark:border-white/10
+        ${isMobile ? "w-64" : isCollapsed ? "w-[76px]" : "w-[248px]"}
+        bg-card
+        border border-border
         z-50
         transition-all duration-300 ease-in-out
         flex flex-col flex-shrink-0      `}
       >
         {/* Logo 区域 */}
-        <div className="px-6 py-6 [@media(max-height:760px)]:py-4 flex items-center overflow-hidden whitespace-nowrap box-border">
-          <BrandLogo className="h-10 w-10 flex-shrink-0 rounded-xl" size={40} />
+        <div className="px-4 py-4 [@media(max-height:760px)]:py-3 flex items-center overflow-hidden whitespace-nowrap box-border">
+          <BrandLogo className="h-8 w-8 flex-shrink-0 rounded-lg" size={32} />
           <div
             className={`transition-all duration-300 overflow-hidden ${isCollapsed ? "max-w-0 opacity-0 ml-0" : "max-w-[180px] opacity-100 ml-3"}`}
           >
-            <h1 className="text-xl font-bold text-foreground overflow-hidden whitespace-nowrap text-ellipsis">
+            <h1 className="text-[15px] font-semibold tracking-tight text-foreground overflow-hidden whitespace-nowrap text-ellipsis">
               {siteConfig.name}
             </h1>
           </div>
         </div>
 
         {/* 菜单导航 */}
-        <nav className="flex-1 px-4 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <nav className="flex-1 px-2.5 overflow-y-auto overflow-x-hidden scrollbar-hide">
           <ul className="space-y-1">
             {filteredMenuItems.map((item) => {
               const isActive =
@@ -365,25 +364,25 @@ export default function AdminLayout({
                   {isAdmin &&
                     item.section &&
                     (isCollapsed ? (
-                      <div className="mx-3 my-2 border-t border-default-200/70" />
+                      <div className="mx-2 my-2 border-t border-border" />
                     ) : (
-                      <div className="px-3 pb-1 pt-3 text-[11px] font-medium tracking-wide text-default-400 [@media(max-height:760px)]:pt-2">
+                      <div className="px-2.5 pb-1.5 pt-4 text-[11px] font-medium tracking-wide text-muted-foreground/80 [@media(max-height:760px)]:pt-3">
                         {item.section}
                       </div>
                     ))}
                   <motion.button
                     aria-disabled={isMonitorBlocked}
                     className={`
-                       w-full flex items-center px-3 py-2.5 rounded-2xl text-left
-                       relative min-h-[44px] overflow-hidden transition-colors
-                       [@media(max-height:760px)]:min-h-[38px] [@media(max-height:760px)]:py-2
+                       w-full flex items-center px-2.5 py-2 rounded-lg text-left
+                       relative min-h-[40px] overflow-hidden transition-colors duration-150
+                       [@media(max-height:760px)]:min-h-[36px] [@media(max-height:760px)]:py-1.5
                        ${isMonitorBlocked ? "opacity-60" : ""}
                        ${
                          isActive
-                           ? "text-primary dark:text-primary-400 font-semibold"
+                           ? "text-foreground font-medium"
                            : isMonitorBlocked
-                             ? "text-gray-500 dark:text-gray-400 font-medium"
-                             : "text-gray-600 dark:text-gray-300 font-medium"
+                             ? "text-muted-foreground font-normal"
+                             : "text-muted-foreground hover:text-foreground font-normal"
                        }
                      `}
                     title={
@@ -398,7 +397,7 @@ export default function AdminLayout({
                   >
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 rounded-2xl bg-white/60 dark:bg-white/10 backdrop-blur-xl shadow-[0_12px_36px_rgba(0,0,0,0.18)] border border-white dark:border-white/20"
+                        className="absolute inset-0 rounded-lg bg-accent"
                         layoutId="sidebar-active"
                         transition={{
                           type: "spring",
@@ -409,12 +408,14 @@ export default function AdminLayout({
                     )}
                     {!isActive && (
                       <motion.div
-                        className="absolute inset-0 rounded-2xl bg-white/40 dark:bg-white/5 opacity-0"
+                        className="absolute inset-0 rounded-lg bg-accent/60 opacity-0"
                         transition={{ duration: 0.15 }}
                         whileHover={{ opacity: 1 }}
                       />
                     )}
-                    <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center relative z-10">
+                    <div
+                      className={`relative z-10 flex h-6 w-6 flex-shrink-0 items-center justify-center ${isActive ? "text-primary" : ""}`}
+                    >
                       {item.icon}
                     </div>
                     <div
@@ -452,7 +453,7 @@ export default function AdminLayout({
               ].map((a) => (
                 <button
                   key={a.key}
-                  className={`flex h-9 [@media(max-height:760px)]:h-8 items-center rounded-xl text-sm text-default-500 transition-colors hover:bg-default-100 hover:text-foreground ${isCollapsed ? "justify-center px-0" : "gap-3 px-3"}`}
+                  className={`flex h-9 [@media(max-height:760px)]:h-8 items-center rounded-xl text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground ${isCollapsed ? "justify-center px-0" : "gap-3 px-3"}`}
                   title={a.label}
                   type="button"
                   onClick={a.onPress}
@@ -472,10 +473,10 @@ export default function AdminLayout({
               className={`min-w-0 transition-all duration-300 overflow-hidden flex items-center ${isCollapsed ? "max-w-0 opacity-0 hidden" : "max-w-[200px] opacity-100"}`}
             >
               <VersionFooter
-                poweredClassName="text-xs text-gray-400 dark:text-gray-500"
+                poweredClassName="text-xs text-muted-foreground/70"
                 updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-rose-500/90 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
                 version={siteConfig.version}
-                versionClassName="text-xs text-gray-400 dark:text-gray-500"
+                versionClassName="text-xs text-muted-foreground/70"
               />
             </div>
 
@@ -483,7 +484,7 @@ export default function AdminLayout({
             {!isMobile && (
               <Button
                 isIconOnly
-                className="flex-shrink-0 text-gray-400 hover:text-gray-700 dark:text-gray-500 dark:hover:text-gray-300 min-w-0 w-9 h-9 rounded-full"
+                className="flex h-9 w-9 min-w-0 flex-shrink-0 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
                 size="sm"
                 variant="light"
                 onPress={toggleCollapse}
@@ -531,7 +532,7 @@ export default function AdminLayout({
         {isMobile && (
           <Button
             isIconOnly
-            className="absolute top-4 left-4 z-40 bg-white/20 dark:bg-zinc-900/20 backdrop-blur-md shadow-sm border border-white/80 dark:border-white/10"
+            className="absolute top-3 left-3 z-40 border border-border bg-card shadow-xs"
             variant="flat"
             onPress={toggleMobileMenu}
           >

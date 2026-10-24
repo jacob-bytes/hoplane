@@ -528,7 +528,7 @@ export default function GroupPage({
     <div className="space-y-2 text-sm">
       {rows.map(([k, v]) => (
         <div key={k} className="flex justify-between gap-3">
-          <span className="shrink-0 text-default-500">{k}</span>
+          <span className="shrink-0 text-muted-foreground">{k}</span>
           <span className="min-w-0 break-all text-right">{v}</span>
         </div>
       ))}
@@ -661,8 +661,8 @@ export default function GroupPage({
 
           {activeTab === "perm" && (
             <>
-              <div className="mb-4 rounded-xl border border-divider bg-content1 p-3 shadow-sm">
-                <p className="mb-2 text-xs text-default-500">
+              <div className="mb-4 rounded-xl border border-divider bg-card p-3 shadow-sm">
+                <p className="mb-2 text-xs text-muted-foreground">
                   让用户分组里的用户可以使用隧道分组里的隧道
                 </p>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
@@ -874,7 +874,7 @@ export default function GroupPage({
           <Modal
             backdrop="blur"
             classNames={{
-              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
             isOpen={tunnelGroupModalOpen}
             onOpenChange={onTunnelGroupModalChange}
@@ -922,7 +922,7 @@ export default function GroupPage({
           <Modal
             backdrop="blur"
             classNames={{
-              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
             isOpen={userGroupModalOpen}
             onOpenChange={onUserGroupModalChange}
@@ -970,7 +970,7 @@ export default function GroupPage({
           <Modal
             backdrop="blur"
             classNames={{
-              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
             isOpen={tunnelAssignModalOpen}
             onOpenChange={onTunnelAssignModalChange}
@@ -994,12 +994,12 @@ export default function GroupPage({
                   {(item) => <SelectItem key={item.id}>{item.name}</SelectItem>}
                 </Select>
                 <p
-                  className="w-full min-w-0 max-w-full text-xs text-default-500 truncate"
+                  className="w-full min-w-0 max-w-full text-xs text-muted-foreground truncate"
                   title={`当前已选：${selectedTunnelSummary}`}
                 >
                   当前已选：{selectedTunnelSummary}
                 </p>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   不选择任何隧道并保存将清空该分组成员。
                 </p>
               </ModalBody>
@@ -1021,7 +1021,7 @@ export default function GroupPage({
           <Modal
             backdrop="blur"
             classNames={{
-              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+              base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
             isOpen={userAssignModalOpen}
             onOpenChange={onUserAssignModalChange}
@@ -1045,12 +1045,12 @@ export default function GroupPage({
                   {(item) => <SelectItem key={item.id}>{item.user}</SelectItem>}
                 </Select>
                 <p
-                  className="w-full min-w-0 max-w-full text-xs text-default-500 truncate"
+                  className="w-full min-w-0 max-w-full text-xs text-muted-foreground truncate"
                   title={`当前已选：${selectedUserSummary}`}
                 >
                   当前已选：{selectedUserSummary}
                 </p>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   不选择任何用户并保存将清空该分组成员。
                 </p>
               </ModalBody>

@@ -91,7 +91,7 @@ export const TableBody = React.forwardRef<
     return (
       <tbody ref={ref} className={className} {...props}>
         <tr>
-          <td className="p-4 text-center text-default-500" colSpan={999}>
+          <td className="p-4 text-center text-muted-foreground" colSpan={999}>
             {loadingContent ?? "加载中..."}
           </td>
         </tr>
@@ -104,7 +104,7 @@ export const TableBody = React.forwardRef<
       return (
         <tbody ref={ref} className={className} {...props}>
           <tr>
-            <td className="p-4 text-center text-default-500" colSpan={999}>
+            <td className="p-4 text-center text-muted-foreground" colSpan={999}>
               {emptyContent ?? "暂无数据"}
             </td>
           </tr>
@@ -133,7 +133,7 @@ export const TableBody = React.forwardRef<
     return (
       <tbody ref={ref} className={className} {...props}>
         <tr>
-          <td className="p-4 text-center text-default-500" colSpan={999}>
+          <td className="p-4 text-center text-muted-foreground" colSpan={999}>
             {emptyContent ?? "暂无数据"}
           </td>
         </tr>
@@ -157,7 +157,7 @@ export function TableColumn({
   return (
     <th
       className={cn(
-        "px-3 py-2 text-left font-medium text-default-600",
+        "px-3 py-2 text-left font-medium text-muted-foreground",
         thClassName,
         className,
       )}

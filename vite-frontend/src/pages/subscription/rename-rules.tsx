@@ -100,7 +100,7 @@ export function RenameRules({
                   )
                 }
               />
-              <span className="shrink-0 text-xs text-default-400">→</span>
+              <span className="shrink-0 text-xs text-muted-foreground">→</span>
               <input
                 aria-label={`第 ${i + 1} 条：替换为`}
                 className={`${field} flex-[2] border-divider`}
@@ -116,7 +116,7 @@ export function RenameRules({
               />
               <button
                 aria-label={`删除第 ${i + 1} 条`}
-                className="shrink-0 rounded-lg p-2 text-default-400 hover:bg-danger-50 hover:text-danger"
+                className="shrink-0 rounded-lg p-2 text-muted-foreground hover:bg-danger-50 hover:text-danger"
                 type="button"
                 onClick={() => update(rows.filter((_, j) => j !== i))}
               >
@@ -128,7 +128,7 @@ export function RenameRules({
         );
       })}
       <button
-        className="flex h-9 w-full items-center justify-center gap-1 rounded-lg border border-dashed border-default-300 text-sm text-default-500 hover:border-primary hover:text-primary"
+        className="flex h-9 w-full items-center justify-center gap-1 rounded-lg border border-dashed border-border text-sm text-muted-foreground hover:border-primary hover:text-primary"
         type="button"
         onClick={() => setRows([...rows, { pattern: "", replacement: "" }])}
       >

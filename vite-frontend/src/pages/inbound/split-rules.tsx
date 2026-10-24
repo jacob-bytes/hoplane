@@ -39,7 +39,7 @@ const chipClass = (on: boolean) =>
   `rounded-full border px-3 py-1 text-xs transition-colors ${
     on
       ? "border-primary bg-primary text-primary-foreground"
-      : "border-divider bg-content1 text-default-600"
+      : "border-divider bg-card text-muted-foreground"
   }`;
 
 const countEntries = (v: string) => v.split(/[\s,，]+/).filter(Boolean).length;
@@ -93,7 +93,7 @@ export function SplitRulesEditor({
   return (
     <div className="space-y-2">
       {rules.length === 0 && (
-        <div className="rounded-xl border border-dashed border-divider px-4 py-6 text-center text-sm text-default-500">
+        <div className="rounded-xl border border-dashed border-divider px-4 py-6 text-center text-sm text-muted-foreground">
           还没有分流规则，所有流量走默认去向
         </div>
       )}
@@ -118,7 +118,7 @@ export function SplitRulesEditor({
         return (
           <div
             key={i}
-            className={`overflow-hidden rounded-xl border bg-content1 ${
+            className={`overflow-hidden rounded-xl border bg-card ${
               isOpen ? "border-primary/40" : "border-divider"
             }`}
           >
@@ -134,7 +134,7 @@ export function SplitRulesEditor({
               <span className="min-w-0 flex-1">
                 <span
                   className={`block truncate text-sm ${
-                    match ? "font-medium" : "text-default-400"
+                    match ? "font-medium" : "text-muted-foreground"
                   }`}
                 >
                   {match || "未选择匹配内容"}
@@ -143,14 +143,14 @@ export function SplitRulesEditor({
                   className={`block truncate text-xs ${
                     r.action === "block" || missing || !target
                       ? "text-danger"
-                      : "text-default-500"
+                      : "text-muted-foreground"
                   }`}
                 >
                   → {targetName}
                 </span>
               </span>
               <ChevronDown
-                className={`h-4 w-4 shrink-0 text-default-400 transition-transform ${
+                className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
                   isOpen ? "rotate-180" : ""
                 }`}
               />
@@ -159,7 +159,7 @@ export function SplitRulesEditor({
               <div className="space-y-3 border-t border-divider px-3 pb-3 pt-3">
                 {groups.map((g) => (
                   <div key={g} className="space-y-1.5">
-                    <p className="text-[11px] text-default-400">{g}</p>
+                    <p className="text-[11px] text-muted-foreground">{g}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {categories
                         .filter((c) => c.group === g)
@@ -218,7 +218,7 @@ export function SplitRulesEditor({
                   </button>
                 )}
                 <div className="space-y-1.5">
-                  <p className="text-[11px] text-default-400">去向</p>
+                  <p className="text-[11px] text-muted-foreground">去向</p>
                   <TargetButton
                     missing={missing}
                     targets={targets}

@@ -26,7 +26,7 @@ import {
 import { formatTraffic } from "@/utils/traffic";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 export const INTERVALS: Array<[string, string]> = [
   ["0", "手动"],
@@ -249,7 +249,7 @@ export function RemoteSourcesSection({
   return (
     <section className="space-y-2">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-default-600">订阅源</h2>
+        <h2 className="text-sm font-semibold text-muted-foreground">订阅源</h2>
         <Button
           size="sm"
           variant="light"
@@ -269,7 +269,7 @@ export function RemoteSourcesSection({
         </Button>
       </div>
       {sources.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-divider px-3 py-4 text-center text-xs text-default-500">
+        <p className="rounded-xl border border-dashed border-divider px-3 py-4 text-center text-xs text-muted-foreground">
           填机场或别人的订阅链接，或上传订阅文件：节点出现在“入站”里，可以给自建节点做前置中转，也能和自己的节点一起放进订阅。在“导入”里粘贴订阅地址并打开“定时同步”也会存到这里
         </p>
       ) : (
@@ -280,7 +280,7 @@ export function RemoteSourcesSection({
             return (
               <div
                 key={s.id}
-                className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-content1 px-3 py-2.5 shadow-sm transition-colors hover:bg-default-100"
+                className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-card px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
                 role="button"
                 tabIndex={0}
                 onClick={() => setDraft(draftOf(s))}
@@ -312,7 +312,7 @@ export function RemoteSourcesSection({
                       </span>
                     )}
                   </div>
-                  <div className="truncate text-xs text-default-500">
+                  <div className="truncate text-xs text-muted-foreground">
                     {s.nodeCount} 个节点 ·{" "}
                     {s.kind === "file"
                       ? s.lastFetch
@@ -331,7 +331,7 @@ export function RemoteSourcesSection({
                     </div>
                   ) : (
                     plan && (
-                      <div className="truncate text-xs text-default-400">
+                      <div className="truncate text-xs text-muted-foreground">
                         {plan}
                       </div>
                     )
@@ -481,7 +481,7 @@ export function RemoteSourcesSection({
                       }
                     />
                   )}
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     {draft.kind === "url" ? "更新" : "重新上传"}
                     时按名称对上已有节点：改了地址就跟着改（中转也跟着改），没了就移除；挂着中转的会保留
                   </p>
@@ -497,7 +497,7 @@ export function RemoteSourcesSection({
                         })
                       }
                     />
-                    <p className="text-xs text-default-500">
+                    <p className="text-xs text-muted-foreground">
                       {ROLE_HINTS[draft.role]}
                     </p>
                   </div>
@@ -509,7 +509,7 @@ export function RemoteSourcesSection({
                     onChange={(relayOnly) => setDraft({ ...draft, relayOnly })}
                   />
                   {editing && (
-                    <p className="text-xs text-default-500">
+                    <p className="text-xs text-muted-foreground">
                       当前 {editing.nodeCount} 个节点 · {ago(editing.lastFetch)}
                     </p>
                   )}
@@ -590,13 +590,13 @@ export function FilePick({
   return (
     <div className="space-y-1">
       <button
-        className="flex w-full items-center gap-2 rounded-xl border border-dashed border-divider px-3 py-3 text-left text-sm hover:bg-default-100"
+        className="flex w-full items-center gap-2 rounded-xl border border-dashed border-divider px-3 py-3 text-left text-sm hover:bg-muted"
         type="button"
         onClick={() => input.current?.click()}
       >
-        <FileUp className="h-4 w-4 shrink-0 text-default-500" />
+        <FileUp className="h-4 w-4 shrink-0 text-muted-foreground" />
         <span
-          className={`min-w-0 flex-1 truncate ${fileName ? "" : "text-default-500"}`}
+          className={`min-w-0 flex-1 truncate ${fileName ? "" : "text-muted-foreground"}`}
         >
           {fileName || "选择订阅文件"}
         </span>
@@ -604,7 +604,7 @@ export function FilePick({
           <span className="shrink-0 text-xs text-primary">更换</span>
         )}
       </button>
-      {hint && <p className="text-xs text-default-500">{hint}</p>}
+      {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
       <input
         ref={input}
         className="hidden"

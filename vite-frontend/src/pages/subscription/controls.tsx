@@ -37,7 +37,7 @@ export function Segmented<T extends string>({
           className={`rounded-xl border px-2 py-2 text-sm transition-colors ${
             value === k
               ? "border-primary bg-primary-50 font-medium text-primary dark:bg-primary-900/30"
-              : "border-default-200 bg-content1 text-default-600 hover:border-default-400 dark:border-default-100"
+              : "border-border bg-card text-muted-foreground hover:border-default-400 dark:border-border"
           }`}
           role="radio"
           type="button"
@@ -66,7 +66,7 @@ export function EditorTabs<T extends string>({
 }) {
   return (
     <div
-      className="grid gap-1 rounded-full bg-default-100/90 p-1 backdrop-blur-md"
+      className="grid gap-1 rounded-full bg-muted/90 p-1 "
       role="tablist"
       style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
     >
@@ -76,8 +76,8 @@ export function EditorTabs<T extends string>({
           aria-selected={value === t.key}
           className={`relative whitespace-nowrap rounded-full px-1 py-1.5 text-sm transition-colors ${
             value === t.key
-              ? "bg-content1 font-medium text-primary shadow-sm"
-              : "text-default-500 hover:text-foreground"
+              ? "bg-card font-medium text-primary shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
           }`}
           role="tab"
           type="button"
@@ -89,7 +89,7 @@ export function EditorTabs<T extends string>({
               className={`absolute right-0.5 top-0.5 rounded-full px-1 text-[10px] leading-4 ${
                 value === t.key
                   ? "bg-primary text-white"
-                  : "bg-default-300 text-default-700"
+                  : "bg-default-300 text-foreground"
               }`}
             >
               {t.badge}
@@ -119,7 +119,7 @@ export function QuickPickRow({
         {picks.map((p) => (
           <button
             key={p.label}
-            className="h-10 rounded-lg bg-default-100 text-sm text-default-700 transition-colors hover:bg-default-200"
+            className="h-10 rounded-lg bg-muted text-sm text-foreground transition-colors hover:bg-default-200"
             type="button"
             onClick={p.onPick}
           >
@@ -162,7 +162,7 @@ export function ToggleRow({
         id={`${id}-label`}
       >
         <span className="text-sm">{label}</span>
-        {hint && <span className="text-xs text-default-500">{hint}</span>}
+        {hint && <span className="text-xs text-muted-foreground">{hint}</span>}
       </label>
     </div>
   );
@@ -185,7 +185,7 @@ export function ChipPicker({
         className={`rounded-full border px-2.5 py-1 text-xs ${
           selected.length === 0
             ? "border-primary bg-primary-50 text-primary dark:bg-primary-900/30"
-            : "border-divider text-default-500"
+            : "border-divider text-muted-foreground"
         }`}
         type="button"
         onClick={() => onChange([])}
@@ -201,7 +201,7 @@ export function ChipPicker({
             className={`rounded-full border px-2.5 py-1 text-xs ${
               on
                 ? "border-primary bg-primary-50 text-primary dark:bg-primary-900/30"
-                : "border-divider text-default-600"
+                : "border-divider text-muted-foreground"
             }`}
             type="button"
             onClick={() =>
@@ -255,10 +255,12 @@ export function Section({
                 </span>
               )}
             </h3>
-            {open && hint && <p className="text-xs text-default-500">{hint}</p>}
+            {open && hint && (
+              <p className="text-xs text-muted-foreground">{hint}</p>
+            )}
           </div>
           <ChevronDown
-            className={`mt-0.5 h-4 w-4 shrink-0 text-default-400 transition-transform ${open ? "rotate-180" : ""}`}
+            className={`mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`}
           />
         </button>
       ) : (
@@ -271,7 +273,7 @@ export function Section({
               </span>
             )}
           </h3>
-          {hint && <p className="text-xs text-default-500">{hint}</p>}
+          {hint && <p className="text-xs text-muted-foreground">{hint}</p>}
         </div>
       )}
       {shown && children}

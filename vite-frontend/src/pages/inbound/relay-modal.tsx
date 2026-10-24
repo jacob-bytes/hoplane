@@ -29,7 +29,7 @@ import {
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 function isLoopback(listen: string) {
   return listen === "::1" || listen.startsWith("127.");
@@ -261,7 +261,7 @@ export function RelayModal({
             <>
               <ModalHeader closable className="flex flex-col gap-1">
                 <h2 className="text-lg font-bold">中转 · {item?.name}</h2>
-                <p className="text-small text-default-500">
+                <p className="text-small text-muted-foreground">
                   在中转机上创建一条指向该入站的转发，订阅会自动加入中转节点
                 </p>
               </ModalHeader>
@@ -269,10 +269,10 @@ export function RelayModal({
                 <div className="space-y-4">
                   <div className="space-y-2">
                     {loading && (
-                      <p className="text-sm text-default-500">加载中...</p>
+                      <p className="text-sm text-muted-foreground">加载中...</p>
                     )}
                     {!loading && relays.length === 0 && (
-                      <p className="text-sm text-default-500">
+                      <p className="text-sm text-muted-foreground">
                         还没有对接中转。
                       </p>
                     )}
@@ -363,7 +363,7 @@ export function RelayModal({
                                 </Chip>
                               ) : null}
                             </div>
-                            <p className="text-xs text-default-500 font-mono mt-0.5 break-all">
+                            <p className="text-xs text-muted-foreground font-mono mt-0.5 break-all">
                               {rel.tunnelName} ·{" "}
                               {rel.entries.length > 0
                                 ? rel.entries
@@ -443,7 +443,7 @@ export function RelayModal({
                       })}
                     </Select>
                     {selectedRoute === "隧道经出口服务器转发到公网地址" && (
-                      <p className="text-xs text-default-500">
+                      <p className="text-xs text-muted-foreground">
                         流量经隧道到出口服务器（如
                         IX），再由出口服务器连接节点的公网地址。
                         开启入站白名单后，会自动放行出口服务器的地址。
@@ -511,7 +511,7 @@ export function RelayModal({
                 <h2 className="text-lg font-bold text-danger">删除中转</h2>
               </ModalHeader>
               <ModalBody>
-                <p className="text-sm text-default-600">
+                <p className="text-sm text-muted-foreground">
                   会同时删除中转机上的转发 “
                   {removing?.forwardName || removing?.name}
                   ”，订阅中对应的节点随之消失。

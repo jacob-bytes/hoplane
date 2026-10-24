@@ -205,7 +205,9 @@ export function NotifySettings({
           >
             <div className="flex flex-col">
               <span className="text-sm">{e.label}</span>
-              <span className="text-xs text-default-500">{e.description}</span>
+              <span className="text-xs text-muted-foreground">
+                {e.description}
+              </span>
             </div>
           </Checkbox>
         ))}
@@ -278,7 +280,7 @@ export function NotifySettings({
       )}
 
       <div className="flex items-center justify-between gap-3 border-t border-divider pt-3">
-        <span className="text-xs text-default-500">
+        <span className="text-xs text-muted-foreground">
           用当前填写的内容发送，不用先保存
         </span>
         <Button

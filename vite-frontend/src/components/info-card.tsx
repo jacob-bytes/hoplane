@@ -23,7 +23,7 @@ const PILL: Record<CardTone, [string, string]> = {
   success: ["bg-emerald-500/20 text-emerald-600", "bg-emerald-500"],
   danger: ["bg-rose-500/20 text-rose-600", "bg-rose-500"],
   warning: ["bg-amber-500/20 text-amber-600", "bg-amber-500"],
-  default: ["bg-default-200/70 text-default-600", "bg-default-400"],
+  default: ["bg-default-200/70 text-muted-foreground", "bg-default-400"],
 };
 
 export interface InfoCardAction {
@@ -125,7 +125,9 @@ export function InfoCard({
               key={label}
               className="flex min-w-0 items-center justify-between gap-2 text-sm"
             >
-              <span className="flex-shrink-0 text-default-600">{label}</span>
+              <span className="flex-shrink-0 text-muted-foreground">
+                {label}
+              </span>
               <span className="min-w-0 truncate text-right text-xs">
                 {value}
               </span>

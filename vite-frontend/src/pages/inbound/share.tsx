@@ -18,7 +18,7 @@ import {
 } from "@/shadcn-bridge/heroui/modal";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 export async function copyText(text: string, label = "已复制") {
   await copyWithToast(text, label);
@@ -57,7 +57,7 @@ export function QrImage({ text, size = 220 }: { text: string; size?: number }) {
   if (!src) {
     return (
       <div
-        className="flex items-center justify-center text-xs text-default-500 bg-default-100 rounded-xl"
+        className="flex items-center justify-center text-xs text-muted-foreground bg-muted rounded-xl"
         style={{ width: size, height: size }}
       >
         内容过长，无法生成二维码
@@ -85,7 +85,7 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
   const text = (asConf && entry.conf) || entry.uri || entry.surge;
 
   return (
-    <div className="rounded-2xl border border-divider p-4 space-y-3">
+    <div className="rounded-xl border border-divider p-4 space-y-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2 min-w-0">
           <Chip
@@ -97,20 +97,20 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
           </Chip>
           <span className="font-medium truncate">{entry.name}</span>
         </div>
-        <p className="text-xs text-default-500 font-mono mt-1 break-all">
+        <p className="text-xs text-muted-foreground font-mono mt-1 break-all">
           {entry.host}:{entry.port}
         </p>
       </div>
 
       {entry.conf && (
-        <div className="grid grid-cols-2 gap-1 rounded-xl bg-default-100 p-1 text-sm">
+        <div className="grid grid-cols-2 gap-1 rounded-xl bg-muted p-1 text-sm">
           {[
             [true, "配置文件"],
             [false, "分享链接"],
           ].map(([conf, label]) => (
             <button
               key={String(conf)}
-              className={`rounded-lg py-1 ${asConf === conf ? "bg-background font-medium shadow-sm" : "text-default-500"}`}
+              className={`rounded-lg py-1 ${asConf === conf ? "bg-background font-medium shadow-sm" : "text-muted-foreground"}`}
               type="button"
               onClick={() => setAsConf(Boolean(conf))}
             >
@@ -119,7 +119,7 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
           ))}
         </div>
       )}
-      <pre className="text-xs font-mono whitespace-pre-wrap break-all rounded-xl bg-default-100 p-3 max-h-32 overflow-y-auto select-all">
+      <pre className="text-xs font-mono whitespace-pre-wrap break-all rounded-xl bg-muted p-3 max-h-32 overflow-y-auto select-all">
         {text}
       </pre>
 
@@ -154,13 +154,13 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
       </div>
 
       {surgeOnly && (
-        <p className="text-xs text-default-500">
+        <p className="text-xs text-muted-foreground">
           Snell 没有通用分享链接，粘贴到 Surge 配置的 [Proxy] 段，或使用 Surge
           订阅。
         </p>
       )}
       {asConf && (
-        <p className="text-xs text-default-500">
+        <p className="text-xs text-muted-foreground">
           WireGuard 官方 App 扫码或导入配置即可；v2rayN、Clash
           等用分享链接或订阅
         </p>
@@ -214,15 +214,17 @@ export function ShareModal({
           <>
             <ModalHeader closable className="flex flex-col gap-1">
               <h2 className="text-lg font-bold">分享 · {item?.name}</h2>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 复制链接或扫码导入 v2rayN、Shadowrocket、NekoBox 等客户端；Surge
                 请使用订阅
               </p>
             </ModalHeader>
             <ModalBody>
-              {loading && <p className="text-sm text-default-500">加载中...</p>}
+              {loading && (
+                <p className="text-sm text-muted-foreground">加载中...</p>
+              )}
               {!loading && entries.length === 0 && (
-                <p className="text-sm text-default-500">
+                <p className="text-sm text-muted-foreground">
                   没有可分享的地址：入站仅监听本机或设置了仅中转，但还没有对接中转。
                 </p>
               )}

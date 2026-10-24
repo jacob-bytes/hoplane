@@ -240,13 +240,13 @@ export default function IndexPage() {
           initial={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <Card className="w-full bg-white/20 dark:bg-zinc-900/20 backdrop-blur-3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-white/80 dark:border-white/10 rounded-[32px] p-2 sm:p-4">
+          <Card className="w-full bg-white/20 dark:bg-zinc-900/20 -3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-white/80 dark:border-white/10 rounded-[32px] p-2 sm:p-4">
             <CardHeader className="pb-0 pt-6 px-6 flex-col items-center">
-              <BrandLogo className="w-14 h-14 rounded-2xl mb-4" size={56} />
+              <BrandLogo className="w-14 h-14 rounded-xl mb-4" size={56} />
               <h1 className="text-2xl font-bold tracking-tight text-foreground">
                 {siteConfig.name}
               </h1>
-              <p className="text-sm text-default-500 mt-2 font-medium">
+              <p className="text-sm text-muted-foreground mt-2 font-medium">
                 Sign in to manage your networks
               </p>
             </CardHeader>
@@ -255,7 +255,7 @@ export default function IndexPage() {
                 <Input
                   classNames={{
                     inputWrapper:
-                      "bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 h-12 shadow-sm rounded-xl",
+                      "bg-white/10 dark:bg-white/5  border border-white/30 dark:border-white/10 h-12 shadow-sm rounded-xl",
                     input: "text-base font-medium",
                   }}
                   errorMessage={errors.username}
@@ -274,7 +274,7 @@ export default function IndexPage() {
                 <Input
                   classNames={{
                     inputWrapper:
-                      "bg-white/10 dark:bg-white/5 backdrop-blur-md border border-white/30 dark:border-white/10 h-12 shadow-sm rounded-xl",
+                      "bg-white/10 dark:bg-white/5  border border-white/30 dark:border-white/10 h-12 shadow-sm rounded-xl",
                     input: "text-base font-medium tracking-wider",
                   }}
                   isDisabled={loading}
@@ -331,10 +331,10 @@ export default function IndexPage() {
 
         <VersionFooter
           containerClassName="fixed inset-x-0 bottom-4 text-center py-4"
-          poweredClassName="text-xs text-gray-400 dark:text-gray-500"
+          poweredClassName="text-xs text-muted-foreground/70"
           updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-rose-500/90 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
           version={isWebView ? siteConfig.app_version : siteConfig.version}
-          versionClassName="text-xs text-gray-400 dark:text-gray-500 mt-1"
+          versionClassName="text-xs text-muted-foreground/70 mt-1"
         />
 
         {/* 验证码弹层 */}
@@ -342,7 +342,7 @@ export default function IndexPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* 背景遮罩层 - 模糊效果，暗黑模式下更深 */}
             <button
-              className="absolute inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-sm captcha-backdrop-enter"
+              className="absolute inset-0 bg-black/60 dark:bg-black/80  captcha-backdrop-enter"
               type="button"
               onClick={() => {
                 setShowCaptcha(false);
@@ -357,7 +357,7 @@ export default function IndexPage() {
             />
             {/* 验证码容器 */}
             <div className="mb-4 relative z-50 bg-white dark:bg-zinc-900 p-6 rounded-lg shadow-xl">
-              <div className="mb-4 text-center text-sm font-medium text-gray-700 dark:text-gray-200">
+              <div className="mb-4 text-center text-sm font-medium text-foreground">
                 请完成安全验证
               </div>
               <div className="flex justify-center">

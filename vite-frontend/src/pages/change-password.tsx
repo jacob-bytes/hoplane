@@ -126,7 +126,7 @@ export default function ChangePasswordPage() {
               </div>
 
               <h1 className={title({ size: "sm" })}>安全提醒</h1>
-              <p className="text-small text-default-500 mt-2 text-center">
+              <p className="text-small text-muted-foreground mt-2 text-center">
                 检测到您使用的是默认账号密码，为了您的账户安全，请立即修改
               </p>
             </CardHeader>

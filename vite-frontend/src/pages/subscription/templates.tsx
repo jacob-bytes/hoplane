@@ -225,8 +225,10 @@ export function TemplateGroups({
               <span className="w-32 shrink-0 truncate font-medium sm:w-40">
                 {g.name}
               </span>
-              <span className="w-16 shrink-0 text-default-400">{g.type}</span>
-              <span className="min-w-0 flex-1 truncate text-default-500">
+              <span className="w-16 shrink-0 text-muted-foreground">
+                {g.type}
+              </span>
+              <span className="min-w-0 flex-1 truncate text-muted-foreground">
                 {g.auto ? (
                   g.filterError ? (
                     <span title={g.filterError}>由客户端按过滤条件收节点</span>
@@ -462,7 +464,7 @@ function Editor({
       <ModalHeader className="flex items-center gap-2">
         <button
           aria-label="返回"
-          className="rounded-lg p-1 text-default-500 hover:bg-default-100"
+          className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
           type="button"
           onClick={onBack}
         >
@@ -489,7 +491,7 @@ function Editor({
           </div>
         </div>
         {(!building || draft.kind === "singbox") && (
-          <p className="text-xs text-default-500">
+          <p className="text-xs text-muted-foreground">
             {building
               ? "生成的 sing-box 模板适用于 1.12 及以上版本"
               : `节点进策略组的写法：${AUTO_HINT[draft.kind]}`}
@@ -513,7 +515,7 @@ function Editor({
         {building && draft.builder ? (
           <div className="space-y-3">
             {initial.content && !initial.builder && (
-              <p className="text-xs text-default-500">
+              <p className="text-xs text-muted-foreground">
                 原有源码不会自动转换为规则选项，保存时将按下面的选择重新生成配置。
               </p>
             )}
@@ -531,7 +533,7 @@ function Editor({
               variant="bordered"
               onChange={(e) => set({ sourceUrl: e.target.value })}
             />
-            <p className="text-xs text-default-500">
+            <p className="text-xs text-muted-foreground">
               面板每天下载一次，下载失败继续用上次的内容
               {saved?.lastError && (
                 <span className="text-danger">
@@ -584,11 +586,11 @@ function Editor({
         ) : (
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-xs text-default-500">插入分组：</span>
+              <span className="text-xs text-muted-foreground">插入分组：</span>
               {REGION_PRESETS.map(([name, kw]) => (
                 <button
                   key={name}
-                  className="rounded-lg bg-default-100 px-2 py-1 text-xs text-default-700 hover:bg-default-200"
+                  className="rounded-lg bg-muted px-2 py-1 text-xs text-foreground hover:bg-default-200"
                   title={kw ? `收名字含 ${kw} 的节点` : "收全部节点"}
                   type="button"
                   onClick={() => insertGroup(name, kw)}
@@ -628,9 +630,9 @@ function Editor({
           </div>
         )}
 
-        <div className="space-y-2 rounded-xl bg-default-50 p-3 dark:bg-default-100/40">
+        <div className="space-y-2 rounded-xl bg-muted p-3 dark:bg-muted/40">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs text-default-500">用订阅预演：</span>
+            <span className="text-xs text-muted-foreground">用订阅预演：</span>
             <select
               aria-label="用哪个订阅预演"
               className="h-8 rounded-lg border border-divider bg-background px-2 text-xs"
@@ -712,7 +714,7 @@ function Editor({
                   <summary className="cursor-pointer text-xs">
                     代理节点详情 · {check.sample}（{check.nodes} 个节点）
                   </summary>
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     规则选择“代理”时，由节点选择或自动测速决定使用哪个节点。这里不改变规则的匹配顺序。
                   </p>
                   <TemplateGroups
@@ -727,13 +729,13 @@ function Editor({
                 />
               )}
               {autoGroups.some((g) => g.filterError) && (
-                <p className="text-xs text-default-400">
+                <p className="text-xs text-muted-foreground">
                   标“由客户端按过滤条件收节点”的组用了面板预览不了的正则写法，客户端照常生效
                 </p>
               )}
             </>
           ) : (
-            <p className="text-xs text-default-400">
+            <p className="text-xs text-muted-foreground">
               {building
                 ? "生成配置并查看规则的分流去向，可展开代理节点详情。"
                 : "检查格式，并看看每个策略组能收到哪些节点"}
@@ -828,7 +830,7 @@ export function TemplatesModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={isOpen}
       placement="center"
@@ -857,14 +859,14 @@ export function TemplatesModal({
             <>
               <ModalHeader closable className="flex flex-col gap-0.5">
                 <h2 className="text-lg font-bold">订阅模板</h2>
-                <p className="text-xs font-normal text-default-500">
+                <p className="text-xs font-normal text-muted-foreground">
                   用自己的配置当订阅骨架：规则、策略组、DNS
                   按模板来，面板只负责把节点放进去
                 </p>
               </ModalHeader>
               <ModalBody className="space-y-2">
                 {templates.length === 0 ? (
-                  <div className="space-y-2 py-6 text-center text-sm text-default-500">
+                  <div className="space-y-2 py-6 text-center text-sm text-muted-foreground">
                     <p>还没有模板</p>
                     <p className="text-xs">
                       可以选择规则快速创建模板，也支持源码编辑和网址导入；在订阅的「规则」页里选用
@@ -875,7 +877,7 @@ export function TemplatesModal({
                     <ListRow
                       key={t.id}
                       badges={
-                        <span className="shrink-0 rounded-full bg-default-100 px-2 py-0.5 text-xs text-default-600">
+                        <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                           {kindLabel(t.kind)}
                         </span>
                       }

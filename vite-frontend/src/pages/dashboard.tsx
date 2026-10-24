@@ -101,7 +101,7 @@ function UserDashboard() {
       return {
         label: "未设置",
         badgeClassName:
-          "bg-default-100 text-default-700 dark:bg-default-50 dark:text-default-300",
+          "bg-muted text-foreground dark:bg-muted dark:text-default-300",
         nextDueTime: undefined as number | undefined,
       };
     }
@@ -113,8 +113,7 @@ function UserDashboard() {
     if (renewalState === "expired" || diffDays <= 0) {
       return {
         label: "已逾期",
-        badgeClassName:
-          "bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300",
+        badgeClassName: "bg-danger/10 text-danger",
         nextDueTime,
       };
     }
@@ -122,8 +121,7 @@ function UserDashboard() {
     if (diffDays === 1) {
       return {
         label: "明天到期",
-        badgeClassName:
-          "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300",
+        badgeClassName: "bg-warning/10 text-warning-700 dark:text-warning-500",
         nextDueTime,
       };
     }
@@ -132,7 +130,7 @@ function UserDashboard() {
       label: `${diffDays}天后到期`,
       badgeClassName:
         diffDays <= 7
-          ? "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300"
+          ? "bg-warning/10 text-warning-700 dark:text-warning-500"
           : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300",
       nextDueTime,
     };
@@ -151,14 +149,14 @@ function UserDashboard() {
     return (
       <div
         key={node.id}
-        className="rounded-xl border border-amber-200/80 bg-gradient-to-br from-amber-50 via-white to-orange-50 p-4 shadow-sm dark:border-amber-500/20 dark:from-amber-950/20 dark:via-background dark:to-orange-950/10"
+        className="rounded-xl border border-warning/20 bg-warning/5 p-4"
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="text-sm font-semibold text-foreground truncate">
               {node.name}
             </div>
-            <div className="mt-1 text-xs text-default-500">
+            <div className="mt-1 text-xs text-muted-foreground">
               服务器 ID: {node.id}
             </div>
           </div>
@@ -169,16 +167,16 @@ function UserDashboard() {
           </span>
         </div>
 
-        <div className="mt-3 text-sm text-default-700 dark:text-default-300">
+        <div className="mt-3 text-sm text-foreground dark:text-default-300">
           {formatNodeRenewalTime(renewalSnapshot.nextDueTime)}
         </div>
 
-        <div className="mt-1 text-xs text-default-500">
+        <div className="mt-1 text-xs text-muted-foreground">
           {getNodeRenewalCycleLabel(node.renewalCycle)}
         </div>
 
         {node.remark?.trim() && (
-          <p className="mt-3 line-clamp-2 text-xs leading-5 text-default-600 dark:text-default-400">
+          <p className="mt-3 line-clamp-2 text-xs leading-5 text-muted-foreground dark:text-muted-foreground">
             {node.remark.trim()}
           </p>
         )}
@@ -218,8 +216,8 @@ function UserDashboard() {
   const getExpStatus = (expTime?: string | number) => {
     if (!expTime)
       return {
-        color: "text-green-600 dark:text-green-400",
-        bg: "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20",
+        color: "text-success",
+        bg: "bg-success/10 border-success/20",
         text: "永久",
       };
 
@@ -228,16 +226,16 @@ function UserDashboard() {
 
     if (isNaN(expDate.getTime())) {
       return {
-        color: "text-gray-600 dark:text-gray-400",
-        bg: "bg-gray-50 dark:bg-black/10 border-gray-200 dark:border-gray-500/20",
+        color: "text-muted-foreground",
+        bg: "bg-muted border-border",
         text: "无效",
       };
     }
 
     if (expDate < now) {
       return {
-        color: "text-red-600 dark:text-red-400",
-        bg: "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20",
+        color: "text-danger",
+        bg: "bg-danger/10 border-danger/20",
         text: "已过期",
       };
     }
@@ -247,20 +245,20 @@ function UserDashboard() {
 
     if (diffDays <= 7) {
       return {
-        color: "text-red-600 dark:text-red-400",
-        bg: "bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/20",
+        color: "text-danger",
+        bg: "bg-danger/10 border-danger/20",
         text: `${diffDays}天后过期`,
       };
     } else if (diffDays <= 30) {
       return {
-        color: "text-orange-600 dark:text-orange-400",
-        bg: "bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20",
+        color: "text-warning-700 dark:text-warning-500",
+        bg: "bg-warning/10 border-warning/20",
         text: `${diffDays}天后过期`,
       };
     } else {
       return {
-        color: "text-green-600 dark:text-green-400",
-        bg: "bg-green-50 dark:bg-green-500/10 border-green-200 dark:border-green-500/20",
+        color: "text-success",
+        bg: "bg-success/10 border-success/20",
         text: `${diffDays}天后过期`,
       };
     }
@@ -293,11 +291,13 @@ function UserDashboard() {
     return 0;
   };
 
+  // Usage bars speak Accent for "fine" and only escalate to status colours
+  // when the quota is nearly gone.
   const getUsageColor = (percentage: number) => {
-    if (percentage >= 90) return "bg-red-500 dark:bg-red-600";
-    if (percentage >= 70) return "bg-orange-500 dark:bg-orange-600";
+    if (percentage >= 90) return "bg-destructive";
+    if (percentage >= 70) return "bg-warning";
 
-    return "bg-blue-500 dark:bg-blue-600";
+    return "bg-primary";
   };
 
   const renderProgressBar = (
@@ -310,12 +310,8 @@ function UserDashboard() {
     if (isUnlimited) {
       return (
         <div className="w-full">
-          <div
-            className={`w-full bg-gradient-to-r from-blue-200 to-purple-200 dark:from-blue-500/30 dark:to-purple-500/30 rounded-full ${height}`}
-          >
-            <div
-              className={`${height} bg-gradient-to-r from-blue-500 to-purple-500 rounded-full w-full opacity-60`}
-            />
+          <div className={`w-full bg-muted rounded-full ${height}`}>
+            <div className={`${height} bg-primary/40 rounded-full w-full`} />
           </div>
         </div>
       );
@@ -323,9 +319,7 @@ function UserDashboard() {
 
     return (
       <div className="w-full">
-        <div
-          className={`w-full bg-gray-200 dark:bg-gray-800 rounded-full ${height}`}
-        >
+        <div className={`w-full bg-muted rounded-full ${height}`}>
           <div
             className={`${height} rounded-full transition-all duration-300 ${getUsageColor(percentage)}`}
             style={{ width: `${Math.min(percentage, 100)}%` }}
@@ -641,7 +635,7 @@ function UserDashboard() {
       <div className="flex justify-between items-center mb-4">
         <div>
           <h1 className="text-lg font-semibold">概览</h1>
-          <p className="text-xs text-default-500">
+          <p className="text-xs text-muted-foreground">
             {username}，这里是你的流量和转发规则
           </p>
         </div>
@@ -658,7 +652,7 @@ function UserDashboard() {
             </DropdownTrigger>
             <DropdownMenu
               aria-label="用户菜单"
-              className="bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
+              className="bg-white/80 dark:bg-zinc-900/80  border border-white/50 dark:border-white/10 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.1)]"
             >
               <DropdownItem
                 key="profile"
@@ -720,14 +714,14 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="w-4 h-4 lg:w-5 lg:h-5 text-blue-600 dark:text-blue-400"
+              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
               <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
             </svg>
           }
-          iconClassName="bg-blue-100 dark:bg-blue-500/20"
+          iconClassName="bg-muted"
           title="总流量"
           value={formatFlowLimit(userInfo.flow, userInfo.flowMiB)}
         />
@@ -741,14 +735,14 @@ function UserDashboard() {
                 userInfo.flow === 99999 && !userInfo.flowMiB,
               )}
               <div className="flex items-center justify-between mt-1">
-                <p className="text-xs text-default-500 truncate">
+                <p className="text-xs text-muted-foreground truncate">
                   {userInfo.flow === 99999 && !userInfo.flowMiB
                     ? "无限制"
                     : `${calculateUsagePercentage("flow").toFixed(1)}%`}
                 </p>
                 {userInfo.flowResetTime !== undefined &&
                   userInfo.flowResetTime !== null && (
-                    <div className="text-xs text-default-500 flex items-center gap-1">
+                    <div className="text-xs text-muted-foreground flex items-center gap-1">
                       <svg
                         aria-hidden="true"
                         className="w-3 h-3"
@@ -772,7 +766,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="w-4 h-4 lg:w-5 lg:h-5 text-green-600 dark:text-green-400"
+              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -783,7 +777,7 @@ function UserDashboard() {
               />
             </svg>
           }
-          iconClassName="bg-green-100 dark:bg-green-500/20"
+          iconClassName="bg-muted"
           title="已用流量"
           value={formatFlow(calculateUserTotalUsedFlow())}
         />
@@ -792,7 +786,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="w-4 h-4 lg:w-5 lg:h-5 text-purple-600 dark:text-purple-400"
+              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -803,7 +797,7 @@ function UserDashboard() {
               />
             </svg>
           }
-          iconClassName="bg-purple-100 dark:bg-purple-500/20"
+          iconClassName="bg-muted"
           title="规则配额"
           value={formatNumber(userInfo.num || 0)}
         />
@@ -816,7 +810,7 @@ function UserDashboard() {
                 "sm",
                 userInfo.num === 99999,
               )}
-              <p className="text-xs text-default-500 mt-1 truncate">
+              <p className="text-xs text-muted-foreground mt-1 truncate">
                 {userInfo.num === 99999
                   ? "无限制"
                   : `${calculateUsagePercentage("forwards").toFixed(1)}%`}
@@ -826,7 +820,7 @@ function UserDashboard() {
           icon={
             <svg
               aria-hidden="true"
-              className="w-4 h-4 lg:w-5 lg:h-5 text-orange-600 dark:text-orange-400"
+              className="h-4 w-4 text-muted-foreground lg:h-5 lg:w-5"
               fill="currentColor"
               viewBox="0 0 20 20"
             >
@@ -837,7 +831,7 @@ function UserDashboard() {
               />
             </svg>
           }
-          iconClassName="bg-orange-100 dark:bg-orange-500/20"
+          iconClassName="bg-muted"
           title="已用规则"
           value={forwardList.length}
         />
@@ -850,11 +844,11 @@ function UserDashboard() {
       />
 
       {isAdmin && nodeExpiryReminders.length > 0 && (
-        <Card className="mb-6 lg:mb-8 border border-amber-200/80 bg-gradient-to-br from-amber-50/90 via-background to-orange-50/70 shadow-md dark:border-amber-500/20 dark:from-amber-950/10 dark:to-orange-950/10">
+        <Card className="mb-6 border border-warning/20 bg-warning/5 shadow-none lg:mb-8">
           <CardHeader className="pb-3">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between w-full">
               <div className="flex items-center gap-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-300">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-warning/10 text-warning-700 dark:text-warning-500">
                   <svg
                     aria-hidden="true"
                     className="h-5 w-5"
@@ -872,13 +866,13 @@ function UserDashboard() {
                   <h2 className="text-lg lg:text-xl font-semibold text-foreground">
                     服务器到期提醒
                   </h2>
-                  <p className="text-sm text-default-500">
+                  <p className="text-sm text-muted-foreground">
                     展示 7
                     天内需要续费或已经逾期的服务器，基于月付/季付/年付周期自动推算
                   </p>
                 </div>
               </div>
-              <span className="inline-flex w-fit items-center rounded-full bg-white/80 px-3 py-1 text-xs font-medium text-amber-700 ring-1 ring-amber-200/80 dark:bg-white/5 dark:text-amber-300 dark:ring-amber-500/20">
+              <span className="inline-flex w-fit items-center rounded-full bg-card px-3 py-1 text-xs font-medium text-warning-700 ring-1 ring-warning/20 dark:text-warning-500 tabular">
                 {nodeExpiryReminders.length} 个提醒
               </span>
             </div>
@@ -888,7 +882,7 @@ function UserDashboard() {
               {nodeExpiryReminders.slice(0, 6).map(renderNodeExpiryCard)}
             </div>
             {nodeExpiryReminders.length > 6 && (
-              <p className="mt-4 text-xs text-default-500">
+              <p className="mt-4 text-xs text-muted-foreground">
                 还有 {nodeExpiryReminders.length - 6}{" "}
                 个服务器未展开显示，可前往服务器页面继续处理。
               </p>
@@ -917,7 +911,7 @@ function UserDashboard() {
               <h2 className="text-lg lg:text-xl font-semibold text-foreground">
                 隧道权限
               </h2>
-              <span className="px-2 py-1 bg-default-100 dark:bg-default-50 text-default-600 rounded-full text-xs">
+              <span className="px-2 py-1 bg-muted dark:bg-muted text-muted-foreground rounded-full text-xs">
                 {userTunnels.length}
               </span>
             </div>
@@ -933,7 +927,7 @@ function UserDashboard() {
                   return (
                     <div
                       key={tunnel.id}
-                      className="border border-gray-200 dark:border-default-100 rounded-lg p-3 lg:p-4 hover:shadow-md transition-shadow"
+                      className="rounded-lg border border-border p-3 transition-colors duration-150 hover:bg-accent/40 lg:p-4"
                     >
                       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-3">
                         <div>
@@ -955,7 +949,7 @@ function UserDashboard() {
                             </span>
                             {tunnel.flowResetTime !== undefined &&
                               tunnel.flowResetTime !== null && (
-                                <span className="text-xs text-default-500">
+                                <span className="text-xs text-muted-foreground">
                                   {formatResetTime(tunnel.flowResetTime)}
                                 </span>
                               )}
@@ -965,7 +959,7 @@ function UserDashboard() {
 
                       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
                         <div>
-                          <p className="text-sm text-default-600 mb-1">
+                          <p className="text-sm text-muted-foreground mb-1">
                             流量配额
                           </p>
                           <p className="font-semibold text-foreground">
@@ -973,7 +967,7 @@ function UserDashboard() {
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-default-600 mb-1">
+                          <p className="text-sm text-muted-foreground mb-1">
                             已用流量
                           </p>
                           <p className="font-semibold text-foreground">
@@ -988,7 +982,7 @@ function UserDashboard() {
                           </div>
                         </div>
                         <div>
-                          <p className="text-sm text-default-600 mb-1">
+                          <p className="text-sm text-muted-foreground mb-1">
                             规则配额
                           </p>
                           <p className="font-semibold text-foreground">
@@ -996,7 +990,7 @@ function UserDashboard() {
                           </p>
                         </div>
                         <div>
-                          <p className="text-sm text-default-600 mb-1">
+                          <p className="text-sm text-muted-foreground mb-1">
                             已用规则
                           </p>
                           <p className="font-semibold text-foreground">
@@ -1039,7 +1033,7 @@ function UserDashboard() {
             <h2 className="text-lg lg:text-xl font-semibold text-foreground">
               规则配置
             </h2>
-            <span className="px-2 py-1 bg-default-100 dark:bg-default-50 text-default-600 rounded-full text-xs">
+            <span className="px-2 py-1 bg-muted dark:bg-muted text-muted-foreground rounded-full text-xs">
               {forwardList.length}
             </span>
           </div>
@@ -1049,7 +1043,7 @@ function UserDashboard() {
             <div className="text-center py-12">
               <svg
                 aria-hidden="true"
-                className="w-12 h-12 text-default-400 mx-auto mb-4"
+                className="w-12 h-12 text-muted-foreground mx-auto mb-4"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -1061,14 +1055,14 @@ function UserDashboard() {
                   strokeWidth={1.5}
                 />
               </svg>
-              <p className="text-default-500">暂无规则配置</p>
+              <p className="text-muted-foreground">暂无规则配置</p>
             </div>
           ) : (
             <div className="space-y-4">
               {groupedForwards().map((group) => (
                 <div
                   key={group.tunnelName}
-                  className="border border-gray-200 dark:border-default-100 rounded-lg p-3 lg:p-4"
+                  className="border border-gray-200 dark:border-border rounded-lg p-3 lg:p-4"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="font-semibold text-foreground">
@@ -1083,7 +1077,7 @@ function UserDashboard() {
                     {group.forwards.map((forward) => (
                       <div
                         key={forward.id}
-                        className="bg-white/10 dark:bg-black/10 backdrop-blur-md border border-white/20 dark:border-white/10 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300"
+                        className="bg-white/10 dark:bg-black/10  border border-white/20 dark:border-white/10 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300"
                       >
                         <div className="space-y-3">
                           <div>
@@ -1092,7 +1086,7 @@ function UserDashboard() {
                             </h4>
                             <div className="space-y-1">
                               <button
-                                className={`block px-2 py-1 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleIps(forward.inIp) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
+                                className={`block px-2 py-1 bg-white/20 dark:bg-black/20  rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleIps(forward.inIp) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
                                 disabled={!hasMultipleIps(forward.inIp)}
                                 title={formatInAddress(
                                   forward.inIp,
@@ -1109,11 +1103,11 @@ function UserDashboard() {
                               >
                                 {formatInAddress(forward.inIp, forward.inPort)}
                               </button>
-                              <div className="text-center text-default-400 text-xs">
+                              <div className="text-center text-muted-foreground text-xs">
                                 ↓
                               </div>
                               <button
-                                className={`block px-2 py-1 bg-white/20 dark:bg-black/20 backdrop-blur-md rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleRemoteAddresses(forward.remoteAddr) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
+                                className={`block px-2 py-1 bg-white/20 dark:bg-black/20  rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleRemoteAddresses(forward.remoteAddr) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
                                 disabled={
                                   !hasMultipleRemoteAddresses(
                                     forward.remoteAddr,
@@ -1133,10 +1127,10 @@ function UserDashboard() {
                             </div>
                           </div>
 
-                          <div className="pt-2 border-t border-gray-200 dark:border-default-200">
+                          <div className="pt-2 border-t border-gray-200 dark:border-border">
                             <div className="grid grid-cols-3 gap-1 text-xs">
                               <div className="text-center">
-                                <div className="text-default-500 mb-1">
+                                <div className="text-muted-foreground mb-1">
                                   上传
                                 </div>
                                 <div className="font-medium text-green-600 dark:text-green-400 truncate">
@@ -1144,7 +1138,7 @@ function UserDashboard() {
                                 </div>
                               </div>
                               <div className="text-center">
-                                <div className="text-default-500 mb-1">
+                                <div className="text-muted-foreground mb-1">
                                   下载
                                 </div>
                                 <div className="font-medium text-orange-600 dark:text-orange-400 truncate">
@@ -1152,7 +1146,7 @@ function UserDashboard() {
                                 </div>
                               </div>
                               <div className="text-center">
-                                <div className="text-default-500 mb-1">
+                                <div className="text-muted-foreground mb-1">
                                   计费
                                 </div>
                                 <div className="font-medium text-primary truncate">
@@ -1196,7 +1190,7 @@ function UserDashboard() {
               {addressList.map((item) => (
                 <div
                   key={item.id}
-                  className="flex justify-between items-center p-3 border border-default-200 dark:border-default-100 rounded-lg"
+                  className="flex justify-between items-center p-3 border border-border dark:border-border rounded-lg"
                 >
                   <code className="font-mono text-sm flex-1 mr-3 text-foreground">
                     {item.address}

@@ -110,26 +110,10 @@ const KINDS: Record<
 };
 
 const TONES = {
-  blue: [
-    "bg-blue-100 dark:bg-blue-500/20",
-    "text-blue-600 dark:text-blue-400",
-    "bg-blue-500",
-  ],
-  green: [
-    "bg-green-100 dark:bg-green-500/20",
-    "text-green-600 dark:text-green-400",
-    "bg-green-500",
-  ],
-  purple: [
-    "bg-purple-100 dark:bg-purple-500/20",
-    "text-purple-600 dark:text-purple-400",
-    "bg-purple-500",
-  ],
-  orange: [
-    "bg-orange-100 dark:bg-orange-500/20",
-    "text-orange-600 dark:text-orange-400",
-    "bg-orange-500",
-  ],
+  blue: ["bg-muted", "text-muted-foreground", "bg-primary"],
+  green: ["bg-muted", "text-muted-foreground", "bg-primary"],
+  purple: ["bg-muted", "text-muted-foreground", "bg-primary"],
+  orange: ["bg-muted", "text-muted-foreground", "bg-primary"],
 } as const;
 
 /** A headline figure, in the upstream metric card style. */
@@ -160,25 +144,25 @@ function Metric({
 
   return (
     <button
-      className="rounded-2xl border border-divider bg-content1 p-4 text-left shadow-sm transition-shadow hover:shadow-md lg:p-5"
+      className="rounded-xl border border-border bg-card p-4 text-left shadow-xs transition-[box-shadow,border-color] duration-150 hover:border-default-300 hover:shadow-sm lg:p-5"
       type="button"
       onClick={onPress}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="truncate text-sm text-default-600">{label}</span>
-        <span className={`flex-shrink-0 rounded-xl p-2 ${chip}`}>
+        <span className="truncate text-sm text-muted-foreground">{label}</span>
+        <span className={`flex-shrink-0 rounded-lg p-2 ${chip}`}>
           <Icon className={`h-4 w-4 lg:h-5 lg:w-5 ${iconColor}`} />
         </span>
       </div>
       <div className="mt-2 text-2xl font-bold lg:text-3xl">
         {value}
         {total !== undefined && (
-          <span className="ml-1 text-base font-normal text-default-400">
+          <span className="ml-1 text-base font-normal text-muted-foreground">
             / {total}
           </span>
         )}
       </div>
-      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-default-100">
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted">
         {total !== undefined && total > 0 && (
           <div
             className={`h-full rounded-full ${bar}`}
@@ -194,14 +178,14 @@ function Metric({
               : footTone === "warning"
                 ? "text-warning-600"
                 : footTone === "success"
-                  ? "text-success-600"
-                  : "text-default-500"
+                  ? "text-muted-foreground"
+                  : "text-muted-foreground"
           }`}
         >
           {foot}
         </span>
         {footRight && (
-          <span className="shrink-0 text-default-400">{footRight}</span>
+          <span className="shrink-0 text-muted-foreground">{footRight}</span>
         )}
       </div>
     </button>
@@ -220,7 +204,7 @@ function Panel({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-divider bg-content1 p-4 shadow-sm lg:p-5">
+    <section className="rounded-xl border border-divider bg-card p-4 shadow-sm lg:p-5">
       <div className="mb-3 flex items-center gap-2">
         <h2 className="text-sm font-semibold lg:text-base">{title}</h2>
         {badge}
@@ -439,7 +423,7 @@ export function AdminOverview() {
     <AnimatedPage className="space-y-4 px-3 py-6 lg:px-6">
       <div>
         <h1 className="text-lg font-semibold">概览</h1>
-        <p className="text-xs text-default-500">
+        <p className="text-xs text-muted-foreground">
           {new Date().toLocaleDateString("zh-CN", {
             month: "long",
             day: "numeric",
@@ -600,27 +584,27 @@ export function AdminOverview() {
                         <span className="block text-sm font-semibold">
                           {meta.label(g.items.length)}
                         </span>
-                        <span className="block truncate text-xs text-default-500">
+                        <span className="block truncate text-xs text-muted-foreground">
                           {hint}
                         </span>
                         <span className="mt-1.5 flex flex-wrap gap-1.5">
                           {g.items.slice(0, 6).map((it) => (
                             <span
                               key={it.name}
-                              className="max-w-[12rem] truncate rounded-full border border-divider bg-content1 px-2 py-0.5 text-xs text-default-700"
+                              className="max-w-[12rem] truncate rounded-full border border-divider bg-card px-2 py-0.5 text-xs text-foreground"
                               title={it.detail}
                             >
                               {it.name}
                             </span>
                           ))}
                           {g.items.length > 6 && (
-                            <span className="rounded-full border border-divider bg-content1 px-2 py-0.5 text-xs text-default-500">
+                            <span className="rounded-full border border-divider bg-card px-2 py-0.5 text-xs text-muted-foreground">
                               +{g.items.length - 6}
                             </span>
                           )}
                         </span>
                       </span>
-                      <span className="hidden shrink-0 items-center self-center text-xs text-default-500 sm:flex">
+                      <span className="hidden shrink-0 items-center self-center text-xs text-muted-foreground sm:flex">
                         去处理
                         <ChevronRight className="h-3.5 w-3.5" />
                       </span>
@@ -653,7 +637,7 @@ export function AdminOverview() {
                   return (
                     <button
                       key={n.id}
-                      className="flex items-center gap-2.5 rounded-xl border border-divider px-3 py-2 text-left transition-colors hover:bg-default-50"
+                      className="flex items-center gap-2.5 rounded-xl border border-divider px-3 py-2 text-left transition-colors hover:bg-muted"
                       type="button"
                       onClick={() => navigate("/node")}
                     >
@@ -664,7 +648,7 @@ export function AdminOverview() {
                         <span className="block truncate text-sm font-medium">
                           {n.name}
                         </span>
-                        <span className="block truncate font-mono text-xs text-default-500">
+                        <span className="block truncate font-mono text-xs text-muted-foreground">
                           {up ? "在线" : "离线"}
                           {ip ? ` · ${ip}` : ""}
                         </span>
@@ -679,7 +663,7 @@ export function AdminOverview() {
 
         <div className="space-y-4">
           <Panel
-            action={<span className="text-xs text-default-400">累计</span>}
+            action={<span className="text-xs text-muted-foreground">累计</span>}
             title="节点流量"
           >
             <div className="mb-3 grid grid-cols-2 gap-2">
@@ -689,11 +673,8 @@ export function AdminOverview() {
                   ["↓ 下载", down],
                 ] as Array<[string, number]>
               ).map(([label, bytes]) => (
-                <div
-                  key={label}
-                  className="rounded-xl bg-default-100/70 px-3 py-2"
-                >
-                  <div className="text-xs text-default-500">{label}</div>
+                <div key={label} className="rounded-xl bg-muted/70 px-3 py-2">
+                  <div className="text-xs text-muted-foreground">{label}</div>
                   <div className="font-mono text-base font-semibold">
                     {formatTraffic(bytes)}
                   </div>
@@ -701,7 +682,7 @@ export function AdminOverview() {
               ))}
             </div>
             {top.length === 0 ? (
-              <p className="py-1 text-center text-xs text-default-500">
+              <p className="py-1 text-center text-xs text-muted-foreground">
                 还没有流量数据（导入的节点不统计流量）
               </p>
             ) : (
@@ -713,11 +694,11 @@ export function AdminOverview() {
                     <div key={i.id}>
                       <div className="mb-1 flex items-center justify-between gap-2 text-xs">
                         <span className="truncate">{i.name}</span>
-                        <span className="shrink-0 font-mono text-default-500">
+                        <span className="shrink-0 font-mono text-muted-foreground">
                           {formatTraffic(total)}
                         </span>
                       </div>
-                      <div className="h-1.5 overflow-hidden rounded-full bg-default-100">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
                         <div
                           className="h-full rounded-full bg-primary"
                           style={{
@@ -745,14 +726,12 @@ export function AdminOverview() {
                       type="button"
                       onClick={() => navigate(e.path)}
                     >
-                      <span
-                        className={`shrink-0 rounded-full px-2 py-0.5 text-xs ${e.kind === "服务器" ? "bg-warning-50 text-warning-700 dark:bg-warning-500/20" : "bg-orange-50 text-orange-700 dark:bg-orange-500/20"}`}
-                      >
+                      <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
                         {e.kind}
                       </span>
                       <span className="min-w-0 flex-1 truncate">{e.name}</span>
                       <span
-                        className={`shrink-0 text-xs ${days <= 3 ? "text-warning-600" : "text-default-500"}`}
+                        className={`shrink-0 text-xs ${days <= 3 ? "text-warning-600" : "text-muted-foreground"}`}
                       >
                         {daysLeft(e.at)}
                       </span>

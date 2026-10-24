@@ -81,7 +81,7 @@ import { formatTraffic } from "@/utils/traffic";
 import { latestProbe } from "@/utils/latest-probe";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 type ConfirmAction = "delete" | "regenerate" | "reset";
 
@@ -830,7 +830,7 @@ export default function InboundPage() {
         className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 text-left shadow-sm transition-colors ${
           selected
             ? "border-primary bg-primary-50/70 dark:bg-primary-900/40"
-            : "border-divider bg-content1 hover:bg-default-100"
+            : "border-divider bg-card hover:bg-muted"
         }`}
         role="button"
         tabIndex={0}
@@ -865,7 +865,7 @@ export default function InboundPage() {
             <span className="truncate font-medium">{item.name}</span>
             {badges}
           </div>
-          <div className="truncate text-xs text-default-500">
+          <div className="truncate text-xs text-muted-foreground">
             {describeInbound(item)} · {item.port}
             {where ? ` · ${where}` : ""}
             <span className="sm:hidden">
@@ -877,7 +877,7 @@ export default function InboundPage() {
         {latency && (
           <div className="flex shrink-0 justify-end sm:w-32">{latency}</div>
         )}
-        <div className="hidden shrink-0 text-right font-mono text-xs text-default-500 sm:block">
+        <div className="hidden shrink-0 text-right font-mono text-xs text-muted-foreground sm:block">
           <div>↑ {formatTraffic(item.uploadBytes)}</div>
           <div>↓ {formatTraffic(item.downloadBytes)}</div>
         </div>
@@ -993,7 +993,7 @@ export default function InboundPage() {
                 <div className="relative max-w-[10rem] shrink-0">
                   <select
                     aria-label="按服务器筛选"
-                    className="h-9 w-full appearance-none truncate rounded-full bg-default-100 pl-3.5 pr-8 text-sm outline-none"
+                    className="h-9 w-full appearance-none truncate rounded-full bg-muted pl-3.5 pr-8 text-sm outline-none"
                     value={nodeFilter}
                     onChange={(e) => setNodeFilter(e.target.value)}
                   >
@@ -1004,15 +1004,15 @@ export default function InboundPage() {
                       </option>
                     ))}
                   </select>
-                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-default-500" />
+                  <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 </div>
               )}
             </PageToolbar>
           )}
 
           {selectMode && (
-            <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-background/95 px-3 py-2 shadow-sm backdrop-blur">
-              <span className="text-sm text-default-600">
+            <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-background/95 px-3 py-2 shadow-sm ">
+              <span className="text-sm text-muted-foreground">
                 已选 {selectedIds.size} 个
               </span>
               <div className="ml-auto flex flex-wrap justify-end gap-2">
@@ -1060,12 +1060,12 @@ export default function InboundPage() {
           )}
 
           {filtered.length === 0 ? (
-            <Card className="shadow-sm bg-default-50/50">
+            <Card className="shadow-sm bg-muted/50">
               <CardBody className="text-center py-16 flex flex-col items-center justify-center gap-3">
                 <h3 className="text-lg font-medium">
                   {inbounds.length === 0 ? "暂无入站" : "没有匹配的入站"}
                 </h3>
-                <p className="text-default-500 text-sm max-w-sm">
+                <p className="text-muted-foreground text-sm max-w-sm">
                   {kernels.length === 0 && inbounds.length === 0
                     ? "先在服务器上安装内核，然后在这里创建 VLESS-Reality、SS2022 等入站；也可以点“导入”，导入别处搭好的 ss 节点用来对接中转。"
                     : inbounds.length === 0
@@ -1261,19 +1261,21 @@ export default function InboundPage() {
               )}
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-default-500">流量</span>
+              <span className="text-muted-foreground">流量</span>
               <span className="font-mono text-xs">
                 ↑ {formatTraffic(sheetItem.uploadBytes)} · ↓{" "}
                 {formatTraffic(sheetItem.downloadBytes)}
               </span>
             </div>
             {sheetItem.external && (
-              <p className="text-xs text-default-500">
+              <p className="text-xs text-muted-foreground">
                 没有流量统计；原服务器上的配置变了，请在“编辑”里同步
               </p>
             )}
             {sheetItem.remark && (
-              <p className="text-xs text-default-500">{sheetItem.remark}</p>
+              <p className="text-xs text-muted-foreground">
+                {sheetItem.remark}
+              </p>
             )}
           </div>
         )}
@@ -1334,7 +1336,7 @@ export default function InboundPage() {
             <>
               <ModalHeader closable className="flex flex-col gap-1">
                 <h2 className="text-lg font-bold">{details?.name}</h2>
-                <p className="text-small text-default-500">
+                <p className="text-small text-muted-foreground">
                   手动配置客户端时使用；一般直接用“分享”或订阅导入即可
                 </p>
               </ModalHeader>
@@ -1346,7 +1348,7 @@ export default function InboundPage() {
                         key={k}
                         className="flex items-center justify-between gap-3 py-2"
                       >
-                        <span className="text-sm text-default-500 shrink-0">
+                        <span className="text-sm text-muted-foreground shrink-0">
                           {k}
                         </span>
                         <div className="flex items-center gap-1 min-w-0">
@@ -1393,13 +1395,13 @@ export default function InboundPage() {
                   </h2>
                 </ModalHeader>
                 <ModalBody>
-                  <p className="text-default-600">
+                  <p className="text-muted-foreground">
                     入站{" "}
                     <span className="font-semibold text-foreground">
                       {confirm.item.name}
                     </span>
                   </p>
-                  <p className="text-small text-default-500">
+                  <p className="text-small text-muted-foreground">
                     {confirm.item.external && confirm.action === "delete"
                       ? "只删除面板里的记录和相关中转，原服务器上的节点不受影响。"
                       : CONFIRM_TEXT[confirm.action].body}
@@ -1443,10 +1445,10 @@ export default function InboundPage() {
                   </h2>
                 </ModalHeader>
                 <ModalBody>
-                  <p className="max-h-40 overflow-y-auto text-small text-default-600 break-all">
+                  <p className="max-h-40 overflow-y-auto text-small text-muted-foreground break-all">
                     {chosen.map((i) => i.name).join("、")}
                   </p>
-                  <p className="text-small text-default-500">
+                  <p className="text-small text-muted-foreground">
                     {panelOnly
                       ? "只删除面板里的记录和相关中转，原服务器上的节点不受影响。"
                       : "相关中转会一并删除；面板创建的入站会在服务器上立即停止，且无法恢复。"}

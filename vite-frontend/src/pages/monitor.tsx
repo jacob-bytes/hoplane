@@ -216,9 +216,11 @@ function MonitorOverview() {
         {stats.map((s) => (
           <div
             key={s.key}
-            className="min-w-0 rounded-xl border border-divider bg-content1 px-3 py-2"
+            className="min-w-0 rounded-xl border border-divider bg-card px-3 py-2"
           >
-            <div className="truncate text-xs text-default-500">{s.label}</div>
+            <div className="truncate text-xs text-muted-foreground">
+              {s.label}
+            </div>
             <div className="truncate font-mono text-sm font-semibold sm:text-base">
               {s.value}
             </div>
@@ -237,7 +239,7 @@ function MonitorOverview() {
       <PageToolbar view={{ value: viewMode, onChange: setViewMode }} />
 
       {nodesError && activeTab === "nodes" && (
-        <div className="mb-3 rounded-xl border border-divider bg-content1 px-3 py-2 text-sm text-default-600">
+        <div className="mb-3 rounded-xl border border-divider bg-card px-3 py-2 text-sm text-muted-foreground">
           {nodesError}
         </div>
       )}

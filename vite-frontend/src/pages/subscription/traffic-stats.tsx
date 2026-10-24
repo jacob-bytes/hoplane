@@ -135,7 +135,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
           setAll(false);
         }}
       />
-      <p className="text-xs text-default-500">{RANGE_HINT[range]}的流量</p>
+      <p className="text-xs text-muted-foreground">{RANGE_HINT[range]}的流量</p>
       <div className="grid grid-cols-3 gap-2">
         {(
           [
@@ -144,8 +144,8 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
             ["合计", shown ? shown.up + shown.down : undefined, "", ""],
           ] as Array<[string, number | undefined, string, string]>
         ).map(([label, value, color, textColor]) => (
-          <div key={label} className="rounded-xl bg-default-100 px-3 py-2">
-            <div className="flex items-center gap-1.5 text-xs text-default-500">
+          <div key={label} className="rounded-xl bg-muted px-3 py-2">
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
               {color && (
                 <span
                   className="h-2 w-2 rounded-full"
@@ -166,7 +166,9 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
       {error ? (
         <p className="py-8 text-center text-sm text-danger">{error}</p>
       ) : !shown ? (
-        <p className="py-8 text-center text-sm text-default-400">正在加载…</p>
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          正在加载…
+        </p>
       ) : (
         <>
           <div className="relative h-52 w-full sm:h-64">
@@ -203,7 +205,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
                     if (!active || !p) return null;
 
                     return (
-                      <div className="rounded-xl border border-divider bg-content1 px-3 py-2 text-xs shadow-lg">
+                      <div className="rounded-xl border border-divider bg-card px-3 py-2 text-xs shadow-lg">
                         <p className="font-medium">{p.long}</p>
                         <p className={`mt-1 ${DOWN_TEXT}`}>
                           下载 {bytes(p.down)}
@@ -245,12 +247,12 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
               </ComposedChart>
             </ResponsiveContainer>
             {empty && (
-              <p className="absolute inset-0 flex items-center justify-center text-center text-xs text-default-400">
+              <p className="absolute inset-0 flex items-center justify-center text-center text-xs text-muted-foreground">
                 {RANGE_HINT[range]}还没有流量
               </p>
             )}
           </div>
-          <div className="flex items-center gap-4 text-xs text-default-500">
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <span className="w-4 border-t-2" style={{ borderColor: DOWN }} />
               下载
@@ -271,7 +273,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
           </div>
 
           <div className="overflow-hidden rounded-xl border border-divider">
-            <div className="grid grid-cols-[4.75rem_minmax(0,1fr)_4.5rem] gap-2 bg-default-100/60 px-3 py-1.5 text-xs text-default-500">
+            <div className="grid grid-cols-[4.75rem_minmax(0,1fr)_4.5rem] gap-2 bg-muted/60 px-3 py-1.5 text-xs text-muted-foreground">
               <span>时间</span>
               <span>下载 / 上传</span>
               <span className="text-right">合计</span>
@@ -285,7 +287,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
                 <div className="min-w-0 space-y-1">
                   <div
                     aria-hidden="true"
-                    className="flex h-1.5 overflow-hidden rounded-full bg-default-100"
+                    className="flex h-1.5 overflow-hidden rounded-full bg-muted"
                   >
                     <div
                       className="h-full shrink-0"
@@ -344,12 +346,12 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
               </button>
             )}
           </div>
-          <p className="text-xs text-default-400">
+          <p className="text-xs text-muted-foreground">
             统计自建节点上按用户区分的协议（VLESS、Trojan、Hysteria2
             等）；导入的节点、Shadowsocks、Snell 不计入。3.3.29
             起开始记录，之前的流量不在图里
           </p>
-          <p className="text-xs text-default-400">
+          <p className="text-xs text-muted-foreground">
             订阅上方的已用流量从本周期开始（{sinceDate}
             ，创建或上次重置）累计，和这里的时间范围不同，两边的数不一定相等
           </p>

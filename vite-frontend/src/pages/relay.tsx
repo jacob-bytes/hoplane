@@ -75,7 +75,7 @@ function RelayLines({
   renderLatency: (l: InboundRelayApiItem) => React.ReactNode;
 }) {
   return (
-    <div className="divide-y divide-divider/70 rounded-xl bg-default-100/60">
+    <div className="divide-y divide-divider/70 rounded-xl bg-muted/60">
       {lines.map((l) => {
         const entry = l.entries[0];
         const ok = l.forwardExists && l.forwardStatus === 1;
@@ -90,14 +90,14 @@ function RelayLines({
               title={ok ? "转发正常" : "转发已暂停或被删除"}
             />
             <span
-              className="min-w-0 flex-1 truncate text-sm text-default-700"
+              className="min-w-0 flex-1 truncate text-sm text-foreground"
               title={l.name || l.tunnelName}
             >
               {relayLabel(l)}
             </span>
             <span className="shrink-0 text-xs">
               {renderLatency(l) ?? (
-                <span className="font-mono text-default-400">
+                <span className="font-mono text-muted-foreground">
                   {entry ? `${l.shareHost || entry.Host}:${entry.Port}` : "-"}
                 </span>
               )}
@@ -358,7 +358,7 @@ function LinesView() {
                   onPress={() => setEditing(i)}
                 >
                   <div className="space-y-2">
-                    <p className="truncate text-xs text-default-500">
+                    <p className="truncate text-xs text-muted-foreground">
                       节点：{landing}
                     </p>
                     {lineList}

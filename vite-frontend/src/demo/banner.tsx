@@ -23,24 +23,24 @@ export function DemoBanner() {
   }
 
   return (
-    <div className="fixed bottom-[84px] right-3 z-[60] w-[min(20rem,calc(100vw-24px))] rounded-2xl border border-divider bg-content1/95 p-3 text-xs shadow-xl backdrop-blur lg:bottom-4">
+    <div className="fixed bottom-[84px] right-3 z-[60] w-[min(20rem,calc(100vw-24px))] rounded-xl border border-divider bg-card p-3 text-xs shadow-xl  lg:bottom-4">
       <div className="mb-1 flex items-center justify-between">
         <span className="font-semibold text-sm">Hoplane 在线演示</span>
         <button
           aria-label="收起"
-          className="rounded p-1 text-default-400 hover:bg-default-100"
+          className="rounded p-1 text-muted-foreground hover:bg-muted"
           type="button"
           onClick={() => setOpen(false)}
         >
           <X className="h-3.5 w-3.5" />
         </button>
       </div>
-      <p className="text-default-500">
+      <p className="text-muted-foreground">
         数据都是示例，可以随便点；修改不会保存，刷新后还原。
       </p>
       <div className="mt-2 flex gap-2">
         <button
-          className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-default-100 px-2 py-1.5 hover:bg-default-200"
+          className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-muted px-2 py-1.5 hover:bg-default-200"
           type="button"
           onClick={() => switchDemoRole(role === "admin" ? "user" : "admin")}
         >

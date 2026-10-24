@@ -76,7 +76,7 @@ export function InstallCommandModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={installCommandModal}
       placement="center"
@@ -96,7 +96,7 @@ export function InstallCommandModal({
               >
                 <Tab key="script" title="一键脚本">
                   <div className="space-y-3 pt-2">
-                    <p className="text-sm text-default-600">
+                    <p className="text-sm text-muted-foreground">
                       在服务器上以 root 执行，安装为 systemd / OpenRC 服务：
                     </p>
                     {commandBox}
@@ -104,11 +104,11 @@ export function InstallCommandModal({
                 </Tab>
                 <Tab key="docker" title="Docker">
                   <div className="space-y-3 pt-2">
-                    <p className="text-sm text-default-600">
+                    <p className="text-sm text-muted-foreground">
                       在已安装 Docker 的服务器上执行：
                     </p>
                     {commandBox}
-                    <ul className="list-disc space-y-1 pl-5 text-xs text-default-500">
+                    <ul className="list-disc space-y-1 pl-5 text-xs text-muted-foreground">
                       <li>
                         使用 host 网络，数据保存在宿主机 /etc/hoplane_agent；
                         不要和一键脚本装的 agent 同时运行。
@@ -124,13 +124,13 @@ export function InstallCommandModal({
               </Tabs>
             ) : (
               <>
-                <p className="text-sm text-default-600">
+                <p className="text-sm text-muted-foreground">
                   请复制以下安装命令到服务器上执行：
                 </p>
                 {commandBox}
               </>
             )}
-            <div className="text-xs text-default-500">
+            <div className="text-xs text-muted-foreground">
               💡 提示：如果复制按钮失效，请手动选择上方文本进行复制
             </div>
           </div>
@@ -174,7 +174,7 @@ export function UpgradeNodeModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={upgradeModalOpen}
       placement="center"
@@ -213,7 +213,7 @@ export function UpgradeNodeModal({
                       <SelectItem key={r.version} textValue={r.version}>
                         <div className="flex justify-between items-center">
                           <span>{r.version}</span>
-                          <span className="text-xs text-default-400">
+                          <span className="text-xs text-muted-foreground">
                             {r.publishedAt
                               ? new Date(r.publishedAt).toLocaleDateString()
                               : ""}
@@ -232,7 +232,7 @@ export function UpgradeNodeModal({
                       </SelectItem>
                     ))}
                   </Select>
-                  <p className="text-sm text-default-500">
+                  <p className="text-sm text-muted-foreground">
                     {selectedVersion
                       ? `将升级到版本 ${selectedVersion}`
                       : "未选择版本，将自动使用最新版"}

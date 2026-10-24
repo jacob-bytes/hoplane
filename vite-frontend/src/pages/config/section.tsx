@@ -24,7 +24,7 @@ export function ConfigSection({
 }) {
   return (
     <section
-      className="scroll-mt-4 rounded-xl border border-divider bg-content1 shadow-sm"
+      className="scroll-mt-4 rounded-xl border border-divider bg-card shadow-sm"
       id={`config-${id}`}
     >
       <button
@@ -44,13 +44,13 @@ export function ConfigSection({
             )}
           </h2>
           {summary && (
-            <p className="mt-0.5 truncate text-xs text-default-500">
+            <p className="mt-0.5 truncate text-xs text-muted-foreground">
               {summary}
             </p>
           )}
         </div>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-default-400 transition-transform ${
+          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
             open ? "rotate-180" : ""
           }`}
         />
@@ -84,7 +84,7 @@ export function Field({
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="text-sm font-medium">{label}</p>
-          {help && <p className="text-xs text-default-500">{help}</p>}
+          {help && <p className="text-xs text-muted-foreground">{help}</p>}
         </div>
         <div className="shrink-0">{children}</div>
       </div>
@@ -95,7 +95,7 @@ export function Field({
     <div className="space-y-1.5">
       <p className="text-sm font-medium">{label}</p>
       {children}
-      {help && <p className="text-xs text-default-500">{help}</p>}
+      {help && <p className="text-xs text-muted-foreground">{help}</p>}
     </div>
   );
 }
@@ -103,7 +103,7 @@ export function Field({
 /** Small heading inside a section, for a group of fields. */
 export function SubHeading({ children }: { children: React.ReactNode }) {
   return (
-    <p className="border-t border-divider pt-3 text-xs font-semibold text-default-500 first:border-t-0 first:pt-0">
+    <p className="border-t border-divider pt-3 text-xs font-semibold text-muted-foreground first:border-t-0 first:pt-0">
       {children}
     </p>
   );

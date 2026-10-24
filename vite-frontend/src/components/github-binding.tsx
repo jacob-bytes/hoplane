@@ -77,7 +77,7 @@ export function GithubBindingModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={isOpen}
       placement="center"
@@ -87,13 +87,13 @@ export function GithubBindingModal({
       <ModalContent>
         <ModalHeader>GitHub 登录</ModalHeader>
         <ModalBody>
-          <div className="flex items-center gap-3 rounded-xl bg-default-100 px-3 py-3">
-            <Github className="h-5 w-5 shrink-0 text-default-600" />
+          <div className="flex items-center gap-3 rounded-xl bg-muted px-3 py-3">
+            <Github className="h-5 w-5 shrink-0 text-muted-foreground" />
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-medium">
                 {bound ? info?.login : "未绑定"}
               </div>
-              <div className="text-xs text-default-500">
+              <div className="text-xs text-muted-foreground">
                 {bound
                   ? `绑定于 ${new Date(info?.createdAt || 0).toLocaleDateString()}，可在登录页用 GitHub 登录`
                   : "绑定后可在登录页用 GitHub 账号登录"}

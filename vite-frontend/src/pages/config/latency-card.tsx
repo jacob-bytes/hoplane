@@ -91,7 +91,7 @@ export function LatencySettings({
 
   return (
     <div className="space-y-3">
-      <p className="text-xs text-default-500">
+      <p className="text-xs text-muted-foreground">
         服务器定时用 TCP
         连接测到这些地址的延迟和丢包，代表该地区运营商用户到服务器的延迟。
         打开“默认”的测试点所有服务器都测；某台服务器要测别的，到服务器页的“测试点”单独选或批量设置。
@@ -100,7 +100,7 @@ export function LatencySettings({
       </p>
 
       {targets.length === 0 && (
-        <div className="rounded-lg border border-dashed border-divider px-3 py-4 text-center text-sm text-default-500">
+        <div className="rounded-lg border border-dashed border-divider px-3 py-4 text-center text-sm text-muted-foreground">
           还没有测试点
           <div className="mt-2">
             <Button
@@ -249,7 +249,7 @@ export function LatencySettings({
         >
           自定义
         </Button>
-        <span className="self-center text-xs text-default-400">
+        <span className="self-center text-xs text-muted-foreground">
           {targets.length} / {MAX_TARGETS}
         </span>
       </div>

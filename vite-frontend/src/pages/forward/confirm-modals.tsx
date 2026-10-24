@@ -32,7 +32,7 @@ export function DeleteForwardModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={deleteModalOpen}
       placement="center"
@@ -47,14 +47,14 @@ export function DeleteForwardModal({
               <h2 className="text-lg font-bold text-danger">确认删除</h2>
             </ModalHeader>
             <ModalBody>
-              <p className="text-default-600">
+              <p className="text-muted-foreground">
                 确定要删除规则{" "}
                 <span className="font-semibold text-foreground">
                   &quot;{forwardToDelete?.name}&quot;
                 </span>{" "}
                 吗？
               </p>
-              <p className="text-small text-default-500 mt-2">
+              <p className="text-small text-muted-foreground mt-2">
                 此操作无法撤销，删除后该规则将永久消失。
               </p>
             </ModalBody>
@@ -97,7 +97,7 @@ export function ResetFlowModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={resetFlowModalOpen}
       placement="center"
@@ -112,14 +112,14 @@ export function ResetFlowModal({
               <h2 className="text-lg font-bold text-secondary">确认流量清零</h2>
             </ModalHeader>
             <ModalBody>
-              <p className="text-default-600">
+              <p className="text-muted-foreground">
                 确定要清零规则{" "}
                 <span className="font-semibold text-foreground">
                   &quot;{forwardToResetFlow?.name}&quot;
                 </span>{" "}
                 当前显示的上传和下载流量吗？
               </p>
-              <p className="text-small text-default-500 mt-2">
+              <p className="text-small text-muted-foreground mt-2">
                 此操作不可撤销，但不会影响用户总流量、用户隧道配额和历史统计。
               </p>
             </ModalBody>
@@ -167,7 +167,7 @@ export function AddressListModal({
   return (
     <Modal
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={addressModalOpen}
       scrollBehavior="inside"
@@ -187,7 +187,7 @@ export function AddressListModal({
             {addressList.map((item) => (
               <div
                 key={item.id}
-                className="flex justify-between items-center p-3 border border-default-200 dark:border-default-100 rounded-lg"
+                className="flex justify-between items-center p-3 border border-border dark:border-border rounded-lg"
               >
                 <code className="font-mono text-sm flex-1 mr-3 text-foreground">
                   {item.address}
@@ -228,7 +228,7 @@ export function BatchDeleteModal({
   return (
     <Modal
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={batchDeleteModalOpen}
       onOpenChange={setBatchDeleteModalOpen}
@@ -286,7 +286,7 @@ export function BatchChangeTunnelModal({
   return (
     <Modal
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={batchChangeTunnelModalOpen}
       onOpenChange={setBatchChangeTunnelModalOpen}

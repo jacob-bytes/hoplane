@@ -1592,7 +1592,7 @@ export default function TunnelPage({
                         right={
                           !isSearching && (
                             <span
-                              className="cursor-grab touch-none p-1 text-default-300 hover:text-default-500 active:cursor-grabbing"
+                              className="cursor-grab touch-none p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
                               title="拖动排序"
                               {...listeners}
                             >
@@ -1681,7 +1681,7 @@ export default function TunnelPage({
               ] as Array<[string, string]>
             ).map(([k, v]) => (
               <div key={k} className="flex justify-between gap-3">
-                <span className="shrink-0 text-default-500">{k}</span>
+                <span className="shrink-0 text-muted-foreground">{k}</span>
                 <span className="min-w-0 break-all text-right text-xs leading-5">
                   {v}
                 </span>

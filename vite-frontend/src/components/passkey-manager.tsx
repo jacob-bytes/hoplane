@@ -107,7 +107,7 @@ export function PasskeyModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={isOpen}
       placement="center"
@@ -118,7 +118,7 @@ export function PasskeyModal({
       <ModalContent>
         <ModalHeader closable>通行证密钥</ModalHeader>
         <ModalBody>
-          <p className="text-sm text-default-500">
+          <p className="text-sm text-muted-foreground">
             绑定后可用设备解锁（指纹、面容等）登录。绑定和删除都需要当前密码。
           </p>
           {items.length > 0 && (
@@ -132,7 +132,7 @@ export function PasskeyModal({
                     <div className="truncate text-sm font-medium">
                       {item.name}
                     </div>
-                    <div className="text-xs text-default-500">
+                    <div className="text-xs text-muted-foreground">
                       创建于 {new Date(item.createdAt).toLocaleDateString()}
                       {item.lastUsedAt
                         ? ` · 最近使用 ${new Date(item.lastUsedAt).toLocaleDateString()}`

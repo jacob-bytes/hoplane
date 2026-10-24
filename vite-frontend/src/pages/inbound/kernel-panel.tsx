@@ -35,7 +35,7 @@ import {
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 export interface InstallRequest {
   nodeId: number;
@@ -56,7 +56,7 @@ const DARK_LABEL: Record<string, string> = {
   success: "dark:text-emerald-400",
   warning: "dark:text-amber-400",
   danger: "dark:text-rose-400",
-  default: "dark:text-default-500",
+  default: "dark:text-muted-foreground",
 };
 
 function shortVersion(v: string): string {
@@ -270,10 +270,10 @@ export function KernelPanel({
         <span className="w-full truncate text-sm font-semibold text-foreground">
           {kernelName(k.kernelType)}
         </span>
-        <span className="w-full truncate font-mono text-[11px] text-default-500">
+        <span className="w-full truncate font-mono text-[11px] text-muted-foreground">
           {k.installedVersion ? shortVersion(k.installedVersion) : k.version}
         </span>
-        <span className="w-full truncate text-[11px] text-default-500">
+        <span className="w-full truncate text-[11px] text-muted-foreground">
           {k.inboundCount} 个入站
         </span>
       </button>
@@ -283,7 +283,7 @@ export function KernelPanel({
   return (
     <div>
       <div className="flex items-center justify-between mb-3 gap-2">
-        <p className="text-xs text-default-500">
+        <p className="text-xs text-muted-foreground">
           点击内核可启停、重启、查看日志或卸载
         </p>
         <Button
@@ -297,8 +297,8 @@ export function KernelPanel({
       </div>
 
       {kernels.length === 0 ? (
-        <Card className="shadow-sm bg-default-50/50">
-          <CardBody className="text-center py-10 text-sm text-default-500">
+        <Card className="shadow-sm bg-muted/50">
+          <CardBody className="text-center py-10 text-sm text-muted-foreground">
             还没有在任何服务器上安装内核。点击“安装内核”，先在服务器上安装
             Xray，再到“节点”里创建入站。
           </CardBody>
@@ -442,7 +442,7 @@ export function KernelPanel({
             <>
               <ModalHeader className="flex flex-col gap-1">
                 <h2 className="text-xl font-bold">安装内核</h2>
-                <p className="text-small text-default-500">
+                <p className="text-small text-muted-foreground">
                   服务器会从官方 Release 下载并校验
                   SHA256，首次安装可能需要一两分钟
                 </p>
@@ -640,7 +640,7 @@ export function KernelPanel({
                   日志
                 </h2>
                 {logs && (
-                  <p className="text-small text-default-500">
+                  <p className="text-small text-muted-foreground">
                     {logs.running ? `运行中 PID ${logs.pid}` : "未运行"}
                     {logs.restarts > 0
                       ? ` · 已自动重启 ${logs.restarts} 次`
@@ -649,7 +649,7 @@ export function KernelPanel({
                 )}
               </ModalHeader>
               <ModalBody>
-                <pre className="text-xs whitespace-pre-wrap break-all bg-default-100 rounded-xl p-3 max-h-[60vh] overflow-auto">
+                <pre className="text-xs whitespace-pre-wrap break-all bg-muted rounded-xl p-3 max-h-[60vh] overflow-auto">
                   {logsLoading
                     ? "加载中..."
                     : (logs?.logs ?? []).join("\n") || "暂无日志"}
@@ -682,7 +682,7 @@ export function KernelPanel({
                 <h2 className="text-lg font-bold text-danger">卸载内核</h2>
               </ModalHeader>
               <ModalBody>
-                <p className="text-default-600">
+                <p className="text-muted-foreground">
                   确定从{" "}
                   <span className="font-semibold text-foreground">
                     {removeTarget?.nodeName}

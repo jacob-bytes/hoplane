@@ -38,7 +38,7 @@ export function SplitModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={Boolean(item)}
       placement="center"
@@ -137,7 +137,7 @@ function SplitForm({
     <>
       <ModalHeader className="flex flex-col gap-1">
         <h2 className="text-lg font-bold">出站</h2>
-        <p className="truncate text-small font-normal text-default-500">
+        <p className="truncate text-small font-normal text-muted-foreground">
           {item.name}
         </p>
       </ModalHeader>
@@ -156,7 +156,7 @@ function SplitForm({
             onPress={() => setPicking("default")}
           />
           <p
-            className={`text-xs ${outboundMissing ? "text-danger" : "text-default-400"}`}
+            className={`text-xs ${outboundMissing ? "text-danger" : "text-muted-foreground"}`}
           >
             {outboundMissing
               ? "原出站节点已被删除，该入站的流量会被丢弃，请重新选择"
@@ -168,10 +168,14 @@ function SplitForm({
             <p className="text-sm font-medium">
               分流规则
               {rules.length > 0 && (
-                <span className="ml-1.5 text-default-400">{rules.length}</span>
+                <span className="ml-1.5 text-muted-foreground">
+                  {rules.length}
+                </span>
               )}
             </p>
-            <p className="text-xs text-default-400">从上到下，先命中先生效</p>
+            <p className="text-xs text-muted-foreground">
+              从上到下，先命中先生效
+            </p>
           </div>
           <SplitRulesEditor
             categories={categories}

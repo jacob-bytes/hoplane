@@ -63,7 +63,7 @@ export function ForwardFormModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={modalOpen}
       placement="center"
@@ -78,7 +78,7 @@ export function ForwardFormModal({
               <h2 className="text-xl font-bold">
                 {isEdit ? "编辑规则" : "新增规则"}
               </h2>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 {isEdit ? "修改现有规则配置的信息" : "创建新的规则配置"}
               </p>
             </ModalHeader>
@@ -227,7 +227,7 @@ export function ForwardFormModal({
                     aria-label="高级设置"
                     className="border-b-0 [&_[data-slot=accordion-trigger]]:no-underline [&_[data-slot=accordion-trigger]]:hover:no-underline"
                     title={
-                      <span className="text-small text-default-500 font-medium">
+                      <span className="text-small text-muted-foreground font-medium">
                         高级设置
                       </span>
                     }

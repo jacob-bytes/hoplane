@@ -381,7 +381,7 @@ export function TemplateBuilder({
             </option>
           ))}
         </select>
-        <p className="text-xs text-default-500">
+        <p className="text-xs text-muted-foreground">
           选择预设后仍可手动调整；自定义规则会保留。
         </p>
       </div>
@@ -400,7 +400,7 @@ export function TemplateBuilder({
               全选
             </button>
             <button
-              className="text-default-500"
+              className="text-muted-foreground"
               type="button"
               onClick={() =>
                 updateRules(value.rules.filter((r) => r.type !== "category"))
@@ -422,13 +422,13 @@ export function TemplateBuilder({
             </button>
           </div>
         ) : !catalog.length ? (
-          <p className="text-sm text-default-500">正在加载规则库…</p>
+          <p className="text-sm text-muted-foreground">正在加载规则库…</p>
         ) : (
           <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:grid-cols-3">
             {catalog.map((c) => (
               <label
                 key={c.key}
-                className={`flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors ${selected.has(c.key) ? "bg-primary/5" : "hover:bg-default-50"}`}
+                className={`flex cursor-pointer items-center gap-2 rounded-lg px-2 py-2 text-sm transition-colors ${selected.has(c.key) ? "bg-primary/5" : "hover:bg-muted"}`}
               >
                 <input
                   checked={selected.has(c.key)}
@@ -455,7 +455,7 @@ export function TemplateBuilder({
         />
         <span>
           按服务生成独立策略组
-          <span className="mt-1 block text-xs text-default-500">
+          <span className="mt-1 block text-xs text-muted-foreground">
             每个已选类别和兜底各有一个选择组，可在客户端单独选节点。规则去向作为该组的默认选择；sing-box
             的拦截规则直接拒绝。
           </span>
@@ -465,7 +465,7 @@ export function TemplateBuilder({
         <summary className="cursor-pointer text-sm font-medium">
           规则去向与顺序 · {value.rules.length} 条
         </summary>
-        <p className="my-3 text-xs text-default-500">
+        <p className="my-3 text-xs text-muted-foreground">
           从上往下匹配，第一条命中后生效。可把具体规则放在
           Google、微软、国内服务等大类前面。启用独立策略组时，类别的去向为组内默认选择。
         </p>
@@ -473,10 +473,10 @@ export function TemplateBuilder({
           {value.rules.map((r, i) => (
             <div
               key={`${r.type}-${i}`}
-              className="flex flex-wrap items-center gap-2 rounded-lg bg-default-50 p-2"
+              className="flex flex-wrap items-center gap-2 rounded-lg bg-muted p-2"
             >
               <span className="min-w-0 flex-1 break-all text-xs">
-                <span className="mr-2 text-default-400">{i + 1}.</span>
+                <span className="mr-2 text-muted-foreground">{i + 1}.</span>
                 {r.type === "category"
                   ? (catalog.find((c) => c.key === r.value)?.name ?? r.value)
                   : `${RULE_TYPES.find(([k]) => k === r.type)?.[1]} · ${r.value}`}
@@ -497,7 +497,7 @@ export function TemplateBuilder({
               </select>
               <button
                 aria-label={`上移第 ${i + 1} 条规则`}
-                className="p-1 text-default-500 disabled:opacity-25"
+                className="p-1 text-muted-foreground disabled:opacity-25"
                 disabled={i === 0}
                 type="button"
                 onClick={() => move(i, -1)}
@@ -506,7 +506,7 @@ export function TemplateBuilder({
               </button>
               <button
                 aria-label={`下移第 ${i + 1} 条规则`}
-                className="p-1 text-default-500 disabled:opacity-25"
+                className="p-1 text-muted-foreground disabled:opacity-25"
                 disabled={i === value.rules.length - 1}
                 type="button"
                 onClick={() => move(i, 1)}
@@ -526,7 +526,7 @@ export function TemplateBuilder({
             </div>
           ))}
           {!value.rules.length && (
-            <p className="text-xs text-default-500">
+            <p className="text-xs text-muted-foreground">
               尚未选择规则，将只使用兜底去向。
             </p>
           )}
@@ -575,7 +575,7 @@ export function TemplateBuilder({
             variant="bordered"
             onChange={(e) => setCustom({ ...custom, value: e.target.value })}
           />
-          <p className="self-center text-xs text-default-500">
+          <p className="self-center text-xs text-muted-foreground">
             新规则放在最前面，保存时校验域名与 CIDR。
           </p>
           <Button
@@ -606,7 +606,7 @@ export function TemplateBuilder({
         <summary className="cursor-pointer text-sm font-medium">
           节点分组 · {value.groups.length} 个
         </summary>
-        <p className="my-3 text-xs text-default-500">
+        <p className="my-3 text-xs text-muted-foreground">
           节点选择包含所有分组和节点。下面的分组按节点名称过滤；过滤留空即包含所有节点。
         </p>
         <div className="mb-3 flex flex-wrap gap-2">
@@ -629,7 +629,7 @@ export function TemplateBuilder({
         </div>
         <div className="space-y-3">
           {value.groups.map((g, i) => (
-            <div key={i} className="space-y-2 rounded-lg bg-default-50 p-2">
+            <div key={i} className="space-y-2 rounded-lg bg-muted p-2">
               <div className="flex items-center gap-2">
                 <GroupNameInput
                   label={`策略组 ${i + 1} 名称`}
@@ -707,7 +707,7 @@ export function TemplateBuilder({
         <summary className="cursor-pointer text-sm font-medium">
           策略组图标 · {iconSlots.length} 个
         </summary>
-        <p className="my-3 text-xs text-default-500">
+        <p className="my-3 text-xs text-muted-foreground">
           Mihomo / Stash 写入 icon，Surge 写入 icon-url；sing-box
           不支持策略组图标。
           {!serviceGroups &&
@@ -762,13 +762,13 @@ export function TemplateBuilder({
             return (
               <button
                 key={slot.key}
-                className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-default-100"
+                className="flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-sm hover:bg-muted"
                 type="button"
                 onClick={() => setPicking(slot.key)}
               >
                 <GroupIcon size="h-7 w-7" src={icon || slot.fallback} />
                 <span className="min-w-0 flex-1 truncate">{slot.name}</span>
-                <span className="shrink-0 text-xs text-default-400">
+                <span className="shrink-0 text-xs text-muted-foreground">
                   {icon ? "自定义" : slot.fallback ? "默认" : "无图标"}
                 </span>
               </button>
@@ -802,7 +802,7 @@ export function TemplateBuilder({
           {targetOptions(false)}
         </select>
       </div>
-      <p className="text-xs text-default-500">
+      <p className="text-xs text-muted-foreground">
         规则集由客户端按天更新，面板无需增加后台服务。生成后可在下方预览配置。
       </p>
     </div>
@@ -833,7 +833,7 @@ export function TemplateRulePreview({
     return group ? (
       <span className="text-right text-xs">
         <span className="block text-primary">服务组 · {group.name}</span>
-        <span className="text-default-500">
+        <span className="text-muted-foreground">
           默认：
           {group.target === "DIRECT"
             ? "直连"
@@ -849,7 +849,7 @@ export function TemplateRulePreview({
 
   return (
     <div className="overflow-hidden rounded-xl border border-divider">
-      <div className="flex justify-between gap-2 bg-default-100/60 px-3 py-2 text-xs font-medium">
+      <div className="flex justify-between gap-2 bg-muted/60 px-3 py-2 text-xs font-medium">
         <span>分流规则（从上往下匹配）</span>
         <span>去向</span>
       </div>
@@ -864,7 +864,7 @@ export function TemplateRulePreview({
             key={`${i}-${r.type}`}
             className="flex items-center gap-2 border-t border-divider px-3 py-2"
           >
-            <span className="w-5 shrink-0 text-xs text-default-400">
+            <span className="w-5 shrink-0 text-xs text-muted-foreground">
               {i + 1}
             </span>
             <div className="min-w-0 flex-1 text-xs">
@@ -877,7 +877,7 @@ export function TemplateRulePreview({
                 </span>
               ) : (
                 <>
-                  <span className="text-default-500">
+                  <span className="text-muted-foreground">
                     {RULE_TYPES.find(([k]) => k === r.type)?.[1] ?? r.type}{" "}
                     ·{" "}
                   </span>
@@ -885,18 +885,18 @@ export function TemplateRulePreview({
                 </>
               )}
             </div>
-            <span aria-hidden className="text-default-400">
+            <span aria-hidden className="text-muted-foreground">
               →
             </span>
             {routeTarget(r.type === "category" ? r.value : "", r.target)}
           </div>
         );
       })}
-      <div className="flex items-center gap-2 border-t border-divider bg-default-100/40 px-3 py-2">
+      <div className="flex items-center gap-2 border-t border-divider bg-muted/40 px-3 py-2">
         <span className="min-w-0 flex-1 text-xs">
           <b>兜底</b> · 未命中以上规则的流量
         </span>
-        <span aria-hidden className="text-default-400">
+        <span aria-hidden className="text-muted-foreground">
           →
         </span>
         {routeTarget("__final", value.final)}

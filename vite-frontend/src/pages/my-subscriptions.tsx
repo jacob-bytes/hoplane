@@ -44,7 +44,7 @@ function status(s: UserSubscription): [string, string] {
 
   switch (s.status) {
     case "disabled":
-      return ["已停用", "bg-default-200 text-default-600"];
+      return ["已停用", "bg-default-200 text-muted-foreground"];
     case "expired":
       return ["已到期", "bg-rose-500/15 text-rose-600"];
     case "over_quota":
@@ -70,8 +70,8 @@ function expiryText(s: UserSubscription) {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="min-w-0 rounded-xl bg-default-100 px-3 py-2">
-      <div className="text-xs text-default-500">{label}</div>
+    <div className="min-w-0 rounded-xl bg-muted px-3 py-2">
+      <div className="text-xs text-muted-foreground">{label}</div>
       <div className="truncate font-semibold">{value}</div>
     </div>
   );
@@ -85,7 +85,7 @@ function Traffic({ s }: { s: UserSubscription }) {
 
   return (
     <div className="space-y-1.5">
-      <div className="flex items-baseline justify-between gap-2 text-xs text-default-500">
+      <div className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
         <span className="font-mono">
           {ymd(s.trafficSince)} 起已用 {formatTraffic(used)}
           {s.trafficLimit
@@ -102,7 +102,7 @@ function Traffic({ s }: { s: UserSubscription }) {
           />
         </div>
       )}
-      <div className="font-mono text-xs text-default-400">
+      <div className="font-mono text-xs text-muted-foreground">
         ↑ {formatTraffic(s.uploadBytes)} · ↓ {formatTraffic(s.downloadBytes)}
         {s.nextResetTime ? ` · ${ymd(s.nextResetTime)} 重置` : ""}
       </div>
@@ -129,7 +129,7 @@ function SubscriptionCard({
   const [traffic, setTraffic] = useState(false);
 
   return (
-    <div className="space-y-4 rounded-2xl border border-divider bg-content1 p-4 shadow-sm sm:p-5">
+    <div className="space-y-4 rounded-xl border border-divider bg-card p-4 shadow-sm sm:p-5">
       <div className="flex items-center justify-between gap-2">
         <span className="min-w-0 truncate text-lg font-bold">{s.name}</span>
         <span
@@ -149,7 +149,7 @@ function SubscriptionCard({
       <Traffic s={s} />
       <button
         aria-expanded={traffic}
-        className="flex w-full items-center justify-between text-sm font-medium text-default-600"
+        className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
         type="button"
         onClick={() => setTraffic(!traffic)}
       >
@@ -170,7 +170,7 @@ function SubscriptionCard({
       )}
       {onToggle && (
         <button
-          className="flex w-full items-center justify-between text-sm font-medium text-default-600"
+          className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
           type="button"
           onClick={onToggle}
         >
@@ -183,7 +183,7 @@ function SubscriptionCard({
       {open && (
         <div className="space-y-3">
           {!onToggle && (
-            <div className="text-sm font-medium text-default-600">
+            <div className="text-sm font-medium text-muted-foreground">
               导入客户端
             </div>
           )}
@@ -193,7 +193,7 @@ function SubscriptionCard({
             name={s.name}
             rules={s.rules}
           />
-          <p className="text-center text-xs text-default-400">
+          <p className="text-center text-xs text-muted-foreground">
             点客户端直接导入，右侧按钮复制链接
           </p>
         </div>
@@ -332,7 +332,7 @@ export default function MySubscriptionsPage() {
               <ModalHeader closable>{qr?.name}</ModalHeader>
               <ModalBody className="items-center">
                 {qr && <QrImage text={link(qr)} />}
-                <p className="text-center text-xs text-default-500">
+                <p className="text-center text-xs text-muted-foreground">
                   用客户端扫码导入（自动识别客户端格式）
                 </p>
               </ModalBody>

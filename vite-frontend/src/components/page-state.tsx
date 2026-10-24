@@ -29,11 +29,11 @@ export const PageLoadingState = ({
     >
       <div className="flex items-center gap-3">
         <Spinner size="sm" />
-        <span className="text-default-600">{message}</span>
+        <span className="text-muted-foreground">{message}</span>
       </div>
       {slow && (
         <div className="flex flex-col items-center gap-2 text-center">
-          <span className="text-xs text-default-500">
+          <span className="text-xs text-muted-foreground">
             加载时间比平时长，可能是网络不稳定或面板没有响应
           </span>
           <Button
@@ -55,7 +55,7 @@ export const PageEmptyState = ({
 }: BaseStateProps) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <span className="text-default-500">{message}</span>
+      <span className="text-muted-foreground">{message}</span>
     </div>
   );
 };

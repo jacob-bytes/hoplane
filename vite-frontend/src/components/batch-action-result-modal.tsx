@@ -103,7 +103,7 @@ export function BatchActionResultModal({
                         <p className="truncate text-sm font-medium text-foreground">
                           {getFailureTitle(failure, index)}
                         </p>
-                        <p className="mt-1 text-xs text-default-500 group-open:hidden">
+                        <p className="mt-1 text-xs text-muted-foreground group-open:hidden">
                           点击展开查看失败原因
                         </p>
                       </div>

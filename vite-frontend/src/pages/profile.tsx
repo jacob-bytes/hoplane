@@ -115,7 +115,7 @@ function Avatar({ name, large }: { name: string; large?: boolean }) {
 function RoleChip({ isAdmin }: { isAdmin: boolean }) {
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${isAdmin ? "bg-primary/10 text-primary" : "bg-default-100 text-default-600"}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${isAdmin ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"}`}
     >
       {isAdmin && <ShieldCheck className="h-3 w-3" />}
       {isAdmin ? "管理员" : "普通用户"}
@@ -126,11 +126,11 @@ function RoleChip({ isAdmin }: { isAdmin: boolean }) {
 /** Phone: iOS-settings style rows, the status on the right. */
 function SecurityList({ items }: { items: SecurityItem[] }) {
   return (
-    <div className="divide-y divide-divider overflow-hidden rounded-2xl bg-content1 shadow-sm">
+    <div className="divide-y divide-divider overflow-hidden rounded-xl bg-card shadow-sm">
       {items.map((item) => (
         <button
           key={item.key}
-          className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors active:bg-default-100"
+          className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors active:bg-muted"
           type="button"
           onClick={item.onPress}
         >
@@ -139,7 +139,7 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
             {item.label}
           </span>
           <span
-            className={`max-w-[45%] truncate text-sm ${item.active ? "text-default-600" : "text-default-400"}`}
+            className={`max-w-[45%] truncate text-sm ${item.active ? "text-muted-foreground" : "text-muted-foreground"}`}
           >
             {item.status}
           </span>
@@ -153,10 +153,10 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
 /** Desktop: one row per method with what it is, its state and a button. */
 function SecurityPanel({ items }: { items: SecurityItem[] }) {
   return (
-    <section className="rounded-2xl border border-divider bg-content1 shadow-sm">
+    <section className="rounded-xl border border-divider bg-card shadow-sm">
       <div className="border-b border-divider px-6 py-4">
         <h2 className="text-base font-semibold">登录与安全</h2>
-        <p className="mt-0.5 text-sm text-default-500">
+        <p className="mt-0.5 text-sm text-muted-foreground">
           管理登录这个面板的方式。绑定、解绑和修改都需要当前密码
         </p>
       </div>
@@ -168,13 +168,13 @@ function SecurityPanel({ items }: { items: SecurityItem[] }) {
               <div className="flex flex-wrap items-center gap-2">
                 <span className="font-medium">{item.label}</span>
                 <span
-                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${item.active ? "bg-success/10 text-success" : "bg-default-100 text-default-500"}`}
+                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs ${item.active ? "bg-success/10 text-success" : "bg-muted text-muted-foreground"}`}
                 >
                   {item.active && <CircleCheck className="h-3 w-3" />}
                   {item.status}
                 </span>
               </div>
-              <p className="mt-0.5 text-sm text-default-500">
+              <p className="mt-0.5 text-sm text-muted-foreground">
                 {item.description}
               </p>
             </div>
@@ -457,7 +457,7 @@ export default function ProfilePage() {
         <div className="w-full flex-1 space-y-6">
           <PageHeader title="更多" />
 
-          <div className="flex items-center gap-4 rounded-2xl bg-content1 px-4 py-4 shadow-sm">
+          <div className="flex items-center gap-4 rounded-xl bg-card px-4 py-4 shadow-sm">
             <Avatar name={username} />
             <div className="min-w-0 flex-1 space-y-1">
               <div className="truncate text-lg font-semibold">{username}</div>
@@ -467,14 +467,14 @@ export default function ProfilePage() {
 
           {isAdmin && (
             <section className="space-y-2">
-              <h2 className="px-1 text-xs font-medium text-default-500">
+              <h2 className="px-1 text-xs font-medium text-muted-foreground">
                 管理
               </h2>
               <div className="grid grid-cols-3 gap-3">
                 {shortcuts.map((item) => (
                   <button
                     key={item.key}
-                    className="flex flex-col items-center gap-2 rounded-2xl bg-content1 px-2 py-4 shadow-sm transition-transform active:scale-[0.97]"
+                    className="flex flex-col items-center gap-2 rounded-xl bg-card px-2 py-4 shadow-sm transition-transform active:scale-[0.97]"
                     type="button"
                     onClick={item.onPress}
                   >
@@ -487,7 +487,7 @@ export default function ProfilePage() {
           )}
 
           <section className="space-y-2">
-            <h2 className="px-1 text-xs font-medium text-default-500">
+            <h2 className="px-1 text-xs font-medium text-muted-foreground">
               登录与安全
             </h2>
             <SecurityList items={securityItems} />
@@ -499,7 +499,7 @@ export default function ProfilePage() {
         <div className="w-full max-w-5xl flex-1">
           <PageHeader description="你的账户和登录方式" title="账户与登录" />
           <div className="grid items-start gap-5 lg:grid-cols-[280px_minmax(0,1fr)]">
-            <aside className="space-y-4 rounded-2xl border border-divider bg-content1 p-6 shadow-sm">
+            <aside className="space-y-4 rounded-xl border border-divider bg-card p-6 shadow-sm">
               <div className="flex flex-col items-center gap-3 text-center">
                 <Avatar large name={username} />
                 <div className="min-w-0 space-y-1.5">
@@ -520,12 +520,12 @@ export default function ProfilePage() {
       {isH5 && (
         <VersionFooter
           containerClassName="mt-8 text-center"
-          poweredClassName="text-xs text-default-400"
+          poweredClassName="text-xs text-muted-foreground"
           updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
           version={
             isWebViewFunc() ? siteConfig.app_version : siteConfig.version
           }
-          versionClassName="mt-1 text-xs text-default-400"
+          versionClassName="mt-1 text-xs text-muted-foreground"
         />
       )}
 
@@ -546,7 +546,7 @@ export default function ProfilePage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={isOpen}
         placement="center"

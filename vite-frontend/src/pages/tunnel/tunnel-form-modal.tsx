@@ -70,7 +70,7 @@ export function TunnelFormModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={modalOpen}
       placement="center"
@@ -85,7 +85,7 @@ export function TunnelFormModal({
               <h2 className="text-xl font-bold">
                 {isEdit ? "编辑隧道" : "新增隧道"}
               </h2>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 {isEdit
                   ? "修改服务器配置会中断现有连接，隧道类型不可修改"
                   : "创建新的隧道配置"}
@@ -128,7 +128,7 @@ export function TunnelFormModal({
 
                 {form.type === 1 &&
                   (getTunnelForwardMode(form.inNodeId, nodes) === "nftables" ? (
-                    <p className="text-small text-default-500">
+                    <p className="text-small text-muted-foreground">
                       入口是 nftables 服务器，由 nftables
                       转发（在服务器的转发模式里设置）
                     </p>
@@ -313,10 +313,10 @@ export function TunnelFormModal({
                           return (
                             <div
                               key={groupIndex}
-                              className="border border-default-200 rounded-lg p-3"
+                              className="border border-border rounded-lg p-3"
                             >
                               <div className="flex items-center justify-between mb-2">
-                                <span className="text-sm font-medium text-default-600">
+                                <span className="text-sm font-medium text-muted-foreground">
                                   第{groupIndex + 1}跳
                                 </span>
                                 <Button
@@ -576,8 +576,8 @@ export function TunnelFormModal({
                     )}
 
                     {getChainGroups().length === 0 && (
-                      <div className="text-center py-8 bg-default-50 dark:bg-default-100/50 rounded border border-dashed border-default-300">
-                        <p className="text-sm text-default-500">
+                      <div className="text-center py-8 bg-muted dark:bg-muted/50 rounded border border-dashed border-border">
+                        <p className="text-sm text-muted-foreground">
                           还没有添加转发链，点击上方&quot;添加一跳&quot;按钮开始添加
                         </p>
                       </div>
@@ -948,7 +948,7 @@ export function TunnelFormModal({
                     aria-label="高级设置"
                     className="border-b-0 [&_[data-slot=accordion-trigger]]:no-underline [&_[data-slot=accordion-trigger]]:hover:no-underline"
                     title={
-                      <span className="text-small text-default-500 font-medium">
+                      <span className="text-small text-muted-foreground font-medium">
                         高级设置
                       </span>
                     }
@@ -1038,7 +1038,7 @@ export function TunnelFormModal({
 
                       <div>
                         <div className="text-sm font-medium">质量检测目标</div>
-                        <p className="text-xs text-default-500 mt-0.5">
+                        <p className="text-xs text-muted-foreground mt-0.5">
                           用于实时隧道质量检测、诊断目标和 best
                           最优出口评分，留空使用 www.bing.com:443
                         </p>

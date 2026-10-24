@@ -109,7 +109,7 @@ function LatencyDisplay({
     return <RefreshCw className="w-3 h-3 animate-spin inline text-primary" />;
   }
   if (value === undefined || value < 0) {
-    return <span className="text-default-400">-</span>;
+    return <span className="text-muted-foreground">-</span>;
   }
   const ms = value.toFixed(0);
   let colorClass = "text-success";
@@ -163,7 +163,7 @@ function UptimeHistoryBar({
             return (
               <div
                 key={idx}
-                className="w-1.5 h-4 rounded-full bg-default-200 dark:bg-default-100/50"
+                className="w-1.5 h-4 rounded-full bg-default-200 dark:bg-muted/50"
                 title="暂无数据"
               />
             );
@@ -350,7 +350,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="text-center py-8 text-default-500">
+          <div className="text-center py-8 text-muted-foreground">
             暂无质量历史数据
           </div>
         )}
@@ -454,7 +454,9 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
             </ResponsiveContainer>
           </div>
         ) : (
-          <div className="text-center py-8 text-default-500">暂无流量数据</div>
+          <div className="text-center py-8 text-muted-foreground">
+            暂无流量数据
+          </div>
         )}
       </CardBody>
     </Card>
@@ -645,7 +647,7 @@ function TunnelTopologyPathRow({ path }: { path: TunnelTopologyPath }) {
                 />
               </div>
               <span
-                className={`mt-1.5 text-[10px] font-mono leading-none ${hop.errorMessage || hop.loss > 0 ? "text-warning" : "text-default-400"}`}
+                className={`mt-1.5 text-[10px] font-mono leading-none ${hop.errorMessage || hop.loss > 0 ? "text-warning" : "text-muted-foreground"}`}
               >
                 {hop.errorMessage ? "探测失败" : `${hop.loss.toFixed(0)}% 丢包`}
               </span>
@@ -708,7 +710,7 @@ const ForwardingChainTopology = React.memo(function ForwardingChainTopology({
   return (
     <Card className="border border-divider/60 shadow-sm transition-shadow bg-gradient-to-br from-background to-default-50/50 mt-4">
       <CardHeader className="py-3 px-4 flex flex-row items-center justify-between pb-1">
-        <h3 className="text-sm font-semibold flex items-center gap-1.5 text-default-700">
+        <h3 className="text-sm font-semibold flex items-center gap-1.5 text-foreground">
           <Activity className="w-4 h-4 text-primary" />
           全链路拓扑状态 (实时)
         </h3>
@@ -1157,8 +1159,8 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           <h3 className="text-lg font-semibold">监控权限</h3>
         </CardHeader>
         <CardBody>
-          <div className="text-sm text-default-600">{accessDenied}</div>
-          <div className="text-xs text-default-500 mt-2">
+          <div className="text-sm text-muted-foreground">{accessDenied}</div>
+          <div className="text-xs text-muted-foreground mt-2">
             如需使用监控功能，请联系管理员在用户页面授予监控权限。
           </div>
         </CardBody>
@@ -1187,7 +1189,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           </Button>
           <div className="flex items-center gap-2">
             <ArrowRightLeft
-              className={`w-5 h-5 ${detailTunnel.status === 1 ? "text-success" : "text-default-400"}`}
+              className={`w-5 h-5 ${detailTunnel.status === 1 ? "text-success" : "text-muted-foreground"}`}
             />
             <h3 className="text-lg font-semibold">{detailTunnel.name}</h3>
             <Chip
@@ -1204,7 +1206,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           <Card className="border border-divider shadow-none">
             <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
-              <span className="text-xs text-default-500 flex items-center gap-1">
+              <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Zap className="w-3 h-3" />
                 入口 → 出口 延迟
               </span>
@@ -1217,7 +1219,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           <Card className="border border-divider shadow-none">
             <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
               <span
-                className="text-xs text-default-500 flex items-center gap-1"
+                className="text-xs text-muted-foreground flex items-center gap-1"
                 title={probeTargetLabel(quality)}
               >
                 <Globe className="w-3 h-3" />
@@ -1231,7 +1233,9 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           </Card>
           <Card className="border border-divider shadow-none">
             <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
-              <span className="text-xs text-default-500">入口 → 出口 丢包</span>
+              <span className="text-xs text-muted-foreground">
+                入口 → 出口 丢包
+              </span>
               <span
                 className={`text-sm font-semibold font-mono ${(quality?.entryToExitLoss ?? 0) > 0 ? "text-warning" : ""}`}
               >
@@ -1244,7 +1248,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           <Card className="border border-divider shadow-none">
             <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
               <span
-                className="text-xs text-default-500"
+                className="text-xs text-muted-foreground"
                 title={probeTargetLabel(quality)}
               >
                 出口 → 测试目标 丢包
@@ -1261,7 +1265,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
         </div>
 
         {/* Auto-probe status */}
-        <div className="flex flex-wrap items-center gap-2 text-xs text-default-500">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           {monitorTunnelQualityEnabled ? (
             <>
               <LiveDot />
@@ -1273,11 +1277,11 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
               <span>实时隧道质量检测已关闭</span>
             </>
           )}
-          <span className="text-default-400">
+          <span className="text-muted-foreground">
             · 测试目标: {probeTargetLabel(quality)}
           </span>
           {quality?.timestamp && (
-            <span className="text-default-400">
+            <span className="text-muted-foreground">
               · 最近更新:{" "}
               {new Date(quality.timestamp).toLocaleTimeString("zh-CN")}
             </span>
@@ -1324,7 +1328,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-default-500">
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
           <span>
             启用 {tunnelStats.enabled}/{tunnelStats.total}
           </span>
@@ -1359,7 +1363,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
       </div>
 
       {tunnelsError ? (
-        <div className="rounded-xl border border-divider bg-content1 px-3 py-2 text-sm text-default-600">
+        <div className="rounded-xl border border-divider bg-card px-3 py-2 text-sm text-muted-foreground">
           {tunnelsError}
         </div>
       ) : null}
@@ -1376,7 +1380,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
             return (
               <Card
                 key={tunnel.id}
-                className="group relative overflow-hidden shadow-sm border border-divider dark:border-default-100 hover:-translate-y-1 hover:shadow-lg transition-all duration-300 h-full flex flex-col cursor-pointer bg-background"
+                className="group relative overflow-hidden shadow-sm border border-divider dark:border-border hover:-translate-y-1 hover:shadow-lg transition-all duration-300 h-full flex flex-col cursor-pointer bg-background"
                 onClick={() => setDetailTunnelId(tunnel.id)}
               >
                 <div
@@ -1389,7 +1393,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 <CardHeader className="pb-2 pt-5 px-5 flex flex-row justify-between items-start gap-4">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative flex-shrink-0">
-                      <div className="w-10 h-10 rounded-xl bg-default-100 dark:bg-default-50/10 flex items-center justify-center border border-divider">
+                      <div className="w-10 h-10 rounded-xl bg-muted dark:bg-muted/10 flex items-center justify-center border border-divider">
                         <ArrowRightLeft
                           className={`w-5 h-5 ${isEnabled ? "text-success" : "text-danger"}`}
                         />
@@ -1402,7 +1406,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                       <h3 className="font-semibold text-foreground text-sm truncate">
                         {tunnel.name}
                       </h3>
-                      <div className="flex items-center gap-1.5 text-[11px] text-default-500 mt-0.5">
+                      <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-0.5">
                         <span className="font-mono">
                           {isEnabled ? "启用" : "禁用"}
                         </span>
@@ -1414,7 +1418,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 <CardBody className="py-3 px-5 flex-1 flex flex-col justify-end gap-3 z-10 w-full overflow-hidden">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <div className="text-[10px] text-default-500 flex items-center gap-1">
+                      <div className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <Zap className="w-3 h-3" />
                         入口→出口
                       </div>
@@ -1425,13 +1429,13 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="text-[10px] text-default-500 flex items-center gap-1">
+                      <div className="text-[10px] text-muted-foreground flex items-center gap-1">
                         <Globe className="w-3 h-3" />
                         出口→测试目标
                       </div>
                       <div
                         aria-label={`测试目标 ${targetLabel}`}
-                        className="text-[10px] text-default-400 truncate"
+                        className="text-[10px] text-muted-foreground truncate"
                       >
                         {targetLabel}
                       </div>
@@ -1449,7 +1453,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                         {quality.errorMessage}
                       </span>
                     ) : quality?.timestamp ? (
-                      <span className="text-[11px] text-default-500 flex items-center gap-1">
+                      <span className="text-[11px] text-muted-foreground flex items-center gap-1">
                         {monitorTunnelQualityEnabled ? (
                           <LiveDot />
                         ) : (
@@ -1460,7 +1464,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                         )}
                       </span>
                     ) : (
-                      <span className="text-[11px] text-default-400">
+                      <span className="text-[11px] text-muted-foreground">
                         {monitorTunnelQualityEnabled
                           ? "等待探测..."
                           : "实时检测已关闭"}

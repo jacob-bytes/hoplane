@@ -306,7 +306,10 @@ export function Select<T>({
       >
         {options.length === 0 ? (
           <div
-            className={cn("px-2 py-1 text-default-500", textSizeClass(size))}
+            className={cn(
+              "px-2 py-1 text-muted-foreground",
+              textSizeClass(size),
+            )}
           >
             暂无可选项
           </div>
@@ -321,7 +324,7 @@ export function Select<T>({
                   "flex items-center gap-2 rounded-md px-2 py-1.5",
                   optionDisabled
                     ? "cursor-not-allowed opacity-60"
-                    : "hover:bg-default-100",
+                    : "hover:bg-muted",
                 )}
               >
                 <BaseCheckbox
@@ -384,7 +387,7 @@ export function Select<T>({
                 textSizeClass(size),
                 selectedArray.length > 0
                   ? "text-foreground"
-                  : "text-default-500",
+                  : "text-muted-foreground",
               )}
               title={selectedArray.length > 0 ? selectedFullText : undefined}
             >
@@ -392,7 +395,7 @@ export function Select<T>({
             </span>
             <ChevronDownIcon
               className={cn(
-                "h-4 w-4 flex-shrink-0 text-default-500 transition-transform",
+                "h-4 w-4 flex-shrink-0 text-muted-foreground transition-transform",
                 isExpanded ? "rotate-180" : "rotate-0",
               )}
             />

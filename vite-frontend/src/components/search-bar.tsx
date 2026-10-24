@@ -36,7 +36,7 @@ export function SearchBar({
             <Button
               isIconOnly
               aria-label="搜索"
-              className="text-default-600"
+              className="text-muted-foreground"
               color="default"
               size="sm"
               variant="flat"
@@ -56,10 +56,10 @@ export function SearchBar({
           >
             <Input
               classNames={{
-                base: "bg-default-100",
+                base: "bg-muted",
                 input:
                   "bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none",
-                inputWrapper: "bg-default-100 border-0 shadow-none h-8 min-h-8",
+                inputWrapper: "bg-muted border-0 shadow-none h-8 min-h-8",
               }}
               placeholder={placeholder}
               value={value}
@@ -68,7 +68,7 @@ export function SearchBar({
             <Button
               isIconOnly
               aria-label="关闭搜索"
-              className="text-default-600 shrink-0"
+              className="text-muted-foreground shrink-0"
               color="default"
               size="sm"
               variant="light"

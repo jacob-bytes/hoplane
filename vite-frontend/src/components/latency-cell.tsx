@@ -23,7 +23,7 @@ export const TONE: Record<Tone, [string, string]> = {
   success: ["bg-emerald-500/15 text-emerald-600", "bg-emerald-500"],
   warning: ["bg-amber-500/15 text-amber-600", "bg-amber-500"],
   danger: ["bg-rose-500/15 text-rose-600", "bg-rose-500"],
-  default: ["bg-default-200/70 text-default-500", "bg-default-400"],
+  default: ["bg-default-200/70 text-muted-foreground", "bg-default-400"],
 };
 
 const RANK: Record<Tone, number> = {
@@ -287,8 +287,8 @@ export function LatencyCell({
             onKeyDown={stop}
           >
             <span className="mb-1.5 flex items-center justify-between text-sm">
-              <span className="text-default-600">延迟</span>
-              <span className="text-xs text-default-400">
+              <span className="text-muted-foreground">延迟</span>
+              <span className="text-xs text-muted-foreground">
                 {note ? `${note} · ` : ""}
                 {more > 0 ? `共 ${points.length} 个 · ` : ""}
                 {hiddenBad > 0 && (
@@ -334,7 +334,7 @@ export function LatencyCell({
         className="w-80 max-w-[calc(100vw-32px)]"
       >
         <div role="presentation" onClick={stop} onPointerDown={stop}>
-          <div className="flex items-center justify-between px-2 pb-1.5 pt-1 text-xs text-default-500">
+          <div className="flex items-center justify-between px-2 pb-1.5 pt-1 text-xs text-muted-foreground">
             <span>{title}</span>
             {probe && <span>{ago(probe.checkedAt)}</span>}
           </div>
@@ -360,7 +360,7 @@ export function LatencyCell({
                       {valueText(p)}
                     </span>
                     {p.ok && (
-                      <span className="ml-2 text-default-400">
+                      <span className="ml-2 text-muted-foreground">
                         丢包 {p.lossPct ?? 0}%
                       </span>
                     )}

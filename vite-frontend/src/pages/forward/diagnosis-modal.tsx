@@ -51,7 +51,7 @@ export function DiagnosisModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden [&>div]:bg-content1 [&>div]:dark:bg-content1",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden [&>div]:bg-card [&>div]:dark:bg-card",
       }}
       isOpen={diagnosisModalOpen}
       placement="center"
@@ -76,7 +76,7 @@ export function DiagnosisModal({
               <h2 className="text-xl font-bold">规则诊断结果</h2>
               {currentDiagnosisForward && (
                 <div className="flex items-center gap-2 min-w-0">
-                  <span className="text-small text-default-500 truncate flex-1 min-w-0">
+                  <span className="text-small text-muted-foreground truncate flex-1 min-w-0">
                     {currentDiagnosisForward.name}
                   </span>
                   <Chip
@@ -121,13 +121,13 @@ export function DiagnosisModal({
 
                   {/* 统计摘要 */}
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="text-center p-3 bg-default-100 rounded-lg border border-divider">
+                    <div className="text-center p-3 bg-muted rounded-lg border border-divider">
                       <div className="text-2xl font-bold text-foreground">
                         {diagnosisProgress.total > 0
                           ? diagnosisProgress.total
                           : diagnosisResult.results.length}
                       </div>
-                      <div className="text-xs text-default-500 mt-1">
+                      <div className="text-xs text-muted-foreground mt-1">
                         总测试数
                       </div>
                     </div>
@@ -201,7 +201,7 @@ export function DiagnosisModal({
                               </h3>
                             </div>
                             <table className="w-full text-sm">
-                              <thead className="bg-default-100">
+                              <thead className="bg-muted">
                                 <tr>
                                   <th className="px-3 py-2 text-left font-semibold text-xs">
                                     路径
@@ -220,7 +220,7 @@ export function DiagnosisModal({
                                   </th>
                                 </tr>
                               </thead>
-                              <tbody className="divide-y divide-divider bg-content1">
+                              <tbody className="divide-y divide-divider bg-card">
                                 {results.map((result, index) => {
                                   const isDiagnosing = Boolean(
                                     result.diagnosing,
@@ -235,11 +235,11 @@ export function DiagnosisModal({
                                   return (
                                     <tr
                                       key={index}
-                                      className={`hover:bg-default-50 dark:hover:bg-gray-700/50 ${
+                                      className={`hover:bg-muted dark:hover:bg-gray-700/50 ${
                                         isDiagnosing
                                           ? "bg-warning-50 dark:bg-warning-900/20"
                                           : isSuccess
-                                            ? "bg-content1"
+                                            ? "bg-card"
                                             : "bg-danger-50 dark:bg-danger-900/30"
                                       }`}
                                     >
@@ -262,7 +262,7 @@ export function DiagnosisModal({
                                             <div className="font-medium text-foreground truncate">
                                               {result.description}
                                             </div>
-                                            <div className="text-xs text-default-500 truncate">
+                                            <div className="text-xs text-muted-foreground truncate">
                                               {result.targetIp}:
                                               {result.targetPort}
                                             </div>
@@ -294,7 +294,7 @@ export function DiagnosisModal({
                                             {result.averageTime?.toFixed(0)}
                                           </span>
                                         ) : (
-                                          <span className="text-default-400">
+                                          <span className="text-muted-foreground">
                                             -
                                           </span>
                                         )}
@@ -311,7 +311,7 @@ export function DiagnosisModal({
                                             {result.packetLoss?.toFixed(1)}%
                                           </span>
                                         ) : (
-                                          <span className="text-default-400">
+                                          <span className="text-muted-foreground">
                                             -
                                           </span>
                                         )}
@@ -327,7 +327,7 @@ export function DiagnosisModal({
                                             {quality.text}
                                           </Chip>
                                         ) : (
-                                          <span className="text-default-400">
+                                          <span className="text-muted-foreground">
                                             -
                                           </span>
                                         )}
@@ -425,7 +425,7 @@ export function DiagnosisModal({
                                     isDiagnosing
                                       ? "border-warning-200 dark:border-warning-300/30 bg-warning-50 dark:bg-warning-900/20"
                                       : isSuccess
-                                        ? "border-divider bg-content1"
+                                        ? "border-divider bg-card"
                                         : "border-danger-200 dark:border-danger-300/30 bg-danger-50 dark:bg-danger-900/30"
                                   }`}
                                 >
@@ -447,7 +447,7 @@ export function DiagnosisModal({
                                       <div className="font-semibold text-sm text-foreground break-words">
                                         {result.description}
                                       </div>
-                                      <div className="text-xs text-default-500 mt-0.5 break-all">
+                                      <div className="text-xs text-muted-foreground mt-0.5 break-all">
                                         {result.targetIp}:{result.targetPort}
                                       </div>
                                     </div>
@@ -477,7 +477,7 @@ export function DiagnosisModal({
                                         <div className="text-lg font-bold text-primary">
                                           {result.averageTime?.toFixed(0)}
                                         </div>
-                                        <div className="text-xs text-default-500">
+                                        <div className="text-xs text-muted-foreground">
                                           延迟(ms)
                                         </div>
                                       </div>
@@ -491,7 +491,7 @@ export function DiagnosisModal({
                                         >
                                           {result.packetLoss?.toFixed(1)}%
                                         </div>
-                                        <div className="text-xs text-default-500">
+                                        <div className="text-xs text-muted-foreground">
                                           丢包率
                                         </div>
                                       </div>
@@ -506,7 +506,7 @@ export function DiagnosisModal({
                                             >
                                               {quality.text}
                                             </Chip>
-                                            <div className="text-xs text-default-500 mt-0.5">
+                                            <div className="text-xs text-muted-foreground mt-0.5">
                                               质量
                                             </div>
                                           </>
@@ -591,10 +591,10 @@ export function DiagnosisModal({
                 </div>
               ) : (
                 <div className="text-center py-16">
-                  <div className="w-16 h-16 bg-default-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg
                       aria-hidden="true"
-                      className="w-8 h-8 text-default-400"
+                      className="w-8 h-8 text-muted-foreground"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

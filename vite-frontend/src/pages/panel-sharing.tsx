@@ -466,7 +466,7 @@ export default function PanelSharingPage() {
     <div className="space-y-2 text-sm">
       {rows.map(([k, v]) => (
         <div key={k} className="flex justify-between gap-3">
-          <span className="shrink-0 text-default-500">{k}</span>
+          <span className="shrink-0 text-muted-foreground">{k}</span>
           <span className="min-w-0 break-all text-right font-mono text-xs leading-5">
             {v}
           </span>
@@ -717,7 +717,7 @@ export default function PanelSharingPage() {
                 {sheetRemote.bindings.map((binding) => (
                   <p
                     key={binding.bindingId}
-                    className="text-xs text-default-600"
+                    className="text-xs text-muted-foreground"
                   >
                     隧道 {binding.tunnelName || `#${binding.tunnelId}`}
                     {" · "}
@@ -736,7 +736,7 @@ export default function PanelSharingPage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={createShareOpen}
         scrollBehavior="inside"
@@ -850,7 +850,7 @@ export default function PanelSharingPage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={editShareOpen}
         scrollBehavior="inside"
@@ -957,7 +957,7 @@ export default function PanelSharingPage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={importNodeOpen}
         onClose={() => setImportNodeOpen(false)}

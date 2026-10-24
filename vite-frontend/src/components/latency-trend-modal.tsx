@@ -98,7 +98,7 @@ export function LatencyTrendModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={nodeId !== null}
       placement="center"
@@ -109,20 +109,20 @@ export function LatencyTrendModal({
       <ModalContent>
         <ModalHeader closable className="flex flex-col gap-0.5">
           <h2 className="text-lg font-bold">延迟趋势</h2>
-          <p className="text-xs font-normal text-default-500">
+          <p className="text-xs font-normal text-muted-foreground">
             {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
             ，每 3 分钟一次
           </p>
         </ModalHeader>
         <ModalBody className="space-y-3">
-          <div className="flex gap-1 self-start rounded-lg bg-default-100 p-1">
+          <div className="flex gap-1 self-start rounded-lg bg-muted p-1">
             {RANGES.map((r) => (
               <button
                 key={r.hours}
                 className={`rounded-md px-3 py-1 text-xs transition-colors ${
                   hours === r.hours
-                    ? "bg-content1 font-medium shadow-sm"
-                    : "text-default-500 hover:text-default-700"
+                    ? "bg-card font-medium shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
                 type="button"
                 onClick={() => setHours(r.hours)}
@@ -134,10 +134,10 @@ export function LatencyTrendModal({
 
           {loading && !trend ? (
             <div className="flex h-52 items-center sm:h-64 justify-center">
-              <Loader2 className="h-5 w-5 animate-spin text-default-400" />
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
           ) : rows.length === 0 ? (
-            <p className="flex h-52 items-center sm:h-64 justify-center text-sm text-default-500">
+            <p className="flex h-52 items-center sm:h-64 justify-center text-sm text-muted-foreground">
               这段时间还没有记录
             </p>
           ) : (
@@ -210,7 +210,7 @@ export function LatencyTrendModal({
           {points.length > 0 && (
             <div className="overflow-x-auto">
               <table className="w-full text-xs">
-                <thead className="text-default-500">
+                <thead className="text-muted-foreground">
                   <tr className="border-b border-divider">
                     <th className="py-1.5 text-left font-normal">测试点</th>
                     <th className="py-1.5 text-right font-normal">平均</th>

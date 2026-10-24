@@ -82,7 +82,7 @@ import {
 } from "@/pages/subscription/node-groups";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 const EMPTY_PIPELINE: SubPipeline = {
   lines: "",
@@ -162,7 +162,7 @@ function Usage({ s, compact }: { s: SubscriptionItem; compact?: boolean }) {
 
   return (
     <div className={compact ? "space-y-1" : "space-y-1.5"}>
-      <div className="flex items-baseline justify-between gap-2 text-xs text-default-500">
+      <div className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
         <span className="font-mono">
           {formatTraffic(used)}
           {s.trafficLimit
@@ -174,10 +174,10 @@ function Usage({ s, compact }: { s: SubscriptionItem; compact?: boolean }) {
         )}
       </div>
       {s.trafficLimit > 0 && (
-        <UsageBar s={s} track={compact ? "bg-default-100" : "bg-default-200"} />
+        <UsageBar s={s} track={compact ? "bg-muted" : "bg-default-200"} />
       )}
       {!compact && (
-        <div className="font-mono text-xs text-default-400">
+        <div className="font-mono text-xs text-muted-foreground">
           ↑ {formatTraffic(s.uploadBytes)} · ↓ {formatTraffic(s.downloadBytes)}
         </div>
       )}
@@ -502,7 +502,7 @@ function Editor({
                 variant="bordered"
                 onChange={(e) => set({ name: e.target.value })}
               />
-              <p className="text-xs text-default-500">
+              <p className="text-xs text-muted-foreground">
                 有独立的 UUID /
                 密码：停用、到期或流量用完后从服务器上删除，已导入的配置也连不上
               </p>
@@ -527,7 +527,7 @@ function Editor({
                     onChange={(e) => set({ expire: e.target.value })}
                   />
                 </QuickPickRow>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   {draft.expire ? "到期当天 23:59 后断开" : "留空表示永不过期"}
                 </p>
               </div>
@@ -551,7 +551,7 @@ function Editor({
                       set({ limitGB: e.target.value.replace(/[^\d.]/g, "") })
                     }
                   />
-                  <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-default-500">
+                  <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
                     GB
                   </span>
                 </QuickPickRow>
@@ -573,7 +573,7 @@ function Editor({
                     ))}
                   </select>
                 </div>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   上传 +
                   下载合计，用完自动断开；在服务器上按用户统计，仅支持多用户协议
                 </p>
@@ -609,12 +609,12 @@ function Editor({
                       key={g.id}
                       className="flex items-center gap-2 px-3 py-2"
                     >
-                      <span className="w-5 shrink-0 text-xs text-default-400">
+                      <span className="w-5 shrink-0 text-xs text-muted-foreground">
                         {i + 1}
                       </span>
                       <div className="min-w-0 flex-1">
                         <div className="truncate text-sm">{g.name}</div>
-                        <div className="truncate text-xs text-default-400">
+                        <div className="truncate text-xs text-muted-foreground">
                           {g.nodeCount} 个节点 · {groupSourceText(g)}
                         </div>
                       </div>
@@ -654,13 +654,13 @@ function Editor({
                 </div>
               )}
               {groups.length === 0 ? (
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   还没有节点组，先在订阅页上方切到「节点组」新建一个
                 </p>
               ) : (
                 groups.some((g) => !draft.groupIds.includes(g.id)) && (
                   <div className="space-y-1">
-                    <p className="text-xs text-default-500">
+                    <p className="text-xs text-muted-foreground">
                       {pickedGroups.length ? "再加入" : "选择节点组"}
                     </p>
                     {groups
@@ -675,7 +675,7 @@ function Editor({
                           }
                         >
                           <span className="text-sm">{g.name}</span>
-                          <span className="ml-1 text-xs text-default-400">
+                          <span className="ml-1 text-xs text-muted-foreground">
                             {g.nodeCount} 个节点 · {groupSourceText(g)}
                           </span>
                         </Checkbox>
@@ -684,7 +684,7 @@ function Editor({
                 )
               )}
               {pickedGroups.length > 1 && (
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   几个组里有同一个节点时它会出现多次，可以在节点组里用筛选区分
                 </p>
               )}
@@ -699,7 +699,7 @@ function Editor({
               title="订阅模板"
             >
               {templates.length === 0 ? (
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   还没有模板，在订阅页右上角「模板」里添加
                 </p>
               ) : (
@@ -738,7 +738,7 @@ function Editor({
                       </div>
                     );
                   })}
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     Stash、Shadowrocket 用 Mihomo 格式的模板（可以和 Mihomo
                     共用），面板会把 include-all / filter
                     展开成节点列表；Loon、Quantumult X
@@ -785,7 +785,7 @@ function Editor({
               {o.rules && (
                 <div className="space-y-1.5">
                   <p className="text-xs font-medium">分组</p>
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     每组可在客户端里单独选节点：AI
                     服务默认美国，微软、苹果、游戏默认直连，广告拦截默认拦截
                   </p>
@@ -821,10 +821,10 @@ function Editor({
               }
               title="链式代理"
             >
-              <div className="rounded-2xl border border-primary-200 bg-primary-50/60 p-4 dark:border-primary-500/30 dark:bg-primary-900/20">
+              <div className="rounded-xl border border-primary-200 bg-primary-50/60 p-4 dark:border-primary-500/30 dark:bg-primary-900/20">
                 <div className="flex items-center gap-2">
                   <span
-                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${chainOn ? "bg-success-100 text-success-700 dark:bg-success-500/20" : "bg-default-100 text-default-500"}`}
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${chainOn ? "bg-success-100 text-success-700 dark:bg-success-500/20" : "bg-muted text-muted-foreground"}`}
                   >
                     {chainOn ? "已开启" : "未开启"}
                   </span>
@@ -832,16 +832,18 @@ function Editor({
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
                   {["客户端", "中转节点", "落地节点", "网站"].map((s, i) => (
                     <span key={s} className="flex items-center gap-2">
-                      {i > 0 && <span className="text-default-400">→</span>}
+                      {i > 0 && (
+                        <span className="text-muted-foreground">→</span>
+                      )}
                       <span
-                        className={`rounded-lg px-2 py-1 ${s === "中转节点" ? "bg-secondary-100 text-secondary-700 dark:bg-secondary-500/20" : s === "落地节点" ? "bg-warning-100 text-warning-700 dark:bg-warning-500/20" : "bg-content1 text-default-600"}`}
+                        className={`rounded-lg px-2 py-1 ${s === "中转节点" ? "bg-secondary-100 text-secondary-700 dark:bg-secondary-500/20" : s === "落地节点" ? "bg-warning-100 text-warning-700 dark:bg-warning-500/20" : "bg-card text-muted-foreground"}`}
                       >
                         {s}
                       </span>
                     </span>
                   ))}
                 </div>
-                <p className="mt-3 text-xs leading-relaxed text-default-500">
+                <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                   网站看到的是落地节点的
                   IP。客户端里会多出「落地节点」「中转节点」两个组，分别选出口和中转。落地和中转都至少选一个才生效；通用分享链接（Base64）无法表达链式
                 </p>
@@ -893,7 +895,7 @@ function Editor({
                           <div className="flex items-center gap-3">
                             <div className="min-w-0 flex-1">
                               <div className="truncate text-sm">{src.name}</div>
-                              <div className="truncate text-xs text-default-400">
+                              <div className="truncate text-xs text-muted-foreground">
                                 {role && filter && chainNodes
                                   ? `匹配 ${matched} / ${ofSource.length} 个节点`
                                   : `${src.nodeCount} 个节点`}
@@ -947,15 +949,15 @@ function Editor({
 
               <div className="space-y-2">
                 <p className="text-xs font-medium">按节点</p>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   单独调整某个节点，优先于来源设置；用的是处理前的原名，改名不影响
                 </p>
                 {!chainNodes ? (
-                  <p className="py-6 text-center text-xs text-default-500">
+                  <p className="py-6 text-center text-xs text-muted-foreground">
                     正在加载节点…
                   </p>
                 ) : chainNodes.length === 0 ? (
-                  <p className="py-6 text-center text-xs text-default-500">
+                  <p className="py-6 text-center text-xs text-muted-foreground">
                     所选节点组里还没有节点
                   </p>
                 ) : (
@@ -971,7 +973,7 @@ function Editor({
                         >
                           <div className="min-w-0 flex-1">
                             <div className="truncate text-sm">{n.original}</div>
-                            <div className="truncate text-xs text-default-400">
+                            <div className="truncate text-xs text-muted-foreground">
                               {[
                                 overridden && "单独设置",
                                 n.region,
@@ -1000,13 +1002,13 @@ function Editor({
           <div className="space-y-4">
             <Section title="预览">
               {previewing && !preview && (
-                <p className="py-6 text-center text-xs text-default-500">
+                <p className="py-6 text-center text-xs text-muted-foreground">
                   正在生成…
                 </p>
               )}
               {preview && (
                 <>
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     共 {preview.items.length} 个节点
                     {preview.dropped > 0 && `，过滤掉 ${preview.dropped} 个`}
                     <button
@@ -1019,7 +1021,9 @@ function Editor({
                   </p>
                   <div className="max-h-96 overflow-y-auto rounded-xl border border-divider">
                     {preview.items.length === 0 ? (
-                      <p className="p-3 text-xs text-default-500">没有节点</p>
+                      <p className="p-3 text-xs text-muted-foreground">
+                        没有节点
+                      </p>
                     ) : (
                       preview.items.map((p, i) => (
                         <div
@@ -1029,7 +1033,7 @@ function Editor({
                           <span className="min-w-0 flex-1 truncate">
                             {p.name}
                             {p.name !== p.original && (
-                              <span className="text-default-400">
+                              <span className="text-muted-foreground">
                                 {" "}
                                 ← {p.original}
                               </span>
@@ -1042,7 +1046,7 @@ function Editor({
                               {p.chain === "landing" ? "落地" : "中转"}
                             </span>
                           )}
-                          <span className="shrink-0 text-default-500">
+                          <span className="shrink-0 text-muted-foreground">
                             {p.line === "relay" ? "中转" : "直连"}
                           </span>
                         </div>
@@ -1076,7 +1080,7 @@ function Editor({
                         onChange={setPreviewKind}
                       />
                     )}
-                    <p className="text-xs text-default-500">
+                    <p className="text-xs text-muted-foreground">
                       {slotLabel(kind)} · 「{view.name}」
                     </p>
                     {view.error ? (
@@ -1410,7 +1414,7 @@ export default function SubscriptionPage() {
   const row = (s: SubscriptionItem) => (
     <div
       key={s.id}
-      className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-content1 px-3 py-2.5 shadow-sm transition-colors hover:bg-default-100"
+      className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-card px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
       role="button"
       tabIndex={0}
       onClick={() => setDetail(s)}
@@ -1430,7 +1434,7 @@ export default function SubscriptionPage() {
           <span className="truncate font-medium">{s.name}</span>
           {stateChip(s)}
         </div>
-        <div className="truncate text-xs text-default-500">
+        <div className="truncate text-xs text-muted-foreground">
           {s.userId ? `👤 ${s.userName || `#${s.userId}`} · ` : ""}
           {s.nodeCount} 个节点 · {sourceText(s)}
           {s.expireTime ? ` · ${expiryLabel(s.expireTime)}` : ""}
@@ -1553,7 +1557,7 @@ export default function SubscriptionPage() {
               <>
                 <ModalHeader closable className="flex flex-col gap-1">
                   <h2 className="text-lg font-bold break-all">{detail.name}</h2>
-                  <p className="text-small font-normal text-default-500">
+                  <p className="text-small font-normal text-muted-foreground">
                     {detail.nodeCount} 个节点
                     {detail.expireTime
                       ? ` · ${expiryLabel(detail.expireTime)}`
@@ -1561,13 +1565,13 @@ export default function SubscriptionPage() {
                   </p>
                 </ModalHeader>
                 <ModalBody className="space-y-3">
-                  <div className="space-y-1.5 rounded-xl bg-default-100 px-3 py-2.5">
+                  <div className="space-y-1.5 rounded-xl bg-muted px-3 py-2.5">
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-mono text-sm">
                         {formatTraffic(
                           detail.uploadBytes + detail.downloadBytes,
                         )}
-                        <span className="text-default-500">
+                        <span className="text-muted-foreground">
                           {detail.trafficLimit
                             ? ` / ${formatTraffic(detail.trafficLimit)}`
                             : " · 不限流量"}
@@ -1590,7 +1594,7 @@ export default function SubscriptionPage() {
                       <UsageBar s={detail} track="bg-default-200" />
                     )}
                     <p
-                      className={`text-xs ${detail.overQuota ? "text-danger" : "text-default-500"}`}
+                      className={`text-xs ${detail.overQuota ? "text-danger" : "text-muted-foreground"}`}
                     >
                       {detail.overQuota
                         ? "流量已用完，已从服务器上断开"
@@ -1634,7 +1638,7 @@ export default function SubscriptionPage() {
                         name={detail.name}
                         rules={detail.options.rules}
                       />
-                      <div className="space-y-1 text-xs leading-relaxed text-default-500">
+                      <div className="space-y-1 text-xs leading-relaxed text-muted-foreground">
                         <p>
                           点客户端直接导入，右侧按钮复制链接
                           {detail.options.rules &&
@@ -1765,7 +1769,7 @@ export default function SubscriptionPage() {
                 </h2>
               </ModalHeader>
               <ModalBody>
-                <p className="text-sm text-default-600">
+                <p className="text-sm text-muted-foreground">
                   {confirm === "reset"
                     ? "旧链接和已导入的配置会立即失效，需要用新链接重新导入。"
                     : "订阅链接立即失效，无法恢复。"}
@@ -1816,8 +1820,8 @@ function ChainRoleButtons({
                 ? "border-warning bg-warning-50 text-warning-700 dark:bg-warning-500/20"
                 : r === "relay"
                   ? "border-secondary bg-secondary-50 text-secondary-700 dark:bg-secondary-500/20"
-                  : "border-default-400 bg-default-100 text-default-700"
-              : "border-default-200 text-default-500 hover:border-default-400 dark:border-default-100"
+                  : "border-default-400 bg-muted text-foreground"
+              : "border-border text-muted-foreground hover:border-default-400 dark:border-border"
           }`}
           type="button"
           onClick={() => onChange(r)}

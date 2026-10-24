@@ -2970,7 +2970,7 @@ export default function ForwardPage({
                         我的
                       </Chip>
                     )}
-                    <span className="text-xs text-default-400">
+                    <span className="text-xs text-muted-foreground">
                       {groupForwardCount} 条规则
                     </span>
                   </div>
@@ -3150,7 +3150,7 @@ export default function ForwardPage({
               <div className="space-y-2 text-sm">
                 {rows.map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-3">
-                    <span className="shrink-0 text-default-500">{k}</span>
+                    <span className="shrink-0 text-muted-foreground">{k}</span>
                     <span className="min-w-0 whitespace-pre-line break-all text-right font-mono text-xs leading-5">
                       {v}
                     </span>

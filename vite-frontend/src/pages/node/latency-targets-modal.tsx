@@ -115,8 +115,8 @@ export function LatencyTargetsModal({
     <button
       className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
         on
-          ? "bg-content1 font-medium shadow-sm"
-          : "text-default-500 hover:text-default-700"
+          ? "bg-card font-medium shadow-sm"
+          : "text-muted-foreground hover:text-foreground"
       }`}
       type="button"
       onClick={onPress}
@@ -129,7 +129,7 @@ export function LatencyTargetsModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={open}
       placement="center"
@@ -142,30 +142,30 @@ export function LatencyTargetsModal({
           <h2 className="text-lg font-bold">
             {batch ? `为 ${nodes.length} 个服务器设置测试点` : "测试点"}
           </h2>
-          <p className="truncate text-xs font-normal text-default-500">
+          <p className="truncate text-xs font-normal text-muted-foreground">
             {nodes.map((n) => n.name).join("、")}
           </p>
         </ModalHeader>
         <ModalBody className="space-y-3">
-          <div className="flex gap-1 rounded-lg bg-default-100 p-1">
+          <div className="flex gap-1 rounded-lg bg-muted p-1">
             {modeButton(!custom, "跟随默认", () => setCustom(false))}
             {modeButton(custom, "自定义", startCustom)}
           </div>
 
           {pool.length === 0 ? (
-            <p className="py-4 text-center text-sm text-default-500">
+            <p className="py-4 text-center text-sm text-muted-foreground">
               还没有测试点，请先到网站配置添加
             </p>
           ) : !custom ? (
             <div className="space-y-1.5 text-sm">
-              <p className="text-xs text-default-500">
+              <p className="text-xs text-muted-foreground">
                 测网站配置里打开“默认”的测试点，那边改了这里跟着变：
               </p>
               <div className="flex flex-wrap gap-1.5">
                 {defaults.map((t) => (
                   <span
                     key={t.name}
-                    className="inline-flex items-center gap-1 rounded-full bg-default-100 px-2 py-0.5 text-xs"
+                    className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs"
                   >
                     {t.pinned && <Pin className="h-3 w-3 text-primary" />}
                     {t.name}
@@ -175,7 +175,7 @@ export function LatencyTargetsModal({
             </div>
           ) : (
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-default-500">
+              <div className="flex items-center justify-between text-xs text-muted-foreground">
                 <span>
                   已选 {points.length} 个 · 卡片显示 {pinned.length}/
                   {MAX_PINNED}
@@ -217,14 +217,14 @@ export function LatencyTargetsModal({
                       >
                         <span className="text-sm">{t.name}</span>
                       </Checkbox>
-                      <span className="min-w-0 flex-1 truncate font-mono text-[11px] text-default-400">
+                      <span className="min-w-0 flex-1 truncate font-mono text-[11px] text-muted-foreground">
                         {t.host}:{t.port}
                       </span>
                       <button
                         className={`inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs transition-colors disabled:opacity-30 ${
                           pin
                             ? "bg-primary/10 text-primary"
-                            : "text-default-400 hover:text-default-600"
+                            : "text-muted-foreground hover:text-muted-foreground"
                         }`}
                         disabled={!on || (!pin && pinned.length >= MAX_PINNED)}
                         title="卡片上固定显示"
@@ -241,7 +241,7 @@ export function LatencyTargetsModal({
             </div>
           )}
           {custom && pool.length > 0 && points.length === 0 && (
-            <p className="text-xs text-default-500">
+            <p className="text-xs text-muted-foreground">
               一个都不选：{batch ? "这些服务器" : "这台服务器"}
               不测延迟和回程，卡片上显示“不测延迟”。
             </p>

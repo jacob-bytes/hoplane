@@ -979,7 +979,7 @@ export default function ConfigPage() {
       >
         <div className="flex items-baseline justify-between gap-2">
           <p className="text-sm font-medium">{label}</p>
-          <p className="truncate text-xs text-default-500">
+          <p className="truncate text-xs text-muted-foreground">
             {!isDefault && !bgImage
               ? "未单独设置，使用默认背景"
               : describeBackground(bgImage)}
@@ -1086,7 +1086,7 @@ export default function ConfigPage() {
             </span>
           </div>
         ) : (
-          <div className="flex min-w-0 items-center gap-2 rounded bg-default-100 px-2 py-0.5">
+          <div className="flex min-w-0 items-center gap-2 rounded bg-muted px-2 py-0.5">
             {showImage ? (
               <img
                 alt="浏览器标签图标预览"
@@ -1102,7 +1102,7 @@ export default function ConfigPage() {
             ) : (
               <div className="h-4 w-4 shrink-0 rounded-sm bg-default-300" />
             )}
-            <span className="truncate text-xs text-default-600">
+            <span className="truncate text-xs text-muted-foreground">
               {appNamePreview}
             </span>
           </div>
@@ -1336,7 +1336,7 @@ export default function ConfigPage() {
           公共加速站
         </Button>
         {mirror && (
-          <span className="break-all text-xs text-default-500">
+          <span className="break-all text-xs text-muted-foreground">
             面板中转地址：{mirror}
           </span>
         )}
@@ -1437,7 +1437,7 @@ export default function ConfigPage() {
     return (
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-sm font-medium text-default-700 dark:text-default-300">
+          <span className="text-sm font-medium text-foreground dark:text-default-300">
             {label}
           </span>
           <div className="flex items-center gap-2">
@@ -1467,7 +1467,7 @@ export default function ConfigPage() {
                 className={`w-full px-3 py-2 rounded-lg border transition-all duration-200 cursor-pointer text-left ${
                   isSelected
                     ? "bg-primary-50 dark:bg-primary-900/20 border-primary-300 dark:border-primary-500/50 shadow-sm"
-                    : "bg-white dark:bg-default-50 border-default-200 dark:border-default-100/30 hover:border-primary-200 dark:hover:border-primary-500/30 hover:shadow-sm"
+                    : "bg-white dark:bg-muted border-border dark:border-border/30 hover:border-primary-200 dark:hover:border-primary-500/30 hover:shadow-sm"
                 }`}
                 type="button"
                 onClick={() => toggleTypeSelection(option.value, setTypes)}
@@ -1485,7 +1485,7 @@ export default function ConfigPage() {
                     className={`font-medium ${
                       isSelected
                         ? "text-default-900 dark:text-default-100"
-                        : "text-default-700 dark:text-default-500"
+                        : "text-foreground dark:text-muted-foreground"
                     }`}
                   >
                     {option.label}
@@ -1580,7 +1580,7 @@ export default function ConfigPage() {
           {renderItem("app_bg_image")}
           {renderItem("forward_compact_mode")}
           <SubHeading>主题（点选即生效，不需要保存）</SubHeading>
-          <div className="[&_[data-slot=card-content]]:p-0! [&_h2]:hidden [&>[data-slot=card]]:rounded-none! [&>[data-slot=card]]:bg-none! [&>[data-slot=card]]:shadow-none! [&>[data-slot=card]]:backdrop-blur-none!">
+          <div className="[&_[data-slot=card-content]]:p-0! [&_h2]:hidden [&>[data-slot=card]]:rounded-none! [&>[data-slot=card]]:bg-none! [&>[data-slot=card]]:shadow-none! [&>[data-slot=card]]:-none!">
             <ThemeSettings />
           </div>
         </ConfigSection>
@@ -1689,7 +1689,7 @@ export default function ConfigPage() {
               </Field>
 
               <div className="flex items-center justify-between gap-3 border-t border-divider pt-3">
-                <span className="text-xs text-default-500">
+                <span className="text-xs text-muted-foreground">
                   公告单独保存，不随下方“保存”提交
                 </span>
                 <Button
@@ -1770,33 +1770,33 @@ export default function ConfigPage() {
 
           <SubHeading>面板自升级</SubHeading>
           {systemUpgradeLoading ? (
-            <div className="flex items-center gap-2 text-sm text-default-500">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <Spinner size="sm" />
               正在加载升级状态...
             </div>
           ) : (
             <>
               <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 gap-y-1.5 text-sm">
-                <dt className="text-default-500">当前版本</dt>
+                <dt className="text-muted-foreground">当前版本</dt>
                 <dd>
                   {systemUpgradeInfo?.currentVersion || "未获取到版本信息"}
                 </dd>
-                <dt className="text-default-500">最新版本</dt>
+                <dt className="text-muted-foreground">最新版本</dt>
                 <dd>
                   {systemUpgradeInfo?.latestVersion || "未获取到可用版本"}
                 </dd>
-                <dt className="text-default-500">升级能力</dt>
+                <dt className="text-muted-foreground">升级能力</dt>
                 <dd>
                   {systemUpgradeInfo?.capability.capable
                     ? "可升级"
                     : "当前不可升级"}
                 </dd>
-                <dt className="text-default-500">部署目录</dt>
+                <dt className="text-muted-foreground">部署目录</dt>
                 <dd className="break-all">
                   {systemUpgradeInfo?.capability.deployDir ||
                     "未获取到部署目录"}
                 </dd>
-                <dt className="text-default-500">后端容器</dt>
+                <dt className="text-muted-foreground">后端容器</dt>
                 <dd className="break-all">
                   {systemUpgradeInfo?.capability.backendContainer ||
                     "未获取到容器信息"}
@@ -1885,7 +1885,7 @@ export default function ConfigPage() {
       {/* 配置统一保存（公告除外），有修改时出现 */}
       {hasChanges && (
         <div
-          className={`sticky z-20 mt-4 flex items-center gap-3 rounded-xl border border-warning-300 bg-warning-50/95 px-3 py-2 shadow-md backdrop-blur dark:bg-warning-900/60 ${
+          className={`sticky z-20 mt-4 flex items-center gap-3 rounded-xl border border-warning-300 bg-warning-50/95 px-3 py-2 shadow-md  dark:bg-warning-900/60 ${
             isH5 ? "bottom-[calc(4.5rem+var(--safe-area-bottom))]" : "bottom-4"
           }`}
         >
@@ -1907,7 +1907,7 @@ export default function ConfigPage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={exportSelectorOpen}
         onOpenChange={setExportSelectorOpen}
@@ -1939,7 +1939,7 @@ export default function ConfigPage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={importSelectorOpen}
         onOpenChange={setImportSelectorOpen}
@@ -1971,7 +1971,7 @@ export default function ConfigPage() {
       <Modal
         backdrop="blur"
         classNames={{
-          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+          base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
         isOpen={systemUpgradeModalOpen}
         onOpenChange={(open) => {
@@ -1985,7 +1985,7 @@ export default function ConfigPage() {
             <>
               <ModalHeader>确认面板升级</ModalHeader>
               <ModalBody>
-                <div className="space-y-3 text-sm text-default-700 dark:text-default-300">
+                <div className="space-y-3 text-sm text-foreground dark:text-default-300">
                   <p>
                     升级过程需要访问 Docker
                     Socket，并会在短时间内中断当前面板服务。

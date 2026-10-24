@@ -89,7 +89,7 @@ export function NodeTuneModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={Boolean(node)}
       placement="center"
@@ -102,7 +102,7 @@ export function NodeTuneModal({
           <>
             <ModalHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">服务器调优</h2>
-              <p className="text-sm font-normal text-default-500">
+              <p className="text-sm font-normal text-muted-foreground">
                 {node?.name}
                 {status &&
                   ` · 内核 ${status.kernel || "未知"} · 拥塞控制 ${status.congestion || "未知"}`}
@@ -117,7 +117,7 @@ export function NodeTuneModal({
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     勾选的项目写入系统配置并立即生效，重启后保持；取消勾选的会恢复成调优前的值。
                   </p>
                   {status.groups.map((g) => {
@@ -159,9 +159,11 @@ export function NodeTuneModal({
                                 {detail === g.id ? "收起" : "参数"}
                               </button>
                             </div>
-                            <p className="text-xs text-default-500">{g.desc}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {g.desc}
+                            </p>
                             {detail === g.id && (
-                              <div className="mt-2 space-y-0.5 font-mono text-[11px] text-default-600">
+                              <div className="mt-2 space-y-0.5 font-mono text-[11px] text-muted-foreground">
                                 {g.settings.map((s) => (
                                   <div key={s.key} className="break-all">
                                     {s.key}:{" "}
@@ -175,7 +177,7 @@ export function NodeTuneModal({
                                         {!s.ok && ` → ${s.target}`}
                                       </>
                                     ) : (
-                                      <span className="text-default-400">
+                                      <span className="text-muted-foreground">
                                         不支持
                                       </span>
                                     )}

@@ -160,7 +160,7 @@ export function NodeGroupList({
       {groups.map((g, i) => (
         <div
           key={g.id}
-          className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-content1 px-3 py-2.5 shadow-sm transition-colors hover:bg-default-100"
+          className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-card px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
           role="button"
           tabIndex={0}
           onClick={() => onEdit(g)}
@@ -181,7 +181,7 @@ export function NodeGroupList({
                 </Chip>
               )}
             </div>
-            <div className="truncate text-xs text-default-500">
+            <div className="truncate text-xs text-muted-foreground">
               {g.nodeCount} 个节点 · {groupSourceText(g)}
               {[filterSummary(g.options), namingSummary(g.options)]
                 .filter(Boolean)
@@ -190,7 +190,7 @@ export function NodeGroupList({
               {g.options.script ? " · 脚本" : ""}
             </div>
             {g.subscriptions.length > 0 && (
-              <div className="mt-1 truncate text-xs text-default-400">
+              <div className="mt-1 truncate text-xs text-muted-foreground">
                 订阅：{g.subscriptions.map((s) => s.name).join("、")}
               </div>
             )}
@@ -348,7 +348,7 @@ export function NodeGroupEditor({
   const pickList = (title: string, list: InboundApiItem[]) =>
     list.length > 0 && (
       <div className="space-y-1">
-        <p className="text-xs text-default-500">{title}</p>
+        <p className="text-xs text-muted-foreground">{title}</p>
         {list.map((i) => (
           <Checkbox
             key={i.id}
@@ -364,7 +364,7 @@ export function NodeGroupEditor({
           >
             <span className="text-sm">{i.name}</span>
             {!i.enabled && (
-              <span className="ml-1 text-xs text-default-400">已停用</span>
+              <span className="ml-1 text-xs text-muted-foreground">已停用</span>
             )}
             {(i.external || !MULTI_USER_PROTOCOLS.has(i.protocol)) && (
               <span className="ml-1 text-xs text-warning">共用凭据</span>
@@ -414,7 +414,7 @@ export function NodeGroupEditor({
                 onChange={(e) => set({ name: e.target.value })}
               />
               {usedBy.length > 0 && (
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   订阅{usedBy.map((s) => `「${s.name}」`).join("、")}
                   在用，改动对它们立即生效
                 </p>
@@ -430,7 +430,7 @@ export function NodeGroupEditor({
                 onChange={(v) => set({ sourceAll: v === "all" })}
               />
               {draft.sourceAll ? (
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   包括以后新增的节点和订阅源；只想要一部分可以在“处理”里筛选
                 </p>
               ) : (
@@ -439,7 +439,7 @@ export function NodeGroupEditor({
                   {pickList("导入", imported)}
                   {sources.length > 0 && (
                     <div className="space-y-1">
-                      <p className="text-xs text-default-500">
+                      <p className="text-xs text-muted-foreground">
                         订阅源（整个源，更新后的节点自动跟上）
                       </p>
                       {sources.map((src) => (
@@ -456,7 +456,7 @@ export function NodeGroupEditor({
                           }
                         >
                           <span className="text-sm">{src.name}</span>
-                          <span className="ml-1 text-xs text-default-400">
+                          <span className="ml-1 text-xs text-muted-foreground">
                             {src.nodeCount} 个节点
                           </span>
                         </Checkbox>
@@ -498,7 +498,7 @@ export function NodeGroupEditor({
                   onChange={(lines) => setOpts({ lines })}
                 />
                 {o.lines === "prefer_relay" && (
-                  <p className="text-xs text-default-500">
+                  <p className="text-xs text-muted-foreground">
                     同一节点有启用的中转时隐藏原直连，保留全部中转线路；没有中转则保留直连。按中转配置判断，不随测速结果变化，其他筛选继续生效。
                   </p>
                 )}
@@ -557,7 +557,7 @@ export function NodeGroupEditor({
             >
               <div className="space-y-1.5">
                 <p className="text-xs font-medium">改名规则</p>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   从上到下依次替换，替换为留空就是删除匹配的部分，可用 $1
                   引用分组
                 </p>
@@ -635,7 +635,7 @@ export function NodeGroupEditor({
         {page === "preview" && (
           <Section title="预览">
             {previewing && !preview && (
-              <p className="py-6 text-center text-xs text-default-500">
+              <p className="py-6 text-center text-xs text-muted-foreground">
                 正在生成…
               </p>
             )}
@@ -646,7 +646,7 @@ export function NodeGroupEditor({
             )}
             {preview && (
               <>
-                <p className="text-xs text-default-500">
+                <p className="text-xs text-muted-foreground">
                   共 {preview.items.length} 个节点
                   {preview.dropped > 0 && `，过滤掉 ${preview.dropped} 个`}
                   <button
@@ -659,7 +659,9 @@ export function NodeGroupEditor({
                 </p>
                 <div className="max-h-96 overflow-y-auto rounded-xl border border-divider">
                   {preview.items.length === 0 ? (
-                    <p className="p-3 text-xs text-default-500">没有节点</p>
+                    <p className="p-3 text-xs text-muted-foreground">
+                      没有节点
+                    </p>
                   ) : (
                     preview.items.map((p, i) => (
                       <div
@@ -669,13 +671,13 @@ export function NodeGroupEditor({
                         <span className="min-w-0 flex-1 truncate">
                           {p.name}
                           {p.name !== p.original && (
-                            <span className="text-default-400">
+                            <span className="text-muted-foreground">
                               {" "}
                               ← {p.original}
                             </span>
                           )}
                         </span>
-                        <span className="shrink-0 text-default-500">
+                        <span className="shrink-0 text-muted-foreground">
                           {p.line === "relay" ? "中转" : "直连"}
                         </span>
                       </div>

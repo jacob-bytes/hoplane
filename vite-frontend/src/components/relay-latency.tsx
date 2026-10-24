@@ -13,7 +13,7 @@ function RelayPath({ latency }: { latency: RelayLatency }) {
 
   return (
     <div className="space-y-1 border-t border-divider px-2 py-2 text-xs">
-      <div className="text-default-500">
+      <div className="text-muted-foreground">
         {pathOnly
           ? "入口到节点的各段延迟"
           : `= ${latency.entry ?? "入口"} 到测试点 + 下面各段`}
@@ -31,7 +31,9 @@ function RelayPath({ latency }: { latency: RelayLatency }) {
           >
             {h.ok ? `${h.latencyMs} ms` : h.error || "不通"}
             {h.ok && (h.lossPct ?? 0) > 0 && (
-              <span className="ml-1 text-default-400">丢 {h.lossPct}%</span>
+              <span className="ml-1 text-muted-foreground">
+                丢 {h.lossPct}%
+              </span>
             )}
           </span>
         </div>

@@ -61,7 +61,7 @@ export function DeleteTunnelModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={deleteModalOpen}
       placement="center"
@@ -74,7 +74,7 @@ export function DeleteTunnelModal({
           <>
             <ModalHeader className="flex flex-col gap-1">
               <h2 className="text-lg font-bold sm:text-xl">删除隧道</h2>
-              <p className="text-xs font-normal leading-5 text-default-500 sm:text-sm">
+              <p className="text-xs font-normal leading-5 text-muted-foreground sm:text-sm">
                 {tunnelDeletePreview?.tunnelName || tunnelToDelete?.name
                   ? `即将删除“${tunnelDeletePreview?.tunnelName || tunnelToDelete?.name}”，删除前会先检查是否有关联规则。`
                   : "删除前会先检查是否有关联规则。"}
@@ -82,7 +82,7 @@ export function DeleteTunnelModal({
             </ModalHeader>
             <ModalBody className="space-y-3 sm:space-y-4">
               {deletePreviewLoading ? (
-                <div className="flex items-center gap-3 rounded-xl border border-divider bg-content2/40 px-3 py-5 text-sm text-default-600 sm:px-4 sm:py-6">
+                <div className="flex items-center gap-3 rounded-xl border border-divider bg-content2/40 px-3 py-5 text-sm text-muted-foreground sm:px-4 sm:py-6">
                   <Spinner size="sm" />
                   正在检查是否有规则正在使用该隧道...
                 </div>
@@ -101,7 +101,7 @@ export function DeleteTunnelModal({
                         <h3 className="text-sm font-semibold text-foreground">
                           关联规则预览
                         </h3>
-                        <span className="text-xs text-default-500">
+                        <span className="text-xs text-muted-foreground">
                           前 {tunnelDeletePreview?.sampleForwards?.length ?? 0}{" "}
                           条
                         </span>
@@ -116,11 +116,11 @@ export function DeleteTunnelModal({
                               <span className="truncate text-sm font-medium text-foreground">
                                 {forward.name}
                               </span>
-                              <span className="shrink-0 font-mono text-xs text-default-500">
+                              <span className="shrink-0 font-mono text-xs text-muted-foreground">
                                 :{forward.inPort || 0}
                               </span>
                             </div>
-                            <p className="mt-1 text-xs text-default-500">
+                            <p className="mt-1 text-xs text-muted-foreground">
                               用户：
                               {forward.userName || `#${forward.userId}`}
                             </p>
@@ -129,7 +129,7 @@ export function DeleteTunnelModal({
                       </div>
                       {deletePreviewForwardCount >
                       (tunnelDeletePreview?.sampleForwards?.length ?? 0) ? (
-                        <p className="text-xs text-default-500">
+                        <p className="text-xs text-muted-foreground">
                           还有{" "}
                           {deletePreviewForwardCount -
                             (tunnelDeletePreview?.sampleForwards?.length ??
@@ -200,7 +200,7 @@ export function DeleteTunnelModal({
                           </SelectItem>
                         ))}
                       </Select>
-                      <p className="text-xs text-default-500">
+                      <p className="text-xs text-muted-foreground">
                         关联规则会迁移到这里，当前要删除的隧道不会出现在可选项里。
                       </p>
                     </div>
@@ -286,7 +286,7 @@ export function BatchDeleteTunnelsModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={batchDeleteModalOpen}
       onOpenChange={handleBatchDeleteModalOpenChange}
@@ -296,14 +296,14 @@ export function BatchDeleteTunnelsModal({
           <>
             <ModalHeader className="flex flex-col gap-1">
               <h2 className="text-lg font-bold sm:text-xl">批量删除隧道</h2>
-              <p className="text-xs font-normal leading-5 text-default-500 sm:text-sm">
+              <p className="text-xs font-normal leading-5 text-muted-foreground sm:text-sm">
                 即将删除这 {selectedTunnelIdList.length}{" "}
                 条隧道，删除前会先检查是否有关联规则。
               </p>
             </ModalHeader>
             <ModalBody className="space-y-3 sm:space-y-4">
               {batchDeletePreviewLoading ? (
-                <div className="flex items-center gap-3 rounded-xl border border-divider bg-content2/40 px-3 py-5 text-sm text-default-600 sm:px-4 sm:py-6">
+                <div className="flex items-center gap-3 rounded-xl border border-divider bg-content2/40 px-3 py-5 text-sm text-muted-foreground sm:px-4 sm:py-6">
                   <Spinner size="sm" />
                   正在检查选中隧道是否有关联规则...
                 </div>
@@ -327,7 +327,7 @@ export function BatchDeleteTunnelsModal({
                             <p className="truncate text-sm font-medium text-foreground">
                               {item.tunnelName}
                             </p>
-                            <p className="mt-1 text-xs text-default-500">
+                            <p className="mt-1 text-xs text-muted-foreground">
                               {item.forwardCount} 条规则依赖
                             </p>
                           </div>
@@ -341,24 +341,24 @@ export function BatchDeleteTunnelsModal({
                             {item.sampleForwards.map((forward) => (
                               <div
                                 key={forward.id}
-                                className="rounded-md bg-content1/70 px-2.5 py-2 sm:px-3"
+                                className="rounded-md bg-card/70 px-2.5 py-2 sm:px-3"
                               >
                                 <div className="flex items-center justify-between gap-3">
                                   <span className="truncate text-xs font-medium text-foreground">
                                     {forward.name}
                                   </span>
-                                  <span className="shrink-0 font-mono text-[11px] text-default-500">
+                                  <span className="shrink-0 font-mono text-[11px] text-muted-foreground">
                                     :{forward.inPort || 0}
                                   </span>
                                 </div>
-                                <p className="mt-1 text-[11px] text-default-500">
+                                <p className="mt-1 text-[11px] text-muted-foreground">
                                   用户：
                                   {forward.userName || `#${forward.userId}`}
                                 </p>
                               </div>
                             ))}
                             {item.forwardCount > item.sampleForwards.length ? (
-                              <p className="text-[11px] text-default-500">
+                              <p className="text-[11px] text-muted-foreground">
                                 还有{" "}
                                 {item.forwardCount - item.sampleForwards.length}{" "}
                                 条规则未展开显示。
@@ -431,7 +431,7 @@ export function BatchDeleteTunnelsModal({
                           </SelectItem>
                         ))}
                       </Select>
-                      <p className="text-xs text-default-500">
+                      <p className="text-xs text-muted-foreground">
                         所有关联规则都会迁移到这里，删除列表中的隧道不会出现在可选项里。
                       </p>
                     </div>

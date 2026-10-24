@@ -70,7 +70,7 @@ const updateSW = registerSW({
               刷新
             </button>
             <button
-              className="px-3 py-1.5 text-xs font-medium bg-default-200 text-default-700 hover:bg-default-300 rounded-md transition-colors"
+              className="px-3 py-1.5 text-xs font-medium bg-default-200 text-foreground hover:bg-default-300 rounded-md transition-colors"
               onClick={() => toast.dismiss(t.id)}
             >
               稍后

@@ -26,6 +26,18 @@ export interface ThemeTokens {
   "--content1"?: string;
   "--divider"?: string;
 
+  /* ── shadcn-style surfaces ─────────────── */
+  "--card"?: string;
+  "--card-foreground"?: string;
+  "--popover"?: string;
+  "--popover-foreground"?: string;
+  "--muted"?: string;
+  "--muted-foreground"?: string;
+  "--accent"?: string;
+  "--accent-foreground"?: string;
+  "--destructive"?: string;
+  "--destructive-foreground"?: string;
+
   /* ── default (neutral) palette ─────────── */
   "--default-50"?: string;
   "--default-100"?: string;

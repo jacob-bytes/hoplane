@@ -59,8 +59,8 @@ export function TargetButton({
 
   return (
     <button
-      className={`flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-colors active:bg-default-100 ${
-        missing ? "border-danger/50" : "border-divider bg-content1"
+      className={`flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-colors active:bg-muted ${
+        missing ? "border-danger/50" : "border-divider bg-card"
       }`}
       type="button"
       onClick={onPress}
@@ -69,18 +69,18 @@ export function TargetButton({
       <span className="min-w-0 flex-1">
         <span
           className={`block truncate text-sm ${
-            !value ? "text-default-400" : missing ? "text-danger" : ""
+            !value ? "text-muted-foreground" : missing ? "text-danger" : ""
           }`}
         >
           {title}
         </span>
         {t && (
-          <span className="block truncate text-xs text-default-400">
+          <span className="block truncate text-xs text-muted-foreground">
             {targetSource(t)}
           </span>
         )}
       </span>
-      <ChevronRight className="h-4 w-4 shrink-0 text-default-400" />
+      <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
     </button>
   );
 }
@@ -120,7 +120,7 @@ export function TargetPicker({
   const row = (k: TargetKey, name: string, sub?: string) => (
     <button
       key={k}
-      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:bg-default-100"
+      className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-left active:bg-muted"
       type="button"
       onClick={() => {
         onPick(k);
@@ -131,7 +131,9 @@ export function TargetPicker({
       <span className="min-w-0 flex-1">
         <span className="block truncate text-sm">{name}</span>
         {sub && (
-          <span className="block truncate text-xs text-default-400">{sub}</span>
+          <span className="block truncate text-xs text-muted-foreground">
+            {sub}
+          </span>
         )}
       </span>
       {value === k && <Check className="h-4 w-4 shrink-0 text-primary" />}
@@ -142,7 +144,7 @@ export function TargetPicker({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={isOpen}
       placement="center"
@@ -156,7 +158,7 @@ export function TargetPicker({
         <ModalHeader className="flex items-center gap-2">
           <button
             aria-label="返回"
-            className="rounded-lg p-1 text-default-500 hover:bg-default-100"
+            className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
             type="button"
             onClick={close}
           >
@@ -165,8 +167,8 @@ export function TargetPicker({
           <h2 className="text-lg font-bold">{title}</h2>
         </ModalHeader>
         {targets.length >= SEARCH_FROM && (
-          <label className="flex shrink-0 items-center gap-2 rounded-xl border border-divider bg-content1 px-3 py-2">
-            <Search className="h-4 w-4 text-default-400" />
+          <label className="flex shrink-0 items-center gap-2 rounded-xl border border-divider bg-card px-3 py-2">
+            <Search className="h-4 w-4 text-muted-foreground" />
             <input
               className="min-w-0 flex-1 bg-transparent text-sm outline-none"
               placeholder="搜索节点"
@@ -177,15 +179,15 @@ export function TargetPicker({
         )}
         <ModalBody className="space-y-1 pb-4">
           {!q && (
-            <div className="rounded-xl bg-content1">
+            <div className="rounded-xl bg-card">
               {row("direct", "直连", "从本服务器出去")}
               {withBlock && row("block", "阻断", "丢弃匹配的流量")}
             </div>
           )}
           {groups.map((g) => (
             <div key={g} className="pt-2">
-              <p className="px-3 pb-1 text-xs text-default-400">{g}</p>
-              <div className="rounded-xl bg-content1">
+              <p className="px-3 pb-1 text-xs text-muted-foreground">{g}</p>
+              <div className="rounded-xl bg-card">
                 {shown
                   .filter((t) => targetSource(t) === g)
                   .map((t) => row(String(t.id), t.name))}
@@ -193,7 +195,7 @@ export function TargetPicker({
             </div>
           ))}
           {q && shown.length === 0 && (
-            <p className="py-6 text-center text-sm text-default-400">
+            <p className="py-6 text-center text-sm text-muted-foreground">
               没有匹配的节点
             </p>
           )}

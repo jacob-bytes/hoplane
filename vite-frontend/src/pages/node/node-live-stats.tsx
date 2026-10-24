@@ -22,12 +22,12 @@ function Meter({ label, value }: { label: string; value?: number }) {
   return (
     <div className="min-w-0 space-y-1">
       <div className="flex items-baseline justify-between gap-1 text-[11px] leading-none">
-        <span className="text-default-500">{label}</span>
+        <span className="text-muted-foreground">{label}</span>
         <span className="font-mono font-semibold">
           {value === undefined ? "—" : `${Math.round(value)}%`}
         </span>
       </div>
-      <div className="h-1 overflow-hidden rounded-full bg-default-100">
+      <div className="h-1 overflow-hidden rounded-full bg-muted">
         {value !== undefined && (
           <div
             className={`h-full rounded-full ${tone(value)}`}
@@ -75,9 +75,9 @@ export function NodeLiveStats({
         className={`space-y-2 ${variant === "footer" ? "mt-2 lg:hidden" : ""}`}
       >
         <div className="grid grid-cols-3 gap-3">{meters}</div>
-        <div className="grid grid-cols-2 divide-x divide-divider rounded-lg bg-default-100/60 py-1.5 text-[11px] tabular-nums">
+        <div className="grid grid-cols-2 divide-x divide-divider rounded-lg bg-muted/60 py-1.5 text-[11px] tabular-nums">
           <div className="min-w-0 px-2.5">
-            <div className="text-[10px] text-default-400">网速</div>
+            <div className="text-[10px] text-muted-foreground">网速</div>
             <div className="flex flex-wrap items-center gap-x-2 font-medium">
               <span className="flex items-center gap-1 whitespace-nowrap">
                 {upIcon}
@@ -90,10 +90,10 @@ export function NodeLiveStats({
             </div>
           </div>
           <div className="min-w-0 px-2.5" title={split}>
-            <div className="text-[10px] text-default-400">本月流量</div>
+            <div className="text-[10px] text-muted-foreground">本月流量</div>
             <div className="flex flex-wrap items-baseline gap-x-1.5">
               <span className="font-semibold">{total}</span>
-              <span className="whitespace-nowrap text-[10px] text-default-400">
+              <span className="whitespace-nowrap text-[10px] text-muted-foreground">
                 {split}
               </span>
             </div>
@@ -118,10 +118,10 @@ export function NodeLiveStats({
       </div>
       <div className="w-28 space-y-0.5 leading-tight tabular-nums">
         <div className="flex items-baseline gap-1.5 text-[11px]">
-          <span className="text-[10px] text-default-400">本月</span>
+          <span className="text-[10px] text-muted-foreground">本月</span>
           <span className="font-semibold">{total}</span>
         </div>
-        <div className="text-[10px] text-default-400">{split || "—"}</div>
+        <div className="text-[10px] text-muted-foreground">{split || "—"}</div>
       </div>
     </div>
   );

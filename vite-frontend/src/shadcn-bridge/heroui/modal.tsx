@@ -280,7 +280,7 @@ export function ModalHeader({
         {closable && (
           <button
             aria-label="关闭"
-            className="absolute -right-1.5 -top-1 rounded-full p-1.5 text-default-500 transition-colors hover:bg-default-100 hover:text-foreground"
+            className="absolute -right-1.5 -top-1 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             type="button"
             onClick={() => context?.onClose()}
           >

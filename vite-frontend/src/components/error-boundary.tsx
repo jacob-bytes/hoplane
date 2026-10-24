@@ -67,7 +67,7 @@ export class ErrorBoundary extends Component<
         <p className="font-medium">
           {chunk ? "页面文件加载失败" : "页面出错了"}
         </p>
-        <p className="max-w-md break-all text-xs text-default-500">
+        <p className="max-w-md break-all text-xs text-muted-foreground">
           {chunk ? "面板可能刚升级过，或者网络不稳定。重新加载即可。" : detail}
         </p>
         <Button

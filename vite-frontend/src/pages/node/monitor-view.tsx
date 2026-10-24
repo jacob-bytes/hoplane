@@ -179,10 +179,10 @@ function UsageMini({ label, value }: { label: string; value: number }) {
   return (
     <div className="min-w-0 space-y-1">
       <div className="flex items-baseline justify-between gap-2 text-[11px]">
-        <span className="text-default-500">{label}</span>
+        <span className="text-muted-foreground">{label}</span>
         <span className="font-mono font-medium">{value.toFixed(1)}%</span>
       </div>
-      <div className="h-1.5 overflow-hidden rounded-full bg-default-100">
+      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
         <div
           className={`h-full rounded-full ${BAR_TONE[getColorByUsage(value)]}`}
           style={{ width: `${Math.max(2, Math.min(100, value))}%` }}
@@ -204,7 +204,7 @@ function MetricPair({
 }) {
   return (
     <div className="min-w-0 text-[11px] leading-4">
-      <div className="text-default-500">{label}</div>
+      <div className="text-muted-foreground">{label}</div>
       <div className="truncate font-mono">{top}</div>
       <div className="truncate font-mono">{bottom}</div>
     </div>
@@ -295,7 +295,7 @@ function ServerCard({
       <CardHeader className="pb-2 pt-5 px-5 flex flex-row justify-between items-start gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative flex-shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-default-100 dark:bg-default-50/10 flex items-center justify-center border border-divider">
+            <div className="w-10 h-10 rounded-xl bg-muted dark:bg-muted/10 flex items-center justify-center border border-divider">
               <DistroIcon
                 className="w-5 h-5"
                 distro={distro}
@@ -310,7 +310,7 @@ function ServerCard({
             <h3 className="font-semibold text-foreground text-sm truncate">
               {node.name}
             </h3>
-            <div className="flex items-center gap-1.5 text-[11px] text-default-500 mt-0.5">
+            <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground mt-0.5">
               <span className="font-mono">{isOnline ? "在线" : "离线"}</span>
             </div>
           </div>
@@ -321,7 +321,7 @@ function ServerCard({
         <div className="grid grid-cols-2 gap-5 w-full">
           <div className="space-y-1.5 min-w-0">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-default-500">CPU</span>
+              <span className="text-muted-foreground">CPU</span>
               <span className="font-mono font-medium">
                 {isOnline && metric ? `${metric.cpuUsage.toFixed(1)}%` : "-"}
               </span>
@@ -334,7 +334,7 @@ function ServerCard({
           </div>
           <div className="space-y-1.5 min-w-0">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-default-500">内存</span>
+              <span className="text-muted-foreground">内存</span>
               <span className="font-mono font-medium">
                 {isOnline && metric ? `${metric.memoryUsage.toFixed(1)}%` : "-"}
               </span>
@@ -348,9 +348,9 @@ function ServerCard({
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-2.5 rounded-lg bg-default-50 dark:bg-default-100/30 border border-divider mt-1 w-full">
+        <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted dark:bg-muted/30 border border-divider mt-1 w-full">
           <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-            <div className="flex items-center gap-1 text-[10px] text-default-500">
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
               <span className="text-primary-500 inline-block font-bold">↑</span>
               <span>上传</span>
             </div>
@@ -362,7 +362,7 @@ function ServerCard({
           </div>
           <div className="w-px h-6 bg-divider mx-2" />
           <div className="flex flex-col gap-0.5 items-end min-w-0 flex-1">
-            <div className="flex items-center gap-1 text-[10px] text-default-500">
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
               <span>下载</span>
               <span className="text-success-500 inline-block font-bold">↓</span>
             </div>
@@ -375,14 +375,14 @@ function ServerCard({
         </div>
 
         <div className="flex justify-between items-center mt-1 pt-3 border-t border-divider/50 w-full overflow-hidden">
-          <div className="flex items-center gap-1.5 text-[11px] text-default-500 min-w-0">
-            <Clock className="w-3.5 h-3.5 text-default-400 shrink-0" />
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground min-w-0">
+            <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <span className="font-mono truncate">
               {metric ? formatUptime(metric.uptime) : "-"}
             </span>
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-default-500 shrink-0 ml-2">
-            <Activity className="w-3.5 h-3.5 text-default-400" />
+          <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground shrink-0 ml-2">
+            <Activity className="w-3.5 h-3.5 text-muted-foreground" />
             <span className="font-mono">
               Load: {metric ? metric.load1.toFixed(2) : "-"}
             </span>
@@ -605,13 +605,15 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
               </ResponsiveContainer>
             </div>
             {truncated && (
-              <div className="text-xs text-default-500">
+              <div className="text-xs text-muted-foreground">
                 数据点过多，已截断为最近 {maxRows} 条，建议缩小时间范围。
               </div>
             )}
           </>
         ) : (
-          <div className="text-center py-8 text-default-500">暂无指标数据</div>
+          <div className="text-center py-8 text-muted-foreground">
+            暂无指标数据
+          </div>
         )}
       </CardBody>
     </Card>
@@ -1374,8 +1376,8 @@ export function MonitorView({
             <h3 className="text-lg font-semibold">监控权限</h3>
           </CardHeader>
           <CardBody>
-            <div className="text-sm text-default-600">{accessDenied}</div>
-            <div className="text-xs text-default-500 mt-2">
+            <div className="text-sm text-muted-foreground">{accessDenied}</div>
+            <div className="text-xs text-muted-foreground mt-2">
               如需使用监控功能，请联系管理员在用户页面授予监控权限。
             </div>
           </CardBody>
@@ -1386,7 +1388,7 @@ export function MonitorView({
       {!accessDenied && !detailNodeId && (
         <>
           <div className="flex items-center gap-2">
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-default-500">
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <span
                   className={`h-2 w-2 rounded-full ${wsConnected ? "bg-success" : wsConnecting ? "bg-warning" : "bg-default-300"}`}
@@ -1498,7 +1500,7 @@ export function MonitorView({
             </Button>
             <div className="flex items-center gap-2">
               <Server
-                className={`w-5 h-5 ${detailNode?.connectionStatus === "online" ? "text-success" : "text-default-400"}`}
+                className={`w-5 h-5 ${detailNode?.connectionStatus === "online" ? "text-success" : "text-muted-foreground"}`}
               />
               <h3 className="text-lg font-semibold">
                 {detailNode?.name || `服务器 #${detailNodeId}`}
@@ -1515,7 +1517,7 @@ export function MonitorView({
                 {detailNode?.connectionStatus === "online" ? "在线" : "离线"}
               </Chip>
             </div>
-            <div className="flex items-center gap-2 text-xs text-default-500 ml-auto">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground ml-auto">
               <div
                 className={`w-2 h-2 rounded-full ${wsConnected ? "bg-success" : wsConnecting ? "bg-warning" : "bg-default-300"}`}
               />
@@ -1566,9 +1568,9 @@ export function MonitorView({
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="min-w-0 rounded-xl border border-divider bg-content1 px-3 py-2"
+                  className="min-w-0 rounded-xl border border-divider bg-card px-3 py-2"
                 >
-                  <div className="truncate text-xs text-default-500">
+                  <div className="truncate text-xs text-muted-foreground">
                     {item.label}
                   </div>
                   <div
@@ -1728,15 +1730,15 @@ export function MonitorView({
 
                       {/* Active monitor info bar */}
                       {resolvedActiveMonitor && (
-                        <div className="flex items-center justify-between gap-3 rounded-xl border border-divider bg-default-50 px-3 py-2">
+                        <div className="flex items-center justify-between gap-3 rounded-xl border border-divider bg-muted px-3 py-2">
                           <div className="flex items-center gap-3 min-w-0 flex-wrap">
                             <Chip color="primary" size="sm" variant="flat">
                               {resolvedActiveMonitor.type.toUpperCase()}
                             </Chip>
-                            <span className="font-mono text-xs text-default-500">
+                            <span className="font-mono text-xs text-muted-foreground">
                               {resolvedActiveMonitor.target}
                             </span>
-                            <span className="text-xs text-default-500">
+                            <span className="text-xs text-muted-foreground">
                               每秒测试，30秒上报
                             </span>
                             {activeLatestResult &&
@@ -1851,13 +1853,13 @@ export function MonitorView({
                           </ResponsiveContainer>
                         </div>
                       ) : (
-                        <div className="text-center py-8 text-default-500">
+                        <div className="text-center py-8 text-muted-foreground">
                           暂无检查记录
                         </div>
                       )}
                     </>
                   ) : (
-                    <div className="text-center py-8 text-default-500">
+                    <div className="text-center py-8 text-muted-foreground">
                       暂无服务监控，点击&quot;添加监控&quot;创建
                     </div>
                   )}
@@ -1888,19 +1890,19 @@ export function MonitorView({
                 {resultsMonitor?.name ? ` - ${resultsMonitor.name}` : ""}
               </div>
               {resultsMonitor?.nodeId && resultsMonitor.nodeId > 0 ? (
-                <div className="text-xs text-default-500 truncate">
+                <div className="text-xs text-muted-foreground truncate">
                   服务器:{" "}
                   {nodeMap.get(resultsMonitor.nodeId)?.name ||
                     resultsMonitor.nodeId}
                 </div>
               ) : (
-                <div className="text-xs text-default-500 truncate">
+                <div className="text-xs text-muted-foreground truncate">
                   面板执行
                 </div>
               )}
 
               {modalResults.length > 0 ? (
-                <div className="text-xs text-default-500 truncate">
+                <div className="text-xs text-muted-foreground truncate">
                   最新检查:{" "}
                   <span className="font-mono">
                     {formatDateTime(modalResults[0].timestamp)}
@@ -1961,7 +1963,7 @@ export function MonitorView({
                         className={`h-2 w-2 shrink-0 rounded-full ${r.success === 1 ? "bg-success" : "bg-danger"}`}
                         title={r.success === 1 ? "成功" : "失败"}
                       />
-                      <span className="font-mono text-xs text-default-600">
+                      <span className="font-mono text-xs text-muted-foreground">
                         {formatDateTime(r.timestamp)}
                       </span>
                       <span className="ml-auto font-mono text-xs">
@@ -1970,7 +1972,7 @@ export function MonitorView({
                           : "-"}
                       </span>
                       <span
-                        className={`w-8 text-right text-xs ${r.success === 1 ? "text-default-500" : "text-danger"}`}
+                        className={`w-8 text-right text-xs ${r.success === 1 ? "text-muted-foreground" : "text-danger"}`}
                       >
                         {r.success === 1 ? "成功" : "失败"}
                       </span>
@@ -1984,7 +1986,7 @@ export function MonitorView({
                 ))}
               </div>
             ) : (
-              <div className="text-center py-10 text-default-500">
+              <div className="text-center py-10 text-muted-foreground">
                 暂无监控记录
               </div>
             )}

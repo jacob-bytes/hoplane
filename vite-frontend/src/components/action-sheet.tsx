@@ -7,7 +7,7 @@ import {
 } from "@/shadcn-bridge/heroui/modal";
 
 const modalBase =
-  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden";
+  "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
 
 export interface SheetAction {
   key: string;
@@ -46,7 +46,7 @@ export function ActionSheet({
         <ModalHeader className="flex flex-col gap-1">
           <h2 className="text-lg font-bold break-all">{title}</h2>
           {subtitle && (
-            <div className="text-small font-normal text-default-500">
+            <div className="text-small font-normal text-muted-foreground">
               {subtitle}
             </div>
           )}

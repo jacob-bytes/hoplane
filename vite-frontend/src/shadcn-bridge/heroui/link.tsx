@@ -16,7 +16,7 @@ function mapColor(color: LinkColor) {
     return "text-foreground hover:text-foreground/80";
   }
 
-  return "text-default-600 hover:text-default-700";
+  return "text-muted-foreground hover:text-foreground";
 }
 
 export function Link({

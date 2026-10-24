@@ -32,7 +32,7 @@ export const DragHandle = ({
   title: string;
 }) => (
   <span
-    className="inline-flex cursor-grab touch-none p-1 text-default-300 hover:text-default-500 active:cursor-grabbing"
+    className="inline-flex cursor-grab touch-none p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
     title={title}
     {...attributes}
     {...listeners}
@@ -115,18 +115,18 @@ export const SortableTunnelGroup = ({
                   onClick={onToggleCollapsed}
                 >
                   <ChevronDown
-                    className={`h-4 w-4 shrink-0 text-default-400 transition-transform ${
+                    className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
                       collapsed ? "-rotate-90" : ""
                     }`}
                   />
                   <span className="truncate">{tunnel.tunnelName}</span>
                 </button>
                 {ratio !== 1 && (
-                  <span className="shrink-0 text-xs font-normal text-default-500">
+                  <span className="shrink-0 text-xs font-normal text-muted-foreground">
                     倍率 {formatTunnelTrafficRatio(ratio)}
                   </span>
                 )}
-                <span className="shrink-0 text-xs font-normal text-default-400">
+                <span className="shrink-0 text-xs font-normal text-muted-foreground">
                   {tunnel.items.length}
                 </span>
                 <span className="-my-1 ml-auto flex shrink-0">

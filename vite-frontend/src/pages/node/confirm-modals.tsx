@@ -28,7 +28,7 @@ export function RollbackNodeModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={rollbackModalOpen}
       placement="center"
@@ -48,7 +48,7 @@ export function RollbackNodeModal({
                 <strong>&quot;{nodeToRollback?.name}&quot;</strong>{" "}
                 回退到上一个版本吗？
               </p>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 服务器将执行版本回退并自动重启，期间会导致服务器短暂离线。
               </p>
             </ModalBody>
@@ -87,7 +87,7 @@ export function DeleteNodeModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={deleteModalOpen}
       placement="center"
@@ -106,7 +106,7 @@ export function DeleteNodeModal({
                 确定要删除服务器{" "}
                 <strong>&quot;{nodeToDelete?.name}&quot;</strong> 吗？
               </p>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 此操作不可恢复，请谨慎操作。
               </p>
             </ModalBody>
@@ -149,7 +149,7 @@ export function BatchDeleteNodesModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={batchDeleteModalOpen}
       placement="center"
@@ -168,7 +168,7 @@ export function BatchDeleteNodesModal({
                 确定要删除选中的 <strong>{selectedIds.size}</strong>{" "}
                 个服务器吗？
               </p>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 此操作不可恢复，请谨慎操作。
               </p>
             </ModalBody>

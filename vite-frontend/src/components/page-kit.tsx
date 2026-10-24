@@ -47,16 +47,20 @@ export function PageHeader({
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h1 className="text-lg font-semibold">{title}</h1>
+        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+          {title}
+        </h1>
         {description && (
-          <p className="mt-0.5 text-xs text-default-500">{description}</p>
+          <p className="mt-1 text-[13px] leading-5 text-muted-foreground">
+            {description}
+          </p>
         )}
       </div>
       {(primary || secondary) && (
         <div className="flex shrink-0 gap-2">
           {secondary && (
             <Button
-              className="gap-1.5 border-default-300 text-foreground dark:text-foreground"
+              className="gap-1.5"
               isDisabled={secondary.disabled}
               size="sm"
               startContent={secondary.icon}
@@ -99,7 +103,7 @@ export function PageTabs<T extends string>({
 }) {
   return (
     <div
-      className="mb-4 grid gap-1 rounded-full bg-default-100 p-1 sm:max-w-md"
+      className="mb-4 flex gap-1 overflow-x-auto border-b border-border scrollbar-hide"
       role="tablist"
       style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
     >
@@ -107,10 +111,10 @@ export function PageTabs<T extends string>({
         <button
           key={t.key}
           aria-selected={value === t.key}
-          className={`flex min-w-0 items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors ${
+          className={`relative flex min-w-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 pb-2.5 pt-1 text-sm transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full after:transition-opacity ${
             value === t.key
-              ? "bg-background font-medium text-foreground shadow-sm"
-              : "text-default-500 hover:text-default-700"
+              ? "font-medium text-foreground after:bg-primary after:opacity-100"
+              : "text-muted-foreground after:opacity-0 hover:text-foreground"
           }`}
           role="tab"
           type="button"
@@ -119,10 +123,10 @@ export function PageTabs<T extends string>({
           <span className="truncate">{t.label}</span>
           {t.badge !== undefined && t.badge !== null && (
             <span
-              className={`shrink-0 rounded-full px-1.5 text-[11px] leading-4 ${
+              className={`shrink-0 rounded-full px-1.5 text-[11px] leading-4 tabular ${
                 value === t.key
                   ? "bg-primary/10 text-primary"
-                  : "bg-default-200 text-default-500"
+                  : "bg-default-200 text-muted-foreground"
               }`}
             >
               {t.badge}
@@ -166,11 +170,11 @@ export function PageToolbar({
         // With a main action too, the search gets a row of its own on a
         // phone instead of shrinking to its icon.
         <label
-          className={`flex h-9 min-w-0 flex-1 items-center gap-2 rounded-full bg-default-100 px-3.5 sm:max-w-xs ${primary ? "basis-full sm:basis-auto" : ""}`}
+          className={`flex h-9 min-w-0 flex-1 items-center gap-2 rounded-lg border border-input bg-card px-3 text-sm shadow-xs transition-[border-color,box-shadow] duration-150 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 sm:max-w-xs ${primary ? "basis-full sm:basis-auto" : ""}`}
         >
-          <Search className="h-4 w-4 shrink-0 text-default-400" />
+          <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
-            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-default-400"
+            className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             enterKeyHint="search"
             placeholder={placeholder}
             type="text"
@@ -180,7 +184,7 @@ export function PageToolbar({
           {search && (
             <button
               aria-label="清除搜索"
-              className="text-default-400"
+              className="text-muted-foreground"
               type="button"
               onClick={() => onSearch("")}
             >
@@ -197,7 +201,7 @@ export function PageToolbar({
             <DropdownTrigger>
               <button
                 aria-label="更多操作"
-                className="flex h-9 items-center gap-1 rounded-full bg-default-100 px-3 text-sm text-default-600 transition-colors hover:bg-default-200"
+                className="flex h-9 items-center gap-1 rounded-lg border border-border bg-card px-2.5 text-sm text-muted-foreground shadow-xs transition-colors duration-150 hover:bg-accent hover:text-foreground"
                 type="button"
               >
                 <MoreHorizontal className="h-4 w-4" />
@@ -220,7 +224,7 @@ export function PageToolbar({
         )}
         {primary && (
           <Button
-            className="shrink-0 rounded-full"
+            className="shrink-0"
             color="primary"
             isDisabled={primary.disabled}
             size="sm"
@@ -249,7 +253,7 @@ export function ToolbarButton({
       className={`flex h-9 shrink-0 items-center gap-1 rounded-full px-3.5 text-sm transition-colors ${
         active
           ? "bg-primary/10 font-medium text-primary"
-          : "bg-default-100 text-default-600 hover:bg-default-200"
+          : "bg-muted text-muted-foreground hover:bg-default-200"
       }`}
       type="button"
       onClick={onPress}
@@ -274,8 +278,8 @@ export function SelectionBar({
   onExit: () => void;
 }) {
   return (
-    <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-background/95 px-3 py-2 shadow-sm backdrop-blur">
-      <span className="text-sm text-default-600">已选 {count} 个</span>
+    <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-background/95 px-3 py-2 shadow-sm ">
+      <span className="text-sm text-muted-foreground">已选 {count} 个</span>
       <div className="ml-auto flex flex-wrap justify-end gap-2">
         <Button size="sm" variant="flat" onPress={onToggleAll}>
           {allSelected ? "取消全选" : "全选"}
@@ -342,10 +346,10 @@ export function ListRow({
   return (
     <div
       aria-pressed={selectMode ? selected : undefined}
-      className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 text-left shadow-sm transition-colors ${
+      className={`group flex w-full cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors duration-150 ${
         selected
-          ? "border-primary bg-primary-50/70 dark:bg-primary-900/40"
-          : "border-divider bg-content1 hover:bg-default-100"
+          ? "border-primary/40 bg-primary/5"
+          : "border-border bg-card hover:bg-accent/40"
       }`}
       role="button"
       tabIndex={0}
@@ -369,17 +373,21 @@ export function ListRow({
       )}
       {status && (
         <span
-          className={`h-2 w-2 shrink-0 rounded-full ${STATUS_DOT[status]}`}
+          className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[status]}`}
           title={statusTitle}
         />
       )}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-1.5">
-          <span className="truncate font-medium">{title}</span>
+          <span className="truncate text-[13.5px] font-medium text-foreground">
+            {title}
+          </span>
           {badges}
         </div>
         {meta && (
-          <div className="truncate text-xs text-default-500">{meta}</div>
+          <div className="truncate text-xs text-muted-foreground tabular">
+            {meta}
+          </div>
         )}
         {footer && <div className="mt-1.5">{footer}</div>}
       </div>
@@ -408,10 +416,10 @@ export function ListGroup({
   return (
     <section className="space-y-2">
       {title && (
-        <h2 className="flex items-baseline gap-2 px-1 text-sm font-semibold">
+        <h2 className="flex items-baseline gap-2 px-1 text-[13px] font-medium text-muted-foreground">
           {title}
           {count !== undefined && (
-            <span className="text-xs font-normal text-default-400">
+            <span className="text-xs font-normal text-muted-foreground">
               {count}
             </span>
           )}
@@ -430,7 +438,7 @@ export function EmptyHint({
   action?: PageAction;
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-divider px-4 py-8 text-center text-sm text-default-500">
+    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/50 px-4 py-10 text-center text-sm text-muted-foreground">
       <p>{text}</p>
       {action && (
         <Button

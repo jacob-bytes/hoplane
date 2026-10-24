@@ -361,7 +361,7 @@ export function InboundFormModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={isOpen}
       placement="center"
@@ -376,7 +376,7 @@ export function InboundFormModal({
               <h2 className="text-xl font-bold">
                 {isEdit ? "编辑入站" : "新建入站"}
               </h2>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 留空的 UUID、密码、密钥会自动生成，端口留空则随机分配
               </p>
             </ModalHeader>
@@ -453,7 +453,7 @@ export function InboundFormModal({
                             className={`text-left rounded-xl border px-3 py-2 transition-colors ${
                               active
                                 ? "border-primary bg-primary-50 dark:bg-primary-500/10"
-                                : "border-divider hover:bg-default-100"
+                                : "border-divider hover:bg-muted"
                             }`}
                             type="button"
                             onClick={() =>
@@ -461,7 +461,7 @@ export function InboundFormModal({
                             }
                           >
                             <div className="text-sm font-medium">{p.label}</div>
-                            <div className="text-xs text-default-500">
+                            <div className="text-xs text-muted-foreground">
                               {p.description}
                             </div>
                           </button>
@@ -557,7 +557,7 @@ export function InboundFormModal({
                     />
                     <div>
                       <p className="text-sm">VLESS Encryption（抗量子加密）</p>
-                      <p className="text-xs text-default-500">
+                      <p className="text-xs text-muted-foreground">
                         不用证书也能防探测，密钥自动生成。客户端需要 Xray
                         25.9+（v2rayN 等）或 Mihomo；sing-box、Surge
                         等客户端的订阅里会略过它
@@ -683,7 +683,7 @@ export function InboundFormModal({
                         onChange={(e) => set("wgMtu", e.target.value)}
                       />
                     </div>
-                    <p className="text-xs text-default-500">
+                    <p className="text-xs text-muted-foreground">
                       密钥自动生成，所有人共用一份客户端配置（在“分享”里）；需要更换时用“换密钥”
                     </p>
                   </div>
@@ -867,7 +867,7 @@ export function InboundFormModal({
                     </div>
                     {certMode === "acme" && (
                       <div className="space-y-3">
-                        <p className="text-xs text-default-500">
+                        <p className="text-xs text-muted-foreground">
                           由 sing-box 向 Let&apos;s Encrypt
                           申请并自动续期，域名需要解析到该服务器。 HTTP
                           验证要求服务器 80 端口可从公网访问；用 DNS
@@ -1043,7 +1043,7 @@ export function InboundFormModal({
                             onChange={(e) => set("shareHost", e.target.value)}
                           />
                         )}
-                        <p className="text-xs text-default-500">
+                        <p className="text-xs text-muted-foreground">
                           决定分享和订阅中的入口地址，与出站策略独立。IPv4 /
                           IPv6 随服务器设置更新；监听地址需支持对应类型。
                         </p>
@@ -1067,7 +1067,7 @@ export function InboundFormModal({
                         />
                         <div>
                           <p className="text-sm">仅通过中转提供</p>
-                          <p className="text-xs text-default-500">
+                          <p className="text-xs text-muted-foreground">
                             订阅和分享中不再给出这个节点的直连地址
                           </p>
                         </div>
@@ -1086,7 +1086,7 @@ export function InboundFormModal({
                           <p className="text-sm">
                             获取真实客户端 IP（PROXY protocol）
                           </p>
-                          <p className="text-xs text-default-500">
+                          <p className="text-xs text-muted-foreground">
                             {form.kernelType === "xray"
                               ? "中转转发会附带客户端地址，节点的内核日志可见真实 IP。开启后直连将无法使用，自动变为仅中转"
                               : "目前只有 Xray 内核支持"}
@@ -1103,7 +1103,7 @@ export function InboundFormModal({
                           <p className="text-sm">
                             仅允许中转机访问（防火墙白名单）
                           </p>
-                          <p className="text-xs text-default-500">
+                          <p className="text-xs text-muted-foreground">
                             只放行已对接中转的入口服务器 IP
                             和本机，其他来源访问该端口一律丢弃；需要服务器安装
                             nftables

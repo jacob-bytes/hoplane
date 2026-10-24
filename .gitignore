@@ -286,3 +286,6 @@ doc/.vitepress/cache/
 
 # Playwright output
 test-results/
+
+# local UI review shots
+.screenshots/

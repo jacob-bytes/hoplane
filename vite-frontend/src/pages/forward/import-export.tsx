@@ -42,7 +42,7 @@ export function ExportModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={exportModalOpen}
       placement="center"
@@ -57,7 +57,7 @@ export function ExportModal({
       <ModalContent>
         <ModalHeader closable className="flex flex-col gap-1">
           <h2 className="text-xl font-bold">导出规则数据</h2>
-          <p className="text-small text-default-500">
+          <p className="text-small text-muted-foreground">
             格式：目标地址|规则名称|入口端口
           </p>
         </ModalHeader>
@@ -244,7 +244,7 @@ export function ImportModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-2xl overflow-hidden",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       isOpen={importModalOpen}
       placement="center"
@@ -257,19 +257,19 @@ export function ImportModal({
           <h2 className="text-xl font-bold">导入规则数据</h2>
           {importFormat === "hoplane" ? (
             <>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 格式：目标地址|规则名称|入口端口，每行一个，入口端口留空将自动分配可用端口
               </p>
-              <p className="text-small text-default-400">
+              <p className="text-small text-muted-foreground">
                 目标地址支持单个地址(如：example.com:8080)或多个地址用逗号分隔(如：3.3.3.3:3,4.4.4.4:4)
               </p>
             </>
           ) : (
             <>
-              <p className="text-small text-default-500">
+              <p className="text-small text-muted-foreground">
                 ny格式：JSON对象，支持多个目标地址（负载均衡），按所选隧道导入
               </p>
-              <p className="text-small text-default-400">
+              <p className="text-small text-muted-foreground">
                 格式：&#123;&quot;dest&quot;:[&quot;地址:端口&quot;],&quot;listen_port&quot;:端口,&quot;name&quot;:&quot;名称&quot;&#125;（listen_port可省略，自动分配端口）
               </p>
             </>
@@ -352,7 +352,7 @@ export function ImportModal({
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-base font-semibold">导入结果</h3>
-                  <span className="text-xs text-default-500">
+                  <span className="text-xs text-muted-foreground">
                     成功：{importResults.filter((r) => r.success).length} /
                     总计：{importResults.length}
                   </span>
@@ -413,8 +413,10 @@ export function ImportModal({
                             >
                               {result.success ? "成功" : "失败"}
                             </span>
-                            <span className="text-xs text-default-500">|</span>
-                            <code className="text-xs font-mono text-default-600 truncate">
+                            <span className="text-xs text-muted-foreground">
+                              |
+                            </span>
+                            <code className="text-xs font-mono text-muted-foreground truncate">
                               {result.line}
                             </code>
                           </div>
