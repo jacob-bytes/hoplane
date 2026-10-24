@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { motion } from "framer-motion";
-import { LogOut, UserRound } from "lucide-react";
+import { ChevronRight, LogOut, UserRound } from "lucide-react";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { BrandLogo } from "@/components/brand-logo";
@@ -307,9 +307,21 @@ export default function AdminLayout({
       isAdmin && item.adminLabel ? { ...item, label: item.adminLabel } : item,
     );
 
+  const currentItem =
+    filteredMenuItems.find(
+      (item) =>
+        location.pathname === item.path ||
+        (item.path === "/relay" &&
+          ["/tunnel", "/forward"].includes(location.pathname)) ||
+        (item.path === "/user" &&
+          ["/group", "/limit"].includes(location.pathname)),
+    ) ?? null;
+  const currentLabel = currentItem?.label ?? "概览";
+  const currentSection = isAdmin ? currentItem?.section : undefined;
+
   return (
     <div
-      className={`flex ${isMobile ? "min-h-screen p-0" : "h-screen p-3 gap-3 [@media(max-height:760px)]:p-2 [@media(max-height:760px)]:gap-2"} bg-background overflow-hidden`}
+      className={`flex ${isMobile ? "min-h-screen" : "h-screen"} overflow-hidden bg-background`}
     >
       {/* 移动端遮罩层 */}
       {isMobile && mobileMenuVisible && (
@@ -324,11 +336,10 @@ export default function AdminLayout({
       {/* 左侧菜单栏 */}
       <aside
         className={`
-        ${isMobile ? "fixed h-screen top-0 left-0 rounded-r-xl" : "relative h-full rounded-xl"}
+        ${isMobile ? "fixed top-0 left-0 h-screen w-64 rounded-r-xl border-r border-border" : "relative h-full border-r border-border"}
         ${isMobile && !mobileMenuVisible ? "-translate-x-full" : "translate-x-0"}
-        ${isMobile ? "w-64" : isCollapsed ? "w-[76px]" : "w-[248px]"}
+        ${isMobile ? "" : isCollapsed ? "w-[76px]" : "w-[248px]"}
         bg-card
-        border border-border
         z-50
         transition-all duration-300 ease-in-out
         flex flex-col flex-shrink-0      `}
@@ -526,31 +537,53 @@ export default function AdminLayout({
 
       {/* 主内容区域 */}
       <div
-        className={`flex flex-col flex-1 ${isMobile ? "min-h-0" : "h-full overflow-hidden"} relative`}
+        className={`relative flex min-w-0 flex-1 flex-col ${isMobile ? "min-h-0" : "h-full overflow-hidden"}`}
       >
-        {/* 移动端菜单按钮 (替代Header) */}
-        {isMobile && (
-          <Button
-            isIconOnly
-            className="absolute top-3 left-3 z-40 border border-border bg-card shadow-xs"
-            variant="flat"
-            onPress={toggleMobileMenu}
-          >
-            <svg
-              className="w-5 h-5 text-foreground"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+        {/* 顶栏：移动端菜单按钮 + 面包屑 */}
+        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border px-3 lg:px-6">
+          {isMobile && (
+            <Button
+              isIconOnly
+              aria-label="打开菜单"
+              className="-ml-1 shrink-0"
+              size="sm"
+              variant="light"
+              onPress={toggleMobileMenu}
             >
-              <path
-                d="M4 6h16M4 12h16M4 18h16"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-              />
-            </svg>
-          </Button>
-        )}
+              <svg
+                className="h-5 w-5 text-foreground"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                />
+              </svg>
+            </Button>
+          )}
+          <nav
+            aria-label="面包屑"
+            className="flex min-w-0 items-center gap-1.5 text-[13px]"
+          >
+            <span className="text-muted-foreground">后台</span>
+            {currentSection && (
+              <>
+                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
+                <span className="truncate text-muted-foreground">
+                  {currentSection}
+                </span>
+              </>
+            )}
+            <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
+            <span className="truncate font-medium text-foreground">
+              {currentLabel}
+            </span>
+          </nav>
+        </header>
 
         {/* 主内容 */}
         <main ref={mainRef} className="flex-1 overflow-y-auto scrollbar-hide">

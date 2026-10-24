@@ -1643,9 +1643,23 @@ export default function NodePage({
           >
             <div
               className={
-                card ? CARD_GRID : "grid grid-cols-1 gap-2 2xl:grid-cols-2"
+                card
+                  ? CARD_GRID
+                  : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
               }
             >
+              {!card && (
+                <div className="hidden items-center gap-3 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:flex">
+                  <span className="h-2 w-2 shrink-0" />
+                  <span className="min-w-0 flex-1">名称</span>
+                  <span className="flex shrink-0 items-center gap-5">
+                    <span className="w-60">CPU / 内存 / 磁盘</span>
+                    <span className="w-24">网速</span>
+                    <span className="w-28">本月流量</span>
+                  </span>
+                  <span className="w-36 shrink-0 pr-7 text-right">延迟</span>
+                </div>
+              )}
               {displayNodes.map((node) => {
                 if (card) {
                   const isRemoteNode = node.isRemote === 1;
