@@ -6,6 +6,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { ChartPie } from "lucide-react";
 
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
 import { PageEmptyState } from "@/components/page-state";
@@ -30,15 +31,7 @@ export const FlowChartCard = ({
     <Card className="mb-6 lg:mb-8">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <svg
-            aria-hidden="true"
-            className="w-5 h-5 text-primary"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z" />
-            <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z" />
-          </svg>
+          <ChartPie aria-hidden="true" className="h-5 w-5 text-primary" />
           <h2 className="text-lg lg:text-xl font-semibold text-foreground">
             24小时流量统计
           </h2>
@@ -48,7 +41,11 @@ export const FlowChartCard = ({
         {statisticsFlowsCount === 0 ? (
           <PageEmptyState className="h-48" message="暂无流量统计数据" />
         ) : (
-          <div className="h-64 w-full text-primary lg:h-80">
+          <div
+            aria-label={`24 小时流量统计，共 ${chartData.length} 个采样点`}
+            className="h-64 w-full text-primary lg:h-80"
+            role="img"
+          >
             <ResponsiveContainer height="100%" width="100%">
               <LineChart
                 data={chartData}

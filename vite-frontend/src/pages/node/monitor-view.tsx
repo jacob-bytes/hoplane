@@ -594,7 +594,7 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
           <div className="text-center py-8 text-danger text-sm">{error}</div>
         ) : data.length > 0 ? (
           <>
-            <div className="h-64">
+            <div aria-label="节点性能趋势图" className="h-64" role="img">
               <ResponsiveContainer height="100%" width="100%">
                 <LineChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />

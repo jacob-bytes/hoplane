@@ -8,6 +8,7 @@ import { ActionSheet } from "@/components/action-sheet";
 import {
   EmptyHint,
   ListGroup,
+  SortHeader,
   ListRow,
   PageHeader,
   PageShell,
@@ -1151,6 +1152,25 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
 
   const sheetUser = users.find((u) => u.id === sheetUserId) ?? null;
 
+  const [userSort, setUserSort] = useState<"name" | "usage" | null>(null);
+  const [userDir, setUserDir] = useState<"asc" | "desc">("asc");
+
+  const toggleUserSort = (key: "name" | "usage") => {
+    setUserDir(userSort === key && userDir === "asc" ? "desc" : "asc");
+    setUserSort(key);
+  };
+
+  const sortedUsers = useMemo(() => {
+    if (!userSort) return users;
+    const list = [...users].sort((a, b) =>
+      userSort === "name"
+        ? (a.name || a.user).localeCompare(b.name || b.user, "zh-CN")
+        : calculateUserTotalUsedFlow(a) - calculateUserTotalUsedFlow(b),
+    );
+
+    return userDir === "asc" ? list : list.reverse();
+  }, [userSort, userDir, users]);
+
   return (
     <PageShell embedded={embedded}>
       {!embedded && (
@@ -1186,9 +1206,25 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
       ) : (
         <ListGroup
           columns="minmax(0,1fr) minmax(0,1.15fr) 240px"
-          head={["用户", "详情", "用量"]}
+          head={[
+            <SortHeader
+              key="name"
+              active={userSort === "name"}
+              dir={userDir}
+              label="用户"
+              onToggle={() => toggleUserSort("name")}
+            />,
+            "详情",
+            <SortHeader
+              key="usage"
+              active={userSort === "usage"}
+              dir={userDir}
+              label="用量"
+              onToggle={() => toggleUserSort("usage")}
+            />,
+          ]}
         >
-          {users.map((user) => {
+          {sortedUsers.map((user) => {
             const state = getUserRowState(user);
             const expStatus = user.expTime
               ? getExpireStatus(user.expTime)

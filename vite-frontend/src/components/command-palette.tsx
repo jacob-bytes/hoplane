@@ -9,6 +9,7 @@ import {
   Link2,
   Plus,
   Search,
+  Rss,
   Server,
   Settings,
   Share2,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react";
 
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { getNodeList, getSubscriptions } from "@/api";
 import { cn } from "@/lib/utils";
 
 type Command = {
@@ -131,6 +133,8 @@ export function CommandPalette() {
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [entities, setEntities] = useState<Command[]>([]);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -157,15 +161,60 @@ export function CommandPalette() {
     return undefined;
   }, [open]);
 
+  // Load nodes and subscriptions once, so "⌘K 香港" jumps straight there.
+  useEffect(() => {
+    if (!open || loadedRef.current) return;
+    loadedRef.current = true;
+
+    void (async () => {
+      try {
+        const [nodes, subs] = await Promise.all([
+          getNodeList(),
+          getSubscriptions(),
+        ]);
+        const items: Command[] = [];
+
+        if (nodes.code === 0 && nodes.data) {
+          for (const n of nodes.data.slice(0, 50)) {
+            items.push({
+              id: `node-${n.id}`,
+              label: n.name,
+              group: "服务器",
+              path: `/node?q=${encodeURIComponent(n.name)}`,
+              icon: <Server className="h-4 w-4" />,
+            });
+          }
+        }
+        const subList = subs.code === 0 ? (subs.data?.items ?? []) : [];
+
+        if (subList.length > 0) {
+          for (const sub of subList.slice(0, 50)) {
+            items.push({
+              id: `sub-${sub.id}`,
+              label: sub.name,
+              group: "订阅",
+              path: `/subscription?q=${encodeURIComponent(sub.name)}`,
+              icon: <Rss className="h-4 w-4" />,
+            });
+          }
+        }
+        setEntities(items);
+      } catch {
+        // The palette keeps working with the static commands.
+      }
+    })();
+  }, [open]);
+
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const all = [...COMMANDS, ...entities];
 
-    if (!q) return COMMANDS;
+    if (!q) return all;
 
-    return COMMANDS.filter((c) =>
+    return all.filter((c) =>
       `${c.label} ${c.group} ${c.keywords ?? ""}`.toLowerCase().includes(q),
     );
-  }, [query]);
+  }, [entities, query]);
 
   const run = (command: Command) => {
     setOpen(false);

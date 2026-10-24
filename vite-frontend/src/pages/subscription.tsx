@@ -13,6 +13,7 @@ import type {
 } from "@/api";
 import type { InboundApiItem } from "@/api/types";
 
+import { useSearchParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import { ArrowDown, ArrowUp, Copy, LayoutTemplate, X } from "lucide-react";
@@ -36,6 +37,7 @@ import {
   PageHeader,
   PageTabs,
   PageToolbar,
+  SortHeader,
 } from "@/components/page-kit";
 import { CARD_GRID, InfoCard } from "@/components/info-card";
 import { useViewMode } from "@/components/view-mode";
@@ -1142,6 +1144,26 @@ export default function SubscriptionPage() {
   const [groupDraft, setGroupDraft] = useState<NodeGroupDraft | null>(null);
   const [tab, setTab] = useState<"subs" | "groups">("subs");
   const [query, setQuery] = useState("");
+  const [sortKey, setSortKey] = useState<"name" | "usage" | null>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  const toggleSort = (key: "name" | "usage") => {
+    setSortDir(sortKey === key && sortDir === "asc" ? "desc" : "asc");
+    setSortKey(key);
+  };
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // ⌘K passes ?q=name; apply it once, then drop it from the URL.
+  useEffect(() => {
+    const q = searchParams.get("q");
+
+    if (!q) return;
+    setQuery(q);
+    const next = new URLSearchParams(searchParams);
+
+    next.delete("q");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [saving, setSaving] = useState(false);
   const [detail, setDetail] = useState<SubscriptionItem | null>(null);
@@ -1311,6 +1333,17 @@ export default function SubscriptionPage() {
   const shownSubs = q
     ? subs.filter((s) => `${s.name} ${s.remark}`.toLowerCase().includes(q))
     : subs;
+
+  const sortedSubs = (() => {
+    if (!sortKey) return shownSubs;
+    const list = [...shownSubs].sort((a, b) =>
+      sortKey === "name"
+        ? a.name.localeCompare(b.name, "zh-CN")
+        : a.uploadBytes + a.downloadBytes - (b.uploadBytes + b.downloadBytes),
+    );
+
+    return sortDir === "asc" ? list : list.reverse();
+  })();
   const shownGroups = q
     ? groups.filter((g) => g.name.toLowerCase().includes(q))
     : groups;
@@ -1552,14 +1585,8 @@ export default function SubscriptionPage() {
                 ? CARD_GRID
                 : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
             }
+            data-list={viewMode === "card" ? undefined : "subscription"}
             role={viewMode === "card" ? undefined : "list"}
-            style={
-              viewMode === "card"
-                ? undefined
-                : ({
-                    "--list-cols": "14px minmax(0,1fr) 240px 96px",
-                  } as React.CSSProperties)
-            }
           >
             {viewMode !== "card" && (
               <div
@@ -1567,14 +1594,28 @@ export default function SubscriptionPage() {
                 data-slot="list-head"
               >
                 <div role="columnheader" />
-                <div role="columnheader">订阅</div>
-                <div role="columnheader">用量</div>
+                <div role="columnheader">
+                  <SortHeader
+                    active={sortKey === "name"}
+                    dir={sortDir}
+                    label="订阅"
+                    onToggle={() => toggleSort("name")}
+                  />
+                </div>
+                <div role="columnheader">
+                  <SortHeader
+                    active={sortKey === "usage"}
+                    dir={sortDir}
+                    label="用量"
+                    onToggle={() => toggleSort("usage")}
+                  />
+                </div>
                 <div className="text-right" role="columnheader">
                   操作
                 </div>
               </div>
             )}
-            {shownSubs.map(viewMode === "card" ? subCard : row)}
+            {sortedSubs.map(viewMode === "card" ? subCard : row)}
           </div>
         </>
       )}

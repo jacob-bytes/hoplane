@@ -4,6 +4,8 @@ import {
   Globe,
   LayoutDashboard,
   Link2,
+  Rows3,
+  Rows4,
   Rss,
   Server,
   UserRound,
@@ -13,9 +15,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { BrandLogo } from "@/components/brand-logo";
+import { Button } from "@/shadcn-bridge/heroui/button";
 import { siteConfig } from "@/config/site";
 import { getMonitorAccess } from "@/api";
 import { getAdminFlag } from "@/utils/session";
+import { getDensity, setDensity, type Density } from "@/lib/density";
 import { useHasMySubscriptions } from "@/hooks/use-has-my-subscriptions";
 import { useScrollTopOnPathChange } from "@/hooks/useScrollTopOnPathChange";
 
@@ -33,6 +37,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState(() => getAdminFlag());
+  const [density, setDensityState] = useState<Density>(() => getDensity());
   const hasMySubs = useHasMySubscriptions(isAdmin);
   const [monitorAllowed, setMonitorAllowed] = useState<boolean | null>(null);
   const [monitorAccessReason, setMonitorAccessReason] = useState<string | null>(
@@ -173,15 +178,41 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col min-h-screen bg-mesh-gradient">
       {/* 顶部导航栏 */}
-      <header className="bg-white/20 dark:bg-default-300  shadow-sm border-b border-white/80 dark:border-white/10 h-14 safe-top flex-shrink-0 flex items-center justify-between px-4 relative z-10">
+      <header className="relative z-10 flex h-14 flex-shrink-0 items-center justify-between border-b border-border bg-card/80 px-4 backdrop-blur safe-top">
         <div className="flex items-center gap-2">
           <BrandLogo size={20} />
-          <h1 className="text-sm font-bold text-foreground">
+          <h1 className="truncate text-sm font-bold text-foreground">
             {siteConfig.name}
           </h1>
         </div>
 
-        <div className="flex items-center gap-2" />
+        <div className="flex items-center gap-2">
+          <Button
+            isIconOnly
+            aria-label={
+              density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
+            }
+            className={
+              density === "compact"
+                ? "bg-accent text-foreground"
+                : "text-muted-foreground"
+            }
+            size="sm"
+            variant="light"
+            onPress={() => {
+              const next = density === "compact" ? "comfortable" : "compact";
+
+              setDensity(next);
+              setDensityState(next);
+            }}
+          >
+            {density === "compact" ? (
+              <Rows4 className="h-4 w-4" />
+            ) : (
+              <Rows3 className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
       </header>
 
       {/* 主内容区域 */}

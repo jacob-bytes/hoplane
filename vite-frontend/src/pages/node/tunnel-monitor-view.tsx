@@ -291,7 +291,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
         ) : error ? (
           <div className="text-center py-8 text-danger text-sm">{error}</div>
         ) : data.length > 0 ? (
-          <div className="h-64">
+          <div aria-label="隧道质量趋势图" className="h-64" role="img">
             <ResponsiveContainer height="100%" width="100%">
               <LineChart data={data}>
                 <CartesianGrid opacity={0.3} strokeDasharray="3 3" />

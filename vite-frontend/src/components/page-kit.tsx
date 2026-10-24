@@ -544,6 +544,26 @@ export function ListGroup({
   );
 }
 
+/** A quiet line drawing for empty lists; no external asset needed. */
+function EmptyIllustration() {
+  return (
+    <svg
+      aria-hidden="true"
+      className="mb-1 h-16 w-24 text-border"
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth={1.5}
+      viewBox="0 0 96 64"
+    >
+      <rect height="34" rx="4" width="52" x="10" y="8" />
+      <path d="M18 18h20M18 26h32M18 34h14" />
+      <circle cx="76" cy="44" r="12" />
+      <path d="M76 38v8M76 50h.01" />
+    </svg>
+  );
+}
+
 export function EmptyHint({
   text,
   action,
@@ -553,7 +573,8 @@ export function EmptyHint({
 }) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/50 px-4 py-10 text-center text-sm text-muted-foreground">
-      <p>{text}</p>
+      <EmptyIllustration />
+      <p className="max-w-sm text-balance">{text}</p>
       {action && (
         <Button
           color="primary"
@@ -600,5 +621,38 @@ export function PageShell({
     <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       {children}
     </AnimatedPage>
+  );
+}
+
+export type SortDir = "asc" | "desc";
+
+/** A clickable column label that reports the current sort direction. */
+export function SortHeader({
+  label,
+  active,
+  dir,
+  onToggle,
+  align = "start",
+}: {
+  label: string;
+  active: boolean;
+  dir: SortDir;
+  onToggle: () => void;
+  align?: "start" | "end";
+}) {
+  return (
+    <button
+      aria-label={`按${label}排序`}
+      className={`inline-flex items-center gap-1 transition-colors hover:text-foreground ${
+        align === "end" ? "justify-end" : ""
+      } ${active ? "text-foreground" : ""}`}
+      type="button"
+      onClick={onToggle}
+    >
+      {label}
+      <span className="text-[9px] leading-none">
+        {active ? (dir === "asc" ? "▲" : "▼") : ""}
+      </span>
+    </button>
   );
 }

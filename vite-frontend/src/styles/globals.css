@@ -318,6 +318,27 @@ body {
   }
 }
 
+/* Column templates live here, not in per-page inline styles. */
+[data-list="node"] {
+  --list-cols: minmax(0, 1fr) 232px 96px 116px 176px 24px;
+}
+
+[data-list="relay"] {
+  --list-cols: minmax(14rem, 18rem) minmax(0, 1fr);
+}
+
+[data-list="tunnel"] {
+  --list-cols: minmax(0, 1fr) minmax(0, 1.2fr) 24px;
+}
+
+[data-list="inbound"] {
+  --list-cols: 10px minmax(0, 1fr) 112px 96px 176px 48px;
+}
+
+[data-list="subscription"] {
+  --list-cols: 14px minmax(0, 1fr) 240px 96px;
+}
+
 /* Density: rows read --row-py, so compact mode only changes one variable. */
 [data-slot="list-row"] {
   --row-py: 0.75rem;

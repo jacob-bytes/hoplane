@@ -141,7 +141,7 @@ export function LatencyTrendModal({
               这段时间还没有记录
             </p>
           ) : (
-            <div className="h-52 sm:h-64">
+            <div aria-label="延迟趋势图" className="h-52 sm:h-64" role="img">
               <ResponsiveContainer height="100%" width="100%">
                 <LineChart data={rows}>
                   <CartesianGrid

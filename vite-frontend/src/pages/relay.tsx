@@ -301,13 +301,7 @@ function LinesView() {
               ? CARD_GRID
               : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
           }
-          style={
-            card
-              ? undefined
-              : ({
-                  "--list-cols": "minmax(14rem,18rem) minmax(0,1fr)",
-                } as React.CSSProperties)
-          }
+          data-list={card ? undefined : "relay"}
         >
           {!card && (
             <div

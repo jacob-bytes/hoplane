@@ -1543,12 +1543,8 @@ export default function TunnelPage({
             <div
               aria-label="隧道"
               className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              data-list="tunnel"
               role="table"
-              style={
-                {
-                  "--list-cols": "minmax(0,1fr) minmax(0,1.2fr) 24px",
-                } as React.CSSProperties
-              }
             >
               <div
                 className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"

@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { ChevronDown, Copy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+import { toastUndo } from "@/utils/toast-undo";
 import {
   batchDeleteInbounds,
   batchToggleInbounds,
@@ -31,7 +32,12 @@ import {
   StaggerList,
 } from "@/components/animated-page";
 import { ListPageSkeleton } from "@/components/page-state";
-import { PageHeader, PageTabs, PageToolbar } from "@/components/page-kit";
+import {
+  PageHeader,
+  PageTabs,
+  PageToolbar,
+  SortHeader,
+} from "@/components/page-kit";
 import { CARD_GRID, type CardTone, InfoCard } from "@/components/info-card";
 import { useViewMode } from "@/components/view-mode";
 import { useLocalStorageState } from "@/hooks/use-local-storage-state";
@@ -372,10 +378,18 @@ export default function InboundPage() {
     return [...map.entries()].sort((a, b) => a[1].localeCompare(b[1], "zh-CN"));
   }, [inbounds]);
 
+  const [sortKey, setSortKey] = useState<"name" | "traffic" | null>(null);
+  const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
+
+  const toggleSort = (key: "name" | "traffic") => {
+    setSortDir(sortKey === key && sortDir === "asc" ? "desc" : "asc");
+    setSortKey(key);
+  };
+
   const filtered = useMemo(() => {
     const kw = searchKeyword.trim().toLowerCase();
 
-    return inbounds.filter(
+    const list = inbounds.filter(
       (i) =>
         (!nodeFilter || groupKeyOf(i) === nodeFilter) &&
         (!kw ||
@@ -384,7 +398,16 @@ export default function InboundPage() {
             .toLowerCase()
             .includes(kw)),
     );
-  }, [inbounds, searchKeyword, nodeFilter]);
+
+    if (!sortKey) return list;
+    const sorted = [...list].sort((a, b) =>
+      sortKey === "name"
+        ? a.name.localeCompare(b.name, "zh-CN")
+        : a.uploadBytes + a.downloadBytes - (b.uploadBytes + b.downloadBytes),
+    );
+
+    return sortDir === "asc" ? sorted : sorted.reverse();
+  }, [inbounds, searchKeyword, nodeFilter, sortKey, sortDir]);
 
   // Grouped by server, imported nodes last; one group shows as a flat list.
   const inboundGroups = groupItems(filtered, groupKeyOf, (_key, i) =>
@@ -426,6 +449,15 @@ export default function InboundPage() {
         toast.error(res.msg || "操作失败");
       } else if (res.msg && res.msg !== "操作成功") {
         toast(res.msg, { icon: "⚠️" });
+      } else {
+        // Reversible, so a misclick costs one click to undo.
+        toastUndo(
+          item.enabled ? `已停用「${item.name}」` : `已启用「${item.name}」`,
+          async () => {
+            await toggleInbound(item.id, item.enabled);
+            await loadData(false);
+          },
+        );
       }
       await loadData(false);
     } finally {
@@ -619,17 +651,29 @@ export default function InboundPage() {
   const gridClass = card
     ? CARD_GRID
     : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card";
-  const listTemplate = "10px minmax(0,1fr) 112px 96px 176px 48px";
   const listHead = !card && (
     <div
       className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
       data-slot="list-head"
     >
       <div role="columnheader" />
-      <div role="columnheader">名称</div>
+      <div role="columnheader">
+        <SortHeader
+          active={sortKey === "name"}
+          dir={sortDir}
+          label="名称"
+          onToggle={() => toggleSort("name")}
+        />
+      </div>
       <div role="columnheader">延迟</div>
       <div className="text-right" role="columnheader">
-        流量
+        <SortHeader
+          active={sortKey === "traffic"}
+          align="end"
+          dir={sortDir}
+          label="流量"
+          onToggle={() => toggleSort("traffic")}
+        />
       </div>
       <div role="columnheader">操作</div>
       <div role="columnheader" />
@@ -1111,10 +1155,7 @@ export default function InboundPage() {
               </CardBody>
             </Card>
           ) : !grouped ? (
-            <StaggerList
-              className={gridClass}
-              style={{ "--list-cols": listTemplate } as React.CSSProperties}
-            >
+            <StaggerList className={gridClass} data-list="inbound">
               {listHead}
               {filtered.map((i) => (
                 <StaggerItem key={i.id}>{renderInbound(i)}</StaggerItem>
@@ -1144,14 +1185,7 @@ export default function InboundPage() {
                       onToggle={() => toggleCollapsed(id)}
                     />
                     {!folded && (
-                      <div
-                        className={gridClass}
-                        style={
-                          {
-                            "--list-cols": listTemplate,
-                          } as React.CSSProperties
-                        }
-                      >
+                      <div className={gridClass} data-list="inbound">
                         {listHead}
                         {g.items.map(renderInbound)}
                       </div>

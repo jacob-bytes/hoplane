@@ -171,7 +171,11 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
         </p>
       ) : (
         <>
-          <div className="relative h-52 w-full sm:h-64">
+          <div
+            aria-label="订阅流量趋势图"
+            className="relative h-52 w-full sm:h-64"
+            role="img"
+          >
             <ResponsiveContainer height="100%" width="100%">
               <ComposedChart
                 data={points}

@@ -55,6 +55,34 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // rolldown-vite splits vendors through advancedChunks; keeping React,
+        // Radix and the chart stack apart lets a UI change reuse their cache.
+        advancedChunks: {
+          groups: [
+            {
+              name: "react",
+              test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/,
+            },
+            {
+              name: "radix",
+              test: /node_modules[\\/]@radix-ui[\\/]/,
+            },
+            {
+              name: "motion",
+              test: /node_modules[\\/]framer-motion[\\/]/,
+            },
+            {
+              name: "charts",
+              test: /node_modules[\\/](recharts|d3-[a-z]+)[\\/]/,
+            },
+          ],
+        },
+      },
+    },
+  } as Record<string, unknown>,
   server: {
     port: 3000,
     host: "0.0.0.0",

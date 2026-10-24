@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 import {
@@ -117,8 +118,6 @@ import {
 
 const PAGE = "node";
 
-const NODE_COLUMNS = "minmax(0,1fr) 232px 96px 116px 176px 24px";
-
 export default function NodePage({
   embedded = false,
   addRequest = 0,
@@ -143,6 +142,20 @@ export default function NodePage({
     "node-search-keyword-remote",
     "",
   );
+
+  // ⌘K passes ?q=name; apply it once, then drop it from the URL.
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+
+    if (!q) return;
+    setLocalSearchKeyword(q);
+    const next = new URLSearchParams(searchParams);
+
+    next.delete("q");
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams, setLocalSearchKeyword]);
   const [activeTab, setActiveTab] = useLocalStorageState<NodeTab>(
     "node-active-tab",
     "local",
@@ -1715,11 +1728,7 @@ export default function NodePage({
                   ? CARD_GRID
                   : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
               }
-              style={
-                card
-                  ? undefined
-                  : ({ "--list-cols": NODE_COLUMNS } as React.CSSProperties)
-              }
+              data-list={card ? undefined : "node"}
             >
               {!card && (
                 <div
