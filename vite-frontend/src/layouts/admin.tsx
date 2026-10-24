@@ -12,8 +12,6 @@ import {
   LogOut,
   PanelLeftClose,
   PanelLeftOpen,
-  Rows3,
-  Rows4,
   Rss,
   Server,
   Settings,
@@ -38,7 +36,6 @@ import { safeLogout } from "@/utils/logout";
 import { siteConfig } from "@/config/site";
 import { useMobileBreakpoint } from "@/hooks/useMobileBreakpoint";
 import { getAdminFlag, getSessionName } from "@/utils/session";
-import { getDensity, setDensity, type Density } from "@/lib/density";
 import { useHasMySubscriptions } from "@/hooks/use-has-my-subscriptions";
 
 interface MenuItem {
@@ -71,7 +68,6 @@ export default function AdminLayout({
     null,
   );
   const sessionName = getSessionName() ?? "账户";
-  const [density, setDensityState] = useState<Density>(() => getDensity());
   const isMobile = useMobileBreakpoint();
 
   // 菜单项配置：管理员按 线路 / 分发 / 系统 分组（用户页含分组和限速），普通用户保持原样
@@ -524,33 +520,6 @@ export default function AdminLayout({
           </nav>
 
           <CommandPalette />
-
-          <Button
-            isIconOnly
-            aria-label={
-              density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
-            }
-            className={
-              density === "compact"
-                ? "shrink-0 bg-accent text-foreground"
-                : "shrink-0 text-muted-foreground"
-            }
-            size="sm"
-            variant="ghost"
-            onPress={() => {
-              const next: Density =
-                density === "compact" ? "comfortable" : "compact";
-
-              setDensity(next);
-              setDensityState(next);
-            }}
-          >
-            {density === "compact" ? (
-              <Rows4 className="h-4 w-4" />
-            ) : (
-              <Rows3 className="h-4 w-4" />
-            )}
-          </Button>
 
           <Dropdown placement="bottom-end">
             <DropdownTrigger>

@@ -8,7 +8,7 @@ import type {
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
-import { ChevronDown, Copy } from "lucide-react";
+import { ChevronDown, FoldVertical, UnfoldVertical, Copy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { toastUndo } from "@/utils/toast-undo";
@@ -243,7 +243,7 @@ export default function InboundPage() {
     "inbounds",
     [],
   );
-  const [isCollapsed, toggleCollapsed] = useCollapsed();
+  const [isCollapsed, toggleCollapsed, setAllCollapsed] = useCollapsed();
   const [searchKeyword, setSearchKeyword] = useLocalStorageState(
     "inbound-search-keyword",
     "",
@@ -1005,6 +1005,10 @@ export default function InboundPage() {
       },
     ];
 
+  const groupIds = inboundGroups.map((g) => `inbound:node:${g.key}`);
+  const everyGroupCollapsed =
+    groupIds.length > 0 && groupIds.every((id) => isCollapsed(id));
+
   return (
     <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
       <PageHeader
@@ -1024,6 +1028,27 @@ export default function InboundPage() {
         <>
           {!selectMode && (
             <PageToolbar
+              extra={
+                <Button
+                  isIconOnly
+                  aria-label={
+                    everyGroupCollapsed ? "展开所有分组" : "折叠所有分组"
+                  }
+                  className="text-muted-foreground"
+                  isDisabled={groupIds.length === 0}
+                  size="sm"
+                  variant="outline"
+                  onPress={() =>
+                    setAllCollapsed(groupIds, !everyGroupCollapsed)
+                  }
+                >
+                  {everyGroupCollapsed ? (
+                    <UnfoldVertical className="h-4 w-4" />
+                  ) : (
+                    <FoldVertical className="h-4 w-4" />
+                  )}
+                </Button>
+              }
               more={[
                 {
                   key: "probe",

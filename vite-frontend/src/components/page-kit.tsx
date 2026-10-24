@@ -142,6 +142,7 @@ export function PageToolbar({
   onSearch,
   placeholder = "搜索",
   children,
+  extra,
   more,
   primary,
   view,
@@ -151,6 +152,8 @@ export function PageToolbar({
   placeholder?: string;
   /** Filters shown next to the search box. */
   children?: React.ReactNode;
+  /** Extra icon buttons rendered before the view switch. */
+  extra?: React.ReactNode;
   /** Secondary actions, behind a "更多" menu. */
   more?: PageAction[];
   /**
@@ -195,6 +198,7 @@ export function PageToolbar({
       )}
       {children}
       <div className="ml-auto flex shrink-0 items-center gap-2">
+        {extra}
         {view && <ViewModeToggle value={view.value} onChange={view.onChange} />}
         {actions.length > 0 && (
           <Dropdown placement="bottom-end">

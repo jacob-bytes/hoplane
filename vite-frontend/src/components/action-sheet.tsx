@@ -1,4 +1,5 @@
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { ChevronRight } from "lucide-react";
+
 import {
   Sheet,
   SheetContent,
@@ -44,24 +45,27 @@ export function ActionSheet({
 
         <div className="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4">
           {children}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="overflow-hidden rounded-lg border border-border">
             {actions.map((a) => (
-              <Button
+              <button
                 key={a.key}
-                className="w-full min-w-0 px-1"
-                color={
-                  a.color === "primary" ? "primary" : (a.color ?? "default")
-                }
-                isDisabled={a.disabled}
-                size="sm"
-                variant="secondary"
-                onPress={() => {
+                className={`flex w-full items-center justify-between gap-3 border-b border-border px-4 py-3 text-left text-sm transition-colors last:border-b-0 hover:bg-accent/50 disabled:pointer-events-none disabled:opacity-50 ${
+                  a.color === "danger"
+                    ? "text-danger"
+                    : a.color === "primary"
+                      ? "text-primary"
+                      : "text-foreground"
+                }`}
+                disabled={a.disabled}
+                type="button"
+                onClick={() => {
                   onClose();
                   a.onPress();
                 }}
               >
-                {a.label}
-              </Button>
+                <span className="min-w-0 truncate">{a.label}</span>
+                <ChevronRight className="h-4 w-4 shrink-0 opacity-50" />
+              </button>
             ))}
           </div>
         </div>

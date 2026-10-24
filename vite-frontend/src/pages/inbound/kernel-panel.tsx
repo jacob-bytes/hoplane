@@ -51,14 +51,6 @@ interface Props {
   onChanged: () => void;
 }
 
-/** The latency tiles' status colours are too dark on a dark page. */
-const DARK_LABEL: Record<string, string> = {
-  success: "dark:text-success-400",
-  warning: "dark:text-warning-400",
-  danger: "dark:text-danger-400",
-  default: "dark:text-muted-foreground",
-};
-
 function shortVersion(v: string): string {
   const m = v.match(/\d+\.\d+\.\d+/);
 
@@ -250,31 +242,26 @@ export function KernelPanel({
       label: k.status,
       color: "default" as const,
     };
-    const [pill, dot] = TONE[st.color] ?? TONE.default;
+    const dot = TONE[st.color]?.[1] ?? TONE.default[1];
 
     return (
       <button
         key={k.id}
-        className={`flex min-w-0 flex-col items-start overflow-hidden rounded-lg px-2 py-1.5 text-left transition-opacity hover:opacity-80 ${pill}`}
+        className="flex min-w-0 items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-2 text-left transition-colors hover:bg-accent/40"
         type="button"
         onClick={() => setSheetFor(k.id)}
       >
-        <span
-          className={`flex w-full min-w-0 items-center gap-1 text-[11px] ${DARK_LABEL[st.color] ?? ""}`}
-        >
-          <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dot}`} />
-          <span className="truncate">
-            {!k.synced && !k.lastError ? "待同步" : st.label}
+        <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${dot}`} />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-sm font-medium text-foreground">
+            {kernelName(k.kernelType)}
           </span>
-        </span>
-        <span className="w-full truncate text-sm font-semibold text-foreground">
-          {kernelName(k.kernelType)}
-        </span>
-        <span className="w-full truncate font-mono text-[11px] text-muted-foreground">
-          {k.installedVersion ? shortVersion(k.installedVersion) : k.version}
-        </span>
-        <span className="w-full truncate text-[11px] text-muted-foreground">
-          {k.inboundCount} 个入站
+          <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
+            {k.installedVersion ? shortVersion(k.installedVersion) : k.version}
+            {" · "}
+            {!k.synced && !k.lastError ? "待同步" : st.label} · {k.inboundCount}{" "}
+            个入站
+          </span>
         </span>
       </button>
     );
@@ -334,7 +321,7 @@ export function KernelPanel({
                     内核
                   </Button>
                 </div>
-                <div className="grid grid-cols-3 gap-2 p-3">
+                <div className="flex flex-col gap-2 p-3">
                   {g.items.map(renderKernel)}
                 </div>
                 {g.items.some((k) => k.lastError) && (

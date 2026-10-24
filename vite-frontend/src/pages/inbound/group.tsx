@@ -113,8 +113,15 @@ function readCollapsed(): Set<string> {
 export function useCollapsed(): [
   (id: string) => boolean,
   (id: string) => void,
+  (ids: string[], collapsed: boolean) => void,
 ] {
   const [collapsed, setCollapsed] = useState<Set<string>>(readCollapsed);
+
+  const persist = (next: Set<string>) => {
+    writeStorage(COLLAPSED_KEY, JSON.stringify([...next]));
+
+    return next;
+  };
 
   return [
     (id) => collapsed.has(id),
@@ -124,9 +131,20 @@ export function useCollapsed(): [
 
         if (next.has(id)) next.delete(id);
         else next.add(id);
-        writeStorage(COLLAPSED_KEY, JSON.stringify([...next]));
 
-        return next;
+        return persist(next);
+      });
+    },
+    (ids, shouldCollapse) => {
+      setCollapsed((prev) => {
+        const next = new Set(prev);
+
+        for (const id of ids) {
+          if (shouldCollapse) next.add(id);
+          else next.delete(id);
+        }
+
+        return persist(next);
       });
     },
   ];

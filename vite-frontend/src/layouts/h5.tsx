@@ -4,8 +4,6 @@ import {
   Globe,
   LayoutDashboard,
   Link2,
-  Rows3,
-  Rows4,
   Rss,
   Server,
   UserRound,
@@ -15,11 +13,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 import { BrandLogo } from "@/components/brand-logo";
-import { Button } from "@/shadcn-bridge/heroui/button";
 import { siteConfig } from "@/config/site";
 import { getMonitorAccess } from "@/api";
 import { getAdminFlag } from "@/utils/session";
-import { getDensity, setDensity, type Density } from "@/lib/density";
 import { useHasMySubscriptions } from "@/hooks/use-has-my-subscriptions";
 import { useScrollTopOnPathChange } from "@/hooks/useScrollTopOnPathChange";
 
@@ -37,7 +33,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState(() => getAdminFlag());
-  const [density, setDensityState] = useState<Density>(() => getDensity());
   const hasMySubs = useHasMySubscriptions(isAdmin);
   const [monitorAllowed, setMonitorAllowed] = useState<boolean | null>(null);
   const [monitorAccessReason, setMonitorAccessReason] = useState<string | null>(
@@ -186,33 +181,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
           </h1>
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button
-            isIconOnly
-            aria-label={
-              density === "compact" ? "切换为舒适间距" : "切换为紧凑间距"
-            }
-            className={
-              density === "compact"
-                ? "bg-accent text-foreground"
-                : "text-muted-foreground"
-            }
-            size="sm"
-            variant="ghost"
-            onPress={() => {
-              const next = density === "compact" ? "comfortable" : "compact";
-
-              setDensity(next);
-              setDensityState(next);
-            }}
-          >
-            {density === "compact" ? (
-              <Rows4 className="h-4 w-4" />
-            ) : (
-              <Rows3 className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
+        <div className="flex items-center gap-2" />
       </header>
 
       {/* 主内容区域 */}
