@@ -2,14 +2,12 @@ import * as React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowRight,
-  Download,
   Globe,
   LayoutDashboard,
   Link2,
   Plus,
-  Search,
   Rss,
+  Search,
   Server,
   Settings,
   Share2,
@@ -17,9 +15,15 @@ import {
   Wifi,
 } from "lucide-react";
 
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
 import { getNodeList, getSubscriptions } from "@/api";
-import { cn } from "@/lib/utils";
 
 type Command = {
   id: string;
@@ -84,7 +88,7 @@ const COMMANDS: Command[] = [
     label: "订阅",
     group: "页面",
     path: "/subscription",
-    icon: <Download className="h-4 w-4" />,
+    icon: <Rss className="h-4 w-4" />,
     keywords: "subscription 订阅",
   },
   {
@@ -126,13 +130,12 @@ const COMMANDS: Command[] = [
   },
 ];
 
-/** ⌘K / Ctrl+K: jump between pages or start a create flow. */
+const GROUPS = ["页面", "操作", "服务器", "订阅"] as const;
+
+/** ⌘K / Ctrl+K: jump between pages, start a create flow, find a node. */
 export function CommandPalette() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [active, setActive] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
   const [entities, setEntities] = useState<Command[]>([]);
   const loadedRef = useRef(false);
 
@@ -149,19 +152,6 @@ export function CommandPalette() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  useEffect(() => {
-    if (open) {
-      const timer = window.setTimeout(() => inputRef.current?.focus(), 20);
-
-      return () => window.clearTimeout(timer);
-    }
-    setQuery("");
-    setActive(0);
-
-    return undefined;
-  }, [open]);
-
-  // Load nodes and subscriptions once, so "⌘K 香港" jumps straight there.
   useEffect(() => {
     if (!open || loadedRef.current) return;
     loadedRef.current = true;
@@ -185,19 +175,19 @@ export function CommandPalette() {
             });
           }
         }
+
         const subList = subs.code === 0 ? (subs.data?.items ?? []) : [];
 
-        if (subList.length > 0) {
-          for (const sub of subList.slice(0, 50)) {
-            items.push({
-              id: `sub-${sub.id}`,
-              label: sub.name,
-              group: "订阅",
-              path: `/subscription?q=${encodeURIComponent(sub.name)}`,
-              icon: <Rss className="h-4 w-4" />,
-            });
-          }
+        for (const sub of subList.slice(0, 50)) {
+          items.push({
+            id: `sub-${sub.id}`,
+            label: sub.name,
+            group: "订阅",
+            path: `/subscription?q=${encodeURIComponent(sub.name)}`,
+            icon: <Rss className="h-4 w-4" />,
+          });
         }
+
         setEntities(items);
       } catch {
         // The palette keeps working with the static commands.
@@ -205,16 +195,14 @@ export function CommandPalette() {
     })();
   }, [open]);
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
+  const grouped = useMemo(() => {
     const all = [...COMMANDS, ...entities];
 
-    if (!q) return all;
-
-    return all.filter((c) =>
-      `${c.label} ${c.group} ${c.keywords ?? ""}`.toLowerCase().includes(q),
-    );
-  }, [entities, query]);
+    return GROUPS.map((group) => ({
+      group,
+      items: all.filter((c) => c.group === group),
+    })).filter((g) => g.items.length > 0);
+  }, [entities]);
 
   const run = (command: Command) => {
     setOpen(false);
@@ -238,76 +226,34 @@ export function CommandPalette() {
         </kbd>
       </button>
 
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent
-          className="max-w-lg gap-0 overflow-hidden p-0"
-          showCloseButton={false}
-        >
-          <DialogTitle className="sr-only">搜索或跳转</DialogTitle>
-          <div className="flex items-center gap-2 border-b border-border px-3">
-            <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <input
-              ref={inputRef}
-              aria-label="搜索或跳转"
-              className="h-11 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-              placeholder="搜索页面或操作…"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setActive(0);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "ArrowDown") {
-                  e.preventDefault();
-                  setActive((i) => Math.min(i + 1, results.length - 1));
-                } else if (e.key === "ArrowUp") {
-                  e.preventDefault();
-                  setActive((i) => Math.max(i - 1, 0));
-                } else if (e.key === "Enter" && results[active]) {
-                  e.preventDefault();
-                  run(results[active]);
-                }
-              }}
-            />
-          </div>
-
-          <div className="max-h-[50vh] overflow-y-auto p-1.5">
-            {results.length === 0 ? (
-              <p className="px-3 py-6 text-center text-sm text-muted-foreground">
-                没有匹配的页面或操作
-              </p>
-            ) : (
-              results.map((c, i) => (
-                <button
+      <CommandDialog open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="搜索页面、服务器或订阅…" />
+        <CommandList>
+          <CommandEmpty>没有匹配的页面或操作</CommandEmpty>
+          {grouped.map(({ group, items }) => (
+            <CommandGroup key={group} heading={group}>
+              {items.map((c) => (
+                <CommandItem
                   key={c.id}
-                  className={cn(
-                    "flex w-full items-center gap-3 rounded-md px-2.5 py-2 text-left text-sm",
-                    i === active
-                      ? "bg-accent text-foreground"
-                      : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
-                  )}
-                  type="button"
-                  onClick={() => run(c)}
-                  onMouseEnter={() => setActive(i)}
+                  value={`${c.label} ${c.keywords ?? ""} ${c.group}`}
+                  onSelect={() => run(c)}
                 >
                   <span className="text-muted-foreground">{c.icon}</span>
                   <span className="min-w-0 flex-1 truncate">{c.label}</span>
                   <span className="shrink-0 text-[11px] text-muted-foreground/80">
                     {c.group}
                   </span>
-                  <ArrowRight className="h-3.5 w-3.5 shrink-0 opacity-0" />
-                </button>
-              ))
-            )}
-          </div>
-
-          <div className="flex items-center gap-3 border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
-            <span>↑↓ 选择</span>
-            <span>↵ 打开</span>
-            <span>esc 关闭</span>
-          </div>
-        </DialogContent>
-      </Dialog>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ))}
+        </CommandList>
+        <div className="flex items-center gap-3 border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+          <span>↑↓ 选择</span>
+          <span>↵ 打开</span>
+          <span>esc 关闭</span>
+        </div>
+      </CommandDialog>
     </>
   );
 }
