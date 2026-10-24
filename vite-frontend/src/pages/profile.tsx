@@ -153,16 +153,16 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
 /** Desktop: one row per method with what it is, its state and a button. */
 function SecurityPanel({ items }: { items: SecurityItem[] }) {
   return (
-    <section className="rounded-xl border border-divider bg-card shadow-sm">
-      <div className="border-b border-divider px-6 py-4">
-        <h2 className="text-base font-semibold">登录与安全</h2>
-        <p className="mt-0.5 text-sm text-muted-foreground">
-          管理登录这个面板的方式。绑定、解绑和修改都需要当前密码
+    <section className="overflow-hidden rounded-xl border border-border bg-card">
+      <div className="border-b border-border px-5 py-4">
+        <h2 className="text-sm font-medium">登录与安全</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          管理登录这个面板的方式；绑定、解绑和修改都需要当前密码
         </p>
       </div>
-      <div className="divide-y divide-divider">
+      <div className="divide-y divide-border">
         {items.map((item) => (
-          <div key={item.key} className="flex items-center gap-4 px-6 py-4">
+          <div key={item.key} className="flex items-center gap-4 px-5 py-4">
             <IconTile icon={item.icon} size="lg" tone={item.tone} />
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
@@ -496,23 +496,50 @@ export default function ProfilePage() {
           {logoutButton}
         </div>
       ) : (
-        <div className="w-full max-w-5xl flex-1">
-          <PageHeader description="你的账户和登录方式" title="账户与登录" />
-          <div className="grid items-start gap-5 lg:grid-cols-[280px_minmax(0,1fr)]">
-            <aside className="space-y-4 rounded-xl border border-divider bg-card p-6 shadow-sm">
-              <div className="flex flex-col items-center gap-3 text-center">
-                <Avatar large name={username} />
-                <div className="min-w-0 space-y-1.5">
-                  <div className="truncate text-lg font-semibold">
+        <div className="mx-auto w-full max-w-3xl flex-1 space-y-6 px-6 py-6">
+          <PageHeader description="你的账号信息和登录方式" title="账户与登录" />
+
+          <section className="overflow-hidden rounded-xl border border-border bg-card">
+            <div className="flex items-center gap-4 p-5">
+              <Avatar large name={username} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="truncate text-base font-semibold">
                     {username}
-                  </div>
+                  </span>
                   <RoleChip isAdmin={isAdmin} />
                 </div>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  {isAdmin
+                    ? "管理员账号：可管理服务器、节点、订阅和用户"
+                    : "普通账号：可管理自己的订阅与转发规则"}
+                </p>
               </div>
-              <div className="border-t border-divider pt-4">{logoutButton}</div>
-            </aside>
-            <SecurityPanel items={securityItems} />
-          </div>
+            </div>
+          </section>
+
+          <SecurityPanel items={securityItems} />
+
+          <section className="overflow-hidden rounded-xl border border-border bg-card">
+            <div className="flex flex-wrap items-center justify-between gap-3 p-5">
+              <div className="min-w-0">
+                <h2 className="text-sm font-medium">会话</h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  退出后需要重新登录；服务器、节点和转发规则不受影响
+                </p>
+              </div>
+              <Button
+                className="shrink-0 border-danger/30 text-danger hover:bg-danger/10"
+                color="danger"
+                size="sm"
+                startContent={<LogOut className="h-4 w-4" />}
+                variant="bordered"
+                onPress={handleLogout}
+              >
+                退出登录
+              </Button>
+            </div>
+          </section>
         </div>
       )}
 
