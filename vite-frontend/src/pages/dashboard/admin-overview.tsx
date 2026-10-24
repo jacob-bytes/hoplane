@@ -567,11 +567,7 @@ export function AdminOverview() {
                   return (
                     <button
                       key={g.kind}
-                      className={`flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors ${
-                        danger
-                          ? "border-danger-100 bg-danger-50/70 hover:bg-danger-50 dark:border-danger-500/20 dark:bg-danger-500/10"
-                          : "border-warning-100 bg-warning-50/70 hover:bg-warning-50 dark:border-warning-500/20 dark:bg-warning-500/10"
-                      }`}
+                      className="flex w-full items-start gap-3 rounded-lg border border-border bg-card p-3 text-left transition-colors duration-150 hover:border-default-300 hover:bg-accent/40"
                       type="button"
                       onClick={() => navigate(meta.path)}
                     >

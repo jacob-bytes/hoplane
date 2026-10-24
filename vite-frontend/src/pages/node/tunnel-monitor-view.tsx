@@ -35,6 +35,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
+import { CHART_SERIES } from "@/lib/chart-theme";
 import { formatTraffic } from "@/utils/traffic";
 import {
   getMonitorTunnels,
@@ -333,7 +334,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
                   dataKey="entryToExit"
                   dot={false}
                   name="entryToExit"
-                  stroke="#10b981"
+                  stroke={CHART_SERIES.success}
                   strokeWidth={2}
                   type="monotone"
                 />
@@ -438,7 +439,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
                   dataKey="bytesIn"
                   dot={false}
                   name="上传流量"
-                  stroke="#10b981"
+                  stroke={CHART_SERIES.success}
                   strokeWidth={2}
                   type="monotone"
                 />

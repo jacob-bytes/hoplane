@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 
+import { CHART_SERIES } from "@/lib/chart-theme";
 import { formatTraffic } from "@/utils/traffic";
 import { EmptyHint, ListGroup, ListRow } from "@/components/page-kit";
 import {
@@ -445,41 +446,59 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
     switch (activeMetricType) {
       case "cpu":
         return {
-          lines: [{ dataKey: "cpu", color: "#3b82f6", name: "CPU %" }],
+          lines: [
+            { dataKey: "cpu", color: CHART_SERIES.primary, name: "CPU %" },
+          ],
           yAxisLabel: "使用率 (%)",
         };
       case "memory":
         return {
-          lines: [{ dataKey: "memory", color: "#8b5cf6", name: "内存 %" }],
+          lines: [
+            {
+              dataKey: "memory",
+              color: CHART_SERIES.secondary,
+              name: "内存 %",
+            },
+          ],
           yAxisLabel: "使用率 (%)",
         };
       case "disk":
         return {
-          lines: [{ dataKey: "disk", color: "#f59e0b", name: "磁盘 %" }],
+          lines: [
+            { dataKey: "disk", color: CHART_SERIES.warning, name: "磁盘 %" },
+          ],
           yAxisLabel: "使用率 (%)",
         };
       case "network":
         return {
           lines: [
-            { dataKey: "netIn", color: "#10b981", name: "接收速度" },
-            { dataKey: "netOut", color: "#ef4444", name: "发送速度" },
+            { dataKey: "netIn", color: CHART_SERIES.success, name: "接收速度" },
+            { dataKey: "netOut", color: CHART_SERIES.danger, name: "发送速度" },
           ],
           yAxisLabel: "速度 (bytes/s)",
         };
       case "load":
         return {
           lines: [
-            { dataKey: "load1", color: "#3b82f6", name: "负载 1m" },
-            { dataKey: "load5", color: "#8b5cf6", name: "负载 5m" },
-            { dataKey: "load15", color: "#f59e0b", name: "负载 15m" },
+            { dataKey: "load1", color: CHART_SERIES.primary, name: "负载 1m" },
+            {
+              dataKey: "load5",
+              color: CHART_SERIES.secondary,
+              name: "负载 5m",
+            },
+            {
+              dataKey: "load15",
+              color: CHART_SERIES.warning,
+              name: "负载 15m",
+            },
           ],
           yAxisLabel: "负载值",
         };
       case "connections":
         return {
           lines: [
-            { dataKey: "tcp", color: "#3b82f6", name: "TCP 连接" },
-            { dataKey: "udp", color: "#10b981", name: "UDP 连接" },
+            { dataKey: "tcp", color: CHART_SERIES.primary, name: "TCP 连接" },
+            { dataKey: "udp", color: CHART_SERIES.success, name: "UDP 连接" },
           ],
           yAxisLabel: "连接数",
         };
@@ -1845,7 +1864,7 @@ export function MonitorView({
                                 dataKey="latency"
                                 dot={false}
                                 name="延迟"
-                                stroke="#10b981"
+                                stroke={CHART_SERIES.success}
                                 strokeWidth={2}
                                 type="monotone"
                               />

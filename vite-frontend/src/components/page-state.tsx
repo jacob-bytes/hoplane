@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Inbox } from "lucide-react";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
@@ -54,8 +55,11 @@ export const PageEmptyState = ({
   className = "h-48",
 }: BaseStateProps) => {
   return (
-    <div className={`flex items-center justify-center ${className}`}>
-      <span className="text-muted-foreground">{message}</span>
+    <div
+      className={`flex flex-col items-center justify-center gap-2 ${className}`}
+    >
+      <Inbox aria-hidden className="h-5 w-5 text-muted-foreground/60" />
+      <span className="text-sm text-muted-foreground">{message}</span>
     </div>
   );
 };

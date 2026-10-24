@@ -346,10 +346,10 @@ export function ListRow({
   return (
     <div
       aria-pressed={selectMode ? selected : undefined}
-      className={`group flex w-full cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-colors duration-150 ${
+      className={`group flex w-full cursor-pointer items-center gap-3 rounded-lg border px-3 py-2.5 text-left transition-[background-color,border-color] duration-150 ${
         selected
           ? "border-primary/40 bg-primary/5"
-          : "border-border bg-card hover:bg-accent/40"
+          : "border-border bg-card hover:border-default-300 hover:bg-accent/40"
       }`}
       role="button"
       tabIndex={0}

@@ -58,6 +58,8 @@
 > 看起来像溢出；用 CDP 的 `Emulation.setDeviceMetricsOverride` 实测
 > `scrollWidth == clientWidth == 390`，页面本身没有横向溢出。
 
+- ✅ 收尾：监控图表系列色进 `lib/chart-theme.ts`；公告横幅去渐变；空状态带图标；列表行 hover 有描边回馈
+
 ## 下一阶段（按价值排序）
 
 1. **P3 页面批次**：节点 / 隧道 / 订阅 / 用户 / 分组 / 限速 → 入站 / 中转 / 配置 / 监控 / 我的订阅
