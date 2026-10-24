@@ -1,6 +1,6 @@
 # Federation / Clustering API
 
-Federation allows sharing nodes between FLVX panels. One panel can share nodes, and another panel can use them as remote nodes.
+Federation allows sharing nodes between Hoplane panels. One panel can share nodes, and another panel can use them as remote nodes.
 
 ## Share Management (Admin)
 

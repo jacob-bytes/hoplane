@@ -1,7 +1,7 @@
 name: Build and Push Images
 
 env:
-  VERSION: "2.0.7-beta"  # 分支推送时使用的默认版本
+  VERSION: "0.1.0-dev"  # 分支推送时使用的默认版本
   REGISTRY: ghcr.io
 
 on:

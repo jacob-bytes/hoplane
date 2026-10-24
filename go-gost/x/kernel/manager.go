@@ -145,11 +145,11 @@ func (m *Manager) ensureBinary(inst *instance, label string, d *Download, dir st
 	if _, err := os.Stat(path); err == nil {
 		return path, nil
 	}
-	inst.logs.add(fmt.Sprintf("[flyx] 安装 %s", label))
+	inst.logs.add(fmt.Sprintf("[hoplane] 安装 %s", label))
 	if err := install(d, dir); err != nil {
 		return "", fmt.Errorf("安装 %s 失败: %v", label, err)
 	}
-	inst.logs.add(fmt.Sprintf("[flyx] %s 安装完成", label))
+	inst.logs.add(fmt.Sprintf("[hoplane] %s 安装完成", label))
 	return path, nil
 }
 
@@ -254,7 +254,7 @@ func (m *Manager) Apply(req ApplyRequest) (State, error) {
 
 	m.persist()
 	if err := m.nft.sync(m.allPorts(), m.allUserMarks()); err != nil {
-		inst.logs.add("[flyx] 流量计数规则同步失败: " + err.Error())
+		inst.logs.add("[hoplane] 流量计数规则同步失败: " + err.Error())
 	}
 	return m.state(req.Type, false), failure
 }
@@ -324,7 +324,7 @@ func (m *Manager) setErr(inst *instance, err error) {
 	m.mu.Lock()
 	inst.err = err.Error()
 	m.mu.Unlock()
-	inst.logs.add("[flyx] " + err.Error())
+	inst.logs.add("[hoplane] " + err.Error())
 }
 
 // startProcesses launches every process of the instance's current request.

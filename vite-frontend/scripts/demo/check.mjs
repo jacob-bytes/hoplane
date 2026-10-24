@@ -1,5 +1,5 @@
 // Checks the built online demo the way a visitor sees it: serves the build
-// under /flyx/demo/, opens every page in headless Chrome (as admin, then as
+// under /hoplane/demo/, opens every page in headless Chrome (as admin, then as
 // the demo user) and fails on page errors, pages that bounce to the login
 // screen, and API calls the recording doesn't answer ("[demo] not
 // recorded", see README.md). No dependencies: Chrome DevTools Protocol over
@@ -14,7 +14,7 @@ import os from "node:os";
 import path from "node:path";
 
 const dir = path.resolve(process.argv[2] || "dist-demo");
-const BASE = "/flyx/demo/";
+const BASE = "/hoplane/demo/";
 // Admins' 监控 redirects to 节点, which is already on the list.
 const ADMIN_PAGES = ["dashboard", "node", "inbound", "relay", "forward", "tunnel", "subscription", "limit", "user", "group", "panel-sharing", "config", "profile"];
 const USER_PAGES = ["dashboard", "my-subscriptions", "forward", "profile"];

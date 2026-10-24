@@ -1,5 +1,5 @@
 """
-Test API endpoints for FLYX backend.
+Test API endpoints for Hoplane backend.
 Tests API responses directly without browser.
 """
 

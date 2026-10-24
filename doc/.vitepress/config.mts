@@ -2,19 +2,19 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   lang: "zh-CN",
-  title: "FLYX",
+  title: "Hoplane",
   description: "转发 + 节点搭建面板",
-  base: "/flyx/",
+  base: "/hoplane/",
   cleanUrls: true,
   lastUpdated: true,
-  head: [["link", { rel: "icon", type: "image/png", href: "/flyx/logo.png" }]],
+  head: [["link", { rel: "icon", type: "image/png", href: "/hoplane/logo.png" }]],
   themeConfig: {
     logo: "/logo.png",
     nav: [
       { text: "指南", link: "/guide/getting-started" },
-      { text: "在线演示", link: "https://kure29.github.io/flyx/demo/" },
+      { text: "在线演示", link: "https://jlthzy.github.io/hoplane/demo/" },
       { text: "更新日志", link: "/changelog" },
-      { text: "下载", link: "https://github.com/kure29/flyx/releases" },
+      { text: "下载", link: "https://github.com/jlthzy/hoplane/releases" },
     ],
     sidebar: [
       {
@@ -70,14 +70,13 @@ export default defineConfig({
         text: "帮助",
         items: [
           { text: "常见问题", link: "/guide/faq" },
-          { text: "在线演示", link: "https://kure29.github.io/flyx/demo/" },
+          { text: "在线演示", link: "https://jlthzy.github.io/hoplane/demo/" },
       { text: "更新日志", link: "/changelog" },
         ],
       },
     ],
     socialLinks: [
-      { icon: "github", link: "https://github.com/kure29/flyx" },
-      { icon: "telegram", link: "https://t.me/flyx_chat" },
+      { icon: "github", link: "https://github.com/jlthzy/hoplane" },
     ],
     search: { provider: "local" },
     outline: { level: [2, 3], label: "本页目录" },

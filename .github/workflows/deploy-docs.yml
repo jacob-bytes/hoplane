@@ -37,13 +37,13 @@ jobs:
           npm run build
 
       # The online demo: the panel with recorded sample data and no backend
-      # (vite-frontend/src/demo), served at /flyx/demo/.
+      # (vite-frontend/src/demo), served at /hoplane/demo/.
       - name: Build demo
         working-directory: vite-frontend
         run: |
           npm install -g pnpm@10.28.1
           pnpm install --frozen-lockfile
-          VITE_DEMO=true VITE_BASE=/flyx/demo/ \
+          VITE_DEMO=true VITE_BASE=/hoplane/demo/ \
           VITE_APP_VERSION="$(git describe --tags --abbrev=0 2>/dev/null || echo dev)" \
           VITE_GITHUB_REPO="https://github.com/${{ github.repository }}" \
             pnpm exec vite build --outDir ../doc/.vitepress/dist/demo --emptyOutDir

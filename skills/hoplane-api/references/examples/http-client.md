@@ -87,21 +87,21 @@ create_forward "$@"
 
 ```python
 #!/usr/bin/env python3
-"""FLVX API Client"""
+"""Hoplane API Client"""
 
 import os
 import requests
 from typing import Optional, Any, Dict, List
 
 class FlvxError(Exception):
-    """FLVX API Error"""
+    """Hoplane API Error"""
     def __init__(self, code: int, message: str):
         self.code = code
         self.message = message
         super().__init__(message)
 
 class FlvxClient:
-    """FLVX API Client with auto-login"""
+    """Hoplane API Client with auto-login"""
     
     def __init__(
         self, 
@@ -455,7 +455,7 @@ type FlvxError struct {
 }
 
 func (e *FlvxError) Error() string {
-	return fmt.Sprintf("FLVX error %d: %s", e.Code, e.Message)
+	return fmt.Sprintf("Hoplane error %d: %s", e.Code, e.Message)
 }
 
 func NewClient() *Client {

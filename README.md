@@ -1,14 +1,14 @@
 <div align="center">
 
-<img src="doc/public/logo.png" width="88" alt="FLYX" />
+<img src="doc/public/logo.png" width="88" alt="Hoplane" />
 
-# FLYX
+# Hoplane
 
 转发 + 节点搭建面板
 
 在一个面板里管理服务器、节点与中转：一键部署 Xray / sing-box / Snell 节点，对接中转，生成订阅。
 
-[在线演示](https://kure29.github.io/flyx/demo/) · [使用文档](https://kure29.github.io/flyx/) · [快速上手](https://kure29.github.io/flyx/guide/getting-started) · [下载](https://github.com/kure29/flyx/releases) · [Telegram 交流群](https://t.me/flyx_chat)
+[在线演示](https://jlthzy.github.io/hoplane/demo/) · [使用文档](https://jlthzy.github.io/hoplane/) · [快速上手](https://jlthzy.github.io/hoplane/guide/getting-started) · [下载](https://github.com/jlthzy/hoplane/releases) · [讨论区](https://github.com/jlthzy/hoplane/discussions)
 
 </div>
 
@@ -27,29 +27,39 @@
 面板（需要 Docker）：
 
 ```bash
-curl -L https://github.com/kure29/flyx/releases/latest/download/panel_install.sh -o panel_install.sh && chmod +x panel_install.sh && ./panel_install.sh
+curl -L https://github.com/jlthzy/hoplane/releases/latest/download/panel_install.sh -o panel_install.sh && chmod +x panel_install.sh && ./panel_install.sh
 ```
 
 选 `1. 安装面板`，完成后访问 `http://服务器IP:6366`，默认账号 `admin_user` / `admin_user`，登录后请立即修改密码。
 
 agent：在面板 **服务器** 页新建服务器，复制生成的安装命令到服务器上执行。
 
-更多说明见 [使用文档](https://kure29.github.io/flyx/)：[安装面板](https://kure29.github.io/flyx/guide/install) · [安装 agent](https://kure29.github.io/flyx/guide/agent) · [内核与协议](https://kure29.github.io/flyx/guide/kernels) · [新建入站](https://kure29.github.io/flyx/guide/nodes) · [对接中转](https://kure29.github.io/flyx/guide/relay) · [延迟与回程](https://kure29.github.io/flyx/guide/latency) · [订阅](https://kure29.github.io/flyx/guide/subscription) · [升级](https://kure29.github.io/flyx/guide/upgrade) · [常见问题](https://kure29.github.io/flyx/guide/faq)
+更多说明见 [使用文档](https://jlthzy.github.io/hoplane/)：[安装面板](https://jlthzy.github.io/hoplane/guide/install) · [安装 agent](https://jlthzy.github.io/hoplane/guide/agent) · [内核与协议](https://jlthzy.github.io/hoplane/guide/kernels) · [新建入站](https://jlthzy.github.io/hoplane/guide/nodes) · [对接中转](https://jlthzy.github.io/hoplane/guide/relay) · [延迟与回程](https://jlthzy.github.io/hoplane/guide/latency) · [订阅](https://jlthzy.github.io/hoplane/guide/subscription) · [升级](https://jlthzy.github.io/hoplane/guide/upgrade) · [常见问题](https://jlthzy.github.io/hoplane/guide/faq)
+
+## 开发
+
+```bash
+# 后端（默认 :6365，SQLite）
+(cd go-backend && go run ./cmd/paneld)
+
+# 前端（:3000，代理到后端）
+(cd vite-frontend && pnpm install && pnpm run dev)
+
+# agent
+(cd go-gost && go run .)
+
+# 文档站
+(cd doc && npm ci && npm run dev)
+```
+
+约定（JWT 不带 `Bearer`、`{code,msg,data,ts}` 响应信封、Repository 层等）见 [AGENTS.md](AGENTS.md)。
 
 ## 许可
 
 以 GPLv3 发布，见 [LICENSE](LICENSE)；所含第三方代码的来源与许可见 [NOTICE](NOTICE)。
 
+本项目 fork 自 [FLYX](https://github.com/kure29/flyx)，其上游为 [FLVX](https://github.com/Sagit-chu/flvx) 与 [flux-panel](https://github.com/bqlpfy/flux-panel)。原项目的版权与许可声明一并保留。
+
 ## 免责声明
 
 本项目仅供个人学习与研究使用，仅限合法、合规用途。使用者须确保其使用行为符合所在国家或地区的法律法规，并自行承担使用本项目带来的一切风险。作者不对因使用本项目导致的任何后果承担责任，亦不提供任何形式的担保。禁止将本项目用于网络攻击、数据窃取、非法访问等任何违法或未经授权的行为。
-
-
-## ⭐ 喝杯咖啡！（USDT）
-
-| 网络       | 地址                                                                 |
-|------------|----------------------------------------------------------------------|
-| BNB(BEP20) | `0x736f077bb3717b467d3da1576828dd6cbe089015`                          |
-| TRC20      | `TWjh5CRZ2qe1NxzPgHWkwLA9zgMUfjijpH`                                  |
-| polygon    |  `0x736f077bb3717b467d3da1576828dd6cbe089015`    |
-

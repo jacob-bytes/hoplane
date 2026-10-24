@@ -3,7 +3,7 @@ import { ChevronDown, X } from "lucide-react";
 
 import { demoRole, switchDemoRole } from "@/demo";
 
-const DOCS = "https://kure29.github.io/flyx/guide/install";
+const DOCS = "https://jlthzy.github.io/hoplane/guide/install";
 
 /** The demo's floating note: sample data, switch views, how to install. */
 export function DemoBanner() {
@@ -25,7 +25,7 @@ export function DemoBanner() {
   return (
     <div className="fixed bottom-[84px] right-3 z-[60] w-[min(20rem,calc(100vw-24px))] rounded-2xl border border-divider bg-content1/95 p-3 text-xs shadow-xl backdrop-blur lg:bottom-4">
       <div className="mb-1 flex items-center justify-between">
-        <span className="font-semibold text-sm">FLYX 在线演示</span>
+        <span className="font-semibold text-sm">Hoplane 在线演示</span>
         <button
           aria-label="收起"
           className="rounded p-1 text-default-400 hover:bg-default-100"
@@ -53,7 +53,7 @@ export function DemoBanner() {
           rel="noreferrer"
           target="_blank"
         >
-          安装 FLYX
+          安装 Hoplane
         </a>
       </div>
     </div>

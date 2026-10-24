@@ -240,7 +240,7 @@ flvx-login() {
   echo "Logged in. Token: ${TOKEN:0:20}..."
 }
 
-flvx-api() {
+hoplane-api() {
   local endpoint="$1"
   local data="${2:-{}}"
   curl -s -X POST "${FLVX_BASE_URL}${endpoint}" \
@@ -251,6 +251,6 @@ flvx-api() {
 
 # Usage:
 # flvx-login
-# flvx-api /api/v1/node/list
-# flvx-api /api/v1/forward/list '{"keyword":"web"}'
+# hoplane-api /api/v1/node/list
+# hoplane-api /api/v1/forward/list '{"keyword":"web"}'
 ```

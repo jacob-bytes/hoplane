@@ -1,29 +1,29 @@
 # AI Skill 使用指南
 
-让大模型直接操作 FLYX 面板的技能包。支持 OpenCode、OpenClaw、Claude Code 等工具。
+让大模型直接操作 Hoplane 面板的技能包。支持 OpenCode、OpenClaw、Claude Code 等工具。
 
 ## 安装
 
 ### 方式 1: npm (推荐)
 
 ```bash
-npm install -g @flvx/skill-api
+npm install -g @jlthzy/hoplane-api
 ```
 
-postinstall 脚本会自动链接到 `~/.agents/skills/flvx-api/`。
+postinstall 脚本会自动链接到 `~/.agents/skills/hoplane-api/`。
 
 ### 方式 2: 手动链接
 
 ```bash
-# 从 FLYX 源码
-cd /path/to/flyx
+# 从 Hoplane 源码
+cd /path/to/hoplane
 mkdir -p ~/.agents/skills
-ln -sf $(pwd)/skills/flvx-api ~/.agents/skills/
+ln -sf $(pwd)/skills/hoplane-api ~/.agents/skills/
 
 # 或从 GitHub
-git clone https://github.com/kure29/flyx.git
-cd flyx
-ln -sf $(pwd)/skills/flvx-api ~/.agents/skills/
+git clone https://github.com/jlthzy/hoplane.git
+cd hoplane
+ln -sf $(pwd)/skills/hoplane-api ~/.agents/skills/
 ```
 
 ## 配置
@@ -39,14 +39,14 @@ export FLVX_PASSWORD="your-password"
 或使用凭证文件：
 
 ```bash
-mkdir -p ~/.flvx
-cat > ~/.flvx/.env << 'EOF'
+mkdir -p ~/.hoplane
+cat > ~/.hoplane/.env << 'EOF'
 export FLVX_BASE_URL="https://panel.example.com"
 export FLVX_USERNAME="admin"
 export FLVX_PASSWORD="your-password"
 EOF
-chmod 600 ~/.flvx/.env
-source ~/.flvx/.env
+chmod 600 ~/.hoplane/.env
+source ~/.hoplane/.env
 ```
 
 ---
@@ -59,7 +59,7 @@ OpenCode 是命令行 AI 编程助手，支持通过 skills 扩展能力。
 
 **安装 skill:**
 ```bash
-npm install -g @flvx/skill-api
+npm install -g @jlthzy/hoplane-api
 ```
 
 **使用:**
@@ -87,11 +87,11 @@ OpenClaw 同样支持 skills 机制。
 
 **安装 skill:**
 ```bash
-npm install -g @flvx/skill-api
+npm install -g @jlthzy/hoplane-api
 
 # 或手动链接
 mkdir -p ~/.openclaw/skills
-ln -sf /path/to/flyx/skills/flvx-api ~/.openclaw/skills/flvx-api
+ln -sf /path/to/hoplane/skills/hoplane-api ~/.openclaw/skills/hoplane-api
 ```
 
 **使用:**
@@ -114,9 +114,9 @@ Claude Code 是 Anthropic 官方的命令行工具，支持通过 CLAUDE.md 扩�
 在项目根目录创建 `CLAUDE.md`：
 
 ```markdown
-# FLYX API Skill
+# Hoplane API Skill
 
-你可以通过 REST API 操作 FLYX 面板。
+你可以通过 REST API 操作 Hoplane 面板。
 
 ## 环境变量
 - FLVX_BASE_URL: 面板地址
@@ -158,9 +158,9 @@ claude
 ```bash
 mkdir -p ~/.claude
 cat > ~/.claude/CLAUDE.md << 'EOF'
-# FLYX Panel Operations
+# Hoplane Panel Operations
 
-使用 FLYX REST API 操作流量转发面板。
+使用 Hoplane REST API 操作流量转发面板。
 
 环境变量: FLVX_BASE_URL, FLVX_USERNAME, FLVX_PASSWORD
 调用方式: curl -X POST "$FLVX_BASE_URL/api/v1/..." -H "Authorization: $TOKEN"
@@ -171,12 +171,12 @@ EOF
 #### 方式 3: 复制 SKILL.md
 
 ```bash
-cat ~/.agents/skills/flvx-api/SKILL.md >> ~/.claude/CLAUDE.md
+cat ~/.agents/skills/hoplane-api/SKILL.md >> ~/.claude/CLAUDE.md
 ```
 
 **示例对话:**
 ```
->>> 帮我查看 FLYX 面板上有哪些服务器
+>>> 帮我查看 Hoplane 面板上有哪些服务器
 >>> 创建一个名为 test 的转发，目标地址 10.0.0.1:80
 >>> 查看我的流量使用情况
 ```
@@ -200,7 +200,7 @@ cat ~/.agents/skills/flvx-api/SKILL.md >> ~/.claude/CLAUDE.md
 ## 安全提示
 
 - ⚠️ 环境变量在进程列表中可见
-- 使用 `~/.flvx/.env` 文件并设置 `chmod 600`
+- 使用 `~/.hoplane/.env` 文件并设置 `chmod 600`
 - 添加 `export HISTIGNORE="*FLVX_PASSWORD*"` 防止密码进入历史记录
 - Token 仅在会话内存中缓存，不写入磁盘
 

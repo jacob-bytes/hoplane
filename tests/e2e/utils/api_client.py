@@ -1,5 +1,5 @@
 """
-API client for FLYX backend testing.
+API client for Hoplane backend testing.
 """
 
 import json
@@ -9,7 +9,7 @@ import requests
 
 
 class APIClient:
-    """API client for FLYX backend."""
+    """API client for Hoplane backend."""
 
     def __init__(self, base_url: str, jwt_secret: Optional[str] = None):
         self.base_url = base_url.rstrip("/")

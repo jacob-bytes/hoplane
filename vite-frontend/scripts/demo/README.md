@@ -1,6 +1,6 @@
 # 在线演示的数据
 
-在线演示（`VITE_DEMO=true` 构建，随文档发布在 `/flyx/demo/`）没有后端：`src/demo/index.ts` 在浏览器里用 `src/demo/fixtures.json` 回答所有接口。这些回答是从一个装好示例数据的真实面板上录下来的，页面改了接口以后按下面的步骤重新录一遍。
+在线演示（`VITE_DEMO=true` 构建，随文档发布在 `/hoplane/demo/`）没有后端：`src/demo/index.ts` 在浏览器里用 `src/demo/fixtures.json` 回答所有接口。这些回答是从一个装好示例数据的真实面板上录下来的，页面改了接口以后按下面的步骤重新录一遍。
 
 1. 用空数据库启动后端：`DB_PATH=/tmp/demo/gost.db SERVER_ADDR=127.0.0.1:16370 go run ./cmd/paneld`
 2. 依次运行 `seed_1_inbounds.py`、`seed_2_relays_users.py`、`seed_3_subscriptions_history.py`，参数是数据库文件路径
@@ -15,7 +15,7 @@
 CI 会打包演示站，用无头 Chrome 把每个页面（管理员和普通用户）走一遍：页面报错、被弹回登录页、或者请求了没录到的接口（控制台里的 `[demo] not recorded: …`）都会让 CI 失败。本地跑：
 
 ```bash
-VITE_DEMO=true VITE_BASE=/flyx/demo/ pnpm exec vite build --outDir dist-demo
+VITE_DEMO=true VITE_BASE=/hoplane/demo/ pnpm exec vite build --outDir dist-demo
 node scripts/demo/check.mjs dist-demo   # CHROME=/path/to/chrome 指定浏览器
 ```
 

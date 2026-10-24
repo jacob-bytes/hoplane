@@ -2,7 +2,17 @@
 
 每个版本的主要变化。**升级** 一行说明除了面板以外还要不要升级节点 agent；没写的只需升级面板，见 [升级](./guide/upgrade.md)。
 
-完整的提交记录见 [GitHub Releases](https://github.com/kure29/flyx/releases)。
+完整的提交记录见 [GitHub Releases](https://github.com/jlthzy/hoplane/releases)。
+
+## 0.1.0
+
+2026-10-24
+
+- **项目改名为 Hoplane**：仓库、文档站、镜像地址、安装脚本、页面标题与页脚都换成新名字；本版功能与 FLYX 3.3.41 一致，此后独立演进
+- 上游致谢与版权声明保留在 `NOTICE`，`plans/`、`docs/` 下的历史设计文档原样保留
+- 改名时故意没动的标识符（环境变量 `FLVX_*`、容器名、`/etc/flux_agent`、nft 表名等）列在 `REBRAND.md`
+
+**升级**：从 FLYX 迁移过来的机器，面板按新地址重装即可（数据卷不变）；agent 可继续用，重新执行一次面板生成的安装命令会把它换成新仓库的版本。
 
 ## 3.3.41
 
@@ -172,7 +182,7 @@
 
 - 订阅模板支持 Stash 和 Shadowrocket：在订阅的 **规则** 页给它们选一个 Mihomo 格式的模板（可以和 Mihomo 共用），面板会把 `include-all` / `filter` 策略组展开成节点列表；Shadowrocket 选了模板后改为导入完整配置，见 [订阅模板](./guide/subscription-templates.md#在订阅里使用)
 - 模板检查会提醒 `mrs` 格式的规则集只有 Mihomo 能读
-- 新增 [在线演示](https://kure29.github.io/flyx/demo/)：不用安装就能看看面板长什么样
+- 新增 [在线演示](https://jlthzy.github.io/hoplane/demo/)：不用安装就能看看面板长什么样
 
 ## 3.3.24
 

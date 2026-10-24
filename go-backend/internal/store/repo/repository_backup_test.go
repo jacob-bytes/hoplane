@@ -90,7 +90,7 @@ func TestExportAllOmitsSensitiveConfigs(t *testing.T) {
 	}
 	defer r.Close()
 
-	seedConfig(t, r, "app_name", "FLYX")
+	seedConfig(t, r, "app_name", "Hoplane")
 	seedConfig(t, r, "app_logo", "logo")
 	seedConfig(t, r, "app_favicon", "favicon")
 	seedConfig(t, r, "app_bg_image", "bg")
@@ -115,7 +115,7 @@ func TestExportAllOmitsSensitiveConfigs(t *testing.T) {
 			if err != nil {
 				t.Fatalf("export backup: %v", err)
 			}
-			if backup.Configs["app_name"] != "FLYX" {
+			if backup.Configs["app_name"] != "Hoplane" {
 				t.Fatalf("expected public config in export, got %+v", backup.Configs)
 			}
 			if backup.Configs["cloudflare_site_key"] != "site-key" {
@@ -254,7 +254,7 @@ func assertConfigValue(t *testing.T, r *Repository, name, want string) {
 }
 
 func TestSeedDataRenamesDefaultAppName(t *testing.T) {
-	for old, want := range map[string]string{"FLVX": "FLYX", "flux": "FLYX", "My Panel": "My Panel"} {
+	for old, want := range map[string]string{"FLVX": "Hoplane", "flux": "Hoplane", "My Panel": "My Panel"} {
 		path := filepath.Join(t.TempDir(), "rename.db")
 		r, err := Open(path)
 		if err != nil {

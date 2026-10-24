@@ -14,9 +14,9 @@ export default defineConfig({
       injectRegister: "auto",
       includeAssets: ["favicon.ico", "apple-touch-icon.png"],
       manifest: {
-        name: "FLYX",
-        short_name: "FLYX",
-        description: "FLYX forwarding management panel",
+        name: "Hoplane",
+        short_name: "Hoplane",
+        description: "Hoplane forwarding management panel",
         theme_color: "#2563eb",
         background_color: "#f6f7fb",
         display: "standalone",
@@ -48,7 +48,7 @@ export default defineConfig({
       },
     }),
   ],
-  // The online demo is served from the docs site (VITE_BASE=/flyx/demo/).
+  // The online demo is served from the docs site (VITE_BASE=/hoplane/demo/).
   base: process.env.VITE_BASE || "/",
   resolve: {
     alias: {

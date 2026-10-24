@@ -1,6 +1,6 @@
 # 常见问题
 
-想先看看面板长什么样，可以打开 [在线演示](https://kure29.github.io/flyx/demo/)。这里没找到答案的话，可以到 [Telegram 交流群](https://t.me/flyx_chat) 问，或者在 GitHub [提交 issue](https://github.com/kure29/flyx/issues/new/choose)。
+想先看看面板长什么样，可以打开 [在线演示](https://jlthzy.github.io/hoplane/demo/)。这里没找到答案的话，可以到 [讨论区](https://github.com/jlthzy/hoplane/discussions) 问，或者在 GitHub [提交 issue](https://github.com/jlthzy/hoplane/issues/new/choose)。
 
 ## 面板
 

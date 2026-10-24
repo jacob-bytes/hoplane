@@ -191,7 +191,7 @@ Reorder nodes (for display purposes).
 
 ## POST /api/v1/node/releases
 
-List available FLVX agent releases.
+List available Hoplane agent releases.
 
 **Request:** `{}`
 

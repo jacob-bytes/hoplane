@@ -22,7 +22,7 @@ docker rm -f flux_agent >/dev/null 2>&1; docker run -d --name flux_agent \
   --restart unless-stopped --network host --cap-add NET_ADMIN \
   -v /etc/flux_agent:/etc/flux_agent \
   -e FLUX_AGENT_ADDR=<面板地址> -e FLUX_AGENT_SECRET=<密钥> \
-  ghcr.io/kure29/flux-agent:<版本>
+  ghcr.io/jlthzy/flux-agent:<版本>
 ```
 
 - `--network host`：转发和入站要按需监听任意端口，必须用宿主机网络
@@ -50,7 +50,7 @@ docker rm -f flux_agent >/dev/null 2>&1; docker run -d --name flux_agent \
 | IPv4 转发 | 内核转发（nftables 端口转发）需要 |
 | 文件句柄上限 | 允许打开更多连接和文件 |
 
-- 点 **应用** 后立即生效，并写入 `/etc/sysctl.d/99-flyx-tuning.conf`，重启后保持
+- 点 **应用** 后立即生效，并写入 `/etc/sysctl.d/99-hoplane-tuning.conf`，重启后保持
 - 只会调大的上限类参数（缓冲区、队列、句柄数）如果服务器本来就更高，保持原值不动
 - 之后取消勾选某一项再应用，这一项会恢复成调优前的值；**恢复默认** 撤销全部调优
 - 系统不支持的项（比如内核没有 BBR）会跳过并提示
@@ -74,13 +74,13 @@ docker rm -f flux_agent >/dev/null 2>&1; docker run -d --name flux_agent \
 在服务器上运行：
 
 ```bash
-curl -L https://github.com/kure29/flyx/releases/latest/download/install.sh -o install.sh && chmod +x install.sh && ./install.sh
+curl -L https://github.com/jlthzy/hoplane/releases/latest/download/install.sh -o install.sh && chmod +x install.sh && ./install.sh
 ```
 
 Alpine Linux 最小化安装若未包含 `curl`，可使用系统自带的 `wget` 下载：
 
 ```bash
-wget -O install.sh https://github.com/kure29/flyx/releases/latest/download/install.sh && chmod +x install.sh && ./install.sh
+wget -O install.sh https://github.com/jlthzy/hoplane/releases/latest/download/install.sh && chmod +x install.sh && ./install.sh
 ```
 
 脚本会在 Alpine 上自动安装 Bash、`curl` 和 CA 证书，并使用 OpenRC 注册、启动和管理 `flux_agent` 服务；其他受支持的 Linux 发行版继续使用 systemd。

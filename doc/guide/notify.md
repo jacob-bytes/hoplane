@@ -41,9 +41,9 @@
   "event": "node_offline",
   "title": "节点掉线",
   "message": "节点：东京-1",
-  "text": "[FLYX] 节点掉线\n节点：东京-1\n时间：2026-10-16 10:00:00 UTC",
+  "text": "[Hoplane] 节点掉线\n节点：东京-1\n时间：2026-10-16 10:00:00 UTC",
   "time": 1792130385331,
-  "app": "FLYX"
+  "app": "Hoplane"
 }
 ```
 

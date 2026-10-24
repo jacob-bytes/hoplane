@@ -1,6 +1,13 @@
+Hoplane (jlthzy/hoplane)
+Copyright 2026 jlthzy
+A fork of FLYX; modifications and new work are recorded in the project history.
+
+---
+
 FLYX (kure29/flyx)
 Copyright 2026 kure29
-Node kernel / inbound management and later changes.
+Node kernel / inbound management and later changes. Included here as the
+immediate upstream of Hoplane.
 
 Based on FLVX (https://github.com/Sagit-chu/flvx)
 Copyright 2026 Sagit-chu

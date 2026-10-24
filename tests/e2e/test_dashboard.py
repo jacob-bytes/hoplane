@@ -1,5 +1,5 @@
 """
-Test dashboard and navigation for FLYX.
+Test dashboard and navigation for Hoplane.
 Tests dashboard rendering, sidebar navigation, and user interactions.
 """
 

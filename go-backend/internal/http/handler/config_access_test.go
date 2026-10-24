@@ -15,7 +15,7 @@ import (
 
 func TestPublicConfigGetAllowsBrandKeys(t *testing.T) {
 	router, r := setupConfigAccessTestRouter(t)
-	seedConfigValue(t, r, "app_name", "FLYX Brand")
+	seedConfigValue(t, r, "app_name", "Hoplane Brand")
 	seedConfigValue(t, r, "app_logo", "logo-data")
 	seedConfigValue(t, r, "app_favicon", "favicon-data")
 	seedConfigValue(t, r, "app_bg_image", "bg-data")

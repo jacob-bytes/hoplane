@@ -1,5 +1,5 @@
 /**
- * FLYX Theme System — Type Definitions
+ * Hoplane Theme System — Type Definitions
  * =====================================
  * This file defines the contract that every theme package must implement.
  * Theme authors: read README.md first, then implement ThemePackage.

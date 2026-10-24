@@ -1,6 +1,6 @@
 /**
  * @module @/themes
- * Public API for the FLYX theme system.
+ * Public API for the Hoplane theme system.
  *
  * Usage:
  *   import { ThemeProvider, useThemeContext, registerTheme } from "@/themes";

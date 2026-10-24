@@ -49,7 +49,7 @@ jobs:
       # breaks or asks for something that was never recorded.
       - name: Check online demo
         run: |
-          VITE_DEMO=true VITE_BASE=/flyx/demo/ pnpm exec vite build --outDir dist-demo
+          VITE_DEMO=true VITE_BASE=/hoplane/demo/ pnpm exec vite build --outDir dist-demo
           node scripts/demo/check.mjs dist-demo
 
   backend:

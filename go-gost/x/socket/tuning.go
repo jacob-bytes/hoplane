@@ -73,7 +73,7 @@ var tuneGroups = []tuneGroup{
 // Paths are variables so tests can use a temporary tree.
 var (
 	tuneProcRoot   = "/proc/sys"
-	tuneConfPath   = "/etc/sysctl.d/99-flyx-tuning.conf"
+	tuneConfPath   = "/etc/sysctl.d/99-hoplane-tuning.conf"
 	tuneBackupPath = "/etc/flux_agent/tuning-backup.json"
 	tuneModprobe   = func(module string) error { return exec.Command("modprobe", module).Run() }
 	tuneWrite      = writeSysctl
@@ -297,7 +297,7 @@ func applyTuning(groupIDs []string) (tuneStatus, error) {
 		return tuneStatus{}, err
 	}
 	if len(conf) > 0 {
-		body := "# Written by the FLYX panel (节点调优); remove via the panel to restore.\n" + strings.Join(conf, "\n") + "\n"
+		body := "# Written by the Hoplane panel (节点调优); remove via the panel to restore.\n" + strings.Join(conf, "\n") + "\n"
 		if err := os.WriteFile(tuneConfPath, []byte(body), 0o644); err != nil {
 			return tuneStatus{}, fmt.Errorf("写入 %s 失败: %v", tuneConfPath, err)
 		}

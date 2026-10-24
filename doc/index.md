@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: FLYX
+  name: Hoplane
   text: 转发 + 节点搭建面板
   tagline: 在一个面板里管理服务器、节点与中转，一键部署 Xray / sing-box / Snell 节点并对接中转
   actions:
@@ -11,16 +11,16 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: 在线演示
-      link: https://kure29.github.io/flyx/demo/
+      link: https://jlthzy.github.io/hoplane/demo/
     - theme: alt
       text: 基本概念
       link: /guide/concepts
     - theme: alt
       text: GitHub
-      link: https://github.com/kure29/flyx
+      link: https://github.com/jlthzy/hoplane
     - theme: alt
-      text: Telegram 交流群
-      link: https://t.me/flyx_chat
+      text: 讨论区
+      link: https://github.com/jlthzy/hoplane/discussions
 
 features:
   - title: 多内核节点

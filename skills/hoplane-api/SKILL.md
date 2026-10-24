@@ -1,8 +1,8 @@
 ---
-name: flvx-api
-description: Operate FLVX traffic forwarding management system via REST API. Supports user/node/tunnel/forward management, federation clustering, and traffic monitoring. Use when user wants to manage FLVX panel programmatically or via natural language.
+name: hoplane-api
+description: Operate Hoplane traffic forwarding management system via REST API. Supports user/node/tunnel/forward management, federation clustering, and traffic monitoring. Use when user wants to manage Hoplane panel programmatically or via natural language.
 metadata:
-  author: FLVX Team
+  author: Hoplane Team
   version: "2.1.5"
   requires_env:
     - FLVX_BASE_URL
@@ -10,15 +10,15 @@ metadata:
     - FLVX_PASSWORD
 ---
 
-# FLVX API Operations
+# Hoplane API Operations
 
-Operate FLVX panel through REST API. All endpoints use POST method and return JSON with `{code, msg, data, ts}` envelope.
+Operate Hoplane panel through REST API. All endpoints use POST method and return JSON with `{code, msg, data, ts}` envelope.
 
 ## Supported AI Tools
 
 | Tool | Installation | Notes |
 |------|--------------|-------|
-| **OpenCode** | `npm i -g @flvx/skill-api` or `ln -s . ~/.agents/skills/flvx-api` | Auto-loads from `~/.agents/skills/` |
+| **OpenCode** | `npm i -g @jlthzy/hoplane-api` or `ln -s . ~/.agents/skills/hoplane-api` | Auto-loads from `~/.agents/skills/` |
 | **OpenClaw** | Same as OpenCode | Compatible skill format |
 | **Claude Code** | Copy SKILL.md to CLAUDE.md or `~/.claude/CLAUDE.md` | Uses context file instead of skills |
 
@@ -32,15 +32,15 @@ export FLVX_USERNAME="admin"
 export FLVX_PASSWORD="your-password"
 ```
 
-**Security tip:** Add to `~/.flvx/.env` and source on demand:
+**Security tip:** Add to `~/.hoplane/.env` and source on demand:
 ```bash
-mkdir -p ~/.flvx && cat > ~/.flvx/.env << 'EOF'
+mkdir -p ~/.hoplane && cat > ~/.hoplane/.env << 'EOF'
 export FLVX_BASE_URL="https://panel.example.com"
 export FLVX_USERNAME="admin"
 export FLVX_PASSWORD="your-password"
 EOF
-chmod 600 ~/.flvx/.env
-source ~/.flvx/.env
+chmod 600 ~/.hoplane/.env
+source ~/.hoplane/.env
 ```
 
 ## Authentication Flow

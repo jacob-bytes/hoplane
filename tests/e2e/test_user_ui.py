@@ -1,5 +1,5 @@
 """
-Test user management UI for FLYX.
+Test user management UI for Hoplane.
 Tests user CRUD operations through the web interface.
 """
 

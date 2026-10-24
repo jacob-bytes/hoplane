@@ -76,6 +76,6 @@ targets = [
     {"name": "广东电信", "host": "gd-ct.example.com", "port": 80, "enabled": True},
 ]
 api("/config/update-single", {"name": "latency_targets", "value": json.dumps(targets, ensure_ascii=False)})
-api("/config/update-single", {"name": "app_name", "value": "FLYX 演示"})
+api("/config/update-single", {"name": "app_name", "value": "Hoplane 演示"})
 json.dump({**st, "tunnels": [t_sh, t_gz, t_iplc], "users": users}, open(DB + ".seed.json", "w"), ensure_ascii=False)
 print("ok", users)
