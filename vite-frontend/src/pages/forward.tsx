@@ -2757,7 +2757,11 @@ export default function ForwardPage({
   };
 
   // 渲染规则行
-  const renderForwardRow = (forward: Forward, showTunnel: boolean) => {
+  const renderForwardRow = (
+    forward: Forward,
+    showTunnel: boolean,
+    flat = false,
+  ) => {
     const ratio = normalizeTunnelTrafficRatio(forward.tunnelTrafficRatio);
     const statusDisplay = getStatusDisplay(forward.status);
     const meta = [
@@ -2795,6 +2799,34 @@ export default function ForwardPage({
                   </Chip>
                 )}
               </>
+            }
+            cells={
+              flat
+                ? [
+                    <div key="name" className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="truncate text-[13.5px] font-medium text-foreground">
+                          {forward.name}
+                        </span>
+                        {forward.status !== 1 && (
+                          <Chip size="sm" variant="flat">
+                            {statusDisplay.text}
+                          </Chip>
+                        )}
+                      </div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {forward.userName ?? ""}
+                      </div>
+                    </div>,
+                    <div
+                      key="meta"
+                      className="min-w-0 truncate text-xs text-muted-foreground tabular"
+                    >
+                      {meta.filter(Boolean).join(" · ")}
+                    </div>,
+                    handle,
+                  ]
+                : undefined
             }
             meta={meta.filter(Boolean).join(" · ")}
             right={handle}
@@ -2940,8 +2972,13 @@ export default function ForwardPage({
             items={sortableForwardIds}
             strategy={rectSortingStrategy}
           >
-            <ListGroup>
-              {sortedForwards.map((forward) => renderForwardRow(forward, true))}
+            <ListGroup
+              columns="minmax(0,1fr) minmax(0,1.5fr) 24px"
+              head={["规则", "目标与流量", ""]}
+            >
+              {sortedForwards.map((forward) =>
+                renderForwardRow(forward, true, true),
+              )}
             </ListGroup>
           </SortableContext>
         </DndContext>

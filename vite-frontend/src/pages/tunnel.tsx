@@ -52,6 +52,7 @@ import { ActionSheet } from "@/components/action-sheet";
 import {
   EmptyHint,
   ListRow,
+  STATUS_DOT,
   PageHeader,
   PageToolbar,
   SelectionBar,
@@ -1539,7 +1540,19 @@ export default function TunnelPage({
             items={sortableTunnelIds}
             strategy={rectSortingStrategy}
           >
-            <div className="grid grid-cols-1 gap-2 2xl:grid-cols-2">
+            <div
+              className="flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              style={
+                {
+                  "--list-cols": "minmax(0,1fr) minmax(0,1.2fr) 24px",
+                } as React.CSSProperties
+              }
+            >
+              <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+                <div>隧道</div>
+                <div>线路</div>
+                <div />
+              </div>
               {sortedTunnels.map((tunnel) => {
                 const bestExit = tunnel.bestExitState?.enabled
                   ? tunnel.bestExitState
@@ -1585,6 +1598,52 @@ export default function TunnelPage({
                             )}
                           </>
                         }
+                        cells={[
+                          <div
+                            key="name"
+                            className="flex min-w-0 items-center gap-3"
+                          >
+                            <span
+                              className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[tunnel.status === 1 ? "ok" : "off"]}`}
+                            />
+                            <div className="min-w-0">
+                              <div className="flex items-center gap-1.5">
+                                <span className="truncate text-[13.5px] font-medium text-foreground">
+                                  {tunnel.name}
+                                </span>
+                                <Chip size="sm" variant="flat">
+                                  {getTunnelTypeDisplay(tunnel.type).text}
+                                </Chip>
+                                {tunnel.engine === "realm" && (
+                                  <Chip size="sm" variant="flat">
+                                    realm
+                                  </Chip>
+                                )}
+                              </div>
+                              <div className="truncate text-xs text-muted-foreground">
+                                {`${tunnel.trafficRatio}x`}
+                              </div>
+                            </div>
+                          </div>,
+                          <div
+                            key="route"
+                            className="min-w-0 truncate text-xs text-muted-foreground"
+                          >
+                            {describeRoute(tunnel)}
+                          </div>,
+                          !isSearching && (
+                            <span
+                              key="grip"
+                              aria-label="拖动排序"
+                              className="cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                              role="button"
+                              title="拖动排序"
+                              {...listeners}
+                            >
+                              <GripVertical className="h-4 w-4" />
+                            </span>
+                          ),
+                        ]}
                         meta={[
                           describeRoute(tunnel),
                           `${tunnel.trafficRatio}x`,

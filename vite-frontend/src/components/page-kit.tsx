@@ -474,10 +474,16 @@ export function ListRow({
 export function ListGroup({
   title,
   count,
+  columns,
+  head,
   children,
 }: {
   title?: React.ReactNode;
   count?: number;
+  /** Desktop grid template shared by the header and every row. */
+  columns?: string;
+  /** Column labels; pass together with `columns`. */
+  head?: React.ReactNode[];
   children: React.ReactNode;
 }) {
   return (
@@ -492,7 +498,23 @@ export function ListGroup({
           )}
         </h2>
       )}
-      <div className="flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card">
+      <div
+        className="flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+        style={
+          columns
+            ? ({ "--list-cols": columns } as React.CSSProperties)
+            : undefined
+        }
+      >
+        {columns && head && (
+          <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+            {head.map((cell, i) => (
+              <div key={i} className="min-w-0 truncate">
+                {cell}
+              </div>
+            ))}
+          </div>
+        )}
         {children}
       </div>
     </section>

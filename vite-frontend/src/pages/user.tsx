@@ -1184,7 +1184,10 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           />
         )
       ) : (
-        <ListGroup>
+        <ListGroup
+          columns="minmax(0,1fr) minmax(0,1.15fr) 240px"
+          head={["用户", "详情", "用量"]}
+        >
           {users.map((user) => {
             const state = getUserRowState(user);
             const expStatus = user.expTime
@@ -1236,6 +1239,44 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                     ) : null}
                   </>
                 }
+                cells={[
+                  <div key="who" className="min-w-0">
+                    <div className="flex items-center gap-1.5">
+                      <span className="truncate text-[13.5px] font-medium text-foreground">
+                        {user.name || user.user}
+                      </span>
+                      {user.status !== 1 && (
+                        <Chip className="shrink-0" size="sm" variant="flat">
+                          已禁用
+                        </Chip>
+                      )}
+                      {user.disabledByQuota ? (
+                        <Chip
+                          className="shrink-0"
+                          color="danger"
+                          size="sm"
+                          variant="flat"
+                        >
+                          配额超额
+                        </Chip>
+                      ) : null}
+                    </div>
+                    {user.name && user.name !== user.user && (
+                      <div className="truncate text-xs text-muted-foreground">
+                        {user.user}
+                      </div>
+                    )}
+                  </div>,
+                  <div
+                    key="meta"
+                    className="min-w-0 truncate text-xs text-muted-foreground tabular"
+                  >
+                    {meta.join(" · ")}
+                  </div>,
+                  <div key="usage" className="min-w-0">
+                    <UsageBar user={user} />
+                  </div>,
+                ]}
                 footer={<UsageBar user={user} />}
                 meta={meta.join(" · ")}
                 status={state.status}
