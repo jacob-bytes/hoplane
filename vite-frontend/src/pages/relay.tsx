@@ -16,6 +16,7 @@ import { PageLoadingState } from "@/components/page-state";
 import {
   EmptyHint,
   ListRow,
+  STATUS_DOT,
   PageHeader,
   PageTabs,
   PageToolbar,
@@ -75,7 +76,7 @@ function RelayLines({
   renderLatency: (l: InboundRelayApiItem) => React.ReactNode;
 }) {
   return (
-    <div className="divide-y divide-divider/70 rounded-xl bg-muted/60">
+    <div className="divide-y divide-border/70">
       {lines.map((l) => {
         const entry = l.entries[0];
         const ok = l.forwardExists && l.forwardStatus === 1;
@@ -83,7 +84,7 @@ function RelayLines({
         return (
           <div
             key={l.id}
-            className="flex min-h-9 min-w-0 items-center gap-2 px-3 py-1.5"
+            className="flex min-h-8 min-w-0 items-center gap-2 py-1"
           >
             <span
               className={`h-1.5 w-1.5 shrink-0 rounded-full ${ok ? "bg-success" : "bg-warning"}`}
@@ -289,7 +290,26 @@ function LinesView() {
           }
         />
       ) : (
-        <div className={card ? CARD_GRID : "grid grid-cols-1 gap-2"}>
+        <div
+          className={
+            card
+              ? CARD_GRID
+              : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+          }
+          style={
+            card
+              ? undefined
+              : ({
+                  "--list-cols": "minmax(0,1fr) 34rem",
+                } as React.CSSProperties)
+          }
+        >
+          {!card && (
+            <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+              <div>节点</div>
+              <div>中转线路</div>
+            </div>
+          )}
           {shown.map((i) => {
             const lines = byInbound.get(i.id) ?? [];
             const broken = lines.some(
@@ -377,18 +397,40 @@ function LinesView() {
                     </Chip>
                   )
                 }
+                cells={[
+                  <div key="node" className="flex min-w-0 items-center gap-3">
+                    <span
+                      className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[lines.length === 0 ? "off" : broken ? "warn" : "ok"]}`}
+                    />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="truncate text-[13.5px] font-medium text-foreground">
+                          {i.name}
+                        </span>
+                        {i.relayOnly && (
+                          <Chip className="shrink-0" size="sm" variant="flat">
+                            仅中转
+                          </Chip>
+                        )}
+                      </div>
+                      <div className="truncate text-xs text-muted-foreground">
+                        {summary}
+                      </div>
+                    </div>
+                  </div>,
+                  <div key="lines" className="min-w-0">
+                    {lineList || (
+                      <Chip size="sm" variant="flat">
+                        未配置
+                      </Chip>
+                    )}
+                  </div>,
+                ]}
                 footer={
                   lineList && <div className="mt-2 lg:hidden">{lineList}</div>
                 }
                 meta={summary}
-                right={
-                  lineList && (
-                    // Wide screens: the lines sit beside the landing.
-                    <div className="hidden w-[30rem] lg:block xl:w-[38rem]">
-                      {lineList}
-                    </div>
-                  )
-                }
+                right={undefined}
                 status={lines.length === 0 ? "off" : broken ? "warn" : "ok"}
                 statusTitle={
                   lines.length === 0

@@ -196,15 +196,19 @@ function Panel({
   title,
   badge,
   action,
+  className,
   children,
 }: {
   title: string;
   badge?: React.ReactNode;
   action?: React.ReactNode;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-divider bg-card p-4 shadow-sm lg:p-5">
+    <section
+      className={`rounded-xl border border-border bg-card p-4 shadow-xs lg:p-5 ${className ?? ""}`}
+    >
       <div className="mb-3 flex items-center gap-2">
         <h2 className="text-sm font-semibold lg:text-base">{title}</h2>
         {badge}
@@ -537,8 +541,8 @@ export function AdminOverview() {
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
-        <div className="space-y-4">
+      <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+        <div className="flex flex-col gap-4">
           <Panel
             badge={
               issues.length > 0 && (
@@ -623,6 +627,7 @@ export function AdminOverview() {
                   <ChevronRight className="h-3.5 w-3.5" />
                 </button>
               }
+              className="flex-1"
               title="服务器状态"
             >
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-3">
@@ -633,7 +638,7 @@ export function AdminOverview() {
                   return (
                     <button
                       key={n.id}
-                      className="flex items-center gap-2.5 rounded-xl border border-divider px-3 py-2 text-left transition-colors hover:bg-muted"
+                      className="flex items-center gap-2.5 rounded-lg border border-border px-3 py-2 text-left transition-colors hover:bg-muted"
                       type="button"
                       onClick={() => navigate("/node")}
                     >
@@ -657,7 +662,7 @@ export function AdminOverview() {
           )}
         </div>
 
-        <div className="space-y-4">
+        <div className="flex flex-col gap-4">
           <Panel
             action={<span className="text-xs text-muted-foreground">累计</span>}
             title="节点流量"
@@ -710,8 +715,8 @@ export function AdminOverview() {
           </Panel>
 
           {expiring.length > 0 && (
-            <Panel title="即将到期">
-              <div className="divide-y divide-divider">
+            <Panel className="flex-1" title="即将到期">
+              <div className="divide-y divide-border">
                 {expiring.map((e) => {
                   const days = Math.ceil((e.at - now) / DAY);
 

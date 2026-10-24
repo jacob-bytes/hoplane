@@ -7,11 +7,17 @@ import { ChevronRight, LogOut, UserRound } from "lucide-react";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { BrandLogo } from "@/components/brand-logo";
 import { VersionFooter } from "@/components/version-footer";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@/shadcn-bridge/heroui/dropdown";
 import { getMonitorAccess } from "@/api";
 import { safeLogout } from "@/utils/logout";
 import { siteConfig } from "@/config/site";
 import { useMobileBreakpoint } from "@/hooks/useMobileBreakpoint";
-import { getAdminFlag } from "@/utils/session";
+import { getAdminFlag, getSessionName } from "@/utils/session";
 import { useHasMySubscriptions } from "@/hooks/use-has-my-subscriptions";
 
 interface MenuItem {
@@ -43,6 +49,7 @@ export default function AdminLayout({
   const [monitorAccessReason, setMonitorAccessReason] = useState<string | null>(
     null,
   );
+  const sessionName = getSessionName() ?? "账户";
   const isMobile = useMobileBreakpoint();
 
   // 菜单项配置：管理员按 线路 / 分发 / 系统 分组（用户页含分组和限速），普通用户保持原样
@@ -463,36 +470,6 @@ export default function AdminLayout({
 
         {/* 底部账号操作、版权信息和折叠按钮 */}
         <div className="px-5 py-4 [@media(max-height:760px)]:py-3 [@media(max-height:760px)]:gap-2 mt-auto flex-shrink-0 flex flex-col gap-3 overflow-hidden whitespace-nowrap box-border">
-          {!isMobile && (
-            <div className="flex flex-col gap-1">
-              {[
-                // Password, passkeys and GitHub live on the account page.
-                {
-                  key: "account",
-                  label: "账户与登录",
-                  icon: UserRound,
-                  onPress: () => navigate("/profile"),
-                },
-                {
-                  key: "logout",
-                  label: "退出登录",
-                  icon: LogOut,
-                  onPress: handleLogout,
-                },
-              ].map((a) => (
-                <button
-                  key={a.key}
-                  className={`flex h-9 [@media(max-height:760px)]:h-8 items-center rounded-xl text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground ${isCollapsed ? "justify-center px-0" : "gap-3 px-3"}`}
-                  title={a.label}
-                  type="button"
-                  onClick={a.onPress}
-                >
-                  <a.icon className="h-4 w-4 shrink-0" />
-                  {!isCollapsed && <span>{a.label}</span>}
-                </button>
-              ))}
-            </div>
-          )}
           {/* Version and the collapse button share a row so short
               laptop screens still fit the whole menu. */}
           <div
@@ -586,7 +563,7 @@ export default function AdminLayout({
           )}
           <nav
             aria-label="面包屑"
-            className="flex min-w-0 items-center gap-1.5 text-[13px]"
+            className="flex min-w-0 flex-1 items-center gap-1.5 text-[13px]"
           >
             <span className="text-muted-foreground">后台</span>
             {currentSection && (
@@ -602,6 +579,40 @@ export default function AdminLayout({
               {currentLabel}
             </span>
           </nav>
+
+          <Dropdown placement="bottom-end">
+            <DropdownTrigger>
+              <button
+                aria-label="账户菜单"
+                className="flex shrink-0 items-center gap-2 rounded-lg py-1 pl-1 pr-2 text-sm transition-colors hover:bg-accent"
+                type="button"
+              >
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-[11px] font-semibold uppercase text-primary-foreground">
+                  {sessionName.slice(0, 1)}
+                </span>
+                <span className="hidden max-w-[10rem] truncate text-muted-foreground sm:block">
+                  {sessionName}
+                </span>
+              </button>
+            </DropdownTrigger>
+            <DropdownMenu aria-label="账户">
+              <DropdownItem
+                key="profile"
+                startContent={<UserRound className="h-4 w-4" />}
+                onPress={() => navigate("/profile")}
+              >
+                账户与登录
+              </DropdownItem>
+              <DropdownItem
+                key="logout"
+                className="text-danger"
+                startContent={<LogOut className="h-4 w-4" />}
+                onPress={handleLogout}
+              >
+                退出登录
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </header>
 
         {/* 主内容 */}
