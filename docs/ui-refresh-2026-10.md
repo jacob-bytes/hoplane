@@ -101,7 +101,8 @@
 - ✅ 列表入场动画（20ms 递进、`prefers-reduced-motion` 关闭）
 - ✅ 订阅空态补主行动按钮
 - ✅ 服务器表头可排序（名称 / CPU / 内存 / 磁盘 / 网速 / 本月流量），拖拽时自动取消排序
-- ⏳ 表格语义（role=table/row）暂缓：行本身是 `role=button`，要改需重构为"行容器 + 主操作链接"
+- ✅ 行结构重构：行不再是 `role=button`，主操作改为铺满整行的底层按钮，开关/拖拽/复制等控件浮在其上
+- ✅ 表格语义：列表容器 `role=table`、表头 `role=row` + `role=columnheader`、行 `role=row` + `role=cell`（node/relay/tunnel/user/forward）；订阅与入站用 `role=list/listitem`
 
 ## 下一阶段（按价值排序）
 

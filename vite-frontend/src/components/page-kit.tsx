@@ -322,6 +322,7 @@ export const STATUS_DOT: Record<RowStatus, string> = {
 export function ListTable({
   columns,
   head,
+  label,
   className,
   children,
 }: {
@@ -329,21 +330,26 @@ export function ListTable({
   columns: string;
   /** Column labels; same order and count as the rows' `cells`. */
   head?: React.ReactNode[];
+  /** Accessible name for the table, e.g. "服务器". */
+  label?: string;
   className?: string;
   children: React.ReactNode;
 }) {
   return (
     <div
+      aria-label={label}
       className={`flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card list-enter ${className ?? ""}`}
+      role="table"
       style={{ "--list-cols": columns } as React.CSSProperties}
     >
       {head && (
         <div
           className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
           data-slot="list-head"
+          role="row"
         >
           {head.map((cell, i) => (
-            <div key={i} className="min-w-0 truncate">
+            <div key={i} className="min-w-0 truncate" role="columnheader">
               {cell}
             </div>
           ))}
@@ -389,9 +395,13 @@ export function ListRow({
   onSelect?: () => void;
   onPress: () => void;
 }) {
-  const activate = selectMode ? onSelect : onPress;
+  const activate = (selectMode ? onSelect : onPress) ?? (() => {});
+  const label =
+    typeof title === "string" || typeof title === "number"
+      ? String(title)
+      : "打开详情";
 
-  const rowClass = `group w-full cursor-pointer text-left transition-colors duration-150 max-lg:rounded-lg max-lg:border ${
+  const rowClass = `group relative w-full cursor-pointer text-left transition-colors duration-150 max-lg:rounded-lg max-lg:border ${
     cells ? "" : "flex items-center gap-3 px-3 py-3 lg:px-4"
   } ${
     selected
@@ -400,25 +410,24 @@ export function ListRow({
   }`;
 
   return (
-    <div
-      aria-pressed={selectMode ? selected : undefined}
-      className={rowClass}
-      data-slot="list-row"
-      role="button"
-      tabIndex={0}
-      onClick={activate}
-      onKeyDown={(e) => {
-        if (e.target !== e.currentTarget) return;
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          activate?.();
-        }
-      }}
-    >
+    <div className={rowClass} data-slot="list-row">
+      {/* The row's single action sits underneath the content, so the row is
+          no longer an interactive element wrapping other controls. */}
+      <button
+        aria-label={label}
+        aria-pressed={selectMode ? selected : undefined}
+        className="absolute inset-0 z-0 cursor-pointer rounded-[inherit] focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset"
+        type="button"
+        onClick={activate}
+      />
+
       {cells && (
-        <div className="hidden items-center gap-4 px-4 py-3 lg:grid lg:[grid-template-columns:var(--list-cols)]">
+        <div
+          className="hidden items-center gap-4 px-4 py-3 lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          role="row"
+        >
           {cells.map((cell, i) => (
-            <div key={i} className="min-w-0">
+            <div key={i} className="min-w-0" role="cell">
               {cell}
             </div>
           ))}
@@ -431,7 +440,7 @@ export function ListRow({
       >
         {selectMode && (
           <div
-            className="flex shrink-0"
+            className="relative z-10 flex shrink-0"
             role="presentation"
             onClick={(e) => e.stopPropagation()}
           >
@@ -463,7 +472,7 @@ export function ListRow({
         </div>
         {right && !selectMode && (
           <div
-            className="flex shrink-0 items-center gap-2"
+            className="relative z-10 flex shrink-0 items-center gap-2"
             role="presentation"
             onClick={(e) => e.stopPropagation()}
           >
@@ -480,6 +489,7 @@ export function ListGroup({
   count,
   columns,
   head,
+  label,
   children,
 }: {
   title?: React.ReactNode;
@@ -488,6 +498,8 @@ export function ListGroup({
   columns?: string;
   /** Column labels; pass together with `columns`. */
   head?: React.ReactNode[];
+  /** Accessible name for the table, e.g. "服务器". */
+  label?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -503,7 +515,9 @@ export function ListGroup({
         </h2>
       )}
       <div
+        aria-label={label}
         className="list-enter flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+        role={columns ? "table" : undefined}
         style={
           columns
             ? ({ "--list-cols": columns } as React.CSSProperties)

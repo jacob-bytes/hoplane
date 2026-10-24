@@ -308,9 +308,10 @@ function LinesView() {
             <div
               className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
               data-slot="list-head"
+              role="row"
             >
-              <div>节点</div>
-              <div>中转线路</div>
+              <div role="columnheader">节点</div>
+              <div role="columnheader">中转线路</div>
             </div>
           )}
           {shown.map((i) => {

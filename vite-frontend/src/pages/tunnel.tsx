@@ -1541,7 +1541,9 @@ export default function TunnelPage({
             strategy={rectSortingStrategy}
           >
             <div
+              aria-label="隧道"
               className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              role="table"
               style={
                 {
                   "--list-cols": "minmax(0,1fr) minmax(0,1.2fr) 24px",
@@ -1551,10 +1553,11 @@ export default function TunnelPage({
               <div
                 className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                 data-slot="list-head"
+                role="row"
               >
-                <div>隧道</div>
-                <div>线路</div>
-                <div />
+                <div role="columnheader">隧道</div>
+                <div role="columnheader">线路</div>
+                <div role="columnheader" />
               </div>
               {sortedTunnels.map((tunnel) => {
                 const bestExit = tunnel.bestExitState?.enabled
@@ -1638,7 +1641,7 @@ export default function TunnelPage({
                             <span
                               key="grip"
                               aria-label="拖动排序"
-                              className="cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                              className="relative z-10 cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
                               role="button"
                               title="拖动排序"
                               {...listeners}

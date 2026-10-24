@@ -1725,22 +1725,30 @@ export default function NodePage({
                 <div
                   className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                   data-slot="list-head"
+                  role="row"
                 >
-                  <div className="min-w-0">{sortButton("name", "名称")}</div>
-                  <div className="flex min-w-0 items-center gap-2">
+                  <div className="min-w-0" role="columnheader">
+                    {sortButton("name", "名称")}
+                  </div>
+                  <div
+                    className="flex min-w-0 items-center gap-2"
+                    role="columnheader"
+                  >
                     {sortButton("cpu", "CPU")}
                     <span className="text-muted-foreground/40">/</span>
                     {sortButton("mem", "内存")}
                     <span className="text-muted-foreground/40">/</span>
                     {sortButton("disk", "磁盘")}
                   </div>
-                  <div className="min-w-0 text-right">
+                  <div className="min-w-0 text-right" role="columnheader">
                     {sortButton("speed", "网速")}
                   </div>
-                  <div className="min-w-0 text-right">
+                  <div className="min-w-0 text-right" role="columnheader">
                     {sortButton("month", "本月流量")}
                   </div>
-                  <div className="min-w-0">延迟</div>
+                  <div className="min-w-0" role="columnheader">
+                    延迟
+                  </div>
                   <div />
                 </div>
               )}
@@ -2399,7 +2407,7 @@ export default function NodePage({
                                 !isDisplayFiltered && (
                                   <span
                                     aria-label="拖动排序"
-                                    className="cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                                    className="relative z-10 cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
                                     role="button"
                                     title="拖动排序"
                                     {...listeners}

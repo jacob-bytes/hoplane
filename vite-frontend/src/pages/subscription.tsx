@@ -1451,7 +1451,7 @@ export default function SubscriptionPage() {
         <Usage compact s={s} />
       </div>
       <div
-        className="flex shrink-0 items-center gap-2 max-lg:ml-auto lg:justify-end"
+        className="relative z-10 flex shrink-0 items-center gap-2 max-lg:ml-auto lg:justify-end"
         role="presentation"
         onClick={(e) => e.stopPropagation()}
       >
@@ -1546,11 +1546,13 @@ export default function SubscriptionPage() {
       ) : (
         <>
           <div
+            aria-label={viewMode === "card" ? undefined : "订阅列表"}
             className={
               viewMode === "card"
                 ? CARD_GRID
                 : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
             }
+            role={viewMode === "card" ? undefined : "list"}
             style={
               viewMode === "card"
                 ? undefined
@@ -1564,10 +1566,12 @@ export default function SubscriptionPage() {
                 className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                 data-slot="list-head"
               >
-                <div />
-                <div>订阅</div>
-                <div>用量</div>
-                <div className="text-right">操作</div>
+                <div role="columnheader" />
+                <div role="columnheader">订阅</div>
+                <div role="columnheader">用量</div>
+                <div className="text-right" role="columnheader">
+                  操作
+                </div>
               </div>
             )}
             {shownSubs.map(viewMode === "card" ? subCard : row)}

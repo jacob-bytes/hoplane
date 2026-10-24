@@ -625,12 +625,14 @@ export default function InboundPage() {
       className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
       data-slot="list-head"
     >
-      <div />
-      <div>名称</div>
-      <div>延迟</div>
-      <div className="text-right">流量</div>
-      <div>操作</div>
-      <div />
+      <div role="columnheader" />
+      <div role="columnheader">名称</div>
+      <div role="columnheader">延迟</div>
+      <div className="text-right" role="columnheader">
+        流量
+      </div>
+      <div role="columnheader">操作</div>
+      <div role="columnheader" />
     </div>
   );
 
@@ -842,8 +844,7 @@ export default function InboundPage() {
     return (
       <div
         key={item.id}
-        aria-pressed={selectMode ? selected : undefined}
-        className={`flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:bg-card ${
+        className={`relative flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:bg-card ${
           selectMode
             ? ""
             : "lg:grid lg:gap-4 lg:px-4 lg:[grid-template-columns:var(--list-cols)]"
@@ -866,7 +867,7 @@ export default function InboundPage() {
       >
         {selectMode && (
           <div
-            className="flex shrink-0"
+            className="relative z-10 flex shrink-0"
             role="presentation"
             onClick={(e) => e.stopPropagation()}
           >
@@ -903,7 +904,7 @@ export default function InboundPage() {
           <div>↓ {formatTraffic(item.downloadBytes)}</div>
         </div>
         <div
-          className={`hidden shrink-0 gap-1 ${selectMode ? "" : "md:flex"}`}
+          className={`relative z-10 hidden shrink-0 gap-1 ${selectMode ? "" : "md:flex"}`}
           role="presentation"
           onClick={(e) => e.stopPropagation()}
         >
@@ -925,7 +926,7 @@ export default function InboundPage() {
           </Button>
         </div>
         <div
-          className={`shrink-0 ${selectMode ? "hidden" : ""}`}
+          className={`relative z-10 shrink-0 ${selectMode ? "hidden" : ""}`}
           role="presentation"
           onClick={(e) => e.stopPropagation()}
         >
