@@ -141,11 +141,11 @@ export function NodeTuneModal({
                                 {g.name}
                               </span>
                               {g.applied ? (
-                                <Badge color="success" size="sm" variant="flat">
+                                <Badge size="sm" variant="success">
                                   已生效
                                 </Badge>
                               ) : !supported ? (
-                                <Badge size="sm" variant="flat">
+                                <Badge size="sm" variant="outline">
                                   系统不支持
                                 </Badge>
                               ) : null}

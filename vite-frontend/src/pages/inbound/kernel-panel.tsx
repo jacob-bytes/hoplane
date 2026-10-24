@@ -320,7 +320,7 @@ export function KernelPanel({
                     {g.title}
                   </span>
                   {!online && (
-                    <Badge size="sm" variant="flat">
+                    <Badge size="sm" variant="outline">
                       离线
                     </Badge>
                   )}

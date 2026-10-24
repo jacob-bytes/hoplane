@@ -1531,7 +1531,7 @@ export function MonitorView({
                     : "danger"
                 }
                 size="sm"
-                variant="flat"
+                variant="outline"
               >
                 {detailNode?.connectionStatus === "online" ? "在线" : "离线"}
               </Badge>
@@ -1751,7 +1751,7 @@ export function MonitorView({
                       {resolvedActiveMonitor && (
                         <div className="flex items-center justify-between gap-3 rounded-xl border border-divider bg-muted px-3 py-2">
                           <div className="flex items-center gap-3 min-w-0 flex-wrap">
-                            <Badge color="primary" size="sm" variant="flat">
+                            <Badge size="sm" variant="default">
                               {resolvedActiveMonitor.type.toUpperCase()}
                             </Badge>
                             <span className="font-mono text-xs text-muted-foreground">
@@ -1767,12 +1767,12 @@ export function MonitorView({
                               </span>
                             ) : null}
                             {activeStale ? (
-                              <Badge color="warning" size="sm" variant="flat">
+                              <Badge size="sm" variant="warning">
                                 陈旧
                               </Badge>
                             ) : null}
                             {resolvedActiveMonitor.enabled !== 1 ? (
-                              <Badge color="default" size="sm" variant="flat">
+                              <Badge size="sm" variant="outline">
                                 已禁用
                               </Badge>
                             ) : null}

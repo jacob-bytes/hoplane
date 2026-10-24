@@ -337,7 +337,7 @@ export function RelayModal({
                               <Badge
                                 className="shrink-0 whitespace-nowrap"
                                 size="sm"
-                                variant="flat"
+                                variant="outline"
                               >
                                 {rel.mode === "tunnel"
                                   ? "隧道转发"
@@ -346,18 +346,16 @@ export function RelayModal({
                               {!rel.forwardExists ? (
                                 <Badge
                                   className="shrink-0 whitespace-nowrap"
-                                  color="danger"
                                   size="sm"
-                                  variant="flat"
+                                  variant="destructive"
                                 >
                                   转发已删除
                                 </Badge>
                               ) : rel.forwardStatus !== 1 ? (
                                 <Badge
                                   className="shrink-0 whitespace-nowrap"
-                                  color="warning"
                                   size="sm"
-                                  variant="flat"
+                                  variant="warning"
                                 >
                                   转发已暂停
                                 </Badge>

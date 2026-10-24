@@ -86,7 +86,7 @@ export function TunnelDiagnosisModal({
                         : "secondary"
                     }
                     size="sm"
-                    variant="flat"
+                    variant="outline"
                   >
                     {currentDiagnosisTunnel.type === 1
                       ? "端口转发"
@@ -109,7 +109,7 @@ export function TunnelDiagnosisModal({
                             : "?"}
                         </span>
                       </div>
-                      <Badge color="primary" size="sm" variant="flat">
+                      <Badge size="sm" variant="default">
                         流式更新中
                       </Badge>
                     </div>
@@ -283,7 +283,7 @@ export function TunnelDiagnosisModal({
                                                 : "danger"
                                           }
                                           size="sm"
-                                          variant="flat"
+                                          variant="outline"
                                         >
                                           {isDiagnosing
                                             ? "诊断中"
@@ -326,7 +326,7 @@ export function TunnelDiagnosisModal({
                                             className="text-xs whitespace-nowrap"
                                             color={quality.color as any}
                                             size="sm"
-                                            variant="flat"
+                                            variant="outline"
                                           >
                                             {quality.text}
                                           </Badge>
@@ -465,7 +465,7 @@ export function TunnelDiagnosisModal({
                                             : "danger"
                                       }
                                       size="sm"
-                                      variant="flat"
+                                      variant="outline"
                                     >
                                       {isDiagnosing
                                         ? "诊断中"
@@ -506,7 +506,7 @@ export function TunnelDiagnosisModal({
                                               className="text-xs whitespace-nowrap"
                                               color={quality.color as any}
                                               size="sm"
-                                              variant="flat"
+                                              variant="outline"
                                             >
                                               {quality.text}
                                             </Badge>

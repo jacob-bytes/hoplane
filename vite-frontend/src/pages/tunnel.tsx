@@ -1568,18 +1568,16 @@ export default function TunnelPage({
                           <>
                             <Badge
                               className="shrink-0 whitespace-nowrap"
-                              color="secondary"
                               size="sm"
-                              variant="flat"
+                              variant="secondary"
                             >
                               {getTunnelTypeDisplay(tunnel.type).text}
                             </Badge>
                             {tunnel.engine === "realm" && (
                               <Badge
                                 className="shrink-0"
-                                color="primary"
                                 size="sm"
-                                variant="flat"
+                                variant="default"
                               >
                                 realm
                               </Badge>
@@ -1593,7 +1591,7 @@ export default function TunnelPage({
                                     : "success"
                                 }
                                 size="sm"
-                                variant="flat"
+                                variant="outline"
                               >
                                 最优出口
                               </Badge>
@@ -1613,11 +1611,11 @@ export default function TunnelPage({
                                 <span className="truncate text-sm font-medium text-foreground">
                                   {tunnel.name}
                                 </span>
-                                <Badge size="sm" variant="flat">
+                                <Badge size="sm" variant="outline">
                                   {getTunnelTypeDisplay(tunnel.type).text}
                                 </Badge>
                                 {tunnel.engine === "realm" && (
-                                  <Badge size="sm" variant="flat">
+                                  <Badge size="sm" variant="outline">
                                     realm
                                   </Badge>
                                 )}

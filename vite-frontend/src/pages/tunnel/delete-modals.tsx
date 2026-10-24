@@ -331,7 +331,7 @@ export function BatchDeleteTunnelsModal({
                               {item.forwardCount} 条规则依赖
                             </p>
                           </div>
-                          <Badge color="warning" size="sm" variant="flat">
+                          <Badge size="sm" variant="warning">
                             有关联
                           </Badge>
                         </div>

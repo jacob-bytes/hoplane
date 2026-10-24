@@ -79,12 +79,7 @@ export function DiagnosisModal({
                   <span className="text-small text-muted-foreground truncate flex-1 min-w-0">
                     {currentDiagnosisForward.name}
                   </span>
-                  <Badge
-                    className="flex-shrink-0"
-                    color="primary"
-                    size="sm"
-                    variant="flat"
-                  >
+                  <Badge className="flex-shrink-0" size="sm" variant="default">
                     规则服务
                   </Badge>
                 </div>
@@ -104,7 +99,7 @@ export function DiagnosisModal({
                             : "?"}
                         </span>
                       </div>
-                      <Badge color="primary" size="sm" variant="flat">
+                      <Badge size="sm" variant="default">
                         流式更新中
                       </Badge>
                     </div>
@@ -279,7 +274,7 @@ export function DiagnosisModal({
                                                 : "danger"
                                           }
                                           size="sm"
-                                          variant="flat"
+                                          variant="outline"
                                         >
                                           {isDiagnosing
                                             ? "诊断中"
@@ -322,7 +317,7 @@ export function DiagnosisModal({
                                             className="text-xs whitespace-nowrap"
                                             color={quality.color as any}
                                             size="sm"
-                                            variant="flat"
+                                            variant="outline"
                                           >
                                             {quality.text}
                                           </Badge>
@@ -461,7 +456,7 @@ export function DiagnosisModal({
                                             : "danger"
                                       }
                                       size="sm"
-                                      variant="flat"
+                                      variant="outline"
                                     >
                                       {isDiagnosing
                                         ? "诊断中"
@@ -502,7 +497,7 @@ export function DiagnosisModal({
                                               className="text-xs whitespace-nowrap"
                                               color={quality.color as any}
                                               size="sm"
-                                              variant="flat"
+                                              variant="outline"
                                             >
                                               {quality.text}
                                             </Badge>

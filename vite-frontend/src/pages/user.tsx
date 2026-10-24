@@ -1255,9 +1255,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       {user.status !== 1 && (
                         <Badge
                           className="shrink-0"
-                          color="secondary"
                           size="sm"
-                          variant="flat"
+                          variant="secondary"
                         >
                           已禁用
                         </Badge>
@@ -1267,7 +1266,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           className="shrink-0"
                           color={expStatus.color}
                           size="sm"
-                          variant="flat"
+                          variant="outline"
                         >
                           {expStatus.text}
                         </Badge>
@@ -1275,9 +1274,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       {user.disabledByQuota ? (
                         <Badge
                           className="shrink-0"
-                          color="danger"
                           size="sm"
-                          variant="flat"
+                          variant="destructive"
                         >
                           配额超额
                         </Badge>
@@ -1291,16 +1289,19 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           {user.name || user.user}
                         </span>
                         {user.status !== 1 && (
-                          <Badge className="shrink-0" size="sm" variant="flat">
+                          <Badge
+                            className="shrink-0"
+                            size="sm"
+                            variant="outline"
+                          >
                             已禁用
                           </Badge>
                         )}
                         {user.disabledByQuota ? (
                           <Badge
                             className="shrink-0"
-                            color="danger"
                             size="sm"
-                            variant="flat"
+                            variant="destructive"
                           >
                             配额超额
                           </Badge>
@@ -1609,11 +1610,11 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       </p>
                     </div>
                     {editingUser.disabledByQuota ? (
-                      <Badge color="danger" size="sm" variant="flat">
+                      <Badge size="sm" variant="destructive">
                         配额已触发禁用
                       </Badge>
                     ) : (
-                      <Badge color="success" size="sm" variant="flat">
+                      <Badge size="sm" variant="success">
                         配额正常
                       </Badge>
                     )}
@@ -1848,9 +1849,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                               {isAssigned && (
                                 <Badge
                                   className="shrink-0"
-                                  color="default"
                                   size="sm"
-                                  variant="flat"
+                                  variant="outline"
                                 >
                                   已分配
                                 </Badge>
@@ -1923,7 +1923,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       分配权限
                     </Button>
                     {batchTunnelSelections.size > 0 && (
-                      <Badge color="primary" size="sm" variant="flat">
+                      <Badge size="sm" variant="default">
                         已选 {batchTunnelSelections.size} 个隧道
                       </Badge>
                     )}
@@ -1962,9 +1962,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           {userTunnel.status !== 1 && (
                             <Badge
                               className="shrink-0"
-                              color="secondary"
                               size="sm"
-                              variant="flat"
+                              variant="secondary"
                             >
                               已禁用
                             </Badge>
@@ -1972,9 +1971,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           {userTunnel.speedLimitName && (
                             <Badge
                               className="shrink-0"
-                              color="secondary"
                               size="sm"
-                              variant="flat"
+                              variant="secondary"
                             >
                               {userTunnel.speedLimitName}
                             </Badge>

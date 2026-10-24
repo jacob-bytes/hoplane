@@ -1357,12 +1357,12 @@ export default function SubscriptionPage() {
       .join("、") || "未选节点组";
   const stateChip = (s: SubscriptionItem) =>
     !s.enabled ? (
-      <Badge size="sm" variant="flat">
+      <Badge size="sm" variant="outline">
         已停用
       </Badge>
     ) : (
       !s.active && (
-        <Badge color="danger" size="sm" variant="flat">
+        <Badge size="sm" variant="destructive">
           {s.overQuota ? "流量用完" : "已过期"}
         </Badge>
       )
@@ -1406,7 +1406,7 @@ export default function SubscriptionPage() {
       ]}
       badges={
         s.options.rules && (
-          <Badge color="primary" size="sm" variant="flat">
+          <Badge size="sm" variant="default">
             分流
           </Badge>
         )

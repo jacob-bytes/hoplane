@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { Badge } from "./badge";
 
 type ChipColor =
   | "default"
@@ -19,47 +18,12 @@ export interface ChipProps extends React.ComponentProps<"span"> {
   variant?: ChipVariant;
 }
 
-function colorVariant(color: ChipColor) {
-  if (color === "danger") {
-    return "destructive" as const;
-  }
-  if (color === "success") {
-    return "success" as const;
-  }
-  if (color === "warning") {
-    return "warning" as const;
-  }
-  if (color === "secondary") {
-    return "secondary" as const;
-  }
-  if (color === "primary") {
-    return "default" as const;
-  }
-
-  return "outline" as const;
-}
-
-export function Chip({
-  children,
-  className,
-  color = "default",
-  size = "md",
-  variant = "solid",
-  ...props
-}: ChipProps) {
+/** Legacy HeroUI name; prefer `Badge` in new code. */
+export function Chip({ variant = "flat", ...props }: ChipProps) {
   return (
     <Badge
-      className={cn(
-        variant === "flat" || variant === "light" ? "bg-opacity-15" : "",
-        variant === "bordered" ? "border-current bg-transparent" : "",
-        size === "sm" ? "px-2 py-0 text-[11px]" : "",
-        size === "lg" ? "px-3 py-1 text-sm" : "",
-        className,
-      )}
-      variant={colorVariant(color)}
       {...props}
-    >
-      {children}
-    </Badge>
+      variant={variant === "bordered" ? "outline" : "secondary"}
+    />
   );
 }

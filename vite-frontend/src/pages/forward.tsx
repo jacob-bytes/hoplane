@@ -2783,18 +2783,18 @@ export default function ForwardPage({
                     className="shrink-0"
                     color={forward.status === -1 ? "danger" : "default"}
                     size="sm"
-                    variant="flat"
+                    variant="outline"
                   >
                     {statusDisplay.text}
                   </Badge>
                 )}
                 {hasMultipleAddresses(forward.remoteAddr) && (
-                  <Badge className="shrink-0" size="sm" variant="flat">
+                  <Badge className="shrink-0" size="sm" variant="outline">
                     {getStrategyDisplay(forward.strategy).text}
                   </Badge>
                 )}
                 {showTunnel && ratio !== 1 && (
-                  <Badge className="shrink-0" size="sm" variant="flat">
+                  <Badge className="shrink-0" size="sm" variant="outline">
                     {formatTunnelTrafficRatio(ratio)}
                   </Badge>
                 )}
@@ -2809,7 +2809,7 @@ export default function ForwardPage({
                           {forward.name}
                         </span>
                         {forward.status !== 1 && (
-                          <Badge size="sm" variant="flat">
+                          <Badge size="sm" variant="outline">
                             {statusDisplay.text}
                           </Badge>
                         )}
@@ -3003,7 +3003,7 @@ export default function ForwardPage({
                       {group.userName}
                     </span>
                     {isSelfGroup && (
-                      <Badge size="sm" variant="flat">
+                      <Badge size="sm" variant="outline">
                         我的
                       </Badge>
                     )}

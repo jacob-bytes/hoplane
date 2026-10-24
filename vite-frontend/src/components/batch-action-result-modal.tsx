@@ -107,7 +107,7 @@ export function BatchActionResultModal({
                           点击展开查看失败原因
                         </p>
                       </div>
-                      <Badge color="danger" size="sm" variant="flat">
+                      <Badge size="sm" variant="destructive">
                         失败
                       </Badge>
                     </summary>

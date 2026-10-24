@@ -220,9 +220,8 @@ export function UpgradeNodeModal({
                             {r.channel === "dev" && (
                               <Badge
                                 className="ml-1 shrink-0 whitespace-nowrap"
-                                color="warning"
                                 size="sm"
-                                variant="flat"
+                                variant="warning"
                               >
                                 测试
                               </Badge>

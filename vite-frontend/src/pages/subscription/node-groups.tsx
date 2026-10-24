@@ -176,7 +176,7 @@ export function NodeGroupList({
             <div className="flex items-center gap-1.5">
               <span className="truncate font-medium">{g.name}</span>
               {g.subscriptions.length === 0 && (
-                <Badge size="sm" variant="flat">
+                <Badge size="sm" variant="outline">
                   未使用
                 </Badge>
               )}

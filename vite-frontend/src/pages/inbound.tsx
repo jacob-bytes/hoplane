@@ -737,9 +737,8 @@ export default function InboundPage() {
         {item.outboundIpStrategy && item.outboundIpStrategy !== "auto" && (
           <Badge
             className="shrink-0 whitespace-nowrap"
-            color="default"
             size="sm"
-            variant="flat"
+            variant="outline"
           >
             {
               {
@@ -754,9 +753,8 @@ export default function InboundPage() {
         {item.relayCount > 0 && (
           <Badge
             className="shrink-0 whitespace-nowrap"
-            color="default"
             size="sm"
-            variant="flat"
+            variant="outline"
           >
             {item.relayCount} 中转
           </Badge>
@@ -771,7 +769,7 @@ export default function InboundPage() {
                 ? "出站节点已删除"
                 : `经 ${item.outboundName} 出站`
             }
-            variant="flat"
+            variant="outline"
           >
             {item.outboundMissing ? "出站已删除" : "链式"}
           </Badge>
@@ -779,9 +777,8 @@ export default function InboundPage() {
         {item.splitRules?.length > 0 && (
           <Badge
             className="shrink-0 whitespace-nowrap"
-            color="default"
             size="sm"
-            variant="flat"
+            variant="outline"
           >
             分流
           </Badge>
@@ -790,13 +787,13 @@ export default function InboundPage() {
           <Badge
             className="shrink-0 whitespace-nowrap"
             size="sm"
-            variant="flat"
+            variant="outline"
           >
             仅中转
           </Badge>
         )}
         {kernelBad && (
-          <Badge color="warning" size="sm" variant="flat">
+          <Badge size="sm" variant="warning">
             内核{KERNEL_STATUS[item.kernelStatus]?.label ?? "异常"}
           </Badge>
         )}
@@ -1179,7 +1176,7 @@ export default function InboundPage() {
                       count={g.items.length}
                       extra={
                         off > 0 ? (
-                          <Badge size="sm" variant="flat">
+                          <Badge size="sm" variant="outline">
                             {off} 个已停用
                           </Badge>
                         ) : undefined
@@ -1307,27 +1304,27 @@ export default function InboundPage() {
         {sheetItem && (
           <div className="space-y-2">
             <div className="flex flex-wrap gap-1.5">
-              <Badge color="primary" size="sm" variant="flat">
+              <Badge size="sm" variant="default">
                 {describeInbound(sheetItem)}
               </Badge>
-              <Badge size="sm" variant="flat">
+              <Badge size="sm" variant="outline">
                 {sheetItem.external
                   ? "导入"
                   : (KERNEL_LABELS[sheetItem.kernelType] ??
                     sheetItem.kernelType)}
               </Badge>
               {sheetItem.relayOnly && (
-                <Badge size="sm" variant="flat">
+                <Badge size="sm" variant="outline">
                   仅中转
                 </Badge>
               )}
               {sheetItem.acceptProxyProtocol && (
-                <Badge size="sm" variant="flat">
+                <Badge size="sm" variant="outline">
                   真实 IP
                 </Badge>
               )}
               {sheetItem.relayWhitelist && (
-                <Badge color="warning" size="sm" variant="flat">
+                <Badge size="sm" variant="warning">
                   白名单
                 </Badge>
               )}

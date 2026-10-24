@@ -139,6 +139,14 @@
 - 中转行补全链路：`入口 → 目标`、转发/隧道名、端口/隧道类型标签；无线路的行右侧补一个占位破折号，
   中间不再是大段空白
 
+## 组件层 shadcn 化（第三轮）
+
+- 新增 `ui/sheet`（Radix Dialog + side 变体），移动端 ActionSheet 改为底部抽屉，桌面端浮在底部居中
+- Badge 改为 shadcn 变体（default/secondary/outline/destructive/success/warning），90 处调用点按原色映射重写
+- Chip 保留为 Badge 的薄包装（旧代码兼容）
+- 新增 `ui/tooltip`、`ui/avatar`、`ui/skeleton`、`ui/command`(cmdk)
+- 设置页分组换成 Radix Accordion；toast 全量迁到 sonner；用户/订阅列表分页
+
 ## 下一阶段（按价值排序）
 
 1. **P3 页面批次**：节点 / 隧道 / 订阅 / 用户 / 分组 / 限速 → 入站 / 中转 / 配置 / 监控 / 我的订阅

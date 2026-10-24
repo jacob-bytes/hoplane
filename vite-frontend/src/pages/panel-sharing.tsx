@@ -522,7 +522,7 @@ export default function PanelSharingPage() {
                         className="shrink-0"
                         color={status === "bad" ? "danger" : "default"}
                         size="sm"
-                        variant="flat"
+                        variant="outline"
                       >
                         {statusTitle}
                       </Badge>
@@ -650,7 +650,7 @@ export default function PanelSharingPage() {
               sheetShare.usedPortDetails.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {sheetShare.usedPortDetails.map((item) => (
-                    <Badge key={item.runtimeId} size="sm" variant="flat">
+                    <Badge key={item.runtimeId} size="sm" variant="outline">
                       {item.port} / {item.role || "预留"}
                     </Badge>
                   ))}

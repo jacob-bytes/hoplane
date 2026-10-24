@@ -118,7 +118,7 @@ function RelayLines({
             <Badge
               className="hidden shrink-0 md:inline-flex"
               size="sm"
-              variant="flat"
+              variant="outline"
             >
               {l.mode === "tunnel" ? "隧道" : "端口"}
             </Badge>
@@ -366,7 +366,7 @@ function LinesView() {
                   }
                   badges={
                     i.relayOnly && (
-                      <Badge size="sm" variant="flat">
+                      <Badge size="sm" variant="outline">
                         仅中转
                       </Badge>
                     )
@@ -416,7 +416,7 @@ function LinesView() {
                 key={i.id}
                 badges={
                   i.relayOnly && (
-                    <Badge className="shrink-0" size="sm" variant="flat">
+                    <Badge className="shrink-0" size="sm" variant="outline">
                       仅中转
                     </Badge>
                   )
@@ -432,7 +432,11 @@ function LinesView() {
                           {i.name}
                         </span>
                         {i.relayOnly && (
-                          <Badge className="shrink-0" size="sm" variant="flat">
+                          <Badge
+                            className="shrink-0"
+                            size="sm"
+                            variant="outline"
+                          >
                             仅中转
                           </Badge>
                         )}
@@ -446,7 +450,7 @@ function LinesView() {
                     {lineList || (
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex min-w-0 items-center gap-2">
-                          <Badge size="sm" variant="flat">
+                          <Badge size="sm" variant="outline">
                             未配置
                           </Badge>
                           <span className="truncate text-xs text-muted-foreground">

@@ -91,7 +91,7 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
           <Badge
             color={entry.kind === "relay" ? "secondary" : "primary"}
             size="sm"
-            variant="flat"
+            variant="outline"
           >
             {entry.kind === "relay" ? "中转" : "直连"}
           </Badge>

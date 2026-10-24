@@ -215,7 +215,7 @@ export function TunnelFormModal({
                             <Badge
                               color={node.status === 1 ? "success" : "default"}
                               size="sm"
-                              variant="flat"
+                              variant="outline"
                             >
                               {node.status === 1 ? "在线" : "离线"}
                             </Badge>
@@ -223,12 +223,12 @@ export function TunnelFormModal({
                               form.outNodeId.some(
                                 (ct) => ct.nodeId === node.id,
                               ) && (
-                                <Badge color="danger" size="sm" variant="flat">
+                                <Badge size="sm" variant="destructive">
                                   已选为出口
                                 </Badge>
                               )}
                             {getSelectedChainNodeIds().includes(node.id) && (
-                              <Badge color="primary" size="sm" variant="flat">
+                              <Badge size="sm" variant="default">
                                 已选为转发链
                               </Badge>
                             )}
@@ -401,7 +401,7 @@ export function TunnelFormModal({
                                                   : "default"
                                               }
                                               size="sm"
-                                              variant="flat"
+                                              variant="outline"
                                             >
                                               {node.status === 1
                                                 ? "在线"
@@ -411,9 +411,8 @@ export function TunnelFormModal({
                                               (ct) => ct.nodeId === node.id,
                                             ) && (
                                               <Badge
-                                                color="warning"
                                                 size="sm"
-                                                variant="flat"
+                                                variant="warning"
                                               >
                                                 已选为入口
                                               </Badge>
@@ -423,9 +422,8 @@ export function TunnelFormModal({
                                                 (ct) => ct.nodeId === node.id,
                                               ) && (
                                                 <Badge
-                                                  color="danger"
                                                   size="sm"
-                                                  variant="flat"
+                                                  variant="destructive"
                                                 >
                                                   已选为出口
                                                 </Badge>
@@ -441,9 +439,8 @@ export function TunnelFormModal({
                                                 ),
                                             ) && (
                                               <Badge
-                                                color="primary"
                                                 size="sm"
-                                                variant="flat"
+                                                variant="default"
                                               >
                                                 已选为其他跳
                                               </Badge>
@@ -690,29 +687,21 @@ export function TunnelFormModal({
                                               : "default"
                                           }
                                           size="sm"
-                                          variant="flat"
+                                          variant="outline"
                                         >
                                           {node.status === 1 ? "在线" : "离线"}
                                         </Badge>
                                         {form.inNodeId.some(
                                           (ct) => ct.nodeId === node.id,
                                         ) && (
-                                          <Badge
-                                            color="warning"
-                                            size="sm"
-                                            variant="flat"
-                                          >
+                                          <Badge size="sm" variant="warning">
                                             已选为入口
                                           </Badge>
                                         )}
                                         {getSelectedChainNodeIds().includes(
                                           node.id,
                                         ) && (
-                                          <Badge
-                                            color="primary"
-                                            size="sm"
-                                            variant="flat"
-                                          >
+                                          <Badge size="sm" variant="default">
                                             已选为转发链
                                           </Badge>
                                         )}

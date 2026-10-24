@@ -1908,7 +1908,7 @@ export default function NodePage({
                                                 color={expiryMeta.tone}
                                                 size="sm"
                                                 title={`${formatNodeRenewalTime(expiryMeta.nextDueTime)} (${getNodeRenewalCycleLabel(node.renewalCycle)})`}
-                                                variant="flat"
+                                                variant="outline"
                                               >
                                                 {expiryMeta.label}
                                               </Badge>
@@ -2101,7 +2101,7 @@ export default function NodePage({
                                                   key={`${node.id}-port-${port}`}
                                                   className="font-mono shrink-0 whitespace-nowrap"
                                                   size="sm"
-                                                  variant="flat"
+                                                  variant="outline"
                                                 >
                                                   {port}
                                                 </Badge>
@@ -2326,7 +2326,7 @@ export default function NodePage({
                               <Badge
                                 className="shrink-0"
                                 size="sm"
-                                variant="flat"
+                                variant="outline"
                               >
                                 远程
                               </Badge>
@@ -2336,7 +2336,7 @@ export default function NodePage({
                                 className="shrink-0"
                                 color={expiryMeta.tone}
                                 size="sm"
-                                variant="flat"
+                                variant="outline"
                               >
                                 {expiryMeta.label}
                               </Badge>
@@ -2369,7 +2369,7 @@ export default function NodePage({
                                           className="shrink-0"
                                           color={expiryMeta.tone}
                                           size="sm"
-                                          variant="flat"
+                                          variant="outline"
                                         >
                                           {expiryMeta.label}
                                         </Badge>
@@ -2378,7 +2378,7 @@ export default function NodePage({
                                         <Badge
                                           className="shrink-0"
                                           size="sm"
-                                          variant="flat"
+                                          variant="outline"
                                         >
                                           远程
                                         </Badge>

@@ -678,7 +678,7 @@ function TopologyNodeChip({
     <Badge
       className={`shrink-0 font-mono shadow-sm ${borderColor}`}
       size="sm"
-      variant="flat"
+      variant="outline"
     >
       <span className="flex items-center gap-1.5">
         <span>{name}</span>
@@ -1196,7 +1196,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
             <Badge
               color={detailTunnel.status === 1 ? "success" : "danger"}
               size="sm"
-              variant="flat"
+              variant="outline"
             >
               {detailTunnel.status === 1 ? "启用" : "禁用"}
             </Badge>
@@ -1518,7 +1518,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 key={tunnel.id}
                 badges={
                   !isEnabled && (
-                    <Badge className="shrink-0" size="sm" variant="flat">
+                    <Badge className="shrink-0" size="sm" variant="outline">
                       禁用
                     </Badge>
                   )
