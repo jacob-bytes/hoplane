@@ -307,17 +307,28 @@ export default function AdminLayout({
       isAdmin && item.adminLabel ? { ...item, label: item.adminLabel } : item,
     );
 
-  const currentItem =
-    filteredMenuItems.find(
-      (item) =>
-        location.pathname === item.path ||
-        (item.path === "/relay" &&
-          ["/tunnel", "/forward"].includes(location.pathname)) ||
-        (item.path === "/user" &&
-          ["/group", "/limit"].includes(location.pathname)),
-    ) ?? null;
-  const currentLabel = currentItem?.label ?? "概览";
-  const currentSection = isAdmin ? currentItem?.section : undefined;
+  // Breadcrumb names: the nav item gives the group, the route gives the page
+  // (a sub-page such as 转发规则 sits under 中转 but is not the 中转 page).
+  const breadcrumbTitles: Record<string, [section: string, page: string]> = {
+    "/dashboard": ["", "概览"],
+    "/node": ["线路", "服务器"],
+    "/inbound": ["线路", "节点"],
+    "/relay": ["线路", "中转"],
+    "/tunnel": ["线路", "隧道"],
+    "/forward": ["线路", "转发规则"],
+    "/monitor": ["线路", "监控"],
+    "/subscription": ["分发", "订阅"],
+    "/user": ["分发", "用户"],
+    "/group": ["分发", "分组"],
+    "/limit": ["分发", "限速"],
+    "/panel-sharing": ["分发", "共享"],
+    "/my-subscriptions": ["分发", "我的订阅"],
+    "/config": ["系统", "设置"],
+    "/profile": ["系统", "账户与登录"],
+  };
+  const crumb = breadcrumbTitles[location.pathname] ?? ["", "概览"];
+  const currentSection = isAdmin ? crumb[0] : "";
+  const currentLabel = crumb[1];
 
   return (
     <div

@@ -1657,7 +1657,7 @@ export default function NodePage({
                     <span className="w-24">网速</span>
                     <span className="w-28">本月流量</span>
                   </span>
-                  <span className="w-36 shrink-0 pr-7 text-right">延迟</span>
+                  <span className="w-36 shrink-0 pr-8 text-right">延迟</span>
                 </div>
               )}
               {displayNodes.map((node) => {
