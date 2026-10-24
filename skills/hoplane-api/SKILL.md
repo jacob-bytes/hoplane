@@ -18,7 +18,7 @@ Operate Hoplane panel through REST API. All endpoints use POST method and return
 
 | Tool | Installation | Notes |
 |------|--------------|-------|
-| **OpenCode** | `npm i -g @jlthzy/hoplane-api` or `ln -s . ~/.agents/skills/hoplane-api` | Auto-loads from `~/.agents/skills/` |
+| **OpenCode** | `npm i -g @jacob-bytes/hoplane-api` or `ln -s . ~/.agents/skills/hoplane-api` | Auto-loads from `~/.agents/skills/` |
 | **OpenClaw** | Same as OpenCode | Compatible skill format |
 | **Claude Code** | Copy SKILL.md to CLAUDE.md or `~/.claude/CLAUDE.md` | Uses context file instead of skills |
 

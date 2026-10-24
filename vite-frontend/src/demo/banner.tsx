@@ -3,7 +3,7 @@ import { ChevronDown, X } from "lucide-react";
 
 import { demoRole, switchDemoRole } from "@/demo";
 
-const DOCS = "https://jlthzy.github.io/hoplane/guide/install";
+const DOCS = "https://jacob-bytes.github.io/hoplane/guide/install";
 
 /** The demo's floating note: sample data, switch views, how to install. */
 export function DemoBanner() {

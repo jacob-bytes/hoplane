@@ -1,6 +1,6 @@
 services:
   backend:
-    image: ghcr.io/jlthzy/flux-panel-backend:${FLUX_VERSION:-latest}
+    image: ghcr.io/jacob-bytes/flux-panel-backend:${FLUX_VERSION:-latest}
     container_name: flux-panel-backend
     restart: unless-stopped
     logging:
@@ -62,7 +62,7 @@ services:
       start_period: 20s
 
   frontend:
-    image: ghcr.io/jlthzy/vite-frontend:${FLUX_VERSION:-latest}
+    image: ghcr.io/jacob-bytes/vite-frontend:${FLUX_VERSION:-latest}
     container_name: vite-frontend
     restart: unless-stopped
     logging:

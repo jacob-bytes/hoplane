@@ -1,5 +1,5 @@
 {
-  "name": "@jlthzy/hoplane-api",
+  "name": "@jacob-bytes/hoplane-api",
   "version": "2.1.9-rc4",
   "description": "Skill for AI assistants to operate Hoplane panel via REST API. Supports OpenCode, OpenClaw, Claude Code.",
   "keywords": [
@@ -13,20 +13,20 @@
     "gost"
   ],
   "license": "MIT",
-  "author": "jlthzy",
+  "author": "jacob-bytes",
   "files": [
     "SKILL.md",
     "references/**/*"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jlthzy/hoplane.git",
+    "url": "git+https://github.com/jacob-bytes/hoplane.git",
     "directory": "skills/flvx-api"
   },
   "bugs": {
-    "url": "https://github.com/jlthzy/hoplane/issues"
+    "url": "https://github.com/jacob-bytes/hoplane/issues"
   },
-  "homepage": "https://github.com/jlthzy/hoplane/tree/main/skills/flvx-api#readme",
+  "homepage": "https://github.com/jacob-bytes/hoplane/tree/main/skills/flvx-api#readme",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org"

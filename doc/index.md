@@ -11,16 +11,16 @@ hero:
       link: /guide/getting-started
     - theme: alt
       text: 在线演示
-      link: https://jlthzy.github.io/hoplane/demo/
+      link: https://jacob-bytes.github.io/hoplane/demo/
     - theme: alt
       text: 基本概念
       link: /guide/concepts
     - theme: alt
       text: GitHub
-      link: https://github.com/jlthzy/hoplane
+      link: https://github.com/jacob-bytes/hoplane
     - theme: alt
       text: 讨论区
-      link: https://github.com/jlthzy/hoplane/discussions
+      link: https://github.com/jacob-bytes/hoplane/discussions
 
 features:
   - title: 多内核节点

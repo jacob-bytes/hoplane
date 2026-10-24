@@ -19,12 +19,12 @@ Hoplane 是 [FLYX](https://github.com/kure29/flyx) 的 fork，从 FLYX 3.3.41（
 
 | 位置 | 改动 |
 |---|---|
-| `install.sh`、`panel_install.sh` | `REPO="jlthzy/hoplane"` |
-| `docker-compose-v4.yml`、`-v6.yml` | `ghcr.io/jlthzy/...`（镜像名仍是 `flux-panel-backend` / `vite-frontend`，见下文） |
+| `install.sh`、`panel_install.sh` | `REPO="jacob-bytes/hoplane"` |
+| `docker-compose-v4.yml`、`-v6.yml` | `ghcr.io/jacob-bytes/...`（镜像名仍是 `flux-panel-backend` / `vite-frontend`，见下文） |
 | `go-backend/internal/http/handler/upgrade.go` | `githubRepo` 默认值（发版时 CI 还会用 `-ldflags` 覆盖成实际仓库） |
 | `vite-frontend/.env.production`、`src/config/site.ts`、`src/components/version-footer.tsx` | `VITE_GITHUB_REPO` 与兜底地址 |
 | `.github/workflows/*`、`.github/ISSUE_TEMPLATE/*`、`doc/.vitepress/config.mts` | 演示站 base、issue 模板、讨论区链接（原 Telegram 群换成本仓库 Discussions） |
-| `skills/flvx-api` → `skills/hoplane-api` | 目录名、npm 包名 `@jlthzy/hoplane-api`、安装路径 `~/.agents/skills/hoplane-api` |
+| `skills/flvx-api` → `skills/hoplane-api` | 目录名、npm 包名 `@jacob-bytes/hoplane-api`、安装路径 `~/.agents/skills/hoplane-api` |
 
 ### 后端/agent 里的默认值
 
@@ -51,12 +51,12 @@ Hoplane 是 [FLYX](https://github.com/kure29/flyx) 的 fork，从 FLYX 3.3.41（
 
 ## 三、接手 GitHub 仓库要做的
 
-1. 建空仓库 `jlthzy/hoplane`（**不要**勾选自动生成 README），然后推送；`main` 分支要允许 Actions 写入（Settings → Actions → General → Workflow permissions 选 *Read and write*）。
+1. 建空仓库 `jacob-bytes/hoplane`（**不要**勾选自动生成 README），然后推送；`main` 分支要允许 Actions 写入（Settings → Actions → General → Workflow permissions 选 *Read and write*）。
 2. Pages：Settings → Pages → Source 选 *Deploy from a branch* → `gh-pages` / `(root)`，第一次 `deploy-docs.yml` 跑完才有这个分支。
 3. Discussions：Settings → Features 里打开，issue 模板里指向它。
-4. 发版：Actions → *Build and Push Images* → Run workflow，填版本号（如 `0.1.0`）。构建前记得在 `doc/changelog.md` 加上 `## 0.1.0` 段，release notes 会取那一段。镜像推到 `ghcr.io/jlthzy/*`，需要在个人设置里给这个仓库放开 `packages: write`（默认的 `GITHUB_TOKEN` 通常够用）。
+4. 发版：Actions → *Build and Push Images* → Run workflow，填版本号（如 `0.1.0`）。构建前记得在 `doc/changelog.md` 加上 `## 0.1.0` 段，release notes 会取那一段。镜像推到 `ghcr.io/jacob-bytes/*`，需要在个人设置里给这个仓库放开 `packages: write`（默认的 `GITHUB_TOKEN` 通常够用）。
 5. `publish-skill.yml` 会在打 `v*` tag 时把 skill 发到 npm：没打算发就先把这个 workflow 停掉，或者配上 `NPM_TOKEN`。
-6. 如果 GitHub 用户名不是 `jlthzy`：`grep -rl 'jlthzy' --exclude-dir=.git . | xargs sed -i '' 's|jlthzy|你的用户名|g'`，然后 `gofmt -l` 与 CI 各跑一遍。
+6. 仓库确认为 `jacob-bytes/hoplane`，SSH 已可用（`ssh -T git@github.com` 返回 `Hi jacob-bytes!`）。
 
 ## 四、改名时做过的验证
 

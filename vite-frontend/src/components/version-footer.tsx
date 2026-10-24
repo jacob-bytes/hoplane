@@ -9,7 +9,7 @@ import {
   hasVersionUpdate,
 } from "@/utils/version-update";
 
-const FALLBACK_GITHUB_REPO = "https://github.com/jlthzy/hoplane";
+const FALLBACK_GITHUB_REPO = "https://github.com/jacob-bytes/hoplane";
 
 interface VersionFooterProps {
   version: string;

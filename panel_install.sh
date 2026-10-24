@@ -8,7 +8,7 @@ export LC_ALL=C
 
 
 # GitHub repo used for release downloads
-REPO="jlthzy/hoplane"
+REPO="jacob-bytes/hoplane"
 
 # 固定版本号（Release 构建时自动填充，留空则获取最新版）
 PINNED_VERSION=""

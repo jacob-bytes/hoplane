@@ -7,7 +7,7 @@
 ### 方式 1: npm (推荐)
 
 ```bash
-npm install -g @jlthzy/hoplane-api
+npm install -g @jacob-bytes/hoplane-api
 ```
 
 postinstall 脚本会自动链接到 `~/.agents/skills/hoplane-api/`。
@@ -21,7 +21,7 @@ mkdir -p ~/.agents/skills
 ln -sf $(pwd)/skills/hoplane-api ~/.agents/skills/
 
 # 或从 GitHub
-git clone https://github.com/jlthzy/hoplane.git
+git clone https://github.com/jacob-bytes/hoplane.git
 cd hoplane
 ln -sf $(pwd)/skills/hoplane-api ~/.agents/skills/
 ```
@@ -59,7 +59,7 @@ OpenCode 是命令行 AI 编程助手，支持通过 skills 扩展能力。
 
 **安装 skill:**
 ```bash
-npm install -g @jlthzy/hoplane-api
+npm install -g @jacob-bytes/hoplane-api
 ```
 
 **使用:**
@@ -87,7 +87,7 @@ OpenClaw 同样支持 skills 机制。
 
 **安装 skill:**
 ```bash
-npm install -g @jlthzy/hoplane-api
+npm install -g @jacob-bytes/hoplane-api
 
 # 或手动链接
 mkdir -p ~/.openclaw/skills

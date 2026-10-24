@@ -8,7 +8,7 @@
 
 在一个面板里管理服务器、节点与中转：一键部署 Xray / sing-box / Snell 节点，对接中转，生成订阅。
 
-[在线演示](https://jlthzy.github.io/hoplane/demo/) · [使用文档](https://jlthzy.github.io/hoplane/) · [快速上手](https://jlthzy.github.io/hoplane/guide/getting-started) · [下载](https://github.com/jlthzy/hoplane/releases) · [讨论区](https://github.com/jlthzy/hoplane/discussions)
+[在线演示](https://jacob-bytes.github.io/hoplane/demo/) · [使用文档](https://jacob-bytes.github.io/hoplane/) · [快速上手](https://jacob-bytes.github.io/hoplane/guide/getting-started) · [下载](https://github.com/jacob-bytes/hoplane/releases) · [讨论区](https://github.com/jacob-bytes/hoplane/discussions)
 
 </div>
 
@@ -27,14 +27,14 @@
 面板（需要 Docker）：
 
 ```bash
-curl -L https://github.com/jlthzy/hoplane/releases/latest/download/panel_install.sh -o panel_install.sh && chmod +x panel_install.sh && ./panel_install.sh
+curl -L https://github.com/jacob-bytes/hoplane/releases/latest/download/panel_install.sh -o panel_install.sh && chmod +x panel_install.sh && ./panel_install.sh
 ```
 
 选 `1. 安装面板`，完成后访问 `http://服务器IP:6366`，默认账号 `admin_user` / `admin_user`，登录后请立即修改密码。
 
 agent：在面板 **服务器** 页新建服务器，复制生成的安装命令到服务器上执行。
 
-更多说明见 [使用文档](https://jlthzy.github.io/hoplane/)：[安装面板](https://jlthzy.github.io/hoplane/guide/install) · [安装 agent](https://jlthzy.github.io/hoplane/guide/agent) · [内核与协议](https://jlthzy.github.io/hoplane/guide/kernels) · [新建入站](https://jlthzy.github.io/hoplane/guide/nodes) · [对接中转](https://jlthzy.github.io/hoplane/guide/relay) · [延迟与回程](https://jlthzy.github.io/hoplane/guide/latency) · [订阅](https://jlthzy.github.io/hoplane/guide/subscription) · [升级](https://jlthzy.github.io/hoplane/guide/upgrade) · [常见问题](https://jlthzy.github.io/hoplane/guide/faq)
+更多说明见 [使用文档](https://jacob-bytes.github.io/hoplane/)：[安装面板](https://jacob-bytes.github.io/hoplane/guide/install) · [安装 agent](https://jacob-bytes.github.io/hoplane/guide/agent) · [内核与协议](https://jacob-bytes.github.io/hoplane/guide/kernels) · [新建入站](https://jacob-bytes.github.io/hoplane/guide/nodes) · [对接中转](https://jacob-bytes.github.io/hoplane/guide/relay) · [延迟与回程](https://jacob-bytes.github.io/hoplane/guide/latency) · [订阅](https://jacob-bytes.github.io/hoplane/guide/subscription) · [升级](https://jacob-bytes.github.io/hoplane/guide/upgrade) · [常见问题](https://jacob-bytes.github.io/hoplane/guide/faq)
 
 ## 开发
 

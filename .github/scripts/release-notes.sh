@@ -4,8 +4,8 @@
 # release), the images and the install commands.
 #
 # Usage: release-notes.sh VERSION REPO IMAGE_PREFIX [SHA]
-#   REPO          owner/name, e.g. jlthzy/hoplane
-#   IMAGE_PREFIX  registry/owner, e.g. ghcr.io/jlthzy
+#   REPO          owner/name, e.g. jacob-bytes/hoplane
+#   IMAGE_PREFIX  registry/owner, e.g. ghcr.io/jacob-bytes
 #   SHA           the commit being released (default HEAD)
 set -euo pipefail
 

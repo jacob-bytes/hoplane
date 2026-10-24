@@ -12,9 +12,9 @@ export default defineConfig({
     logo: "/logo.png",
     nav: [
       { text: "指南", link: "/guide/getting-started" },
-      { text: "在线演示", link: "https://jlthzy.github.io/hoplane/demo/" },
+      { text: "在线演示", link: "https://jacob-bytes.github.io/hoplane/demo/" },
       { text: "更新日志", link: "/changelog" },
-      { text: "下载", link: "https://github.com/jlthzy/hoplane/releases" },
+      { text: "下载", link: "https://github.com/jacob-bytes/hoplane/releases" },
     ],
     sidebar: [
       {
@@ -70,13 +70,13 @@ export default defineConfig({
         text: "帮助",
         items: [
           { text: "常见问题", link: "/guide/faq" },
-          { text: "在线演示", link: "https://jlthzy.github.io/hoplane/demo/" },
+          { text: "在线演示", link: "https://jacob-bytes.github.io/hoplane/demo/" },
       { text: "更新日志", link: "/changelog" },
         ],
       },
     ],
     socialLinks: [
-      { icon: "github", link: "https://github.com/jlthzy/hoplane" },
+      { icon: "github", link: "https://github.com/jacob-bytes/hoplane" },
     ],
     search: { provider: "local" },
     outline: { level: [2, 3], label: "本页目录" },

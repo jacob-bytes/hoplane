@@ -22,7 +22,7 @@ docker rm -f flux_agent >/dev/null 2>&1; docker run -d --name flux_agent \
   --restart unless-stopped --network host --cap-add NET_ADMIN \
   -v /etc/flux_agent:/etc/flux_agent \
   -e FLUX_AGENT_ADDR=<面板地址> -e FLUX_AGENT_SECRET=<密钥> \
-  ghcr.io/jlthzy/flux-agent:<版本>
+  ghcr.io/jacob-bytes/flux-agent:<版本>
 ```
 
 - `--network host`：转发和入站要按需监听任意端口，必须用宿主机网络
@@ -74,13 +74,13 @@ docker rm -f flux_agent >/dev/null 2>&1; docker run -d --name flux_agent \
 在服务器上运行：
 
 ```bash
-curl -L https://github.com/jlthzy/hoplane/releases/latest/download/install.sh -o install.sh && chmod +x install.sh && ./install.sh
+curl -L https://github.com/jacob-bytes/hoplane/releases/latest/download/install.sh -o install.sh && chmod +x install.sh && ./install.sh
 ```
 
 Alpine Linux 最小化安装若未包含 `curl`，可使用系统自带的 `wget` 下载：
 
 ```bash
-wget -O install.sh https://github.com/jlthzy/hoplane/releases/latest/download/install.sh && chmod +x install.sh && ./install.sh
+wget -O install.sh https://github.com/jacob-bytes/hoplane/releases/latest/download/install.sh && chmod +x install.sh && ./install.sh
 ```
 
 脚本会在 Alpine 上自动安装 Bash、`curl` 和 CA 证书，并使用 OpenRC 注册、启动和管理 `flux_agent` 服务；其他受支持的 Linux 发行版继续使用 systemd。
