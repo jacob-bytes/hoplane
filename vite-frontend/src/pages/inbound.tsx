@@ -616,7 +616,20 @@ export default function InboundPage() {
     }
   };
 
-  const gridClass = card ? CARD_GRID : "grid grid-cols-1 gap-2 2xl:grid-cols-2";
+  const gridClass = card
+    ? CARD_GRID
+    : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card";
+  const listTemplate = "10px minmax(0,1fr) 112px 96px 176px 48px";
+  const listHead = !card && (
+    <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+      <div />
+      <div>名称</div>
+      <div>延迟</div>
+      <div className="text-right">流量</div>
+      <div>操作</div>
+      <div />
+    </div>
+  );
 
   const renderInbound = (item: InboundApiItem) => {
     const probe = item.probe?.skipped ? undefined : item.probe;
@@ -827,10 +840,14 @@ export default function InboundPage() {
       <div
         key={item.id}
         aria-pressed={selectMode ? selected : undefined}
-        className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-3 py-2.5 text-left shadow-sm transition-colors ${
+        className={`flex w-full cursor-pointer items-center gap-3 px-3 py-2.5 text-left transition-colors max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:bg-card ${
+          selectMode
+            ? ""
+            : "lg:grid lg:gap-4 lg:px-4 lg:[grid-template-columns:var(--list-cols)]"
+        } ${
           selected
-            ? "border-primary bg-primary-50/70 dark:bg-primary-900/40"
-            : "border-divider bg-card hover:bg-muted"
+            ? "bg-primary/5 max-lg:border-primary/40"
+            : "hover:bg-accent/40 lg:hover:bg-muted/40"
         }`}
         role="button"
         tabIndex={0}
@@ -1089,7 +1106,11 @@ export default function InboundPage() {
               </CardBody>
             </Card>
           ) : !grouped ? (
-            <StaggerList className={gridClass}>
+            <StaggerList
+              className={gridClass}
+              style={{ "--list-cols": listTemplate } as React.CSSProperties}
+            >
+              {listHead}
               {filtered.map((i) => (
                 <StaggerItem key={i.id}>{renderInbound(i)}</StaggerItem>
               ))}
@@ -1118,7 +1139,15 @@ export default function InboundPage() {
                       onToggle={() => toggleCollapsed(id)}
                     />
                     {!folded && (
-                      <div className={`${gridClass} pb-3`}>
+                      <div
+                        className={gridClass}
+                        style={
+                          {
+                            "--list-cols": listTemplate,
+                          } as React.CSSProperties
+                        }
+                      >
+                        {listHead}
                         {g.items.map(renderInbound)}
                       </div>
                     )}

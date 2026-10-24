@@ -54,10 +54,12 @@ export const staggerItem = {
 export const StaggerList = ({
   children,
   className,
+  style,
   as = "div",
 }: {
   children: React.ReactNode;
   className?: string;
+  style?: React.CSSProperties;
   as?: "div" | "ul" | "tbody";
 }) => {
   const Component = motion[as] as React.ElementType;
@@ -67,6 +69,7 @@ export const StaggerList = ({
       animate="show"
       className={className}
       initial="hidden"
+      style={style}
       variants={staggerContainer}
     >
       {children}
