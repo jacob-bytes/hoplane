@@ -1,6 +1,10 @@
 import type * as React from "react";
 
-import { ChevronDown } from "lucide-react";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 /** One collapsible group of settings: title and current values, then fields. */
 export function ConfigSection({
@@ -8,8 +12,6 @@ export function ConfigSection({
   title,
   summary,
   changed,
-  open,
-  onToggle,
   children,
 }: {
   id: string;
@@ -18,23 +20,15 @@ export function ConfigSection({
   summary?: React.ReactNode;
   /** Has edits that are not saved yet. */
   changed?: boolean;
-  open: boolean;
-  onToggle: () => void;
   children: React.ReactNode;
 }) {
   return (
-    <section
-      className="scroll-mt-4 border-b border-border last:border-b-0"
-      id={`config-${id}`}
+    <AccordionItem
+      className="border-b border-border last:border-b-0"
+      value={id}
     >
-      <button
-        aria-controls={`config-${id}-body`}
-        aria-expanded={open}
-        className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors duration-150 hover:bg-accent/40"
-        type="button"
-        onClick={onToggle}
-      >
-        <div className="min-w-0 flex-1">
+      <AccordionTrigger className="px-4 py-3 hover:no-underline">
+        <div className="min-w-0 flex-1 text-left">
           <h2 className="flex items-center gap-2 text-sm font-semibold">
             {title}
             {changed && (
@@ -44,26 +38,16 @@ export function ConfigSection({
             )}
           </h2>
           {summary && (
-            <p className="mt-0.5 truncate text-xs text-muted-foreground">
+            <p className="mt-0.5 truncate text-xs font-normal text-muted-foreground">
               {summary}
             </p>
           )}
         </div>
-        <ChevronDown
-          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
-            open ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-      {open && (
-        <div
-          className="space-y-4 border-t border-border px-4 py-4"
-          id={`config-${id}-body`}
-        >
-          {children}
-        </div>
-      )}
-    </section>
+      </AccordionTrigger>
+      <AccordionContent className="space-y-4 border-t border-border px-4 pt-4">
+        {children}
+      </AccordionContent>
+    </AccordionItem>
   );
 }
 

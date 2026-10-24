@@ -656,3 +656,48 @@ export function SortHeader({
     </button>
   );
 }
+
+/** Client-side paging footer for long lists. */
+export function TablePagination({
+  page,
+  pageSize,
+  total,
+  onPageChange,
+  unit = "条",
+}: {
+  page: number;
+  pageSize: number;
+  total: number;
+  onPageChange: (page: number) => void;
+  unit?: string;
+}) {
+  const pages = Math.max(1, Math.ceil(total / pageSize));
+
+  if (total <= pageSize) return null;
+
+  return (
+    <div className="flex items-center justify-between gap-3 px-1 pt-2 text-xs text-muted-foreground">
+      <span className="tabular">
+        第 {page} / {pages} 页 · 共 {total} {unit}
+      </span>
+      <div className="flex items-center gap-2">
+        <Button
+          isDisabled={page <= 1}
+          size="sm"
+          variant="outline"
+          onPress={() => onPageChange(page - 1)}
+        >
+          上一页
+        </Button>
+        <Button
+          isDisabled={page >= pages}
+          size="sm"
+          variant="outline"
+          onPress={() => onPageChange(page + 1)}
+        >
+          下一页
+        </Button>
+      </div>
+    </div>
+  );
+}

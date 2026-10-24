@@ -36,6 +36,7 @@ import {
 } from "@/api";
 import { AnimatedPage } from "@/components/animated-page";
 import { PageHeader, PageTabs } from "@/components/page-kit";
+import { Accordion } from "@/components/ui/accordion";
 import { ThemeSettings } from "@/components/theme-settings";
 import { useH5Mode } from "@/hooks/useH5Mode";
 import { NotifySettings, notifySummary } from "@/pages/config/notify-card";
@@ -406,28 +407,6 @@ export default function ConfigPage() {
     () => new Set(),
   );
 
-  const toggleSection = (key: SectionKey) => {
-    const opening = !openSections.has(key);
-
-    setOpenSections((prev) => {
-      if (isH5) return opening ? new Set([key]) : new Set();
-      const next = new Set(prev);
-
-      if (opening) next.add(key);
-      else next.delete(key);
-
-      return next;
-    });
-
-    // 手机上只展开一个分组，上方分组收起后把当前分组滚回视野
-    if (opening && isH5) {
-      requestAnimationFrame(() =>
-        document
-          .getElementById(`config-${key}`)
-          ?.scrollIntoView({ block: "start", behavior: "smooth" }),
-      );
-    }
-  };
   const initialConfigs = getInitialConfigs();
   const [configs, setConfigs] =
     useState<Record<string, string>>(initialConfigs);
@@ -1520,9 +1499,7 @@ export default function ConfigPage() {
 
   const sectionProps = (key: SectionKey) => ({
     id: key,
-    open: openSections.has(key),
     changed: sectionChanged(key),
-    onToggle: () => toggleSection(key),
   });
 
   const onOff = (key: string, on = "开", off = "关") =>
@@ -1571,7 +1548,13 @@ export default function ConfigPage() {
 
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
         {tab === "basic" && (
-          <>
+          <Accordion
+            type="multiple"
+            value={Array.from(openSections)}
+            onValueChange={(next) =>
+              setOpenSections(new Set(next as SectionKey[]))
+            }
+          >
             <ConfigSection
               {...sectionProps("basic")}
               summary={`${configs.app_name || "未设置名称"} · ${
@@ -1601,35 +1584,49 @@ export default function ConfigPage() {
                 <ThemeSettings />
               </div>
             </ConfigSection>
-          </>
+          </Accordion>
         )}
 
         {tab === "security" && (
-          <ConfigSection
-            {...sectionProps("security")}
-            summary={`登录验证码${onOff("captcha_enabled")} · GitHub 登录${onOff(
-              "github_login_enabled",
-            )} · 转发到内网地址${onOff(
-              "allow_local_remote_addr",
-              "允许",
-              "禁止",
-            )} · 拉取内网订阅${onOff("fetch_allow_local", "允许", "禁止")}`}
-            title="安全与登录"
+          <Accordion
+            type="multiple"
+            value={Array.from(openSections)}
+            onValueChange={(next) =>
+              setOpenSections(new Set(next as SectionKey[]))
+            }
           >
-            {renderItem("captcha_enabled")}
-            {renderItem("cloudflare_site_key")}
-            {renderItem("cloudflare_secret_key")}
-            {renderItem("github_login_enabled")}
-            {renderItem("github_oauth_client_id")}
-            {renderItem("github_oauth_secret")}
-            {renderItem("admin_password_login_disabled")}
-            {renderItem("allow_local_remote_addr")}
-            {renderItem("fetch_allow_local")}
-          </ConfigSection>
+            <ConfigSection
+              {...sectionProps("security")}
+              summary={`登录验证码${onOff("captcha_enabled")} · GitHub 登录${onOff(
+                "github_login_enabled",
+              )} · 转发到内网地址${onOff(
+                "allow_local_remote_addr",
+                "允许",
+                "禁止",
+              )} · 拉取内网订阅${onOff("fetch_allow_local", "允许", "禁止")}`}
+              title="安全与登录"
+            >
+              {renderItem("captcha_enabled")}
+              {renderItem("cloudflare_site_key")}
+              {renderItem("cloudflare_secret_key")}
+              {renderItem("github_login_enabled")}
+              {renderItem("github_oauth_client_id")}
+              {renderItem("github_oauth_secret")}
+              {renderItem("admin_password_login_disabled")}
+              {renderItem("allow_local_remote_addr")}
+              {renderItem("fetch_allow_local")}
+            </ConfigSection>
+          </Accordion>
         )}
 
         {tab === "network" && (
-          <>
+          <Accordion
+            type="multiple"
+            value={Array.from(openSections)}
+            onValueChange={(next) =>
+              setOpenSections(new Set(next as SectionKey[]))
+            }
+          >
             <ConfigSection
               {...sectionProps("network")}
               summary={`${tunnelQualitySummary} · 监控保留 ${
@@ -1654,11 +1651,17 @@ export default function ConfigPage() {
                 onChange={handleConfigChange}
               />
             </ConfigSection>
-          </>
+          </Accordion>
         )}
 
         {tab === "notify" && (
-          <>
+          <Accordion
+            type="multiple"
+            value={Array.from(openSections)}
+            onValueChange={(next) =>
+              setOpenSections(new Set(next as SectionKey[]))
+            }
+          >
             <ConfigSection
               {...sectionProps("notify")}
               summary={notifySummary(configs)}
@@ -1738,11 +1741,17 @@ export default function ConfigPage() {
                 </>
               )}
             </ConfigSection>
-          </>
+          </Accordion>
         )}
 
         {tab === "system" && (
-          <>
+          <Accordion
+            type="multiple"
+            value={Array.from(openSections)}
+            onValueChange={(next) =>
+              setOpenSections(new Set(next as SectionKey[]))
+            }
+          >
             <ConfigSection
               {...sectionProps("backup")}
               summary={
@@ -1923,7 +1932,7 @@ export default function ConfigPage() {
                 </Button>
               </div>
             </ConfigSection>
-          </>
+          </Accordion>
         )}
       </div>
 

@@ -318,6 +318,17 @@ body {
   }
 }
 
+/* Radix accordion height animation. */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
 /* Column templates live here, not in per-page inline styles. */
 [data-list="node"] {
   --list-cols: minmax(0, 1fr) 232px 96px 116px 176px 24px;

@@ -38,6 +38,7 @@ import {
   PageTabs,
   PageToolbar,
   SortHeader,
+  TablePagination,
 } from "@/components/page-kit";
 import { CARD_GRID, InfoCard } from "@/components/info-card";
 import { useViewMode } from "@/components/view-mode";
@@ -1144,6 +1145,7 @@ export default function SubscriptionPage() {
   const [groupDraft, setGroupDraft] = useState<NodeGroupDraft | null>(null);
   const [tab, setTab] = useState<"subs" | "groups">("subs");
   const [query, setQuery] = useState("");
+  const [subPage, setSubPage] = useState(1);
   const [sortKey, setSortKey] = useState<"name" | "usage" | null>(null);
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
@@ -1334,6 +1336,7 @@ export default function SubscriptionPage() {
     ? subs.filter((s) => `${s.name} ${s.remark}`.toLowerCase().includes(q))
     : subs;
 
+  const SUB_PAGE_SIZE = 20;
   const sortedSubs = (() => {
     if (!sortKey) return shownSubs;
     const list = [...shownSubs].sort((a, b) =>
@@ -1493,6 +1496,11 @@ export default function SubscriptionPage() {
     </div>
   );
 
+  const pagedSubs = sortedSubs.slice(
+    (subPage - 1) * SUB_PAGE_SIZE,
+    subPage * SUB_PAGE_SIZE,
+  );
+
   return (
     <AnimatedPage className="mx-auto w-full max-w-[1440px] space-y-4 px-6 py-6">
       <PageHeader
@@ -1615,8 +1623,15 @@ export default function SubscriptionPage() {
                 </div>
               </div>
             )}
-            {sortedSubs.map(viewMode === "card" ? subCard : row)}
+            {pagedSubs.map(viewMode === "card" ? subCard : row)}
           </div>
+          <TablePagination
+            page={subPage}
+            pageSize={SUB_PAGE_SIZE}
+            total={sortedSubs.length}
+            unit="个订阅"
+            onPageChange={setSubPage}
+          />
         </>
       )}
 

@@ -9,6 +9,7 @@ import {
   EmptyHint,
   ListGroup,
   SortHeader,
+  TablePagination,
   ListRow,
   PageHeader,
   PageShell,
@@ -1152,6 +1153,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
 
   const sheetUser = users.find((u) => u.id === sheetUserId) ?? null;
 
+  const [userPage, setUserPage] = useState(1);
   const [userSort, setUserSort] = useState<"name" | "usage" | null>(null);
   const [userDir, setUserDir] = useState<"asc" | "desc">("asc");
 
@@ -1170,6 +1172,12 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
 
     return userDir === "asc" ? list : list.reverse();
   }, [userSort, userDir, users]);
+
+  const USER_PAGE_SIZE = 20;
+  const pagedUsers = sortedUsers.slice(
+    (userPage - 1) * USER_PAGE_SIZE,
+    userPage * USER_PAGE_SIZE,
+  );
 
   return (
     <PageShell embedded={embedded}>
@@ -1204,86 +1212,64 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           />
         )
       ) : (
-        <ListGroup
-          columns="minmax(0,1fr) minmax(0,1.15fr) 240px"
-          head={[
-            <SortHeader
-              key="name"
-              active={userSort === "name"}
-              dir={userDir}
-              label="用户"
-              onToggle={() => toggleUserSort("name")}
-            />,
-            "详情",
-            <SortHeader
-              key="usage"
-              active={userSort === "usage"}
-              dir={userDir}
-              label="用量"
-              onToggle={() => toggleUserSort("usage")}
-            />,
-          ]}
-        >
-          {sortedUsers.map((user) => {
-            const state = getUserRowState(user);
-            const expStatus = user.expTime
-              ? getExpireStatus(user.expTime)
-              : null;
-            const meta = [
-              `已用 ${formatFlow(calculateUserTotalUsedFlow(user))} / ${formatFlowLimit(user.flow, user.flowMiB)}`,
-              `规则 ${user.num}`,
-              ...(userSubCount.get(user.id)
-                ? [`订阅 ${userSubCount.get(user.id)}`]
-                : []),
-              user.expTime ? `到期 ${formatDate(user.expTime)}` : "永久",
-            ];
+        <>
+          <ListGroup
+            columns="minmax(0,1fr) minmax(0,1.15fr) 240px"
+            head={[
+              <SortHeader
+                key="name"
+                active={userSort === "name"}
+                dir={userDir}
+                label="用户"
+                onToggle={() => toggleUserSort("name")}
+              />,
+              "详情",
+              <SortHeader
+                key="usage"
+                active={userSort === "usage"}
+                dir={userDir}
+                label="用量"
+                onToggle={() => toggleUserSort("usage")}
+              />,
+            ]}
+          >
+            {pagedUsers.map((user) => {
+              const state = getUserRowState(user);
+              const expStatus = user.expTime
+                ? getExpireStatus(user.expTime)
+                : null;
+              const meta = [
+                `已用 ${formatFlow(calculateUserTotalUsedFlow(user))} / ${formatFlowLimit(user.flow, user.flowMiB)}`,
+                `规则 ${user.num}`,
+                ...(userSubCount.get(user.id)
+                  ? [`订阅 ${userSubCount.get(user.id)}`]
+                  : []),
+                user.expTime ? `到期 ${formatDate(user.expTime)}` : "永久",
+              ];
 
-            return (
-              <ListRow
-                key={user.id}
-                badges={
-                  <>
-                    {user.status !== 1 && (
-                      <Badge
-                        className="shrink-0"
-                        color="secondary"
-                        size="sm"
-                        variant="flat"
-                      >
-                        已禁用
-                      </Badge>
-                    )}
-                    {expStatus && expStatus.color !== "success" && (
-                      <Badge
-                        className="shrink-0"
-                        color={expStatus.color}
-                        size="sm"
-                        variant="flat"
-                      >
-                        {expStatus.text}
-                      </Badge>
-                    )}
-                    {user.disabledByQuota ? (
-                      <Badge
-                        className="shrink-0"
-                        color="danger"
-                        size="sm"
-                        variant="flat"
-                      >
-                        配额超额
-                      </Badge>
-                    ) : null}
-                  </>
-                }
-                cells={[
-                  <div key="who" className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="truncate text-sm font-medium text-foreground">
-                        {user.name || user.user}
-                      </span>
+              return (
+                <ListRow
+                  key={user.id}
+                  badges={
+                    <>
                       {user.status !== 1 && (
-                        <Badge className="shrink-0" size="sm" variant="flat">
+                        <Badge
+                          className="shrink-0"
+                          color="secondary"
+                          size="sm"
+                          variant="flat"
+                        >
                           已禁用
+                        </Badge>
+                      )}
+                      {expStatus && expStatus.color !== "success" && (
+                        <Badge
+                          className="shrink-0"
+                          color={expStatus.color}
+                          size="sm"
+                          variant="flat"
+                        >
+                          {expStatus.text}
                         </Badge>
                       )}
                       {user.disabledByQuota ? (
@@ -1296,33 +1282,65 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           配额超额
                         </Badge>
                       ) : null}
-                    </div>
-                    {user.name && user.name !== user.user && (
-                      <div className="truncate text-xs text-muted-foreground">
-                        {user.user}
+                    </>
+                  }
+                  cells={[
+                    <div key="who" className="min-w-0">
+                      <div className="flex items-center gap-1.5">
+                        <span className="truncate text-sm font-medium text-foreground">
+                          {user.name || user.user}
+                        </span>
+                        {user.status !== 1 && (
+                          <Badge className="shrink-0" size="sm" variant="flat">
+                            已禁用
+                          </Badge>
+                        )}
+                        {user.disabledByQuota ? (
+                          <Badge
+                            className="shrink-0"
+                            color="danger"
+                            size="sm"
+                            variant="flat"
+                          >
+                            配额超额
+                          </Badge>
+                        ) : null}
                       </div>
-                    )}
-                  </div>,
-                  <div
-                    key="meta"
-                    className="min-w-0 truncate text-xs text-muted-foreground tabular"
-                  >
-                    {meta.join(" · ")}
-                  </div>,
-                  <div key="usage" className="min-w-0">
-                    <UsageBar user={user} />
-                  </div>,
-                ]}
-                footer={<UsageBar user={user} />}
-                meta={meta.join(" · ")}
-                status={state.status}
-                statusTitle={state.text}
-                title={user.name || user.user}
-                onPress={() => setSheetUserId(user.id)}
-              />
-            );
-          })}
-        </ListGroup>
+                      {user.name && user.name !== user.user && (
+                        <div className="truncate text-xs text-muted-foreground">
+                          {user.user}
+                        </div>
+                      )}
+                    </div>,
+                    <div
+                      key="meta"
+                      className="min-w-0 truncate text-xs text-muted-foreground tabular"
+                    >
+                      {meta.join(" · ")}
+                    </div>,
+                    <div key="usage" className="min-w-0">
+                      <UsageBar user={user} />
+                    </div>,
+                  ]}
+                  footer={<UsageBar user={user} />}
+                  meta={meta.join(" · ")}
+                  status={state.status}
+                  statusTitle={state.text}
+                  title={user.name || user.user}
+                  onPress={() => setSheetUserId(user.id)}
+                />
+              );
+            })}
+          </ListGroup>
+
+          <TablePagination
+            page={userPage}
+            pageSize={USER_PAGE_SIZE}
+            total={sortedUsers.length}
+            unit="个用户"
+            onPageChange={setUserPage}
+          />
+        </>
       )}
 
       {(() => {
