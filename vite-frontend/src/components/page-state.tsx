@@ -58,7 +58,7 @@ export const PageEmptyState = ({
     <div
       className={`flex flex-col items-center justify-center gap-2 ${className}`}
     >
-      <Inbox aria-hidden className="h-5 w-5 text-muted-foreground/60" />
+      <Inbox aria-hidden className="h-5 w-5 text-muted-foreground" />
       <span className="text-sm text-muted-foreground">{message}</span>
     </div>
   );

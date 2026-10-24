@@ -218,7 +218,7 @@ export const Button = React.forwardRef<
       <BaseButton
         ref={ref}
         className={cn(
-          isIconOnly ? "p-0" : "",
+          isIconOnly ? "p-0 max-sm:min-h-11 max-sm:min-w-11" : "",
           resolvedColorClass,
           resolvedShadowClass,
           className,

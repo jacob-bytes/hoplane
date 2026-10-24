@@ -331,10 +331,10 @@ export default function IndexPage() {
 
         <VersionFooter
           containerClassName="fixed inset-x-0 bottom-4 text-center py-4"
-          poweredClassName="text-xs text-muted-foreground/70"
+          poweredClassName="text-xs text-muted-foreground"
           updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-rose-500/90 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
           version={isWebView ? siteConfig.app_version : siteConfig.version}
-          versionClassName="text-xs text-muted-foreground/70 mt-1"
+          versionClassName="text-xs text-muted-foreground mt-1"
         />
 
         {/* 验证码弹层 */}

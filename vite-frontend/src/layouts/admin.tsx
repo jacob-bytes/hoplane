@@ -334,6 +334,12 @@ export default function AdminLayout({
     <div
       className={`flex ${isMobile ? "min-h-screen" : "h-screen"} overflow-hidden bg-background`}
     >
+      <a
+        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:shadow-md"
+        href="#main-content"
+      >
+        跳到主内容
+      </a>
       {/* 移动端遮罩层 */}
       {isMobile && mobileMenuVisible && (
         <button
@@ -393,6 +399,7 @@ export default function AdminLayout({
                       </div>
                     ))}
                   <motion.button
+                    aria-current={isActive ? "page" : undefined}
                     aria-disabled={isMonitorBlocked}
                     className={`
                        w-full flex items-center px-2.5 py-2 rounded-lg text-left
@@ -495,10 +502,10 @@ export default function AdminLayout({
               className={`min-w-0 transition-all duration-300 overflow-hidden flex items-center ${isCollapsed ? "max-w-0 opacity-0 hidden" : "max-w-[200px] opacity-100"}`}
             >
               <VersionFooter
-                poweredClassName="text-xs text-muted-foreground/70"
-                updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-rose-500/90 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-white"
+                poweredClassName="text-xs text-muted-foreground"
+                updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary-foreground"
                 version={siteConfig.version}
-                versionClassName="text-xs text-muted-foreground/70"
+                versionClassName="text-xs text-muted-foreground"
               />
             </div>
 
@@ -506,6 +513,7 @@ export default function AdminLayout({
             {!isMobile && (
               <Button
                 isIconOnly
+                aria-label={isCollapsed ? "展开侧栏" : "收起侧栏"}
                 className="flex h-9 w-9 min-w-0 flex-shrink-0 rounded-full text-muted-foreground hover:bg-accent hover:text-foreground"
                 size="sm"
                 variant="light"
@@ -583,13 +591,13 @@ export default function AdminLayout({
             <span className="text-muted-foreground">后台</span>
             {currentSection && (
               <>
-                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
+                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
                 <span className="truncate text-muted-foreground">
                   {currentSection}
                 </span>
               </>
             )}
-            <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/60" />
+            <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <span className="truncate font-medium text-foreground">
               {currentLabel}
             </span>
@@ -597,7 +605,11 @@ export default function AdminLayout({
         </header>
 
         {/* 主内容 */}
-        <main ref={mainRef} className="flex-1 overflow-y-auto scrollbar-hide">
+        <main
+          ref={mainRef}
+          className="flex-1 overflow-y-auto scrollbar-hide"
+          id="main-content"
+        >
           {/* Enter animation only: an exit animation would hold the next
               page back until the old one is gone. */}
           <motion.div

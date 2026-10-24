@@ -2323,7 +2323,9 @@ export default function NodePage({
                                 </div>,
                                 !isDisplayFiltered && (
                                   <span
+                                    aria-label="拖动排序"
                                     className="cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                                    role="button"
                                     title="拖动排序"
                                     {...listeners}
                                   >

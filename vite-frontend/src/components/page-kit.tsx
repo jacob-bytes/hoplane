@@ -174,6 +174,7 @@ export function PageToolbar({
         >
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
+            aria-label={placeholder}
             className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
             enterKeyHint="search"
             placeholder={placeholder}

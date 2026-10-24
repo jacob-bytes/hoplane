@@ -213,7 +213,8 @@ export function ModalContent({
   ...props
 }: ModalContentProps) {
   const context = useModalContext();
-  const resolvedScrollBehavior = scrollBehavior ?? context?.scrollBehavior;
+  const resolvedScrollBehavior =
+    scrollBehavior ?? context?.scrollBehavior ?? "inside";
   const resolvedSize = size ?? context?.size;
   const renderedChildren =
     typeof children === "function"
@@ -300,7 +301,11 @@ export function ModalBody({
 
   return (
     <div
-      className={cn("space-y-4", context?.classNames?.body, className)}
+      className={cn(
+        "min-h-0 max-h-[60vh] flex-1 space-y-4 overflow-y-auto pr-1",
+        context?.classNames?.body,
+        className,
+      )}
       data-slot="modal-body"
       {...props}
     />
@@ -316,7 +321,7 @@ export function ModalFooter({
   return (
     <div
       className={cn(
-        "mt-4 flex flex-wrap justify-end gap-2",
+        "mt-1 flex flex-wrap justify-end gap-2 border-t border-border pt-4",
         context?.classNames?.footer,
         className,
       )}
