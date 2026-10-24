@@ -16,10 +16,16 @@ import {
   rectSortingStrategy,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { GripVertical } from "lucide-react";
+import { Activity, GripVertical, MoreHorizontal, Terminal } from "lucide-react";
 
 import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/shadcn-bridge/heroui/button";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@/shadcn-bridge/heroui/dropdown";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge } from "@/shadcn-bridge/heroui/badge";
@@ -2180,102 +2186,107 @@ export default function NodePage({
                               </div>
                             )}
 
-                            <div className="mt-auto space-y-3">
-                              {/* 操作按钮 */}
-                              <div
-                                className={`grid gap-1.5 ${isRemoteNode ? "grid-cols-1" : "grid-cols-3"}`}
-                              >
-                                {!isRemoteNode && (
-                                  <>
-                                    {onOpenMonitor && (
-                                      <Button
-                                        className="min-h-8"
-                                        color="primary"
-                                        size="sm"
-                                        variant="secondary"
-                                        onPress={() => onOpenMonitor(node.id)}
-                                      >
-                                        监控
-                                      </Button>
-                                    )}
-                                    <Button
-                                      className="min-h-8"
-                                      color="success"
-                                      isLoading={node.copyLoading}
-                                      size="sm"
-                                      variant="secondary"
-                                      onPress={() => openInstallSelector(node)}
-                                    >
-                                      安装
-                                    </Button>
-                                    <Button
-                                      className="min-h-8 bg-muted text-foreground"
-                                      size="sm"
-                                      variant="secondary"
-                                      onPress={() => setTargetNodes([node])}
-                                    >
-                                      测试点
-                                    </Button>
-                                    <Button
-                                      className="min-h-8"
-                                      color="warning"
-                                      isDisabled={
-                                        node.connectionStatus !== "online"
-                                      }
-                                      isLoading={node.upgradeLoading}
-                                      size="sm"
-                                      variant="secondary"
-                                      onPress={() =>
-                                        openUpgradeModal("single", node.id)
-                                      }
-                                    >
-                                      升级
-                                    </Button>
-                                    <Button
-                                      className="min-h-8"
-                                      color="secondary"
-                                      isDisabled={
-                                        node.connectionStatus !== "online"
-                                      }
-                                      isLoading={node.rollbackLoading}
-                                      size="sm"
-                                      variant="secondary"
-                                      onPress={() => handleRollbackNode(node)}
-                                    >
-                                      回退
-                                    </Button>
-                                    <Button
-                                      className="min-h-8"
-                                      color="success"
-                                      isDisabled={
-                                        node.connectionStatus !== "online"
-                                      }
-                                      size="sm"
-                                      variant="secondary"
-                                      onPress={() => setTuneNode(node)}
-                                    >
-                                      调优
-                                    </Button>
-                                    <Button
-                                      className="min-h-8"
-                                      color="primary"
-                                      size="sm"
-                                      variant="secondary"
-                                      onPress={() => handleEdit(node)}
-                                    >
-                                      编辑
-                                    </Button>
-                                  </>
+                            <div className="mt-auto">
+                              {/* 操作栏：主操作直接可见，其余收进菜单 */}
+                              <div className="flex items-center gap-2 border-t border-border pt-3">
+                                {!isRemoteNode && onOpenMonitor && (
+                                  <Button
+                                    className="min-w-0 flex-1 gap-1.5"
+                                    size="sm"
+                                    variant="outline"
+                                    onPress={() => onOpenMonitor(node.id)}
+                                  >
+                                    <Activity className="h-3.5 w-3.5" />
+                                    监控
+                                  </Button>
                                 )}
-                                <Button
-                                  className="min-h-8"
-                                  color="danger"
-                                  size="sm"
-                                  variant="secondary"
-                                  onPress={() => handleDelete(node)}
-                                >
-                                  删除
-                                </Button>
+                                {!isRemoteNode && (
+                                  <Button
+                                    className="min-w-0 flex-1 gap-1.5"
+                                    isLoading={node.copyLoading}
+                                    size="sm"
+                                    variant="outline"
+                                    onPress={() => openInstallSelector(node)}
+                                  >
+                                    <Terminal className="h-3.5 w-3.5" />
+                                    安装
+                                  </Button>
+                                )}
+                                <Dropdown placement="bottom-end">
+                                  <DropdownTrigger>
+                                    <Button
+                                      isIconOnly
+                                      aria-label="更多操作"
+                                      className="shrink-0 text-muted-foreground"
+                                      size="sm"
+                                      variant="ghost"
+                                    >
+                                      <MoreHorizontal className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownTrigger>
+                                  <DropdownMenu aria-label="服务器操作">
+                                    {!isRemoteNode && (
+                                      <>
+                                        <DropdownItem
+                                          key="targets"
+                                          closeOnSelect
+                                          onPress={() => setTargetNodes([node])}
+                                        >
+                                          测试点
+                                        </DropdownItem>
+                                        <DropdownItem
+                                          key="upgrade"
+                                          closeOnSelect
+                                          isDisabled={
+                                            node.connectionStatus !== "online"
+                                          }
+                                          onPress={() =>
+                                            openUpgradeModal("single", node.id)
+                                          }
+                                        >
+                                          升级
+                                        </DropdownItem>
+                                        <DropdownItem
+                                          key="rollback"
+                                          closeOnSelect
+                                          isDisabled={
+                                            node.connectionStatus !== "online"
+                                          }
+                                          onPress={() =>
+                                            handleRollbackNode(node)
+                                          }
+                                        >
+                                          回退
+                                        </DropdownItem>
+                                        <DropdownItem
+                                          key="tune"
+                                          closeOnSelect
+                                          isDisabled={
+                                            node.connectionStatus !== "online"
+                                          }
+                                          onPress={() => setTuneNode(node)}
+                                        >
+                                          调优
+                                        </DropdownItem>
+                                        <DropdownItem
+                                          key="edit"
+                                          closeOnSelect
+                                          onPress={() => handleEdit(node)}
+                                        >
+                                          编辑
+                                        </DropdownItem>
+                                      </>
+                                    )}
+                                    <DropdownItem
+                                      key="delete"
+                                      closeOnSelect
+                                      color="danger"
+                                      onPress={() => handleDelete(node)}
+                                    >
+                                      删除
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </Dropdown>
                               </div>
                             </div>
                           </CardBody>

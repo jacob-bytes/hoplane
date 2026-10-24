@@ -50,8 +50,9 @@
   --primary: #4f46e5;
   --primary-foreground: #ffffff;
 
-  --secondary: #7c3aed;
-  --secondary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --chart-2: #0ea5e9;
 
   --danger: #dc2626;
   --destructive: #dc2626;
@@ -84,16 +85,16 @@
   --primary-900: #312e81;
 
   /* violet, the quieter second accent */
-  --secondary-50: #f5f3ff;
-  --secondary-100: #ede9fe;
-  --secondary-200: #ddd6fe;
-  --secondary-300: #c4b5fd;
-  --secondary-400: #a78bfa;
-  --secondary-500: #8b5cf6;
-  --secondary-600: #7c3aed;
-  --secondary-700: #6d28d9;
-  --secondary-800: #5b21b6;
-  --secondary-900: #4c1d95;
+  --secondary-50: #fafafa;
+  --secondary-100: #f4f4f5;
+  --secondary-200: #e4e4e7;
+  --secondary-300: #d4d4d8;
+  --secondary-400: #a1a1aa;
+  --secondary-500: #71717a;
+  --secondary-600: #52525b;
+  --secondary-700: #3f3f46;
+  --secondary-800: #27272a;
+  --secondary-900: #18181b;
 
   --danger-50: #fef2f2;
   --danger-100: #fee2e2;
@@ -158,8 +159,9 @@
   --primary: #6366f1;
   --primary-foreground: #ffffff;
 
-  --secondary: #a78bfa;
-  --secondary-foreground: #18181b;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+  --chart-2: #38bdf8;
 
   --danger: #ef4444;
   --destructive: #ef4444;
@@ -189,16 +191,16 @@
   --primary-800: #e0e7ff;
   --primary-900: #eef2ff;
 
-  --secondary-50: #2e1065;
-  --secondary-100: #4c1d95;
-  --secondary-200: #5b21b6;
-  --secondary-300: #6d28d9;
-  --secondary-400: #8b5cf6;
-  --secondary-500: #a78bfa;
-  --secondary-600: #c4b5fd;
-  --secondary-700: #ddd6fe;
-  --secondary-800: #ede9fe;
-  --secondary-900: #f5f3ff;
+  --secondary-50: #18181b;
+  --secondary-100: #27272a;
+  --secondary-200: #3f3f46;
+  --secondary-300: #52525b;
+  --secondary-400: #71717a;
+  --secondary-500: #a1a1aa;
+  --secondary-600: #d4d4d8;
+  --secondary-700: #e4e4e7;
+  --secondary-800: #f4f4f5;
+  --secondary-900: #fafafa;
 
   --danger-50: #450a0a;
   --danger-100: #7f1d1d;

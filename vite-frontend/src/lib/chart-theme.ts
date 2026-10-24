@@ -11,7 +11,7 @@
  */
 export const CHART_SERIES = {
   primary: "var(--primary)",
-  secondary: "var(--secondary)",
+  secondary: "var(--chart-2)",
   success: "var(--success)",
   warning: "var(--warning)",
   danger: "var(--danger)",

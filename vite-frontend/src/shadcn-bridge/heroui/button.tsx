@@ -221,7 +221,7 @@ export const Button = React.forwardRef<
     {
       children,
       className,
-      color = "default",
+      color = "primary",
       disabled,
       endContent,
       isIconOnly = false,
