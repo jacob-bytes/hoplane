@@ -322,7 +322,10 @@ export default function AdminLayout({
       >
         {/* Logo 区域 */}
         <div className="px-4 py-4 [@media(max-height:760px)]:py-3 flex items-center overflow-hidden whitespace-nowrap box-border">
-          <BrandLogo className="h-5 w-5 flex-shrink-0 rounded" size={20} />
+          {/* The mark's viewBox is 200×200 but the artwork is 182×123, so a
+              20px box shows an 18×12 glyph. 18px keeps it just under the
+              20px navigation icons in visual weight. */}
+          <BrandLogo className="h-[18px] w-[18px] flex-shrink-0" size={18} />
           <div
             className={`transition-all duration-300 overflow-hidden ${isCollapsed ? "max-w-0 opacity-0 ml-0" : "max-w-[180px] opacity-100 ml-3"}`}
           >
