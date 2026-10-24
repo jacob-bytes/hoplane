@@ -14,6 +14,10 @@ function bytes(v: number): string {
   return `${v >= 100 || i === 0 ? Math.round(v) : v.toFixed(1)}${units[i]}`;
 }
 
+function rate(v?: number): string {
+  return v === undefined ? "—" : `${bytes(v)}/s`;
+}
+
 function tone(v: number): string {
   return v >= 85 ? "bg-danger" : v >= 60 ? "bg-warning" : "bg-primary/70";
 }
@@ -56,13 +60,6 @@ export function NodeLiveStats({
 }) {
   const up = info ? (info.netOutSpeed ?? info.uploadSpeed) : undefined;
   const down = info ? (info.netInSpeed ?? info.downloadSpeed) : undefined;
-  const meters = (
-    <>
-      <Meter label="CPU" value={info?.cpuUsage} />
-      <Meter label="内存" value={info?.memoryUsage} />
-      <Meter label="磁盘" value={info?.diskUsage} />
-    </>
-  );
   const rate = (v?: number) => (v === undefined ? "—" : `${bytes(v)}/s`);
   const upIcon = <ArrowUp className="h-3 w-3 shrink-0 text-muted-foreground" />;
   const downIcon = (
@@ -76,7 +73,7 @@ export function NodeLiveStats({
       <div
         className={`space-y-2 ${variant === "footer" ? "mt-2 lg:hidden" : ""}`}
       >
-        <div className="grid grid-cols-3 gap-3">{meters}</div>
+        <NodeMeters info={info} />
         <div className="grid grid-cols-2 divide-x divide-divider rounded-lg bg-muted/60 py-1.5 text-[11px] tabular-nums">
           <div className="min-w-0 px-2.5">
             <div className="text-[10px] text-muted-foreground">网速</div>
@@ -107,23 +104,61 @@ export function NodeLiveStats({
 
   return (
     <div className="hidden items-center gap-5 lg:flex">
-      <div className="grid w-60 grid-cols-3 gap-3">{meters}</div>
-      <div className="w-24 space-y-0.5 text-[11px] font-medium leading-tight tabular-nums">
-        <div className="flex items-center gap-1">
-          {upIcon}
-          {rate(up)}
-        </div>
-        <div className="flex items-center gap-1">
-          {downIcon}
-          {rate(down)}
-        </div>
+      <div className="w-60">
+        <NodeMeters info={info} />
       </div>
-      <div className="w-28 space-y-0.5 leading-tight tabular-nums">
-        <div className="flex items-baseline gap-1.5 text-[11px]">
-          <span className="text-[10px] text-muted-foreground">本月</span>
-          <span className="font-semibold">{total}</span>
-        </div>
-        <div className="text-[10px] text-muted-foreground">{split || "—"}</div>
+      <div className="w-24">
+        <NodeSpeed info={info} />
+      </div>
+      <div className="w-28">
+        <NodeMonth month={month} />
+      </div>
+    </div>
+  );
+}
+
+/** CPU / memory / disk meters, as one row. */
+export function NodeMeters({ info }: { info: NodeSystemInfo | null }) {
+  return (
+    <div className="grid grid-cols-3 gap-3">
+      <Meter label="CPU" value={info?.cpuUsage} />
+      <Meter label="内存" value={info?.memoryUsage} />
+      <Meter label="磁盘" value={info?.diskUsage} />
+    </div>
+  );
+}
+
+/** Up/down rate, two lines. */
+export function NodeSpeed({ info }: { info: NodeSystemInfo | null }) {
+  const up = info ? (info.netOutSpeed ?? info.uploadSpeed) : undefined;
+  const down = info ? (info.netInSpeed ?? info.downloadSpeed) : undefined;
+
+  return (
+    <div className="space-y-0.5 text-[11px] font-medium leading-tight tabular-nums">
+      <div className="flex items-center gap-1">
+        <ArrowUp className="h-3 w-3 shrink-0 text-muted-foreground" />
+        {rate(up)}
+      </div>
+      <div className="flex items-center gap-1">
+        <ArrowDown className="h-3 w-3 shrink-0 text-muted-foreground" />
+        {rate(down)}
+      </div>
+    </div>
+  );
+}
+
+/** This month's traffic, total plus the up/down split. */
+export function NodeMonth({ month }: { month?: [number, number] }) {
+  return (
+    <div className="space-y-0.5 leading-tight tabular-nums">
+      <div className="flex items-baseline gap-1.5 text-[11px]">
+        <span className="text-[10px] text-muted-foreground">本月</span>
+        <span className="font-semibold">
+          {month ? bytes(month[0] + month[1]) : "—"}
+        </span>
+      </div>
+      <div className="text-[10px] text-muted-foreground">
+        {month ? `↑${bytes(month[1])} ↓${bytes(month[0])}` : ""}
       </div>
     </div>
   );

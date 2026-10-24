@@ -306,12 +306,49 @@ export function SelectionBar({
 
 export type RowStatus = "ok" | "warn" | "bad" | "off";
 
-const STATUS_DOT: Record<RowStatus, string> = {
+export const STATUS_DOT: Record<RowStatus, string> = {
   ok: "bg-success",
   warn: "bg-warning",
   bad: "bg-danger",
   off: "bg-default-300",
 };
+
+/**
+ * A desktop table built from rows: one bordered container, a shared column
+ * template, and an optional header. Phones keep the card rows (each row's own
+ * mobile layout), so nothing here applies below `lg`.
+ */
+export function ListTable({
+  columns,
+  head,
+  className,
+  children,
+}: {
+  /** CSS grid-template-columns used by the header and every row. */
+  columns: string;
+  /** Column labels; same order and count as the rows' `cells`. */
+  head?: React.ReactNode[];
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={`flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card ${className ?? ""}`}
+      style={{ "--list-cols": columns } as React.CSSProperties}
+    >
+      {head && (
+        <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+          {head.map((cell, i) => (
+            <div key={i} className="min-w-0 truncate">
+              {cell}
+            </div>
+          ))}
+        </div>
+      )}
+      {children}
+    </div>
+  );
+}
 
 /** One item of a list. Tapping it opens its actions. */
 export function ListRow({
@@ -322,6 +359,7 @@ export function ListRow({
   meta,
   footer,
   right,
+  cells,
   selectMode,
   selected,
   onSelect,
@@ -336,6 +374,12 @@ export function ListRow({
   footer?: React.ReactNode;
   /** Shown at the end of the row; clicks on it do not open the row. */
   right?: React.ReactNode;
+  /**
+   * Desktop cells: one node per column of the parent ListTable template.
+   * When set, the row renders these as a grid on `lg` and falls back to the
+   * title/meta/right layout on phones.
+   */
+  cells?: React.ReactNode[];
   selectMode?: boolean;
   selected?: boolean;
   onSelect?: () => void;
@@ -343,14 +387,18 @@ export function ListRow({
 }) {
   const activate = selectMode ? onSelect : onPress;
 
+  const rowClass = `group w-full cursor-pointer text-left transition-colors duration-150 max-lg:rounded-lg max-lg:border ${
+    cells ? "" : "flex items-center gap-3 px-3 py-3 lg:px-4"
+  } ${
+    selected
+      ? "border-primary/40 bg-primary/5 max-lg:border-primary/40 lg:bg-primary/5"
+      : "border-border bg-card hover:border-default-300 hover:bg-accent/40 lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-muted/40"
+  }`;
+
   return (
     <div
       aria-pressed={selectMode ? selected : undefined}
-      className={`group flex w-full cursor-pointer items-center gap-3 px-3 py-3 text-left transition-colors duration-150 max-lg:rounded-lg max-lg:border lg:px-4 ${
-        selected
-          ? "border-primary/40 bg-primary/5 max-lg:border-primary/40 lg:bg-primary/5"
-          : "border-border bg-card hover:border-default-300 hover:bg-accent/40 lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-muted/40"
-      }`}
+      className={rowClass}
       role="button"
       tabIndex={0}
       onClick={activate}
@@ -362,44 +410,62 @@ export function ListRow({
         }
       }}
     >
-      {selectMode && (
-        <div
-          className="flex shrink-0"
-          role="presentation"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Checkbox isSelected={selected} onValueChange={() => onSelect?.()} />
+      {cells && (
+        <div className="hidden items-center gap-4 px-4 py-3 lg:grid lg:[grid-template-columns:var(--list-cols)]">
+          {cells.map((cell, i) => (
+            <div key={i} className="min-w-0">
+              {cell}
+            </div>
+          ))}
         </div>
       )}
-      {status && (
-        <span
-          className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[status]}`}
-          title={statusTitle}
-        />
-      )}
-      <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5">
-          <span className="truncate text-[13.5px] font-medium text-foreground">
-            {title}
-          </span>
-          {badges}
-        </div>
-        {meta && (
-          <div className="truncate text-xs text-muted-foreground tabular">
-            {meta}
+      <div
+        className={
+          cells ? "flex items-center gap-3 px-3 py-3 lg:hidden" : "contents"
+        }
+      >
+        {selectMode && (
+          <div
+            className="flex shrink-0"
+            role="presentation"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Checkbox
+              isSelected={selected}
+              onValueChange={() => onSelect?.()}
+            />
           </div>
         )}
-        {footer && <div className="mt-1.5">{footer}</div>}
-      </div>
-      {right && !selectMode && (
-        <div
-          className="flex shrink-0 items-center gap-2"
-          role="presentation"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {right}
+        {status && (
+          <span
+            className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[status]}`}
+            title={statusTitle}
+          />
+        )}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5">
+            <span className="truncate text-[13.5px] font-medium text-foreground">
+              {title}
+            </span>
+            {badges}
+          </div>
+          {meta && (
+            <div className="truncate text-xs text-muted-foreground tabular">
+              {meta}
+            </div>
+          )}
+          {footer && <div className="mt-1.5">{footer}</div>}
         </div>
-      )}
+        {right && !selectMode && (
+          <div
+            className="flex shrink-0 items-center gap-2"
+            role="presentation"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {right}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -51,6 +51,7 @@ import { ActionSheet } from "@/components/action-sheet";
 import {
   EmptyHint,
   ListRow,
+  STATUS_DOT,
   PageHeader,
   PageShell,
   PageTabs,
@@ -107,9 +108,16 @@ import {
   UpgradeNodeModal,
 } from "@/pages/node/agent-modals";
 import { NodeFilterModal } from "@/pages/node/filter-modal";
-import { NodeLiveStats } from "@/pages/node/node-live-stats";
+import {
+  NodeLiveStats,
+  NodeMeters,
+  NodeMonth,
+  NodeSpeed,
+} from "@/pages/node/node-live-stats";
 
 const PAGE = "node";
+
+const NODE_COLUMNS = "minmax(0,1fr) 232px 96px 112px 132px 24px";
 
 export default function NodePage({
   embedded = false,
@@ -1647,17 +1655,20 @@ export default function NodePage({
                   ? CARD_GRID
                   : "flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
               }
+              style={
+                card
+                  ? undefined
+                  : ({ "--list-cols": NODE_COLUMNS } as React.CSSProperties)
+              }
             >
               {!card && (
-                <div className="hidden items-center gap-3 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:flex">
-                  <span className="h-2 w-2 shrink-0" />
-                  <span className="min-w-0 flex-1">名称</span>
-                  <span className="flex shrink-0 items-center gap-5">
-                    <span className="w-60">CPU / 内存 / 磁盘</span>
-                    <span className="w-24">网速</span>
-                    <span className="w-28">本月流量</span>
-                  </span>
-                  <span className="w-36 shrink-0 pr-8 text-right">延迟</span>
+                <div className="hidden items-center gap-4 px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]">
+                  <div className="min-w-0">名称</div>
+                  <div className="min-w-0">CPU / 内存 / 磁盘</div>
+                  <div className="min-w-0">网速</div>
+                  <div className="min-w-0">本月流量</div>
+                  <div className="min-w-0">延迟</div>
+                  <div />
                 </div>
               )}
               {displayNodes.map((node) => {
@@ -2241,6 +2252,85 @@ export default function NodePage({
                               </Chip>
                             )}
                           </>
+                        }
+                        cells={
+                          card || selectMode
+                            ? undefined
+                            : [
+                                <div
+                                  key="name"
+                                  className="flex min-w-0 items-center gap-3"
+                                >
+                                  <span
+                                    className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[upgrading ? "warn" : online ? "ok" : "bad"]}`}
+                                    title={
+                                      getConnectionStatusMeta(
+                                        node.connectionStatus,
+                                      ).text
+                                    }
+                                  />
+                                  <div className="min-w-0">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="truncate text-[13.5px] font-medium text-foreground">
+                                        {node.name}
+                                      </span>
+                                      {!isRemoteNode && showExpiry && (
+                                        <Chip
+                                          className="shrink-0"
+                                          color={expiryMeta.tone}
+                                          size="sm"
+                                          variant="flat"
+                                        >
+                                          {expiryMeta.label}
+                                        </Chip>
+                                      )}
+                                      {isRemoteNode && (
+                                        <Chip
+                                          className="shrink-0"
+                                          size="sm"
+                                          variant="flat"
+                                        >
+                                          远程
+                                        </Chip>
+                                      )}
+                                    </div>
+                                    <div className="truncate text-xs text-muted-foreground tabular">
+                                      {meta.filter(Boolean).join(" · ")}
+                                    </div>
+                                  </div>
+                                </div>,
+                                !isRemoteNode && (
+                                  <NodeMeters
+                                    info={
+                                      online ? (node.systemInfo ?? null) : null
+                                    }
+                                  />
+                                ),
+                                !isRemoteNode && (
+                                  <NodeSpeed
+                                    info={
+                                      online ? (node.systemInfo ?? null) : null
+                                    }
+                                  />
+                                ),
+                                !isRemoteNode && (
+                                  <NodeMonth
+                                    month={monthTraffic[String(node.id)]}
+                                  />
+                                ),
+                                <div key="latency" className="flex justify-end">
+                                  {renderLatency(node, "list")}
+                                </div>,
+                                !isDisplayFiltered && (
+                                  <span
+                                    className="cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                                    title="拖动排序"
+                                    {...listeners}
+                                  >
+                                    <GripVertical className="h-4 w-4" />
+                                  </span>
+                                ),
+                              ]
                         }
                         footer={
                           !isRemoteNode && (
