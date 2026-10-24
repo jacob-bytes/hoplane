@@ -13,7 +13,7 @@ Hoplane 是 [FLYX](https://github.com/kure29/flyx) 的 fork，从 FLYX 3.3.41（
 | `README.md`、`NOTICE`、`AGENTS.md` | 品牌名、上游致谢（保留 kure29 / Sagit-chu / bqlpfy 的版权声明） |
 | `doc/**` | VitePress 标题、`base: "/hoplane/"`、导航链接、示例里的 `app_name`、`99-flyx-tuning.conf` → `99-hoplane-tuning.conf` |
 | `vite-frontend/index.html`、`src/config/site.ts`、`src/components/version-footer.tsx`、`src/demo/banner.tsx`、`src/pages/config.tsx`、`src/themes/**` | 页面标题、PWA 名称、页脚、主题作者、版权开关文案 |
-| `doc/public/logo.png` | **未改**，还是上游的图；换 logo 时直接替换这个文件 |
+| `doc/public/logo.svg`、`logo.png`、`vite-frontend/public/{favicon.svg,favicon.ico,pwa-*,apple-touch-icon.png}` | 换成 Hoplane 自己的标：靛蓝→青渐变圆角方块，白色「换道」轨迹（矢量源文件是 `doc/public/logo.svg`，改完后用 Chrome headless 重新导出一套 PNG/ICO） |
 
 ### 仓库地址与镜像
 

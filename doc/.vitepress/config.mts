@@ -7,7 +7,7 @@ export default defineConfig({
   base: "/hoplane/",
   cleanUrls: true,
   lastUpdated: true,
-  head: [["link", { rel: "icon", type: "image/png", href: "/hoplane/logo.png" }]],
+  head: [["link", { rel: "icon", type: "image/svg+xml", href: "/hoplane/logo.svg" }]],
   themeConfig: {
     logo: "/logo.png",
     nav: [
