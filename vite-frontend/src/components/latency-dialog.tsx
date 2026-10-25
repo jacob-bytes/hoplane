@@ -50,6 +50,31 @@ export function LatencyDialog({
 }) {
   const [tab, setTab] = useState<TabKey>("overview");
   const points = probePoints(probe);
+  const okPoints = points.filter((p) => p.ok);
+  const avg = okPoints.length
+    ? Math.round(
+        okPoints.reduce((sum, p) => sum + (p.latencyMs ?? 0), 0) /
+          okPoints.length,
+      )
+    : null;
+  const best = okPoints.reduce<(typeof okPoints)[number] | null>(
+    (b, p) => (!b || (p.latencyMs ?? 0) < (b.latencyMs ?? 0) ? p : b),
+    null,
+  );
+  const worst = okPoints.reduce<(typeof okPoints)[number] | null>(
+    (w, p) => (!w || (p.latencyMs ?? 0) > (w.latencyMs ?? 0) ? p : w),
+    null,
+  );
+  const checkedAgo = probe?.checkedAt
+    ? (() => {
+        const m = Math.max(
+          0,
+          Math.round((Date.now() - probe.checkedAt) / 60000),
+        );
+
+        return m < 1 ? "刚刚检测" : `${m} 分钟前检测`;
+      })()
+    : null;
 
   return (
     <Dialog
@@ -66,8 +91,10 @@ export function LatencyDialog({
           <DialogTitle>延迟 · {node?.name}</DialogTitle>
           <DialogDescription>
             {points.length > 0
-              ? `到 ${points.length} 个测试点的结果，每 3 分钟检测一次`
-              : "这台服务器还没有延迟结果"}
+              ? `${points.length} 个测试点 · 平均 ${avg ?? "—"} ms${
+                  checkedAgo ? ` · ${checkedAgo}` : ""
+                }`
+              : "这台服务器还没有延迟结果，每 3 分钟检测一次"}
           </DialogDescription>
         </DialogHeader>
 
@@ -87,13 +114,37 @@ export function LatencyDialog({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent className="min-h-[464px] space-y-2" value="overview">
+          <TabsContent
+            className="flex min-h-[464px] flex-col gap-3"
+            value="overview"
+          >
+            {points.length > 0 && (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                <span>
+                  最快{" "}
+                  <span className="font-mono font-medium text-foreground">
+                    {best?.latencyMs ?? "—"} ms
+                  </span>
+                  {best && ` · ${best.name}`}
+                </span>
+                <span>
+                  最慢{" "}
+                  <span className="font-mono font-medium text-foreground">
+                    {worst?.latencyMs ?? "—"} ms
+                  </span>
+                  {worst && ` · ${worst.name}`}
+                </span>
+                {probe && (
+                  <span className="ml-auto">每 3 分钟自动检测一次</span>
+                )}
+              </div>
+            )}
             {points.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
                 还没有结果，点下方按钮检测
               </p>
             ) : (
-              <div className="divide-y divide-border rounded-lg border border-border">
+              <div className="grid flex-1 auto-rows-fr divide-y divide-border overflow-hidden rounded-lg border border-border">
                 {points.map((p) => {
                   const [pill, dot] = TONE[pointTone(p)];
 
@@ -123,7 +174,7 @@ export function LatencyDialog({
               </div>
             )}
 
-            <div className="flex justify-end">
+            <div className="mt-auto flex justify-end">
               <Button
                 isDisabled={probing}
                 startContent={
