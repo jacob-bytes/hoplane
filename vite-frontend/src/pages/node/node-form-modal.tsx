@@ -52,189 +52,200 @@ export function NodeFormModal({
       isOpen={dialogVisible}
       placement="center"
       scrollBehavior="inside"
-      size="2xl"
+      size="lg"
       onClose={() => setDialogVisible(false)}
     >
       <ModalContent>
-        <ModalHeader>{dialogTitle}</ModalHeader>
+        <ModalHeader>
+          <div>
+            <div>{dialogTitle}</div>
+            <p className="mt-1 text-xs font-normal text-muted-foreground">
+              填写服务器信息；创建后在“服务器”页安装 agent 即可上线。
+            </p>
+          </div>
+        </ModalHeader>
         <ModalBody>
-          <div className="space-y-4">
-            <Input
-              errorMessage={errors.name}
-              isInvalid={!!errors.name}
-              label="服务器名称"
-              placeholder="请输入服务器名称"
-              value={form.name}
-              variant="bordered"
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-
-            <Textarea
-              description="可记录供应商、用途、续费说明等补充信息"
-              label="备注"
-              maxRows={4}
-              minRows={3}
-              placeholder="例如: 搬瓦工年付，2026-12 续费，日本中转"
-              value={form.remark}
-              variant="bordered"
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, remark: e.target.value }))
-              }
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Select
-                label="续费周期"
-                placeholder="选择续费周期"
-                selectedKeys={form.renewalCycle ? [form.renewalCycle] : []}
-                variant="bordered"
-                onSelectionChange={(keys) => {
-                  const selected = Array.from(keys)[0] as
-                    | NodeRenewalCycle
-                    | undefined;
-
-                  setForm((prev) => ({
-                    ...prev,
-                    renewalCycle: selected || "",
-                  }));
-                }}
-              >
-                <SelectItem key="month" textValue="month">
-                  月付
-                </SelectItem>
-                <SelectItem key="quarter" textValue="quarter">
-                  季付
-                </SelectItem>
-                <SelectItem key="year" textValue="year">
-                  年付
-                </SelectItem>
-              </Select>
-            </div>
-
-            <Input
-              description="填写最近一次续费时间或周期起始时间，系统会按月/季/年自动推算下次续费"
-              errorMessage={errors.expiryTime}
-              isInvalid={!!errors.expiryTime}
-              label="续费基准时间"
-              max="9999-12-31"
-              type="date"
-              value={
-                form.expiryTime > 0
-                  ? new Date(form.expiryTime).toISOString().slice(0, 10)
-                  : ""
-              }
-              variant="bordered"
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  expiryTime: e.target.value
-                    ? new Date(e.target.value).getTime()
-                    : 0,
-                }))
-              }
-            />
-
-            <Alert
-              color="primary"
-              description="例如选择月付并填写 2026-03-01，系统会自动按每月同日推算下次续费时间。"
-              variant="flat"
-            />
-
-            <Input
-              description="可选：不带协议、不带端口。建议在 IPv4 和 IPv6 都未填写时使用。至少填写一个 IPv4/IPv6 域名"
-              errorMessage={errors.serverHost}
-              isInvalid={!!errors.serverHost}
-              label="域名/主机名"
-              placeholder="例如: test.example.com"
-              value={form.serverHost}
-              variant="bordered"
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, serverHost: e.target.value }))
-              }
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-6">
+            <FormSection title="基本信息">
               <Input
-                description="填写一个 IPv4 地址"
-                errorMessage={errors.serverIpV4}
-                isInvalid={!!errors.serverIpV4}
-                label="IPv4 地址"
-                placeholder="例如: 192.168.1.100"
-                value={form.serverIpV4}
+                errorMessage={errors.name}
+                isInvalid={!!errors.name}
+                label="服务器名称"
+                placeholder="请输入服务器名称"
+                value={form.name}
                 variant="bordered"
                 onChange={(e) =>
-                  setForm((prev) => ({ ...prev, serverIpV4: e.target.value }))
+                  setForm((prev) => ({ ...prev, name: e.target.value }))
                 }
               />
 
-              <Input
-                description="填写一个 IPv6 地址"
-                errorMessage={errors.serverIpV6}
-                isInvalid={!!errors.serverIpV6}
-                label="IPv6 地址"
-                placeholder="例如: 2001:db8::10"
-                value={form.serverIpV6}
+              <Textarea
+                description="可记录供应商、用途、续费说明等补充信息"
+                label="备注"
+                maxRows={3}
+                minRows={2}
+                placeholder="例如: 搬瓦工年付，2026-12 续费，日本中转"
+                value={form.remark}
                 variant="bordered"
                 onChange={(e) =>
-                  setForm((prev) => ({ ...prev, serverIpV6: e.target.value }))
+                  setForm((prev) => ({ ...prev, remark: e.target.value }))
                 }
               />
-            </div>
+            </FormSection>
 
-            <Input
-              classNames={{
-                input: "font-mono",
-              }}
-              description="支持单个端口(80)、多个端口(80,443)或端口范围(10000-65535)，多个可用逗号分隔"
-              errorMessage={errors.port}
-              isInvalid={!!errors.port}
-              label="可用端口"
-              placeholder="例如: 80,443,10000-65535"
-              value={form.port}
-              variant="bordered"
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, port: e.target.value }))
-              }
-            />
-
-            <Select
-              label="转发模式"
-              selectedKeys={[form.forwardMode]}
-              variant="bordered"
-              onSelectionChange={(keys) => {
-                const selected = Array.from(keys)[0] as
-                  | NodeForm["forwardMode"]
-                  | undefined;
-
-                setForm((prev) => ({
-                  ...prev,
-                  forwardMode: selected || "agent",
-                }));
-              }}
+            <FormSection
+              description="可选，用于到期前提醒；按月/季/年自动推算下次续费"
+              title="续费提醒"
             >
-              <SelectItem key="agent" textValue="agent">
-                agent 模式
-              </SelectItem>
-              <SelectItem key="nftables" textValue="nftables">
-                nftables 模式
-              </SelectItem>
-            </Select>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Select
+                  label="续费周期"
+                  placeholder="选择续费周期"
+                  selectedKeys={form.renewalCycle ? [form.renewalCycle] : []}
+                  variant="bordered"
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0] as
+                      | NodeRenewalCycle
+                      | undefined;
 
-            {form.forwardMode === "nftables" ? (
-              <Alert
-                color="warning"
-                description="nftables 模式仅支持纯转发，不支持隧道、流量控制和 agent 安装，规则将由面板通过 SSH 下发。"
-                variant="flat"
+                    setForm((prev) => ({
+                      ...prev,
+                      renewalCycle: selected || "",
+                    }));
+                  }}
+                >
+                  <SelectItem key="month" textValue="month">
+                    月付
+                  </SelectItem>
+                  <SelectItem key="quarter" textValue="quarter">
+                    季付
+                  </SelectItem>
+                  <SelectItem key="year" textValue="year">
+                    年付
+                  </SelectItem>
+                </Select>
+
+                <Input
+                  errorMessage={errors.expiryTime}
+                  isInvalid={!!errors.expiryTime}
+                  label="续费基准时间"
+                  max="9999-12-31"
+                  type="date"
+                  value={
+                    form.expiryTime > 0
+                      ? new Date(form.expiryTime).toISOString().slice(0, 10)
+                      : ""
+                  }
+                  variant="bordered"
+                  onChange={(e) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      expiryTime: e.target.value
+                        ? new Date(e.target.value).getTime()
+                        : 0,
+                    }))
+                  }
+                />
+              </div>
+
+              <p className="text-xs text-muted-foreground">
+                例如选择月付并填写
+                2026-03-01，系统会自动按每月同日推算下次续费时间。
+              </p>
+            </FormSection>
+
+            <FormSection
+              description="填写入口 / 出口服务器的地址，不是面板地址"
+              title="连接方式"
+            >
+              <Input
+                description="可选：不带协议、不带端口。建议在 IPv4 和 IPv6 都未填写时使用"
+                errorMessage={errors.serverHost}
+                isInvalid={!!errors.serverHost}
+                label="域名/主机名"
+                placeholder="例如: test.example.com"
+                value={form.serverHost}
+                variant="bordered"
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, serverHost: e.target.value }))
+                }
               />
-            ) : (
-              <Alert
-                color="primary"
-                description="agent 模式会继续使用服务器 agent 执行转发与管理操作。"
-                variant="flat"
-              />
-            )}
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  errorMessage={errors.serverIpV4}
+                  isInvalid={!!errors.serverIpV4}
+                  label="IPv4 地址"
+                  placeholder="例如: 192.168.1.100"
+                  value={form.serverIpV4}
+                  variant="bordered"
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, serverIpV4: e.target.value }))
+                  }
+                />
+
+                <Input
+                  errorMessage={errors.serverIpV6}
+                  isInvalid={!!errors.serverIpV6}
+                  label="IPv6 地址"
+                  placeholder="例如: 2001:db8::10"
+                  value={form.serverIpV6}
+                  variant="bordered"
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, serverIpV6: e.target.value }))
+                  }
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <Input
+                  classNames={{
+                    input: "font-mono",
+                  }}
+                  description="单个端口(80)、多个(80,443)或范围(10000-65535)"
+                  errorMessage={errors.port}
+                  isInvalid={!!errors.port}
+                  label="可用端口"
+                  placeholder="例如: 80,443,10000-65535"
+                  value={form.port}
+                  variant="bordered"
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, port: e.target.value }))
+                  }
+                />
+
+                <Select
+                  label="转发模式"
+                  selectedKeys={[form.forwardMode]}
+                  variant="bordered"
+                  onSelectionChange={(keys) => {
+                    const selected = Array.from(keys)[0] as
+                      | NodeForm["forwardMode"]
+                      | undefined;
+
+                    setForm((prev) => ({
+                      ...prev,
+                      forwardMode: selected || "agent",
+                    }));
+                  }}
+                >
+                  <SelectItem key="agent" textValue="agent">
+                    agent 模式
+                  </SelectItem>
+                  <SelectItem key="nftables" textValue="nftables">
+                    nftables 模式
+                  </SelectItem>
+                </Select>
+              </div>
+
+              {form.forwardMode === "nftables" && (
+                <Alert
+                  color="warning"
+                  description="nftables 模式仅支持纯转发，不支持隧道、流量控制和 agent 安装，规则由面板通过 SSH 下发。"
+                  variant="flat"
+                />
+              )}
+            </FormSection>
 
             {/* 高级配置 */}
             <Accordion className="px-0" variant="light">
@@ -642,13 +653,6 @@ export function NodeFormModal({
                 </div>
               </AccordionItem>
             </Accordion>
-
-            <Alert
-              className="mt-4"
-              color="primary"
-              description="服务器ip地址是你要添加的入口/出口的ip地址，不是面板的ip地址。"
-              variant="flat"
-            />
           </div>
         </ModalBody>
         <ModalFooter>
@@ -661,5 +665,30 @@ export function NodeFormModal({
         </ModalFooter>
       </ModalContent>
     </Modal>
+  );
+}
+
+/** A labelled group of fields inside the form dialog. */
+function FormSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="space-y-3 border-t border-border pt-5 first:border-t-0 first:pt-0">
+      <div>
+        <h3 className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+          {title}
+        </h3>
+        {description && (
+          <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
+        )}
+      </div>
+      {children}
+    </section>
   );
 }
