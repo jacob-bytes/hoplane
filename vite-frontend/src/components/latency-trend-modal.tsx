@@ -87,11 +87,24 @@ export function LatencyTrendModal({
 }
 
 /** The trend chart and per-point summary, usable inside another dialog. */
-export function LatencyTrendPanel({ nodeId }: { nodeId: number | null }) {
-  return <LatencyTrendContent nodeId={nodeId} />;
+export function LatencyTrendPanel({
+  nodeId,
+  compact,
+}: {
+  nodeId: number | null;
+  /** Shorter chart, so the panel fits a tab without the dialog resizing. */
+  compact?: boolean;
+}) {
+  return <LatencyTrendContent compact={compact} nodeId={nodeId} />;
 }
 
-function LatencyTrendContent({ nodeId }: { nodeId: number | null }) {
+function LatencyTrendContent({
+  nodeId,
+  compact,
+}: {
+  nodeId: number | null;
+  compact?: boolean;
+}) {
   const [hours, setHours] = useState(24);
   const [trend, setTrend] = useState<LatencyTrend | null>(null);
   const [loading, setLoading] = useState(false);
@@ -130,13 +143,13 @@ function LatencyTrendContent({ nodeId }: { nodeId: number | null }) {
 
   return (
     <div className="space-y-3">
-      <div className="flex gap-1 self-start rounded-lg bg-muted p-1">
+      <div className="inline-flex w-fit items-center gap-0.5 rounded-lg border border-border p-0.5">
         {RANGES.map((r) => (
           <button
             key={r.hours}
-            className={`rounded-md px-3 py-1 text-xs transition-colors ${
+            className={`rounded-md px-2.5 py-1 text-xs transition-colors ${
               hours === r.hours
-                ? "bg-card font-medium shadow-sm"
+                ? "bg-muted font-medium text-foreground"
                 : "text-muted-foreground hover:text-foreground"
             }`}
             type="button"
@@ -148,15 +161,23 @@ function LatencyTrendContent({ nodeId }: { nodeId: number | null }) {
       </div>
 
       {loading && !trend ? (
-        <div className="flex h-52 items-center sm:h-64 justify-center">
+        <div
+          className={`flex items-center justify-center ${compact ? "h-52" : "h-52 sm:h-64"}`}
+        >
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
         </div>
       ) : rows.length === 0 ? (
-        <p className="flex h-52 items-center sm:h-64 justify-center text-sm text-muted-foreground">
+        <p
+          className={`flex items-center justify-center text-sm text-muted-foreground ${compact ? "h-52" : "h-52 sm:h-64"}`}
+        >
           这段时间还没有记录
         </p>
       ) : (
-        <div aria-label="延迟趋势图" className="h-52 sm:h-64" role="img">
+        <div
+          aria-label="延迟趋势图"
+          className={compact ? "h-52" : "h-52 sm:h-64"}
+          role="img"
+        >
           <ResponsiveContainer height="100%" width="100%">
             <LineChart data={rows}>
               <CartesianGrid

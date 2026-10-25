@@ -87,7 +87,7 @@ export function LatencyDialog({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent className="space-y-2" value="overview">
+          <TabsContent className="min-h-[464px] space-y-2" value="overview">
             {points.length === 0 ? (
               <p className="py-8 text-center text-sm text-muted-foreground">
                 还没有结果，点下方按钮检测
@@ -141,7 +141,7 @@ export function LatencyDialog({
             </div>
           </TabsContent>
 
-          <TabsContent value="trend">
+          <TabsContent className="min-h-[464px]" value="trend">
             {tab === "trend" && (
               <Suspense
                 fallback={
@@ -150,16 +150,16 @@ export function LatencyDialog({
                   </div>
                 }
               >
-                <LatencyTrendPanel nodeId={node?.id ?? null} />
+                <LatencyTrendPanel compact nodeId={node?.id ?? null} />
               </Suspense>
             )}
           </TabsContent>
 
-          <TabsContent value="route">
+          <TabsContent className="min-h-[464px]" value="route">
             <RoutePanel nodeId={node?.id ?? null} />
           </TabsContent>
 
-          <TabsContent value="targets">
+          <TabsContent className="min-h-[464px]" value="targets">
             {node && (
               <LatencyTargetsPanel
                 nodes={[node]}
