@@ -5,6 +5,7 @@ import {
   CartesianGrid,
   Line,
   LineChart,
+  ReferenceLine,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -43,6 +44,61 @@ const COLORS = [
   "var(--chart-5)",
   "var(--chart-6)",
 ];
+
+type TooltipRow = {
+  dataKey?: string | number;
+  name?: string;
+  value?: number | null;
+  color?: string;
+  payload?: Record<string, unknown>;
+};
+
+/** One card per hovered timestamp, series sorted fastest to slowest. */
+function LatencyTooltip({
+  active,
+  payload,
+  label,
+  hours,
+}: {
+  active?: boolean;
+  payload?: TooltipRow[];
+  label?: number;
+  hours: number;
+}) {
+  if (!active || !payload || payload.length === 0) return null;
+  const rows = [...payload].sort(
+    (a, b) => Number(b.value ?? 0) - Number(a.value ?? 0),
+  );
+
+  return (
+    <div className="pointer-events-none min-w-44 max-w-56 rounded-lg border border-border bg-popover p-2 text-xs text-popover-foreground shadow-lg">
+      <div className="mb-1 font-medium">{timeLabel(Number(label), hours)}</div>
+      <div className="flex flex-col gap-1">
+        {rows.map((row) => {
+          const loss = Number(
+            row.payload?.[`${String(row.name)}\u0000loss`] ?? 0,
+          );
+
+          return (
+            <div key={String(row.dataKey)} className="flex items-center gap-2">
+              <span
+                className="size-1.5 shrink-0 rounded-full"
+                style={{ backgroundColor: row.color }}
+              />
+              <span className="min-w-0 flex-1 truncate">{row.name}</span>
+              <span className="font-mono tabular-nums">
+                {row.value === null || row.value === undefined
+                  ? "超时"
+                  : `${Math.round(Number(row.value))} ms`}
+              </span>
+              {loss > 0 && <span className="text-destructive">丢{loss}%</span>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function timeLabel(t: number, hours: number) {
   const d = new Date(t);
@@ -200,38 +256,26 @@ function LatencyTrendContent({
                 tickFormatter={(v: number) => `${Math.round(v)}ms`}
                 width={52}
               />
+              <ReferenceLine
+                ifOverflow="extendDomain"
+                label={{
+                  value: "良好阈值 100 ms",
+                  position: "insideTopRight",
+                  fill: "var(--muted-foreground)",
+                  fontSize: 10,
+                }}
+                stroke="var(--border)"
+                strokeDasharray="4 4"
+                y={100}
+              />
               <Tooltip
-                contentStyle={{
-                  backgroundColor: "rgba(0,0,0,0.8)",
-                  border: "none",
-                  borderRadius: "8px",
-                  fontSize: 12,
-                }}
-                formatter={(
-                  value: unknown,
-                  name: unknown,
-                  item: { payload?: unknown },
-                ) => {
-                  const loss = Number(
-                    (item?.payload as Record<string, unknown>)?.[
-                      `${String(name)}\u0000loss`
-                    ] ?? 0,
-                  );
-
-                  return [
-                    value === null || value === undefined
-                      ? "超时"
-                      : `${Number(value).toFixed(0)}ms${
-                          loss > 0 ? ` · 丢包 ${loss}%` : ""
-                        }`,
-                    String(name),
-                  ];
-                }}
-                itemStyle={{ padding: 0 }}
-                labelFormatter={(t: unknown) =>
-                  timeLabel(Number(t), hours > 24 ? 48 : 24)
-                }
-                labelStyle={{ color: "#fff" }}
+                allowEscapeViewBox={{ x: true, y: true }}
+                animationDuration={0}
+                content={<LatencyTooltip hours={hours} />}
+                cursor={{ stroke: "var(--border)", strokeDasharray: "3 3" }}
+                isAnimationActive={false}
+                offset={12}
+                wrapperStyle={{ pointerEvents: "none", outline: "none" }}
               />
               {points.map((p, i) => (
                 <Line
