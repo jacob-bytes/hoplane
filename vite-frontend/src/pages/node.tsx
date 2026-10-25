@@ -2573,14 +2573,33 @@ export default function NodePage({
                       },
                     ]
             }
+            badge={
+              node && (
+                <span
+                  className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
+                    isRemoteNode
+                      ? "bg-muted text-muted-foreground"
+                      : online
+                        ? "bg-success/10 text-success-700 dark:text-success-400"
+                        : "bg-danger/10 text-danger"
+                  }`}
+                >
+                  {!isRemoteNode && (
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${online ? "bg-success" : "bg-danger"}`}
+                    />
+                  )}
+                  {isRemoteNode ? "远程" : online ? "在线" : "离线"}
+                </span>
+              )
+            }
             open={Boolean(node)}
             subtitle={
-              node &&
-              (isRemoteNode
-                ? "远程服务器"
-                : online
-                  ? "在线"
-                  : "离线 · agent 没有连上面板")
+              node && (isRemoteNode || !online)
+                ? isRemoteNode
+                  ? "远程服务器，由远端面板管理"
+                  : "agent 没有连上面板，实时数据可能过期"
+                : undefined
             }
             title={node?.name ?? ""}
             onClose={close}
@@ -2592,14 +2611,25 @@ export default function NodePage({
                     {getRemoteSyncErrorMessage(node.syncError)}
                   </p>
                 )}
-                {rows.map(([k, v]) => (
-                  <div key={k} className="flex justify-between gap-3">
-                    <span className="shrink-0 text-muted-foreground">{k}</span>
-                    <span className="min-w-0 break-all text-right font-mono text-xs leading-5">
-                      {v}
-                    </span>
-                  </div>
-                ))}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 rounded-lg border border-border/60 bg-muted/30 p-3">
+                  {rows.map(([k, v]) => (
+                    <div
+                      key={k}
+                      className={`min-w-0 ${
+                        k === "IP" || k === "地址" || k === "续费"
+                          ? "col-span-2"
+                          : ""
+                      }`}
+                    >
+                      <div className="text-[11px] text-muted-foreground">
+                        {k}
+                      </div>
+                      <div className="mt-0.5 break-all font-mono text-xs text-foreground">
+                        {v}
+                      </div>
+                    </div>
+                  ))}
+                </div>
                 {progress && progress.percent < 100 && (
                   <Progress
                     showValueLabel

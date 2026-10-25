@@ -19,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export function NodeActionsSheet({
   open,
   title,
+  badge,
   subtitle,
   children,
   actions,
@@ -26,6 +27,8 @@ export function NodeActionsSheet({
 }: {
   open: boolean;
   title: React.ReactNode;
+  /** State chip next to the name, e.g. 在线 / 离线. */
+  badge?: React.ReactNode;
   subtitle?: React.ReactNode;
   /** Read-only facts shown above the tabs (IP, version, uptime …). */
   children?: React.ReactNode;
@@ -54,7 +57,10 @@ export function NodeActionsSheet({
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <DialogTitle className="break-all pr-8">{title}</DialogTitle>
+          <div className="flex flex-wrap items-center gap-2 pr-8">
+            <DialogTitle className="break-all">{title}</DialogTitle>
+            {badge}
+          </div>
           {subtitle && <DialogDescription>{subtitle}</DialogDescription>}
         </DialogHeader>
 
@@ -74,7 +80,11 @@ export function NodeActionsSheet({
           </TabsList>
 
           {groups.map(([key, items]) => (
-            <TabsContent key={key || "other"} value={key || "other"}>
+            <TabsContent
+              key={key || "other"}
+              className="min-h-[176px]"
+              value={key || "other"}
+            >
               <div className="overflow-hidden rounded-lg border border-border">
                 {items.map((action) => (
                   <button
@@ -92,7 +102,13 @@ export function NodeActionsSheet({
                     }}
                   >
                     {action.icon && (
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                      <span
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                          action.kind === "navigate"
+                            ? "bg-primary/10 text-primary"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
                         <action.icon className="h-4 w-4" />
                       </span>
                     )}
