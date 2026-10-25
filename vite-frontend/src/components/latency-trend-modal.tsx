@@ -1,7 +1,6 @@
 import type { LatencyTrend } from "@/api/types";
 
 import { useEffect, useMemo, useState } from "react";
-import { Loader2 } from "lucide-react";
 import {
   CartesianGrid,
   Line,
@@ -13,6 +12,16 @@ import {
 } from "recharts";
 
 import { getNodeLatencyHistory } from "@/api";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Modal,
   ModalBody,
@@ -27,16 +36,12 @@ const RANGES = [
 ];
 
 const COLORS = [
-  "var(--success)",
-  "var(--primary)",
-  "var(--warning)",
-  "#ef4444",
-  "#8b5cf6",
-  "#06b6d4",
-  "#ec4899",
-  "#84cc16",
-  "#f97316",
-  "#64748b",
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--chart-6)",
 ];
 
 function timeLabel(t: number, hours: number) {
@@ -142,29 +147,28 @@ function LatencyTrendContent({
   const points = trend?.points ?? [];
 
   return (
-    <div className="space-y-3">
-      <div className="inline-flex w-fit items-center gap-0.5 rounded-lg border border-border p-0.5">
+    <div className="flex flex-col gap-3">
+      <ToggleGroup
+        className="w-fit self-start"
+        size="sm"
+        type="single"
+        value={String(hours)}
+        variant="outline"
+        onValueChange={(v) => v && setHours(Number(v))}
+      >
         {RANGES.map((r) => (
-          <button
-            key={r.hours}
-            className={`rounded-md px-2.5 py-1 text-xs transition-colors ${
-              hours === r.hours
-                ? "bg-muted font-medium text-foreground"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-            type="button"
-            onClick={() => setHours(r.hours)}
-          >
+          <ToggleGroupItem key={r.hours} value={String(r.hours)}>
             {r.label}
-          </button>
+          </ToggleGroupItem>
         ))}
-      </div>
+      </ToggleGroup>
 
       {loading && !trend ? (
-        <div
-          className={`flex items-center justify-center ${compact ? "h-52" : "h-52 sm:h-64"}`}
-        >
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        <div aria-busy="true" className="flex flex-col gap-2">
+          <Skeleton className={`w-full ${compact ? "h-52" : "h-52 sm:h-64"}`} />
+          {[0, 1, 2].map((i) => (
+            <Skeleton key={i} className="h-6 w-full" />
+          ))}
         </div>
       ) : rows.length === 0 ? (
         <p
@@ -174,7 +178,7 @@ function LatencyTrendContent({
         </p>
       ) : (
         <div
-          aria-label="延迟趋势图"
+          aria-label={`延迟趋势图，共 ${points.length} 个测试点、${rows.length} 个采样点`}
           className={compact ? "h-52" : "h-52 sm:h-64"}
           role="img"
         >
@@ -248,44 +252,49 @@ function LatencyTrendContent({
       )}
 
       {points.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead className="text-muted-foreground">
-              <tr className="border-b border-divider">
-                <th className="py-1.5 text-left font-normal">测试点</th>
-                <th className="py-1.5 text-right font-normal">平均</th>
-                <th className="py-1.5 text-right font-normal">最高</th>
-                <th className="py-1.5 text-right font-normal">平均丢包</th>
-              </tr>
-            </thead>
-            <tbody className="font-mono">
+        <div className="max-h-64 overflow-y-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="h-7 text-[11px]">测试点</TableHead>
+                <TableHead className="h-7 text-right text-[11px]">
+                  平均
+                </TableHead>
+                <TableHead className="h-7 text-right text-[11px]">
+                  最高
+                </TableHead>
+                <TableHead className="h-7 text-right text-[11px]">
+                  平均丢包
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {points.map((p, i) => (
-                <tr
-                  key={p.name}
-                  className="border-b border-divider last:border-0"
-                >
-                  <td className="py-1.5 font-sans">
-                    <span
-                      className="mr-2 inline-block h-2 w-2 rounded-full"
-                      style={{ background: COLORS[i % COLORS.length] }}
-                    />
-                    {p.name}
-                  </td>
-                  <td className="py-1.5 text-right">
+                <TableRow key={p.name}>
+                  <TableCell className="py-1.5">
+                    <span className="flex items-center gap-2">
+                      <span
+                        className="size-2 shrink-0 rounded-full"
+                        style={{ background: COLORS[i % COLORS.length] }}
+                      />
+                      {p.name}
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-1.5 text-right font-mono text-xs tabular-nums">
                     {p.avgMs ? `${Math.round(p.avgMs)} ms` : "-"}
-                  </td>
-                  <td className="py-1.5 text-right">
+                  </TableCell>
+                  <TableCell className="py-1.5 text-right font-mono text-xs tabular-nums">
                     {p.maxMs ? `${p.maxMs} ms` : "-"}
-                  </td>
-                  <td
-                    className={`py-1.5 text-right ${p.lossPct >= 5 ? "text-danger" : ""}`}
+                  </TableCell>
+                  <TableCell
+                    className={`py-1.5 text-right font-mono text-xs tabular-nums ${p.lossPct >= 5 ? "text-destructive" : ""}`}
                   >
                     {p.lossPct}%
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       )}
     </div>

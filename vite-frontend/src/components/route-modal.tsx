@@ -12,6 +12,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import {
   Collapsible,
@@ -43,21 +44,15 @@ import {
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
 
-// Short tag and color per return route, premium lines warmer.
-const ROUTES: Record<string, [string, string]> = {
-  "电信 CN2 GIA": [
-    "CN2 GIA",
-    "bg-warning/15 text-warning dark:text-warning-400",
-  ],
-  "电信 CN2 GT": ["CN2 GT", "bg-warning/15 text-warning dark:text-warning-400"],
-  "电信 163": ["163", "bg-default-200/70 text-muted-foreground"],
-  "联通 9929": [
-    "9929",
-    "bg-violet-500/15 text-violet-700 dark:text-violet-300",
-  ],
-  "联通 4837": ["4837", "bg-primary/15 text-primary dark:text-primary-400"],
-  "移动 CMIN2": ["CMIN2", "bg-success/15 text-success dark:text-success-400"],
-  "移动 CMI": ["CMI", "bg-success/15 text-success dark:text-success-400"],
+// Short tag per return route.
+const ROUTES: Record<string, string> = {
+  "电信 CN2 GIA": "CN2 GIA",
+  "电信 CN2 GT": "CN2 GT",
+  "电信 163": "163",
+  "联通 9929": "9929",
+  "联通 4837": "4837",
+  "移动 CMIN2": "CMIN2",
+  "移动 CMI": "CMI",
 };
 
 const ROUTE_TEXT: Record<string, string> = {
@@ -87,26 +82,23 @@ const NET_LABEL: Record<string, string> = { CT: "电信" };
 export function RouteTag({
   route,
   short,
-  plain,
 }: {
   route?: string;
   short?: boolean;
-  /** Muted chip with coloured text, for rows that already carry a colour. */
-  plain?: boolean;
 }) {
   if (!route || route === "未识别") return null;
-  const [tag, cls] = ROUTES[route] ?? [route, ROUTES["电信 163"][1]];
-  const className = plain
-    ? `${ROUTE_TEXT[route] ?? "text-muted-foreground"} bg-muted/60`
-    : cls;
 
   return (
-    <span
-      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded px-1 font-sans text-[11px] font-medium leading-4 ${className}`}
+    <Badge
+      className={cn(
+        "shrink-0 font-sans font-normal",
+        ROUTE_TEXT[route] ?? "text-muted-foreground",
+      )}
       title={`回程 ${route}`}
+      variant="outline"
     >
-      {short ? tag : route}
-    </span>
+      {short ? (ROUTES[route] ?? route) : route}
+    </Badge>
   );
 }
 
@@ -241,7 +233,7 @@ export function RoutePanel({ nodeId }: { nodeId: number | null }) {
                     <span className="font-medium">{p.name}</span>
                     {legs.map(({ key, leg }) =>
                       leg.route && leg.route !== "未识别" ? (
-                        <RouteTag key={key} plain short route={leg.route} />
+                        <RouteTag key={key} short route={leg.route} />
                       ) : null,
                     )}
                     {failed && (
@@ -260,9 +252,7 @@ export function RoutePanel({ nodeId }: { nodeId: number | null }) {
                       {legs.length > 1 && (
                         <div className="flex items-center gap-2 pb-1 pt-1">
                           <Badge variant="secondary">{label}</Badge>
-                          {leg.route && (
-                            <RouteTag plain short route={leg.route} />
-                          )}
+                          {leg.route && <RouteTag short route={leg.route} />}
                           {leg.error && (
                             <span className="text-xs text-destructive">
                               {leg.error}

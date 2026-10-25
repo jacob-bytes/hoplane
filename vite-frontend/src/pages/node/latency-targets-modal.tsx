@@ -5,8 +5,28 @@ import { toast } from "sonner";
 import { Pin } from "lucide-react";
 
 import { getConfigByName, setNodeLatencyTargets } from "@/api";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { DialogFooter } from "@/components/ui/dialog";
 import {
   Modal,
   ModalBody,
@@ -154,123 +174,142 @@ export function LatencyTargetsPanel({
     }
   };
 
-  const modeButton = (on: boolean, label: string, onPress: () => void) => (
-    <button
-      className={`flex-1 rounded-md px-3 py-1.5 text-sm transition-colors ${
-        on
-          ? "bg-card font-medium shadow-sm"
-          : "text-muted-foreground hover:text-foreground"
-      }`}
-      type="button"
-      onClick={onPress}
-    >
-      {label}
-    </button>
-  );
-
   return (
-    <div className="space-y-3">
-      <div className="flex gap-1 rounded-lg bg-muted p-1">
-        {modeButton(!custom, "跟随默认", () => setCustom(false))}
-        {modeButton(custom, "自定义", startCustom)}
-      </div>
+    <div className="flex flex-col gap-3">
+      <ToggleGroup
+        className="w-fit self-start"
+        size="sm"
+        type="single"
+        value={custom ? "custom" : "default"}
+        variant="outline"
+        onValueChange={(v) => {
+          if (v === "custom") startCustom();
+          else if (v === "default") setCustom(false);
+        }}
+      >
+        <ToggleGroupItem value="default">跟随默认</ToggleGroupItem>
+        <ToggleGroupItem value="custom">自定义</ToggleGroupItem>
+      </ToggleGroup>
 
       {pool.length === 0 ? (
-        <p className="py-4 text-center text-sm text-muted-foreground">
-          还没有测试点，请先到网站配置添加
-        </p>
+        <Empty className="border border-dashed py-8">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Pin />
+            </EmptyMedia>
+            <EmptyTitle>还没有测试点</EmptyTitle>
+            <EmptyDescription>先到网站配置里添加测试点。</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       ) : !custom ? (
-        <div className="space-y-1.5 text-sm">
+        <div className="flex flex-col gap-2 text-sm">
           <p className="text-xs text-muted-foreground">
             测网站配置里打开“默认”的测试点，那边改了这里跟着变：
           </p>
           <div className="flex flex-wrap gap-1.5">
             {defaults.map((t) => (
-              <span
-                key={t.name}
-                className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs"
-              >
-                {t.pinned && <Pin className="h-3 w-3 text-primary" />}
+              <Badge key={t.name} variant="secondary">
+                {t.pinned && <Pin className="size-3" />}
                 {t.name}
-              </span>
+              </Badge>
             ))}
           </div>
         </div>
       ) : (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
             <span>
               已选 {points.length} 个 · 卡片显示 {pinned.length}/{MAX_PINNED}
             </span>
-            <span className="flex gap-3">
-              <button
-                className="text-primary"
-                type="button"
-                onClick={() => setPoints(pool.map((t) => t.name))}
+            <span className="flex items-center gap-1">
+              <Button
+                size="sm"
+                variant="ghost"
+                onPress={() => setPoints(pool.map((t) => t.name))}
               >
                 全选
-              </button>
-              <button
-                className="text-primary"
-                type="button"
-                onClick={() => {
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onPress={() => {
                   setPoints([]);
                   setPinned([]);
                 }}
               >
                 清空
-              </button>
+              </Button>
             </span>
           </div>
-          <div className="divide-y divide-divider rounded-lg border border-divider">
-            {pool.map((t) => {
-              const on = points.includes(t.name);
-              const pin = pinned.includes(t.name);
+          <div className="max-h-72 overflow-y-auto rounded-lg border border-border">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="h-8">测试点</TableHead>
+                  <TableHead className="h-8">地址</TableHead>
+                  <TableHead className="h-8 text-right">卡片</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {pool.map((t) => {
+                  const on = points.includes(t.name);
+                  const pin = pinned.includes(t.name);
 
-              return (
-                <div key={t.name} className="flex items-center gap-2 px-3 py-2">
-                  <Checkbox
-                    isSelected={on}
-                    size="sm"
-                    onValueChange={(v) => toggle(t.name, v)}
-                  >
-                    <span className="text-sm">{t.name}</span>
-                  </Checkbox>
-                  <span className="min-w-0 flex-1 truncate font-mono text-[11px] text-muted-foreground">
-                    {t.host}:{t.port}
-                  </span>
-                  <button
-                    className={`inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-1 text-xs transition-colors disabled:opacity-30 ${
-                      pin
-                        ? "bg-primary/10 text-primary"
-                        : "text-muted-foreground hover:text-muted-foreground"
-                    }`}
-                    disabled={!on || (!pin && pinned.length >= MAX_PINNED)}
-                    title="卡片上固定显示"
-                    type="button"
-                    onClick={() => togglePin(t.name)}
-                  >
-                    <Pin className="h-3 w-3" />
-                    卡片
-                  </button>
-                </div>
-              );
-            })}
+                  return (
+                    <TableRow key={t.name}>
+                      <TableCell className="py-1.5">
+                        <Checkbox
+                          isSelected={on}
+                          size="sm"
+                          onValueChange={(v) => toggle(t.name, v)}
+                        >
+                          <span className="text-sm">{t.name}</span>
+                        </Checkbox>
+                      </TableCell>
+                      <TableCell className="py-1.5 font-mono text-[11px] text-muted-foreground">
+                        {t.host}:{t.port}
+                      </TableCell>
+                      <TableCell className="py-1.5 text-right">
+                        <Toggle
+                          aria-label={`在卡片上固定 ${t.name}`}
+                          disabled={
+                            !on || (!pin && pinned.length >= MAX_PINNED)
+                          }
+                          pressed={pin}
+                          size="sm"
+                          variant="outline"
+                          onPressedChange={() => togglePin(t.name)}
+                        >
+                          <Pin className="size-3" />
+                          卡片
+                        </Toggle>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
         </div>
       )}
+
       {custom && pool.length > 0 && points.length === 0 && (
         <p className="text-xs text-muted-foreground">
           一个都不选：{batch ? "这些服务器" : "这台服务器"}
           不测延迟和回程，卡片上显示“不测延迟”。
         </p>
       )}
+
       {batch && (
-        <p className="text-xs text-warning-600">
-          保存后会覆盖这些服务器原来的测试点设置。
-        </p>
+        <Alert variant="warning">
+          <AlertTitle>批量设置</AlertTitle>
+          <AlertDescription>
+            保存后会覆盖这些服务器原来的测试点设置。
+          </AlertDescription>
+        </Alert>
       )}
-      <div className="flex justify-end gap-2 pt-1">
+
+      <DialogFooter>
         <Button variant="ghost" onPress={onClose}>
           取消
         </Button>
@@ -281,7 +320,7 @@ export function LatencyTargetsPanel({
         >
           保存
         </Button>
-      </div>
+      </DialogFooter>
     </div>
   );
 }

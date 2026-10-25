@@ -52,7 +52,12 @@
 
   --secondary: #f4f4f5;
   --secondary-foreground: #18181b;
+  --chart-1: #1d4ed8;
   --chart-2: #0ea5e9;
+  --chart-3: #d97706;
+  --chart-4: #059669;
+  --chart-5: #7c3aed;
+  --chart-6: #dc2626;
 
   --danger: #dc2626;
   --destructive: #dc2626;
@@ -161,7 +166,12 @@
 
   --secondary: #27272a;
   --secondary-foreground: #fafafa;
+  --chart-1: #3b82f6;
   --chart-2: #38bdf8;
+  --chart-3: #fbbf24;
+  --chart-4: #34d399;
+  --chart-5: #a78bfa;
+  --chart-6: #f87171;
 
   --danger: #ef4444;
   --destructive: #ef4444;

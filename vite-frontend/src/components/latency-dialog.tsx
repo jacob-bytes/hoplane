@@ -2,7 +2,7 @@ import type { InboundProbe } from "@/api/types";
 import type { Node } from "@/pages/node/types";
 
 import { Suspense, lazy, useMemo, useState } from "react";
-import { Loader2, RefreshCw, X } from "lucide-react";
+import { Crosshair, Loader2, RefreshCw, X } from "lucide-react";
 
 import { RouteTag } from "@/components/route-modal";
 import { RoutePanel } from "@/components/route-modal";
@@ -16,7 +16,27 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { cn } from "@/lib/utils";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { TONE, pointTone, probePoints } from "@/components/latency-cell";
@@ -73,6 +93,7 @@ export function LatencyDialog({
     null,
   );
   const badCount = points.filter(isBad).length;
+  const hasLoss = points.some((p) => (p.lossPct ?? 0) > 0);
   const visible = useMemo(() => {
     const list = onlyBad ? points.filter(isBad) : [...points];
 
@@ -97,12 +118,12 @@ export function LatencyDialog({
         return m < 1 ? "刚刚检测" : `${m} 分钟前检测`;
       })()
     : null;
-  const chip = (active: boolean) =>
-    `rounded-md border px-2 py-0.5 text-xs transition-colors ${
-      active
-        ? "border-primary/40 bg-primary/10 font-medium text-primary"
-        : "border-border text-muted-foreground hover:text-foreground"
-    }`;
+  const badgeVariant = (tone: keyof typeof TONE) =>
+    tone === "success"
+      ? "success"
+      : tone === "warning"
+        ? "warning"
+        : "destructive";
 
   return (
     <Dialog
@@ -211,44 +232,53 @@ export function LatencyDialog({
                     {worst?.latencyMs ?? "—"} ms
                   </span>
                 </span>
-                <div className="ml-auto flex items-center gap-1">
-                  <button
-                    aria-pressed={sort === "asc"}
-                    className={chip(sort === "asc")}
-                    type="button"
-                    onClick={() => setSort(sort === "asc" ? null : "asc")}
+                <div className="ml-auto flex items-center gap-1.5">
+                  <ToggleGroup
+                    size="sm"
+                    type="single"
+                    value={sort ?? ""}
+                    variant="outline"
+                    onValueChange={(v) => setSort((v || null) as SortKey)}
                   >
-                    延迟 ↑
-                  </button>
-                  <button
-                    aria-pressed={sort === "desc"}
-                    className={chip(sort === "desc")}
-                    type="button"
-                    onClick={() => setSort(sort === "desc" ? null : "desc")}
-                  >
-                    延迟 ↓
-                  </button>
-                  <button
-                    aria-pressed={onlyBad}
-                    className={chip(onlyBad) + " ml-1"}
-                    type="button"
-                    onClick={() => setOnlyBad((v) => !v)}
+                    <ToggleGroupItem aria-label="按延迟升序" value="asc">
+                      延迟 ↑
+                    </ToggleGroupItem>
+                    <ToggleGroupItem aria-label="按延迟降序" value="desc">
+                      延迟 ↓
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                  <Toggle
+                    aria-label={`只看异常，共 ${badCount} 个`}
+                    pressed={onlyBad}
+                    size="sm"
+                    variant="outline"
+                    onPressedChange={setOnlyBad}
                   >
                     只看异常 {badCount}
-                  </button>
+                  </Toggle>
                 </div>
               </div>
             )}
 
             {points.length === 0 ? (
-              <div className="flex flex-col items-center gap-2 py-10">
-                {probing ? (
-                  <Skeleton className="h-9 w-full rounded-md" />
-                ) : (
-                  <>
-                    <p className="text-sm text-muted-foreground">
-                      这台服务器还没有延迟结果
-                    </p>
+              probing ? (
+                <div aria-busy="true" className="flex flex-col gap-2">
+                  {[0, 1, 2].map((i) => (
+                    <Skeleton key={i} className="h-9 w-full rounded-md" />
+                  ))}
+                </div>
+              ) : (
+                <Empty className="border border-dashed py-8 md:py-10">
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon">
+                      <Crosshair />
+                    </EmptyMedia>
+                    <EmptyTitle>还没有延迟结果</EmptyTitle>
+                    <EmptyDescription>
+                      选几个测试点后，每 3 分钟自动检测一次。
+                    </EmptyDescription>
+                  </EmptyHeader>
+                  <EmptyContent>
                     <Button
                       size="sm"
                       variant="outline"
@@ -256,72 +286,79 @@ export function LatencyDialog({
                     >
                       添加测试点
                     </Button>
-                  </>
-                )}
-              </div>
+                  </EmptyContent>
+                </Empty>
+              )
             ) : (
-              <div
-                aria-label="测试点延迟"
-                className="divide-y divide-border overflow-hidden rounded-lg border border-border"
-                role="list"
-              >
-                {visible.map((p) => {
-                  const [pill, dot] = TONE[pointTone(p)];
-                  const bad = isBad(p);
-                  const slowest = p.ok && p === worst;
-                  const loss = p.lossPct ?? 0;
-
-                  return (
-                    <div
-                      key={p.name}
-                      aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : p.error || "连不上"}，丢包 ${loss}%`}
-                      className="relative flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 text-sm"
-                      role="listitem"
-                    >
-                      {(bad || slowest) && (
-                        <span
-                          aria-hidden
-                          className={`absolute inset-y-1 left-0 w-0.5 rounded-full ${bad ? "bg-danger" : "bg-warning"}`}
-                        />
+              <div className="overflow-hidden rounded-lg border border-border">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="h-8">测试点</TableHead>
+                      <TableHead className="h-8">线路</TableHead>
+                      <TableHead className="h-8 text-right">延迟</TableHead>
+                      {hasLoss && (
+                        <TableHead className="h-8 w-16 text-right">
+                          丢包
+                        </TableHead>
                       )}
-                      <span
-                        className={`h-1.5 w-1.5 shrink-0 rounded-full ${dot}`}
-                      />
-                      <span className="min-w-0 truncate">{p.name}</span>
-                      <RouteTag plain short route={p.route} />
-                      <span className="ml-auto flex items-center gap-2">
-                        <span
-                          className={`whitespace-nowrap rounded-full px-2 py-0.5 font-mono text-xs font-medium tabular-nums ${pill}`}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {visible.map((p) => {
+                      const tone = pointTone(p);
+                      const bad = isBad(p);
+                      const slowest = p.ok && p === worst;
+                      const loss = p.lossPct ?? 0;
+
+                      return (
+                        <TableRow
+                          key={p.name}
+                          aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : p.error || "连不上"}，丢包 ${loss}%`}
                         >
-                          {p.ok ? `${p.latencyMs} ms` : p.error || "连不上"}
-                        </span>
-                        <span
-                          className={`w-16 text-right text-xs tabular-nums ${
-                            loss >= 5
-                              ? "text-danger"
-                              : loss > 0
-                                ? "text-warning-700 dark:text-warning-400"
-                                : "text-muted-foreground"
-                          }`}
-                        >
-                          {p.ok && loss > 0 ? `丢包 ${loss}%` : ""}
-                        </span>
-                        {bad && (
-                          <span className="rounded bg-danger/10 px-1 text-[10px] font-medium text-danger">
-                            异常
-                          </span>
-                        )}
-                        {slowest && !bad && (
-                          <span className="rounded bg-warning/10 px-1 text-[10px] font-medium text-warning-700 dark:text-warning-400">
-                            最慢
-                          </span>
-                        )}
-                      </span>
-                    </div>
-                  );
-                })}
+                          <TableCell className="py-1.5">
+                            <span className="flex items-center gap-2">
+                              <span
+                                className={cn(
+                                  "size-1.5 shrink-0 rounded-full",
+                                  TONE[tone][1],
+                                )}
+                              />
+                              <span className="min-w-0 truncate">{p.name}</span>
+                              {bad && <Badge variant="destructive">异常</Badge>}
+                              {slowest && !bad && (
+                                <Badge variant="warning">最慢</Badge>
+                              )}
+                            </span>
+                          </TableCell>
+                          <TableCell className="py-1.5">
+                            <RouteTag short route={p.route} />
+                          </TableCell>
+                          <TableCell className="py-1.5 text-right">
+                            <Badge
+                              className="font-mono tabular-nums"
+                              variant={badgeVariant(tone)}
+                            >
+                              {p.ok ? `${p.latencyMs} ms` : p.error || "连不上"}
+                            </Badge>
+                          </TableCell>
+                          {hasLoss && (
+                            <TableCell
+                              className={cn(
+                                "py-1.5 text-right text-xs tabular-nums",
+                                loss >= 5 ? "text-destructive" : "text-warning",
+                              )}
+                            >
+                              {p.ok && loss > 0 ? `${loss}%` : ""}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
                 {visible.length === 0 && (
-                  <p className="flex items-center justify-center px-3 py-8 text-sm text-muted-foreground">
+                  <p className="px-3 py-8 text-center text-sm text-muted-foreground">
                     没有异常的测试点
                   </p>
                 )}
@@ -339,7 +376,7 @@ export function LatencyDialog({
             )}
           </TabsContent>
 
-          <TabsContent className="min-h-[464px]" value="trend">
+          <TabsContent value="trend">
             {tab === "trend" && (
               <Suspense
                 fallback={
@@ -353,11 +390,11 @@ export function LatencyDialog({
             )}
           </TabsContent>
 
-          <TabsContent className="min-h-[464px]" value="route">
+          <TabsContent value="route">
             <RoutePanel nodeId={node?.id ?? null} />
           </TabsContent>
 
-          <TabsContent className="min-h-[464px]" value="targets">
+          <TabsContent value="targets">
             {node && (
               <LatencyTargetsPanel
                 nodes={[node]}
