@@ -18,6 +18,7 @@ import {
 } from "@dnd-kit/sortable";
 import {
   Activity,
+  BellOff,
   Crosshair,
   GitBranch,
   GripVertical,
@@ -2471,7 +2472,7 @@ export default function NodePage({
                         key: "delete",
                         label: "删除",
                         section: "管理",
-                        description: "移除服务器与它的 agent 配置",
+                        description: "从面板移除这台远程服务器",
                         icon: Trash2,
                         kind: "dialog" as const,
                         closeOnSelect: false,
@@ -2505,11 +2506,24 @@ export default function NodePage({
                         onPress: () => openInstallSelector(node),
                       },
                       {
+                        key: "version",
+                        label: "版本",
+                        section: "维护",
+                        description: "升级到新版本，或回退到上一版",
+                        icon: GitBranch,
+                        hint: online ? undefined : "离线不可用",
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
+                        disabled: !online,
+                        onPress: () => openUpgradeModal("single", node.id),
+                      },
+                      {
                         key: "tune",
                         label: "调优",
                         section: "维护",
                         description: "内核与转发参数优化",
                         icon: SlidersHorizontal,
+                        hint: online ? undefined : "离线不可用",
                         kind: "dialog" as const,
                         closeOnSelect: false,
                         disabled: !online,
@@ -2525,28 +2539,6 @@ export default function NodePage({
                         closeOnSelect: false,
                         onPress: () => setTargetNodes([node]),
                       },
-                      {
-                        key: "version",
-                        label: "版本",
-                        section: "维护",
-                        description: "升级到新版本，或回退到上一版",
-                        icon: GitBranch,
-                        hint: node.version || undefined,
-                        kind: "dialog" as const,
-                        closeOnSelect: false,
-                        disabled: !online,
-                        onPress: () => openUpgradeModal("single", node.id),
-                      },
-                      {
-                        key: "edit",
-                        label: "编辑",
-                        section: "管理",
-                        description: "修改名称、地址与端口",
-                        icon: Pencil,
-                        kind: "dialog" as const,
-                        closeOnSelect: false,
-                        onPress: () => handleEdit(node),
-                      },
                       ...(node.expiryTime &&
                       node.renewalCycle &&
                       !node.expiryReminderDismissed &&
@@ -2555,16 +2547,31 @@ export default function NodePage({
                             {
                               key: "dismiss",
                               label: "关闭到期提醒",
+                              section: "维护",
+                              description: "不再提示这台服务器的续费到期",
+                              icon: BellOff,
+                              kind: "dialog" as const,
+                              closeOnSelect: false,
                               onPress: () =>
                                 handleDismissExpiryReminder(node.id),
                             },
                           ]
                         : []),
                       {
+                        key: "edit",
+                        label: "编辑",
+                        section: "管理",
+                        description: "名称、IP、端口、续费与备注",
+                        icon: Pencil,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
+                        onPress: () => handleEdit(node),
+                      },
+                      {
                         key: "delete",
                         label: "删除",
                         section: "管理",
-                        description: "移除服务器与它的 agent 配置",
+                        description: "从面板移除；agent 留在机器上，需手动卸载",
                         icon: Trash2,
                         kind: "dialog" as const,
                         closeOnSelect: false,
@@ -2576,6 +2583,13 @@ export default function NodePage({
             badge={
               node && (
                 <span
+                  aria-label={
+                    isRemoteNode
+                      ? "远程服务器"
+                      : online
+                        ? "服务器在线"
+                        : "服务器离线"
+                  }
                   className={`inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${
                     isRemoteNode
                       ? "bg-muted text-muted-foreground"
@@ -2583,6 +2597,7 @@ export default function NodePage({
                         ? "bg-success/10 text-success-700 dark:text-success-400"
                         : "bg-danger/10 text-danger"
                   }`}
+                  role="status"
                 >
                   {!isRemoteNode && (
                     <span
@@ -2630,24 +2645,36 @@ export default function NodePage({
                     {getRemoteSyncErrorMessage(node.syncError)}
                   </p>
                 )}
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 rounded-lg border border-border/60 bg-muted/30 p-3">
-                  {rows.map(([k, v]) => (
-                    <div
-                      key={k}
-                      className={`min-w-0 ${
-                        k === "IP" || k === "地址" || k === "续费"
-                          ? "col-span-2"
-                          : ""
-                      }`}
-                    >
+                <div className="overflow-hidden rounded-lg border border-border/60 bg-muted/30">
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 p-3">
+                    {rows.map(([k, v]) => (
+                      <div
+                        key={k}
+                        className={`min-w-0 ${
+                          k === "IP" || k === "地址" || k === "续费"
+                            ? "col-span-2"
+                            : ""
+                        }`}
+                      >
+                        <div className="text-[11px] text-muted-foreground">
+                          {k}
+                        </div>
+                        <div className="mt-0.5 break-words font-mono text-xs text-foreground [overflow-wrap:anywhere]">
+                          {v}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {node.remark?.trim() && (
+                    <div className="border-t border-border/60 px-3 py-2">
                       <div className="text-[11px] text-muted-foreground">
-                        {k}
+                        备注
                       </div>
-                      <div className="mt-0.5 break-all font-mono text-xs text-foreground">
-                        {v}
-                      </div>
+                      <p className="mt-0.5 whitespace-pre-wrap break-words text-xs text-foreground">
+                        {node.remark.trim()}
+                      </p>
                     </div>
-                  ))}
+                  )}
                 </div>
                 {progress && progress.percent < 100 && (
                   <Progress
@@ -2658,16 +2685,6 @@ export default function NodePage({
                     size="sm"
                     value={progress.percent}
                   />
-                )}
-                {node.remark?.trim() && (
-                  <div className="rounded-lg border border-border/60 bg-muted/20 px-3 py-2">
-                    <div className="text-[11px] text-muted-foreground">
-                      备注
-                    </div>
-                    <p className="mt-0.5 whitespace-pre-wrap break-words text-xs text-foreground">
-                      {node.remark.trim()}
-                    </p>
-                  </div>
                 )}
               </div>
             )}

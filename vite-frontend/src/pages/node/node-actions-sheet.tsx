@@ -64,7 +64,15 @@ export function NodeActionsSheet({
             <DialogTitle className="break-all">{title}</DialogTitle>
             {badge}
           </div>
-          {subtitle && <DialogDescription>{subtitle}</DialogDescription>}
+          {subtitle ? (
+            <DialogDescription>{subtitle}</DialogDescription>
+          ) : (
+            <DialogDescription className="sr-only">
+              {typeof title === "string"
+                ? `${title} 的服务器操作`
+                : "服务器操作"}
+            </DialogDescription>
+          )}
         </DialogHeader>
 
         {children}
@@ -82,64 +90,80 @@ export function NodeActionsSheet({
             ))}
           </TabsList>
 
-          {groups.map(([key, items]) => (
-            <TabsContent
-              key={key || "other"}
-              className="min-h-[176px]"
-              value={key || "other"}
-            >
-              <div className="overflow-hidden rounded-lg border border-border">
-                {items.map((action) => (
-                  <button
-                    key={action.key}
-                    className={`flex w-full items-center gap-3 border-b border-border px-4 py-2.5 text-left text-sm transition-colors last:border-b-0 hover:bg-accent/50 disabled:pointer-events-none disabled:opacity-50 ${
-                      action.color === "danger"
-                        ? "text-danger"
-                        : "text-foreground"
+          {groups.map(([key, items]) => {
+            const normal = items.filter((action) => action.color !== "danger");
+            const danger = items.filter((action) => action.color === "danger");
+            const row = (action: SheetAction, tone: "normal" | "danger") => (
+              <button
+                key={action.key}
+                className={`flex w-full items-center gap-3 border-b border-border px-4 py-2.5 text-left text-sm transition-colors last:border-b-0 ${
+                  tone === "danger"
+                    ? "text-danger hover:bg-danger/10"
+                    : "text-foreground hover:bg-accent/50"
+                } disabled:pointer-events-none disabled:opacity-50`}
+                disabled={action.disabled}
+                type="button"
+                onClick={() => {
+                  if (action.closeOnSelect !== false) onClose();
+                  action.onPress();
+                }}
+              >
+                {action.icon && (
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                      tone === "danger"
+                        ? "bg-danger/10 text-danger"
+                        : "bg-muted text-muted-foreground"
                     }`}
-                    disabled={action.disabled}
-                    type="button"
-                    onClick={() => {
-                      if (action.closeOnSelect !== false) onClose();
-                      action.onPress();
-                    }}
                   >
-                    {action.icon && (
-                      <span
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                          action.kind === "navigate"
-                            ? "bg-primary/10 text-primary"
-                            : "bg-muted text-muted-foreground"
-                        }`}
-                      >
-                        <action.icon className="h-4 w-4" />
-                      </span>
-                    )}
-                    <span className="min-w-0 flex-1">
-                      <span className="block truncate">{action.label}</span>
-                      {action.description && (
-                        <span className="mt-0.5 block truncate text-[11px] text-muted-foreground">
-                          {action.description}
-                        </span>
-                      )}
+                    <action.icon className="h-4 w-4" />
+                  </span>
+                )}
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate">{action.label}</span>
+                  {action.description && (
+                    <span
+                      className={`mt-0.5 block truncate text-xs ${
+                        tone === "danger"
+                          ? "text-danger/80"
+                          : "text-muted-foreground"
+                      }`}
+                      title={action.description}
+                    >
+                      {action.description}
                     </span>
-                    <span className="flex shrink-0 items-center gap-1 text-[11px] text-muted-foreground">
-                      {action.hint}
-                      {action.kind === "copy" ? (
-                        <Copy className="h-3.5 w-3.5" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4 opacity-50" />
-                      )}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </TabsContent>
-          ))}
+                  )}
+                </span>
+                <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+                  {action.hint}
+                  {action.kind === "copy" ? (
+                    <Copy className="h-3.5 w-3.5" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 opacity-50" />
+                  )}
+                </span>
+              </button>
+            );
+
+            return (
+              <TabsContent key={key || "other"} value={key || "other"}>
+                {normal.length > 0 && (
+                  <div className="overflow-hidden rounded-lg border border-border">
+                    {normal.map((action) => row(action, "normal"))}
+                  </div>
+                )}
+                {danger.length > 0 && (
+                  <div className="mt-2 overflow-hidden rounded-lg border border-danger/30 bg-danger/5">
+                    {danger.map((action) => row(action, "danger"))}
+                  </div>
+                )}
+              </TabsContent>
+            );
+          })}
         </Tabs>
 
         {footer && (
-          <p className="border-t border-border pt-2 text-[11px] text-muted-foreground">
+          <p className="border-t border-border pt-2 text-xs text-muted-foreground">
             {footer}
           </p>
         )}
