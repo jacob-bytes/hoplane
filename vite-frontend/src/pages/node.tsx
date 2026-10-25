@@ -2593,6 +2593,25 @@ export default function NodePage({
                 </span>
               )
             }
+            footer={
+              node && !isRemoteNode
+                ? node.systemInfo && online
+                  ? [
+                      node.systemInfo.load1 !== undefined
+                        ? `负载 ${node.systemInfo.load1.toFixed(2)} / ${(node.systemInfo.load5 ?? 0).toFixed(2)} / ${(node.systemInfo.load15 ?? 0).toFixed(2)}`
+                        : null,
+                      node.systemInfo.tcpConns !== undefined
+                        ? `TCP ${node.systemInfo.tcpConns}`
+                        : null,
+                      node.systemInfo.udpConns !== undefined
+                        ? `UDP ${node.systemInfo.udpConns}`
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")
+                  : "离线，暂无实时负载"
+                : undefined
+            }
             open={Boolean(node)}
             subtitle={
               node && (isRemoteNode || !online)
@@ -2641,9 +2660,14 @@ export default function NodePage({
                   />
                 )}
                 {node.remark?.trim() && (
-                  <p className="whitespace-pre-wrap break-all text-xs text-muted-foreground">
-                    {node.remark.trim()}
-                  </p>
+                  <div className="rounded-lg border border-border/60 bg-muted/20 px-3 py-2">
+                    <div className="text-[11px] text-muted-foreground">
+                      备注
+                    </div>
+                    <p className="mt-0.5 whitespace-pre-wrap break-words text-xs text-foreground">
+                      {node.remark.trim()}
+                    </p>
+                  </div>
                 )}
               </div>
             )}

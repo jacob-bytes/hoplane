@@ -23,6 +23,7 @@ export function NodeActionsSheet({
   subtitle,
   children,
   actions,
+  footer,
   onClose,
 }: {
   open: boolean;
@@ -33,6 +34,8 @@ export function NodeActionsSheet({
   /** Read-only facts shown above the tabs (IP, version, uptime …). */
   children?: React.ReactNode;
   actions: SheetAction[];
+  /** One muted line under the action list, e.g. live load and connections. */
+  footer?: React.ReactNode;
   onClose: () => void;
 }) {
   const groups = useMemo(() => {
@@ -134,6 +137,12 @@ export function NodeActionsSheet({
             </TabsContent>
           ))}
         </Tabs>
+
+        {footer && (
+          <p className="border-t border-border pt-2 text-[11px] text-muted-foreground">
+            {footer}
+          </p>
+        )}
       </DialogContent>
     </Dialog>
   );
