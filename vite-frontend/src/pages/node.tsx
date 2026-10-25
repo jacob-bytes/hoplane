@@ -16,18 +16,10 @@ import {
   rectSortingStrategy,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { Activity, GripVertical, MoreHorizontal, Terminal } from "lucide-react";
+import { GripVertical, Settings2 } from "lucide-react";
 
 import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownTrigger,
-} from "@/shadcn-bridge/heroui/dropdown";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge } from "@/shadcn-bridge/heroui/badge";
@@ -56,7 +48,7 @@ import { RouteModal } from "@/components/route-modal";
 import { LatencyTrendModal } from "@/components/lazy-charts";
 import { LatencyTargetsModal } from "@/pages/node/latency-targets-modal";
 import { ListPageSkeleton } from "@/components/page-state";
-import { ActionSheet } from "@/components/action-sheet";
+import { NodeActionsSheet } from "@/pages/node/node-actions-sheet";
 import {
   EmptyHint,
   ListRow,
@@ -2189,114 +2181,16 @@ export default function NodePage({
                             )}
 
                             <div className="mt-auto">
-                              {/* 操作栏：主操作直接可见，其余收进菜单 */}
-                              <div className="flex items-center gap-2 border-t border-border pt-3">
-                                {!isRemoteNode && onOpenMonitor && (
-                                  <Button
-                                    className="min-w-0 flex-1 gap-1.5"
-                                    size="sm"
-                                    variant="outline"
-                                    onPress={() => onOpenMonitor(node.id)}
-                                  >
-                                    <Activity className="h-3.5 w-3.5" />
-                                    监控
-                                  </Button>
-                                )}
-                                {!isRemoteNode && (
-                                  <Button
-                                    className="min-w-0 flex-1 gap-1.5"
-                                    isLoading={node.copyLoading}
-                                    size="sm"
-                                    variant="outline"
-                                    onPress={() => openInstallSelector(node)}
-                                  >
-                                    <Terminal className="h-3.5 w-3.5" />
-                                    安装
-                                  </Button>
-                                )}
-                                <Dropdown placement="bottom-end">
-                                  <DropdownTrigger>
-                                    <Button
-                                      isIconOnly
-                                      aria-label="更多操作"
-                                      className="shrink-0 text-muted-foreground"
-                                      size="sm"
-                                      variant="ghost"
-                                    >
-                                      <MoreHorizontal className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownTrigger>
-                                  <DropdownMenu aria-label="服务器操作">
-                                    {!isRemoteNode && (
-                                      <>
-                                        <DropdownMenuLabel>
-                                          维护
-                                        </DropdownMenuLabel>
-                                        <DropdownItem
-                                          key="targets"
-                                          closeOnSelect
-                                          onPress={() => setTargetNodes([node])}
-                                        >
-                                          测试点
-                                        </DropdownItem>
-                                        <DropdownItem
-                                          key="upgrade"
-                                          closeOnSelect
-                                          isDisabled={
-                                            node.connectionStatus !== "online"
-                                          }
-                                          onPress={() =>
-                                            openUpgradeModal("single", node.id)
-                                          }
-                                        >
-                                          升级
-                                        </DropdownItem>
-                                        <DropdownItem
-                                          key="rollback"
-                                          closeOnSelect
-                                          isDisabled={
-                                            node.connectionStatus !== "online"
-                                          }
-                                          onPress={() =>
-                                            handleRollbackNode(node)
-                                          }
-                                        >
-                                          回退
-                                        </DropdownItem>
-                                        <DropdownItem
-                                          key="tune"
-                                          closeOnSelect
-                                          isDisabled={
-                                            node.connectionStatus !== "online"
-                                          }
-                                          onPress={() => setTuneNode(node)}
-                                        >
-                                          调优
-                                        </DropdownItem>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuLabel>
-                                          管理
-                                        </DropdownMenuLabel>
-                                        <DropdownItem
-                                          key="edit"
-                                          closeOnSelect
-                                          onPress={() => handleEdit(node)}
-                                        >
-                                          编辑
-                                        </DropdownItem>
-                                      </>
-                                    )}
-                                    <DropdownItem
-                                      key="delete"
-                                      closeOnSelect
-                                      color="danger"
-                                      onPress={() => handleDelete(node)}
-                                    >
-                                      删除
-                                    </DropdownItem>
-                                  </DropdownMenu>
-                                </Dropdown>
-                              </div>
+                              {/* 图表与状态都在卡上，操作统一收进配置面板 */}
+                              <Button
+                                className="w-full gap-1.5"
+                                size="sm"
+                                variant="outline"
+                                onPress={() => setSheetNodeId(node.id)}
+                              >
+                                <Settings2 className="h-3.5 w-3.5" />
+                                配置
+                              </Button>
                             </div>
                           </CardBody>
                         </Card>
@@ -2560,7 +2454,7 @@ export default function NodePage({
           : [];
 
         return (
-          <ActionSheet
+          <NodeActionsSheet
             actions={
               !node
                 ? []
@@ -2657,7 +2551,7 @@ export default function NodePage({
                       },
                     ]
             }
-            isOpen={Boolean(node)}
+            open={Boolean(node)}
             subtitle={
               node &&
               (isRemoteNode
@@ -2701,7 +2595,7 @@ export default function NodePage({
                 )}
               </div>
             )}
-          </ActionSheet>
+          </NodeActionsSheet>
         );
       })()}
       {/* 新增/编辑节点对话框 */}
