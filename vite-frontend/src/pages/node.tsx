@@ -24,6 +24,8 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownTrigger,
 } from "@/shadcn-bridge/heroui/dropdown";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
@@ -2227,6 +2229,9 @@ export default function NodePage({
                                   <DropdownMenu aria-label="服务器操作">
                                     {!isRemoteNode && (
                                       <>
+                                        <DropdownMenuLabel>
+                                          维护
+                                        </DropdownMenuLabel>
                                         <DropdownItem
                                           key="targets"
                                           closeOnSelect
@@ -2268,6 +2273,10 @@ export default function NodePage({
                                         >
                                           调优
                                         </DropdownItem>
+                                        <DropdownMenuSeparator />
+                                        <DropdownMenuLabel>
+                                          管理
+                                        </DropdownMenuLabel>
                                         <DropdownItem
                                           key="edit"
                                           closeOnSelect
@@ -2277,6 +2286,7 @@ export default function NodePage({
                                         </DropdownItem>
                                       </>
                                     )}
+                                    <DropdownMenuSeparator />
                                     <DropdownItem
                                       key="delete"
                                       closeOnSelect
@@ -2560,6 +2570,8 @@ export default function NodePage({
                       {
                         key: "delete",
                         label: "删除",
+                        section: "管理",
+                        description: "移除服务器与它的 agent 配置",
                         color: "danger" as const,
                         onPress: () => handleDelete(node),
                       },
@@ -2570,6 +2582,8 @@ export default function NodePage({
                             {
                               key: "monitor",
                               label: "监控",
+                              section: "运行",
+                              description: "实时 CPU、内存与网络曲线",
                               color: "primary" as const,
                               onPress: () => onOpenMonitor(node.id),
                             },
@@ -2578,36 +2592,48 @@ export default function NodePage({
                       {
                         key: "install",
                         label: "安装命令",
+                        section: "运行",
+                        description: "复制 agent 安装脚本到剪贴板",
                         color: "primary" as const,
                         onPress: () => openInstallSelector(node),
                       },
                       {
                         key: "tune",
                         label: "调优",
+                        section: "维护",
+                        description: "内核与转发参数优化",
                         disabled: !online,
                         onPress: () => setTuneNode(node),
                       },
                       {
-                        key: "edit",
-                        label: "编辑",
-                        onPress: () => handleEdit(node),
-                      },
-                      {
                         key: "targets",
                         label: "测试点",
+                        section: "维护",
+                        description: "选择延迟探测目标",
                         onPress: () => setTargetNodes([node]),
                       },
                       {
                         key: "upgrade",
                         label: "升级",
+                        section: "维护",
+                        description: "升级 agent 到新版本",
                         disabled: !online,
                         onPress: () => openUpgradeModal("single", node.id),
                       },
                       {
                         key: "rollback",
                         label: "回退",
+                        section: "维护",
+                        description: "回退到上一个版本",
                         disabled: !online,
                         onPress: () => handleRollbackNode(node),
+                      },
+                      {
+                        key: "edit",
+                        label: "编辑",
+                        section: "管理",
+                        description: "修改名称、地址与端口",
+                        onPress: () => handleEdit(node),
                       },
                       ...(node.expiryTime &&
                       node.renewalCycle &&
@@ -2625,6 +2651,8 @@ export default function NodePage({
                       {
                         key: "delete",
                         label: "删除",
+                        section: "管理",
+                        description: "移除服务器与它的 agent 配置",
                         color: "danger" as const,
                         onPress: () => handleDelete(node),
                       },
