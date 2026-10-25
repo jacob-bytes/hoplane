@@ -11,11 +11,11 @@ import type {
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  ArrowRightLeft,
   CalendarClock,
   ChevronRight,
   CircleAlert,
   Globe,
-  Link2,
   Rss,
   Server,
   TriangleAlert,
@@ -313,46 +313,6 @@ export function AdminOverview() {
   );
   const forwardsUp = forwards.filter((f) => f.status === 1);
   const tunnelsUp = tunnels.filter((t) => t.status === 1);
-  const tunnelsWithBestExit = tunnels.filter((t) => {
-    const best = (t as { bestExitState?: { enabled?: boolean } }).bestExitState;
-
-    return best?.enabled === true;
-  }).length;
-  const linkStats = [
-    {
-      key: "forward",
-      label: "转发规则",
-      path: "/forward",
-      total: forwards.length,
-      ok: forwardsUp.length,
-      unit: "条",
-    },
-    {
-      key: "tunnel",
-      label: "隧道",
-      path: "/tunnel",
-      total: tunnels.length,
-      ok: tunnelsUp.length,
-      unit: "条",
-      note:
-        tunnelsWithBestExit > 0
-          ? `${tunnelsWithBestExit} 条有最优出口`
-          : undefined,
-    },
-    {
-      key: "relay",
-      label: "中转线路",
-      path: "/relay",
-      total: relays.length,
-      ok: relaysUp.length,
-      unit: "条",
-    },
-  ];
-  const linkTotal = linkStats.reduce((n, l) => n + l.total, 0);
-  const linkOk = linkStats.reduce((n, l) => n + l.ok, 0);
-  const linkHealth =
-    linkTotal > 0 ? Math.round((linkOk / linkTotal) * 100) : 100;
-
   const shares = subs.filter((s) => s.kind === "share");
   const activeSubs = subs.filter((s) => s.active);
 
@@ -536,9 +496,9 @@ export function AdminOverview() {
           foot={
             nodes.length === 0
               ? "还没有服务器"
-              : online === nodes.length
-                ? "全部在线"
-                : `${nodes.length - online} 个离线`
+              : `${online === nodes.length ? "全部在线" : `${nodes.length - online} 个离线`}${
+                  kernels.length ? ` · 内核 ${kernels.length} 个` : ""
+                }`
           }
           footRight={
             nodes.length
@@ -565,9 +525,11 @@ export function AdminOverview() {
               ? inbounds.length === 0
                 ? "还没有节点"
                 : "全部停用"
-              : runningInbounds.length === enabledInbounds.length
-                ? "全部正常"
-                : `${enabledInbounds.length - runningInbounds.length} 个异常`
+              : `${
+                  runningInbounds.length === enabledInbounds.length
+                    ? "全部正常"
+                    : `${enabledInbounds.length - runningInbounds.length} 个异常`
+                }${relays.length ? ` · 中转 ${relaysUp.length}/${relays.length}` : ""}`
           }
           footRight={
             inbounds.length > enabledInbounds.length
@@ -590,25 +552,27 @@ export function AdminOverview() {
         />
         <Metric
           foot={
-            relays.length === 0
-              ? "还没有中转"
-              : relaysUp.length === relays.length
-                ? "全部正常"
-                : `${relays.length - relaysUp.length} 条未启用`
+            forwards.length === 0
+              ? "还没有转发规则"
+              : `${
+                  forwardsUp.length === forwards.length
+                    ? "全部运行"
+                    : `${forwards.length - forwardsUp.length} 条已暂停`
+                }${tunnels.length ? ` · 隧道 ${tunnelsUp.length}/${tunnels.length}` : ""}`
           }
           footTone={
-            relays.length > relaysUp.length
+            forwards.length > forwardsUp.length
               ? "warning"
-              : relays.length
+              : forwards.length
                 ? "success"
                 : undefined
           }
-          icon={Link2}
-          label="中转线路"
+          icon={ArrowRightLeft}
+          label="转发运行"
           tone="purple"
-          total={relays.length || undefined}
-          value={relaysUp.length}
-          onPress={() => navigate("/relay")}
+          total={forwards.length || undefined}
+          value={forwardsUp.length}
+          onPress={() => navigate("/forward")}
         />
         <Metric
           foot={
@@ -681,97 +645,6 @@ export function AdminOverview() {
             })}
           </div>
         )}
-      </Panel>
-
-      <Panel
-        action={
-          <span className="text-xs text-muted-foreground">
-            共 {linkTotal} 条
-          </span>
-        }
-        className="mt-4"
-        title="链路健康"
-      >
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-3 sm:w-48 sm:shrink-0">
-            <div className="relative h-16 w-16">
-              <svg className="h-16 w-16 -rotate-90" viewBox="0 0 36 36">
-                <circle
-                  cx="18"
-                  cy="18"
-                  fill="none"
-                  r="15.5"
-                  stroke="var(--muted)"
-                  strokeWidth="3"
-                />
-                <circle
-                  cx="18"
-                  cy="18"
-                  fill="none"
-                  pathLength={100}
-                  r="15.5"
-                  stroke="var(--primary)"
-                  strokeDasharray={`${linkHealth} ${100 - linkHealth}`}
-                  strokeLinecap="round"
-                  strokeWidth="3"
-                />
-              </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-sm font-semibold tabular-nums">
-                {linkHealth}%
-              </span>
-            </div>
-            <div>
-              <div className="text-sm font-medium">健康度</div>
-              <div className="text-xs text-muted-foreground">
-                {linkOk} / {linkTotal} 条正常
-              </div>
-            </div>
-          </div>
-
-          <div className="grid flex-1 gap-3 sm:grid-cols-3">
-            {linkStats.map((link) => {
-              const pct = link.total
-                ? Math.round((link.ok / link.total) * 100)
-                : 100;
-
-              return (
-                <button
-                  key={link.key}
-                  className="rounded-lg border border-border px-3 py-2.5 text-left transition-colors hover:bg-accent/40"
-                  type="button"
-                  onClick={() => navigate(link.path)}
-                >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-xs text-muted-foreground">
-                      {link.label}
-                    </span>
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      {link.ok} / {link.total}
-                    </span>
-                  </div>
-                  <div className="mt-1 text-lg font-semibold tabular-nums">
-                    {link.ok}
-                    <span className="ml-1 text-xs font-normal text-muted-foreground">
-                      {link.unit}运行
-                    </span>
-                  </div>
-                  <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-muted">
-                    <div
-                      className={`h-full rounded-full ${pct === 100 ? "bg-success" : "bg-warning"}`}
-                      style={{ width: `${Math.max(4, pct)}%` }}
-                    />
-                  </div>
-                  <div className="mt-1 truncate text-[11px] text-muted-foreground">
-                    {link.total - link.ok > 0
-                      ? `${link.total - link.ok} ${link.unit}未运行`
-                      : "全部运行"}
-                    {link.note ? ` · ${link.note}` : ""}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
       </Panel>
 
       <div className="mt-4 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
