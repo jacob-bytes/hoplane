@@ -152,6 +152,92 @@ async function answer(config: InternalAxiosRequestConfig) {
   const write = isWrite(last);
   const delta = Math.max(0, Date.now() - fixtures.recordedAt);
 
+  // 调优 is a live sysctl probe; the demo answers with a plausible state so
+  // the dialog can be explored (and its apply/restore buttons feel real).
+  if (bare === "node/tune") {
+    const body = JSON.parse(String(config.data || "{}")) as {
+      action?: "status" | "apply" | "restore";
+      groups?: string[];
+    };
+    const groups = [
+      {
+        id: "congestion",
+        name: "拥塞控制",
+        desc: "启用 BBR，提高高延迟链路的吞吐",
+        applied: true,
+        settings: [
+          {
+            key: "net.ipv4.tcp_congestion_control",
+            current: "cubic",
+            target: "bbr",
+            supported: true,
+            ok: false,
+          },
+        ],
+      },
+      {
+        id: "buffer",
+        name: "收发缓冲区",
+        desc: "提高 TCP 读写缓冲区上限，减少丢包重传",
+        applied: false,
+        settings: [
+          {
+            key: "net.core.rmem_max",
+            current: "212992",
+            target: "16777216",
+            supported: true,
+            ok: false,
+          },
+          {
+            key: "net.core.wmem_max",
+            current: "212992",
+            target: "16777216",
+            supported: true,
+            ok: false,
+          },
+        ],
+      },
+      {
+        id: "fastopen",
+        name: "TCP Fast Open",
+        desc: "减少重复握手的往返次数",
+        applied: false,
+        settings: [
+          {
+            key: "net.ipv4.tcp_fastopen",
+            current: "0",
+            target: "3",
+            supported: true,
+            ok: false,
+          },
+        ],
+      },
+    ];
+
+    if (body.action === "apply" || body.action === "restore") {
+      const chosen = new Set(body.groups ?? []);
+
+      for (const group of groups) {
+        group.applied = body.action === "apply" ? chosen.has(group.id) : false;
+      }
+    }
+
+    await new Promise((r) => setTimeout(r, 500));
+
+    return {
+      code: 0,
+      msg: "操作成功",
+      data: {
+        kernel: "6.1.0-13-amd64",
+        congestion: "bbr",
+        available: "bbr, cubic",
+        hasBackup: true,
+        groups,
+        warnings: [],
+      },
+      ts: Date.now(),
+    };
+  }
   if (PROBES[bare]) {
     const [list, field] = PROBES[bare];
     const ids: number[] = JSON.parse(String(config.data || "{}")).ids ?? [];

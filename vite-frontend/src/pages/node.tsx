@@ -2286,7 +2286,6 @@ export default function NodePage({
                                         </DropdownItem>
                                       </>
                                     )}
-                                    <DropdownMenuSeparator />
                                     <DropdownItem
                                       key="delete"
                                       closeOnSelect
