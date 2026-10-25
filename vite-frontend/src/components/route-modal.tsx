@@ -23,7 +23,7 @@ const ROUTES: Record<string, [string, string]> = {
   "电信 163": ["163", "bg-default-200/70 text-muted-foreground"],
   "联通 9929": [
     "9929",
-    "bg-secondary/15 text-secondary dark:text-secondary-400",
+    "bg-violet-500/15 text-violet-700 dark:text-violet-300",
   ],
   "联通 4837": ["4837", "bg-primary/15 text-primary dark:text-primary-400"],
   "移动 CMIN2": ["CMIN2", "bg-success/15 text-success dark:text-success-400"],
@@ -34,7 +34,7 @@ const NET_CLASS: Record<string, string> = {
   CN2: "text-warning",
   "163": "text-muted-foreground",
   "4837": "text-primary",
-  "9929": "text-secondary",
+  "9929": "text-violet-600 dark:text-violet-300",
   CMIN2: "text-success",
   CMI: "text-success",
   CT: "text-muted-foreground",
