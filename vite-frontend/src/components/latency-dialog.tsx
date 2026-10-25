@@ -88,14 +88,33 @@ export function LatencyDialog({
     >
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>延迟 · {node?.name}</DialogTitle>
-          <DialogDescription>
-            {points.length > 0
-              ? `${points.length} 个测试点 · 平均 ${avg ?? "—"} ms${
-                  checkedAgo ? ` · ${checkedAgo}` : ""
-                }`
-              : "这台服务器还没有延迟结果，每 3 分钟检测一次"}
-          </DialogDescription>
+          <div className="flex items-start justify-between gap-3 pr-8">
+            <div className="min-w-0">
+              <DialogTitle>延迟 · {node?.name}</DialogTitle>
+              <DialogDescription>
+                {points.length > 0
+                  ? `${points.length} 个测试点 · 平均 ${avg ?? "—"} ms${
+                      checkedAgo ? ` · ${checkedAgo}` : ""
+                    }`
+                  : "这台服务器还没有延迟结果，每 3 分钟检测一次"}
+              </DialogDescription>
+            </div>
+            <Button
+              isIconOnly
+              aria-label="重新检测"
+              className="mt-0.5 shrink-0"
+              isDisabled={probing}
+              size="sm"
+              variant="outline"
+              onPress={onProbe}
+            >
+              {probing ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <RefreshCw className="h-3.5 w-3.5" />
+              )}
+            </Button>
+          </div>
         </DialogHeader>
 
         <Tabs value={tab} onValueChange={(v) => setTab(v as TabKey)}>
@@ -147,16 +166,34 @@ export function LatencyDialog({
               <div className="grid flex-1 auto-rows-fr divide-y divide-border overflow-hidden rounded-lg border border-border">
                 {points.map((p) => {
                   const [pill, dot] = TONE[pointTone(p)];
+                  const bad = !p.ok || (p.lossPct ?? 0) >= 5;
+                  const slowest = p.ok && p === worst;
 
                   return (
                     <div
                       key={p.name}
-                      className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 text-sm"
+                      className="relative flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 text-sm"
                     >
+                      {(bad || slowest) && (
+                        <span
+                          aria-hidden
+                          className={`absolute inset-y-1.5 left-0 w-0.5 rounded-full ${bad ? "bg-danger" : "bg-warning"}`}
+                        />
+                      )}
                       <span
                         className={`h-1.5 w-1.5 shrink-0 rounded-full ${dot}`}
                       />
                       <span className="min-w-0 truncate">{p.name}</span>
+                      {bad && (
+                        <span className="rounded bg-danger/10 px-1 text-[10px] font-medium text-danger">
+                          异常
+                        </span>
+                      )}
+                      {slowest && !bad && (
+                        <span className="rounded bg-warning/10 px-1 text-[10px] font-medium text-warning-700 dark:text-warning-400">
+                          最慢
+                        </span>
+                      )}
                       {p.route && p.route !== "未识别" && (
                         <RouteTag short route={p.route} />
                       )}
@@ -173,23 +210,6 @@ export function LatencyDialog({
                 })}
               </div>
             )}
-
-            <div className="mt-auto flex justify-end">
-              <Button
-                isDisabled={probing}
-                startContent={
-                  probing ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <RefreshCw className="h-4 w-4" />
-                  )
-                }
-                variant="outline"
-                onPress={onProbe}
-              >
-                {probing ? "检测中…" : "重新检测"}
-              </Button>
-            </div>
           </TabsContent>
 
           <TabsContent className="min-h-[464px]" value="trend">
