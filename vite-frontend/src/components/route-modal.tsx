@@ -1,11 +1,41 @@
-import type { NodeRoute, NodeRouteHop } from "@/api/types";
+import type { NodeRoute } from "@/api/types";
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Loader2, RefreshCw } from "lucide-react";
+import { ChevronDown, Info, RefreshCw } from "lucide-react";
 
 import { getNodeRoute, probeNodeRoute } from "@/api";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/shadcn-bridge/heroui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   Modal,
   ModalBody,
@@ -80,26 +110,7 @@ export function RouteTag({
   );
 }
 
-function HopRow({ hop }: { hop: NodeRouteHop }) {
-  return (
-    <div className="grid grid-cols-[2rem_1fr_auto] items-center gap-2 py-0.5 font-mono text-xs">
-      <span className="text-muted-foreground">{hop.ttl}</span>
-      <span className={`break-all ${hop.ip ? "" : "text-default-300"}`}>
-        {hop.ip || "*"}
-        {hop.net && (
-          <span className={`ml-2 font-sans ${NET_CLASS[hop.net] ?? ""}`}>
-            {NET_LABEL[hop.net] ?? hop.net}
-          </span>
-        )}
-      </span>
-      <span className="text-muted-foreground">
-        {hop.rttMs ? `${hop.rttMs.toFixed(1)} ms` : ""}
-      </span>
-    </div>
-  );
-}
-
-/** A node's return routes to each reference point, hop by hop. */
+/** Standalone dialog for the return routes (other pages use it). */
 export function RouteModal({
   nodeId,
   nodeName,
@@ -136,17 +147,18 @@ export function RouteModal({
   );
 }
 
+const LEGEND =
+  "按经过的骨干网识别：59.43 段为 CN2（不经过 202.97 即 GIA），202.97 为 163，219.158 为联通 4837，218.105 / 210.51 为联通 9929，223.118–223.121 为移动 CMI，其中归属 AS58807 的为 CMIN2；IPv6 回程按每一跳的归属网络（AS4809 为 CN2，AS4134 为电信 163）识别。每天自动检测一次。";
+
 /** The route legs (v4/v6) and a re-probe button, usable inside a dialog. */
 export function RoutePanel({ nodeId }: { nodeId: number | null }) {
   const [route, setRoute] = useState<NodeRoute | null>(null);
   const [loading, setLoading] = useState(false);
   const [probing, setProbing] = useState(false);
-  const [open, setOpen] = useState<string | null>(null);
 
   useEffect(() => {
     if (nodeId === null) return;
     setRoute(null);
-    setOpen(null);
     setLoading(true);
     getNodeRoute(nodeId)
       .then((res) => setRoute(res.code === 0 ? (res.data ?? null) : null))
@@ -173,101 +185,176 @@ export function RoutePanel({ nodeId }: { nodeId: number | null }) {
     }
   };
 
+  const legsOf = (p: NonNullable<NodeRoute["points"]>[number]) =>
+    p.ipv6
+      ? [
+          { key: `${p.name}/v4`, label: "IPv4", leg: p },
+          { key: `${p.name}/v6`, label: "IPv6", leg: p.ipv6 },
+        ]
+      : [{ key: p.name, label: p.family, leg: p }];
+
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-3">
       {loading ? (
-        <div className="flex justify-center py-6">
-          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        <div aria-busy="true" className="flex flex-col gap-2">
+          {[0, 1, 2].map((i) => (
+            <Skeleton key={i} className="h-10 w-full rounded-lg" />
+          ))}
         </div>
       ) : !route || route.points.length === 0 ? (
-        <p className="py-6 text-center text-sm text-muted-foreground">
-          还没有检测结果，点下方按钮检测
-        </p>
+        <Empty className="border border-dashed border-border py-6 md:py-8">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <RefreshCw />
+            </EmptyMedia>
+            <EmptyTitle>还没有回程路由</EmptyTitle>
+            <EmptyDescription>
+              检测一次，就能看到每个测试点的回程线路。
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
+            <Button
+              isDisabled={probing || nodeId === null}
+              size="sm"
+              onPress={probe}
+            >
+              <RefreshCw className="size-3.5" />
+              {probing ? "检测中…" : "开始检测"}
+            </Button>
+          </EmptyContent>
+        </Empty>
       ) : (
-        route.points.map((p) => {
-          const legs = p.ipv6
-            ? [
-                { key: `${p.name}/v4`, label: "IPv4", leg: p },
-                { key: `${p.name}/v6`, label: "IPv6", leg: p.ipv6 },
-              ]
-            : [{ key: p.name, label: p.family, leg: p }];
+        <Accordion collapsible className="flex flex-col gap-2" type="single">
+          {route.points.map((p) => {
+            const legs = legsOf(p);
+            const hops = Math.max(...legs.map((l) => l.leg.hops?.length ?? 0));
+            const failed = legs.some((l) => l.leg.error);
 
-          return (
-            <div key={p.name} className="rounded-lg border border-divider">
-              {p.ipv6 && (
-                <div className="px-3 pt-2 text-sm font-medium">{p.name}</div>
-              )}
-              {legs.map(({ key, label, leg }) => (
-                <div key={key}>
-                  <button
-                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm"
-                    type="button"
-                    onClick={() => setOpen(open === key ? null : key)}
-                  >
-                    {!p.ipv6 && (
-                      <span className="shrink-0 font-medium">{p.name}</span>
+            return (
+              <AccordionItem
+                key={p.name}
+                className="rounded-lg border border-border"
+                value={p.name}
+              >
+                <AccordionTrigger className="items-center gap-2 px-3 py-2 hover:no-underline">
+                  <span className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                    <span className="font-medium">{p.name}</span>
+                    {legs.map(({ key, leg }) =>
+                      leg.route && leg.route !== "未识别" ? (
+                        <RouteTag key={key} plain short route={leg.route} />
+                      ) : null,
                     )}
-                    {label && (
-                      <span className="w-9 shrink-0 rounded bg-muted px-1 text-center text-[11px] text-muted-foreground">
-                        {label}
+                    {failed && (
+                      <span className="text-xs font-normal text-destructive">
+                        检测失败
                       </span>
                     )}
-                    {leg.error ? (
-                      <span className="min-w-0 text-xs text-danger">
-                        {leg.error}
-                      </span>
-                    ) : leg.route && leg.route !== "未识别" ? (
-                      <RouteTag route={leg.route} />
-                    ) : (
-                      <span className="text-xs text-muted-foreground">
-                        未识别线路
-                      </span>
-                    )}
-                    {!leg.error && (
-                      <span className="ml-auto text-xs text-muted-foreground">
-                        {leg.hops?.length ?? 0} 跳 {open === key ? "▴" : "▾"}
-                      </span>
-                    )}
-                  </button>
-                  {open === key && leg.hops && (
-                    <div className="border-t border-divider px-3 py-2">
-                      {leg.hops.map((h) => (
-                        <HopRow key={h.ttl} hop={h} />
-                      ))}
-                      {!leg.reached && (
+                  </span>
+                  <span className="ml-auto shrink-0 text-xs font-normal tabular-nums text-muted-foreground">
+                    {hops} 跳
+                  </span>
+                </AccordionTrigger>
+                <AccordionContent className="pb-2">
+                  {legs.map(({ key, label, leg }) => (
+                    <div key={key} className="px-3">
+                      {legs.length > 1 && (
+                        <div className="flex items-center gap-2 pb-1 pt-1">
+                          <Badge variant="secondary">{label}</Badge>
+                          {leg.route && (
+                            <RouteTag plain short route={leg.route} />
+                          )}
+                          {leg.error && (
+                            <span className="text-xs text-destructive">
+                              {leg.error}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {!leg.error && leg.hops && leg.hops.length > 0 && (
+                        <Table>
+                          <TableHeader>
+                            <TableRow className="hover:bg-transparent">
+                              <TableHead className="h-7 w-8 px-1 text-[11px]">
+                                #
+                              </TableHead>
+                              <TableHead className="h-7 px-1 text-[11px]">
+                                地址
+                              </TableHead>
+                              <TableHead className="h-7 px-1 text-[11px]">
+                                网络
+                              </TableHead>
+                              <TableHead className="h-7 px-1 text-right text-[11px]">
+                                RTT
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {leg.hops.map((hop) => (
+                              <TableRow key={hop.ttl}>
+                                <TableCell className="px-1 py-1 text-xs tabular-nums text-muted-foreground">
+                                  {hop.ttl}
+                                </TableCell>
+                                <TableCell className="px-1 py-1 font-mono text-xs [overflow-wrap:anywhere]">
+                                  {hop.ip || "*"}
+                                </TableCell>
+                                <TableCell className="px-1 py-1">
+                                  {hop.net && (
+                                    <Badge
+                                      className={NET_CLASS[hop.net]}
+                                      variant="outline"
+                                    >
+                                      {NET_LABEL[hop.net] ?? hop.net}
+                                    </Badge>
+                                  )}
+                                </TableCell>
+                                <TableCell className="px-1 py-1 text-right font-mono text-xs tabular-nums text-muted-foreground">
+                                  {hop.rttMs
+                                    ? `${hop.rttMs.toFixed(1)} ms`
+                                    : ""}
+                                </TableCell>
+                              </TableRow>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      )}
+                      {!leg.reached && !leg.error && (
                         <p className="pt-1 text-xs text-muted-foreground">
                           目标没有回应，只显示到最后一个有回应的路由器
                         </p>
                       )}
                     </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          );
-        })
+                  ))}
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
+        </Accordion>
       )}
-      <p className="text-xs text-muted-foreground">
-        按经过的骨干网识别：59.43 段为 CN2（不经过 202.97 即 GIA），202.97 为
-        163，219.158 为联通 4837，218.105 / 210.51 为联通 9929，223.118–223.121
-        为移动 CMI，其中归属 AS58807 的为 CMIN2；IPv6
-        回程按每一跳的归属网络（AS4809 为 CN2，AS4134 为电信
-        163）识别。每天自动检测一次。
-      </p>
-      <Button
-        className="w-full"
-        isDisabled={probing || nodeId === null}
-        startContent={
-          probing ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <RefreshCw className="h-4 w-4" />
-          )
-        }
-        onPress={probe}
-      >
-        {probing ? "检测中…" : "重新检测"}
-      </Button>
+
+      <Collapsible>
+        <CollapsibleTrigger className="group flex w-full items-center gap-1.5 rounded-md py-1 text-xs text-muted-foreground transition-colors hover:text-foreground">
+          <Info className="size-3.5" />
+          线路识别规则
+          <ChevronDown className="ml-auto size-3.5 transition-transform group-data-[state=open]:rotate-180" />
+        </CollapsibleTrigger>
+        <CollapsibleContent className="pt-1 text-xs leading-5 text-muted-foreground">
+          {LEGEND}
+        </CollapsibleContent>
+      </Collapsible>
+
+      <Separator />
+
+      <div className="flex justify-end">
+        <Button
+          isDisabled={probing || nodeId === null}
+          size="sm"
+          variant="outline"
+          onPress={probe}
+        >
+          <RefreshCw className="size-3.5" />
+          {probing ? "检测中…" : "重新检测回程"}
+        </Button>
+      </div>
     </div>
   );
 }

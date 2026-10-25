@@ -126,21 +126,23 @@ export function LatencyDialog({
               </DialogDescription>
             </div>
             <div className="flex shrink-0 items-center gap-1.5">
-              <Button
-                aria-label="重新检测延迟"
-                className="h-8 gap-1.5 px-2.5 text-xs"
-                isDisabled={probing}
-                size="sm"
-                variant="outline"
-                onPress={onProbe}
-              >
-                {probing ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <RefreshCw className="h-3.5 w-3.5" />
-                )}
-                <span className="hidden sm:inline">重新检测</span>
-              </Button>
+              {tab === "overview" && (
+                <Button
+                  aria-label="重新检测延迟"
+                  className="h-8 gap-1.5 px-2.5 text-xs"
+                  isDisabled={probing}
+                  size="sm"
+                  variant="outline"
+                  onPress={onProbe}
+                >
+                  {probing ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <RefreshCw className="h-3.5 w-3.5" />
+                  )}
+                  <span className="hidden sm:inline">重新检测</span>
+                </Button>
+              )}
               <DialogClose
                 aria-label="关闭"
                 className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
