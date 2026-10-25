@@ -5,13 +5,18 @@ import {
   CartesianGrid,
   Line,
   LineChart,
+  ReferenceArea,
+  ReferenceDot,
   ReferenceLine,
-  ResponsiveContainer,
-  Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
 
+import {
+  ChartContainer,
+  ChartTooltip,
+  type ChartConfig,
+} from "@/components/ui/chart";
 import { getNodeLatencyHistory } from "@/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -169,6 +174,7 @@ function LatencyTrendContent({
   const [hours, setHours] = useState(24);
   const [trend, setTrend] = useState<LatencyTrend | null>(null);
   const [loading, setLoading] = useState(false);
+  const [hidden, setHidden] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (nodeId === null) return;
@@ -201,98 +207,221 @@ function LatencyTrendContent({
   }, [trend]);
 
   const points = trend?.points ?? [];
+  const visible = points.filter((p) => !hidden.has(p.name));
+  const chartConfig = useMemo(() => {
+    const config: ChartConfig = {};
+
+    points.forEach((p, i) => {
+      config[p.name] = {
+        label: p.name,
+        color: COLORS[i % COLORS.length],
+      };
+    });
+
+    return config;
+  }, [points]);
+
+  // The single worst sample across the visible series.
+  const peak = useMemo(() => {
+    let best: { name: string; t: number; ms: number } | null = null;
+
+    for (const p of visible) {
+      for (const s of p.samples) {
+        if (s.ms != null && (!best || s.ms > best.ms)) {
+          best = { name: p.name, t: s.t, ms: s.ms };
+        }
+      }
+    }
+
+    return best;
+  }, [visible]);
+
+  // Time bands where a visible point timed out or lost ≥5%.
+  const bands = useMemo(() => {
+    const out: Array<{ x1: number; x2: number }> = [];
+    let start: number | null = null;
+    let last = 0;
+
+    for (const row of rows) {
+      const t = Number(row.t);
+      const bad = visible.some((p) => {
+        if (!(p.name in row)) return false;
+
+        // Only timeouts and severe loss, otherwise the chart is striped.
+        return (
+          row[p.name] === null || Number(row[`${p.name}\u0000loss`] ?? 0) >= 20
+        );
+      });
+
+      if (bad && start === null) start = t;
+      if (!bad && start !== null) {
+        out.push({ x1: start, x2: last });
+        start = null;
+      }
+      last = t;
+    }
+
+    if (start !== null) out.push({ x1: start, x2: last });
+
+    return out;
+  }, [rows, visible]);
+
+  const chartHeight = compact ? "h-52" : "h-52 sm:h-64";
 
   return (
     <div className="flex flex-col gap-3">
-      <ToggleGroup
-        className="w-fit self-start"
-        size="sm"
-        type="single"
-        value={String(hours)}
-        variant="outline"
-        onValueChange={(v) => v && setHours(Number(v))}
-      >
-        {RANGES.map((r) => (
-          <ToggleGroupItem key={r.hours} value={String(r.hours)}>
-            {r.label}
-          </ToggleGroupItem>
-        ))}
-      </ToggleGroup>
+      <div className="flex flex-wrap items-center gap-2">
+        <ToggleGroup
+          className="w-fit"
+          size="sm"
+          type="single"
+          value={String(hours)}
+          variant="outline"
+          onValueChange={(v) => v && setHours(Number(v))}
+        >
+          {RANGES.map((r) => (
+            <ToggleGroupItem key={r.hours} value={String(r.hours)}>
+              {r.label}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      </div>
 
       {loading && !trend ? (
         <div aria-busy="true" className="flex flex-col gap-2">
-          <Skeleton className={`w-full ${compact ? "h-52" : "h-52 sm:h-64"}`} />
+          <Skeleton className={`w-full ${chartHeight}`} />
           {[0, 1, 2].map((i) => (
             <Skeleton key={i} className="h-6 w-full" />
           ))}
         </div>
       ) : rows.length === 0 ? (
         <p
-          className={`flex items-center justify-center text-sm text-muted-foreground ${compact ? "h-52" : "h-52 sm:h-64"}`}
+          className={`flex items-center justify-center text-sm text-muted-foreground ${chartHeight}`}
         >
           这段时间还没有记录
         </p>
       ) : (
-        <div
-          aria-label={`延迟趋势图，共 ${points.length} 个测试点、${rows.length} 个采样点`}
-          className={compact ? "h-52" : "h-52 sm:h-64"}
-          role="img"
-        >
-          <ResponsiveContainer height="100%" width="100%">
-            <LineChart data={rows}>
-              <CartesianGrid
-                stroke="var(--border)"
-                strokeDasharray="3 3"
-                vertical={false}
-              />
-              <XAxis
-                dataKey="t"
-                fontSize={11}
-                minTickGap={32}
-                tickFormatter={(t: number) => timeLabel(t, hours)}
-              />
-              <YAxis
-                fontSize={11}
-                tickFormatter={(v: number) => `${Math.round(v)}ms`}
-                width={52}
-              />
-              <ReferenceLine
-                ifOverflow="extendDomain"
-                label={{
-                  value: "良好阈值 100 ms",
-                  position: "insideTopRight",
-                  fill: "var(--muted-foreground)",
-                  fontSize: 10,
-                }}
-                stroke="var(--border)"
-                strokeDasharray="4 4"
-                y={100}
-              />
-              <Tooltip
-                allowEscapeViewBox={{ x: true, y: true }}
-                animationDuration={0}
-                content={<LatencyTooltip hours={hours} />}
-                cursor={{ stroke: "var(--border)", strokeDasharray: "3 3" }}
-                isAnimationActive={false}
-                offset={12}
-                wrapperStyle={{ pointerEvents: "none", outline: "none" }}
-              />
-              {points.map((p, i) => (
-                <Line
-                  key={p.name}
-                  connectNulls={false}
-                  dataKey={p.name}
-                  dot={false}
-                  isAnimationActive={false}
-                  name={p.name}
-                  stroke={COLORS[i % COLORS.length]}
-                  strokeWidth={1.5}
-                  type="monotone"
+        <>
+          <ToggleGroup
+            className="flex flex-wrap justify-start gap-1"
+            size="sm"
+            type="multiple"
+            value={visible.map((p) => p.name)}
+            variant="outline"
+            onValueChange={(names) =>
+              setHidden(
+                new Set(
+                  points
+                    .filter((p) => !names.includes(p.name))
+                    .map((p) => p.name),
+                ),
+              )
+            }
+          >
+            {points.map((p, i) => (
+              <ToggleGroupItem key={p.name} className="gap-1.5" value={p.name}>
+                <span
+                  className="size-2 rounded-full"
+                  style={{ background: COLORS[i % COLORS.length] }}
                 />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+                {p.name}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+
+          <div
+            aria-label={`延迟趋势图，共 ${visible.length} 个测试点、${rows.length} 个采样点`}
+            role="img"
+          >
+            <ChartContainer
+              className={`aspect-auto w-full ${chartHeight}`}
+              config={chartConfig}
+            >
+              <LineChart data={rows}>
+                <CartesianGrid
+                  stroke="var(--border)"
+                  strokeDasharray="3 3"
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="t"
+                  fontSize={11}
+                  minTickGap={32}
+                  tickFormatter={(t: number) => timeLabel(t, hours)}
+                />
+                <YAxis
+                  fontSize={11}
+                  tickFormatter={(v: number) => `${Math.round(v)}ms`}
+                  width={52}
+                />
+                <ReferenceLine
+                  ifOverflow="extendDomain"
+                  label={{
+                    value: "良好阈值 100 ms",
+                    position: "insideTopRight",
+                    fill: "var(--muted-foreground)",
+                    fontSize: 10,
+                  }}
+                  stroke="var(--border)"
+                  strokeDasharray="4 4"
+                  y={100}
+                />
+                {bands.map((band) => (
+                  <ReferenceArea
+                    key={band.x1}
+                    fill="var(--destructive)"
+                    fillOpacity={0.08}
+                    stroke="none"
+                    x1={band.x1}
+                    x2={band.x2}
+                  />
+                ))}
+                <ChartTooltip
+                  content={<LatencyTooltip hours={hours} />}
+                  cursor={{ stroke: "var(--border)", strokeDasharray: "3 3" }}
+                  isAnimationActive={false}
+                  wrapperStyle={{
+                    outline: "none",
+                    pointerEvents: "none",
+                    zIndex: 40,
+                  }}
+                />
+                {points.map((p, i) => (
+                  <Line
+                    key={p.name}
+                    activeDot={{ r: 3, strokeWidth: 0 }}
+                    connectNulls={false}
+                    dataKey={p.name}
+                    dot={false}
+                    hide={hidden.has(p.name)}
+                    isAnimationActive={false}
+                    name={p.name}
+                    stroke={COLORS[i % COLORS.length]}
+                    strokeWidth={1.5}
+                    type="monotone"
+                  />
+                ))}
+                {peak && (
+                  <ReferenceDot
+                    fill="var(--destructive)"
+                    ifOverflow="extendDomain"
+                    label={{
+                      value: `${Math.round(peak.ms)} ms`,
+                      position: "top",
+                      fill: "var(--muted-foreground)",
+                      fontSize: 10,
+                    }}
+                    r={3}
+                    stroke="var(--background)"
+                    strokeWidth={2}
+                    x={peak.t}
+                    y={peak.ms}
+                  />
+                )}
+              </LineChart>
+            </ChartContainer>
+          </div>
+        </>
       )}
 
       {points.length > 0 && (
@@ -314,7 +443,10 @@ function LatencyTrendContent({
             </TableHeader>
             <TableBody>
               {points.map((p, i) => (
-                <TableRow key={p.name}>
+                <TableRow
+                  key={p.name}
+                  className={hidden.has(p.name) ? "opacity-40" : undefined}
+                >
                   <TableCell className="py-1.5">
                     <span className="flex items-center gap-2">
                       <span
