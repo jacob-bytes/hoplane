@@ -672,7 +672,7 @@ export function AdminOverview() {
             </p>
           ) : (
             <>
-              <div className="grid min-h-0 flex-1 auto-rows-fr divide-y divide-border">
+              <div className="grid min-h-0 flex-1 auto-rows-fr">
                 {top.map((i) => {
                   const total = i.uploadBytes + i.downloadBytes;
                   const share =
@@ -725,7 +725,7 @@ export function AdminOverview() {
             contentClassName="flex min-h-0 flex-1 flex-col"
             title="服务器状态"
           >
-            <div className="grid min-h-0 flex-1 auto-rows-fr grid-cols-1 gap-x-6 sm:grid-cols-2">
+            <div className="grid min-h-0 flex-1 auto-rows-fr grid-cols-1">
               {shownNodes.map((n) => {
                 const onlineNode = n.status === 1;
                 const ip = String(n.serverIpV4 || n.serverIp || "");

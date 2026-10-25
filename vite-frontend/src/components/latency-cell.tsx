@@ -156,8 +156,8 @@ function Pill({
   );
 }
 
-/** A card's reference point: its name over the colored latency. */
-function Tile({
+/** A card's reference point: name and latency, then its route tags. */
+function Row({
   point,
   spinning,
 }: {
@@ -169,9 +169,9 @@ function Tile({
 
   return (
     <span
-      className={`flex min-w-0 flex-col items-start overflow-hidden rounded-lg px-2 py-1 text-left ${pill}`}
+      className={`flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 rounded-lg px-2 py-1 text-left ${pill}`}
     >
-      <span className="flex w-full min-w-0 items-center gap-1 text-[11px] opacity-80">
+      <span className="flex min-w-0 items-center gap-1 text-[11px] opacity-80">
         {spinning ? (
           <Loader2 className="h-2.5 w-2.5 shrink-0 animate-spin" />
         ) : (
@@ -179,15 +179,14 @@ function Tile({
         )}
         <span className="truncate">{point.name}</span>
       </span>
-      <span className="flex w-full items-baseline gap-1 whitespace-nowrap font-mono text-sm font-semibold">
+      <span className="flex items-baseline gap-1 whitespace-nowrap font-mono text-sm font-semibold">
         {valueText(point)}
         {loss > 0 && (
           <span className="text-[11px] font-normal opacity-80">丢{loss}%</span>
         )}
       </span>
-      {/* Always its own line so tiles line up whatever the width. */}
       {point.route && point.route !== "未识别" && (
-        <span className="mt-0.5 flex items-center gap-1">
+        <span className="flex flex-wrap items-center gap-1">
           <RouteTag short route={point.route} />
           <V6Route point={point} />
         </span>
@@ -305,20 +304,15 @@ export function LatencyCell({
                 {probe ? ago(probe.checkedAt) : ""}
               </span>
             </span>
-            <span
-              className="grid gap-1.5"
-              style={{
-                gridTemplateColumns: `repeat(${shown.length}, minmax(0, 1fr))`,
-              }}
-            >
+            <span className="flex flex-col gap-1">
               {shown.map((p, i) => (
-                <Tile key={p.name} point={p} spinning={probing && i === 0} />
+                <Row key={p.name} point={p} spinning={probing && i === 0} />
               ))}
             </span>
           </button>
         ) : (
           <button
-            className="inline-flex max-w-full items-center justify-end gap-1 rounded-lg transition-opacity hover:opacity-80"
+            className="flex w-full max-w-full items-center justify-between gap-2 rounded-lg transition-opacity hover:opacity-80"
             type="button"
             onClick={stop}
             onKeyDown={stop}

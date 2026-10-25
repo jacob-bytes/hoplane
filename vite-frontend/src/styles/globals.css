@@ -334,7 +334,7 @@ body {
 
 /* Column templates live here, not in per-page inline styles. */
 [data-list="node"] {
-  --list-cols: minmax(16rem, 22rem) 232px 96px 116px minmax(176px, 1fr) 24px;
+  --list-cols: minmax(14rem, 20rem) 232px 96px 116px minmax(176px, 1fr) 24px;
 }
 
 [data-list="relay"] {
