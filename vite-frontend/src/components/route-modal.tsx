@@ -10,7 +10,6 @@ import {
   Modal,
   ModalBody,
   ModalContent,
-  ModalFooter,
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
 
@@ -65,16 +64,6 @@ export function RouteTag({
   );
 }
 
-function ago(ts: number) {
-  const m = Math.max(0, Math.round((Date.now() - ts) / 60000));
-
-  if (m < 1) return "刚刚";
-  if (m < 60) return `${m} 分钟前`;
-  if (m < 1440) return `${Math.floor(m / 60)} 小时前`;
-
-  return `${Math.floor(m / 1440)} 天前`;
-}
-
 function HopRow({ hop }: { hop: NodeRouteHop }) {
   return (
     <div className="grid grid-cols-[2rem_1fr_auto] items-center gap-2 py-0.5 font-mono text-xs">
@@ -104,6 +93,35 @@ export function RouteModal({
   nodeName?: string;
   onClose: () => void;
 }) {
+  return (
+    <Modal
+      backdrop="blur"
+      classNames={{
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
+      }}
+      isOpen={nodeId !== null}
+      placement="center"
+      scrollBehavior="inside"
+      size="lg"
+      onOpenChange={(v) => !v && onClose()}
+    >
+      <ModalContent>
+        <ModalHeader closable className="flex flex-col gap-0.5">
+          <h2 className="text-lg font-bold">回程路由</h2>
+          <p className="text-xs font-normal text-muted-foreground">
+            {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
+          </p>
+        </ModalHeader>
+        <ModalBody>
+          <RoutePanel nodeId={nodeId} />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+/** The route legs (v4/v6) and a re-probe button, usable inside a dialog. */
+export function RoutePanel({ nodeId }: { nodeId: number | null }) {
   const [route, setRoute] = useState<NodeRoute | null>(null);
   const [loading, setLoading] = useState(false);
   const [probing, setProbing] = useState(false);
@@ -140,126 +158,100 @@ export function RouteModal({
   };
 
   return (
-    <Modal
-      backdrop="blur"
-      classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
-      }}
-      isOpen={nodeId !== null}
-      placement="center"
-      scrollBehavior="inside"
-      size="lg"
-      onOpenChange={(v) => !v && onClose()}
-    >
-      <ModalContent>
-        <ModalHeader closable className="flex flex-col gap-0.5">
-          <h2 className="text-lg font-bold">回程路由</h2>
-          <p className="text-xs font-normal text-muted-foreground">
-            {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
-            {route ? ` · ${ago(route.checkedAt)}检测` : ""}
-          </p>
-        </ModalHeader>
-        <ModalBody className="space-y-2">
-          {loading ? (
-            <div className="flex justify-center py-6">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
-          ) : !route || route.points.length === 0 ? (
-            <p className="py-6 text-center text-sm text-muted-foreground">
-              还没有检测结果，点下方按钮检测
-            </p>
-          ) : (
-            route.points.map((p) => {
-              // A dual-stack node traces each point over both families.
-              const legs = p.ipv6
-                ? [
-                    { key: `${p.name}/v4`, label: "IPv4", leg: p },
-                    { key: `${p.name}/v6`, label: "IPv6", leg: p.ipv6 },
-                  ]
-                : [{ key: p.name, label: p.family, leg: p }];
+    <div className="space-y-2">
+      {loading ? (
+        <div className="flex justify-center py-6">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </div>
+      ) : !route || route.points.length === 0 ? (
+        <p className="py-6 text-center text-sm text-muted-foreground">
+          还没有检测结果，点下方按钮检测
+        </p>
+      ) : (
+        route.points.map((p) => {
+          const legs = p.ipv6
+            ? [
+                { key: `${p.name}/v4`, label: "IPv4", leg: p },
+                { key: `${p.name}/v6`, label: "IPv6", leg: p.ipv6 },
+              ]
+            : [{ key: p.name, label: p.family, leg: p }];
 
-              return (
-                <div key={p.name} className="rounded-lg border border-divider">
-                  {p.ipv6 && (
-                    <div className="px-3 pt-2 text-sm font-medium">
-                      {p.name}
-                    </div>
-                  )}
-                  {legs.map(({ key, label, leg }) => (
-                    <div key={key}>
-                      <button
-                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm"
-                        type="button"
-                        onClick={() => setOpen(open === key ? null : key)}
-                      >
-                        {!p.ipv6 && (
-                          <span className="shrink-0 font-medium">{p.name}</span>
-                        )}
-                        {label && (
-                          <span className="w-9 shrink-0 rounded bg-muted px-1 text-center text-[11px] text-muted-foreground">
-                            {label}
-                          </span>
-                        )}
-                        {leg.error ? (
-                          <span className="min-w-0 text-xs text-danger">
-                            {leg.error}
-                          </span>
-                        ) : leg.route && leg.route !== "未识别" ? (
-                          <RouteTag route={leg.route} />
-                        ) : (
-                          <span className="text-xs text-muted-foreground">
-                            未识别线路
-                          </span>
-                        )}
-                        {!leg.error && (
-                          <span className="ml-auto text-xs text-muted-foreground">
-                            {leg.hops?.length ?? 0} 跳{" "}
-                            {open === key ? "▴" : "▾"}
-                          </span>
-                        )}
-                      </button>
-                      {open === key && leg.hops && (
-                        <div className="border-t border-divider px-3 py-2">
-                          {leg.hops.map((h) => (
-                            <HopRow key={h.ttl} hop={h} />
-                          ))}
-                          {!leg.reached && (
-                            <p className="pt-1 text-xs text-muted-foreground">
-                              目标没有回应，只显示到最后一个有回应的路由器
-                            </p>
-                          )}
-                        </div>
+          return (
+            <div key={p.name} className="rounded-lg border border-divider">
+              {p.ipv6 && (
+                <div className="px-3 pt-2 text-sm font-medium">{p.name}</div>
+              )}
+              {legs.map(({ key, label, leg }) => (
+                <div key={key}>
+                  <button
+                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm"
+                    type="button"
+                    onClick={() => setOpen(open === key ? null : key)}
+                  >
+                    {!p.ipv6 && (
+                      <span className="shrink-0 font-medium">{p.name}</span>
+                    )}
+                    {label && (
+                      <span className="w-9 shrink-0 rounded bg-muted px-1 text-center text-[11px] text-muted-foreground">
+                        {label}
+                      </span>
+                    )}
+                    {leg.error ? (
+                      <span className="min-w-0 text-xs text-danger">
+                        {leg.error}
+                      </span>
+                    ) : leg.route && leg.route !== "未识别" ? (
+                      <RouteTag route={leg.route} />
+                    ) : (
+                      <span className="text-xs text-muted-foreground">
+                        未识别线路
+                      </span>
+                    )}
+                    {!leg.error && (
+                      <span className="ml-auto text-xs text-muted-foreground">
+                        {leg.hops?.length ?? 0} 跳 {open === key ? "▴" : "▾"}
+                      </span>
+                    )}
+                  </button>
+                  {open === key && leg.hops && (
+                    <div className="border-t border-divider px-3 py-2">
+                      {leg.hops.map((h) => (
+                        <HopRow key={h.ttl} hop={h} />
+                      ))}
+                      {!leg.reached && (
+                        <p className="pt-1 text-xs text-muted-foreground">
+                          目标没有回应，只显示到最后一个有回应的路由器
+                        </p>
                       )}
                     </div>
-                  ))}
+                  )}
                 </div>
-              );
-            })
-          )}
-          <p className="text-xs text-muted-foreground">
-            按经过的骨干网识别：59.43 段为 CN2（不经过 202.97 即 GIA），202.97
-            为 163，219.158 为联通 4837，218.105 / 210.51 为联通
-            9929，223.118–223.121 为移动 CMI，其中归属 AS58807 的为 CMIN2；IPv6
-            回程按每一跳的归属网络（AS4809 为 CN2，AS4134 为电信
-            163）识别。每天自动检测一次。
-          </p>
-        </ModalBody>
-        <ModalFooter>
-          <Button
-            isDisabled={probing || nodeId === null}
-            startContent={
-              probing ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCw className="h-4 w-4" />
-              )
-            }
-            onPress={probe}
-          >
-            {probing ? "检测中…" : "重新检测"}
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+              ))}
+            </div>
+          );
+        })
+      )}
+      <p className="text-xs text-muted-foreground">
+        按经过的骨干网识别：59.43 段为 CN2（不经过 202.97 即 GIA），202.97 为
+        163，219.158 为联通 4837，218.105 / 210.51 为联通 9929，223.118–223.121
+        为移动 CMI，其中归属 AS58807 的为 CMIN2；IPv6
+        回程按每一跳的归属网络（AS4809 为 CN2，AS4134 为电信
+        163）识别。每天自动检测一次。
+      </p>
+      <Button
+        className="w-full"
+        isDisabled={probing || nodeId === null}
+        startContent={
+          probing ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <RefreshCw className="h-4 w-4" />
+          )
+        }
+        onPress={probe}
+      >
+        {probing ? "检测中…" : "重新检测"}
+      </Button>
+    </div>
   );
 }

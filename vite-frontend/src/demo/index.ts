@@ -152,6 +152,51 @@ async function answer(config: InternalAxiosRequestConfig) {
   const write = isWrite(last);
   const delta = Math.max(0, Date.now() - fixtures.recordedAt);
 
+  // The latency point pool is a config value; the demo ships a small one so
+  // the 测试点 tab can be opened and edited.
+  if (bare === "config/get" || bare === "public/config/get") {
+    const body = JSON.parse(String(config.data || "{}")) as { name?: string };
+
+    if (body.name === "latency_targets") {
+      return {
+        code: 0,
+        msg: "操作成功",
+        data: {
+          name: "latency_targets",
+          value: JSON.stringify([
+            {
+              name: "北京电信",
+              host: "219.141.140.10",
+              port: 80,
+              enabled: true,
+              pinned: true,
+            },
+            { name: "上海联通", host: "210.22.97.1", port: 80, enabled: true },
+            {
+              name: "广东移动",
+              host: "211.136.192.6",
+              port: 80,
+              enabled: true,
+            },
+            { name: "北京联通", host: "123.125.99.1", port: 80, enabled: true },
+            {
+              name: "上海电信",
+              host: "202.96.209.133",
+              port: 80,
+              enabled: true,
+            },
+            {
+              name: "广东电信",
+              host: "202.96.128.86",
+              port: 80,
+              enabled: true,
+            },
+          ]),
+        },
+        ts: Date.now(),
+      };
+    }
+  }
   // 调优 is a live sysctl probe; the demo answers with a plausible state so
   // the dialog can be explored (and its apply/restore buttons feel real).
   if (bare === "node/tune") {

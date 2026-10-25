@@ -228,6 +228,8 @@ export function LatencyCell({
   onShowRoute,
   onShowTrend,
   onEditTargets,
+  /** When set, the cell opens a details dialog instead of the popover. */
+  onOpenDetails,
   note,
   title = "到各测试点的延迟",
   footer,
@@ -242,6 +244,7 @@ export function LatencyCell({
   onShowTrend?: () => void;
   /** Opens the node's reference point choice. */
   onEditTargets?: () => void;
+  onOpenDetails?: () => void;
   /** Shown before the time on cards, e.g. "自定义". */
   note?: string;
   /** Heading of the details. */
@@ -280,6 +283,55 @@ export function LatencyCell({
     (p) => !shown.includes(p) && pointTone(p) === "danger",
   ).length;
   const others = points.filter((p) => p !== worst);
+
+  if (onOpenDetails) {
+    return (
+      <button
+        className={
+          variant === "card"
+            ? "w-full rounded-lg text-left transition-opacity hover:opacity-80"
+            : "flex w-full items-center justify-between gap-2 rounded-lg transition-opacity hover:opacity-80"
+        }
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onOpenDetails();
+        }}
+      >
+        {variant === "card" ? (
+          <>
+            <span className="mb-1.5 flex items-center justify-between text-sm">
+              <span className="text-muted-foreground">延迟</span>
+              <span className="text-xs text-muted-foreground">
+                {note ? `${note} · ` : ""}
+                {more > 0 ? `共 ${points.length} 个 · ` : ""}
+                {probe ? ago(probe.checkedAt) : ""}
+              </span>
+            </span>
+            <span className="flex flex-col gap-1">
+              {shown.map((p, i) => (
+                <Row key={p.name} point={p} spinning={probing && i === 0} />
+              ))}
+            </span>
+          </>
+        ) : (
+          <>
+            <Pill label={points.length > 1} point={worst} spinning={probing} />
+            {others.length > 0 && (
+              <span className="flex items-center gap-0.5">
+                {others.map((p) => (
+                  <span
+                    key={p.name}
+                    className={`h-1.5 w-1.5 rounded-full ${TONE[pointTone(p)][1]}`}
+                  />
+                ))}
+              </span>
+            )}
+          </>
+        )}
+      </button>
+    );
+  }
 
   return (
     <Dropdown placement="bottom-end">

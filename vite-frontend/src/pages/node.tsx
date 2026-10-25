@@ -54,8 +54,7 @@ import {
   type ReleaseChannel,
 } from "@/api";
 import { LatencyCell, probePoints } from "@/components/latency-cell";
-import { RouteModal } from "@/components/route-modal";
-import { LatencyTrendModal } from "@/components/lazy-charts";
+import { LatencyDialog } from "@/components/latency-dialog";
 import { LatencyTargetsModal } from "@/pages/node/latency-targets-modal";
 import { ListPageSkeleton } from "@/components/page-state";
 import { NodeActionsSheet } from "@/pages/node/node-actions-sheet";
@@ -269,8 +268,7 @@ export default function NodePage({
 
   const [sheetNodeId, setSheetNodeId] = useState<number | null>(null);
   const [probingIds, setProbingIds] = useState<Set<number>>(new Set());
-  const [routeNode, setRouteNode] = useState<Node | null>(null);
-  const [trendNode, setTrendNode] = useState<Node | null>(null);
+  const [latencyNode, setLatencyNode] = useState<Node | null>(null);
   const [targetNodes, setTargetNodes] = useState<Node[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [batchDeleteModalOpen, setBatchDeleteModalOpen] = useState(false);
@@ -1263,9 +1261,8 @@ export default function NodePage({
           probing={probingIds.has(node.id)}
           variant={variant}
           onEditTargets={() => setTargetNodes([node])}
+          onOpenDetails={() => setLatencyNode(node)}
           onProbe={() => probeNode(node.id)}
-          onShowRoute={() => setRouteNode(node)}
-          onShowTrend={() => setTrendNode(node)}
         />
       )
     ) : null;
@@ -2704,16 +2701,15 @@ export default function NodePage({
         setIsFilterModalOpen={setIsFilterModalOpen}
         setNodeFilterMode={setNodeFilterMode}
       />
-      <RouteModal
-        nodeId={routeNode?.id ?? null}
-        nodeName={routeNode?.name}
-        onClose={() => setRouteNode(null)}
+      <LatencyDialog
+        node={latencyNode}
+        probe={latencyNode?.latency}
+        probing={latencyNode ? probingIds.has(latencyNode.id) : false}
+        onClose={() => setLatencyNode(null)}
+        onProbe={() => latencyNode && probeNode(latencyNode.id)}
+        onTargetsSaved={() => setLatencyNode(null)}
       />
-      <LatencyTrendModal
-        nodeId={trendNode?.id ?? null}
-        nodeName={trendNode?.name}
-        onClose={() => setTrendNode(null)}
-      />
+
       <LatencyTargetsModal
         nodes={targetNodes}
         onClose={() => setTargetNodes([])}

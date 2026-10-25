@@ -58,6 +58,40 @@ export function LatencyTrendModal({
   nodeName?: string;
   onClose: () => void;
 }) {
+  return (
+    <Modal
+      backdrop="blur"
+      classNames={{
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
+      }}
+      isOpen={nodeId !== null}
+      placement="center"
+      scrollBehavior="inside"
+      size="2xl"
+      onOpenChange={(v) => !v && onClose()}
+    >
+      <ModalContent>
+        <ModalHeader closable className="flex flex-col gap-0.5">
+          <h2 className="text-lg font-bold">延迟趋势</h2>
+          <p className="text-xs font-normal text-muted-foreground">
+            {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
+            ，每 3 分钟一次
+          </p>
+        </ModalHeader>
+        <ModalBody>
+          <LatencyTrendContent nodeId={nodeId} />
+        </ModalBody>
+      </ModalContent>
+    </Modal>
+  );
+}
+
+/** The trend chart and per-point summary, usable inside another dialog. */
+export function LatencyTrendPanel({ nodeId }: { nodeId: number | null }) {
+  return <LatencyTrendContent nodeId={nodeId} />;
+}
+
+function LatencyTrendContent({ nodeId }: { nodeId: number | null }) {
   const [hours, setHours] = useState(24);
   const [trend, setTrend] = useState<LatencyTrend | null>(null);
   const [loading, setLoading] = useState(false);
@@ -95,165 +129,144 @@ export function LatencyTrendModal({
   const points = trend?.points ?? [];
 
   return (
-    <Modal
-      backdrop="blur"
-      classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
-      }}
-      isOpen={nodeId !== null}
-      placement="center"
-      scrollBehavior="inside"
-      size="2xl"
-      onOpenChange={(v) => !v && onClose()}
-    >
-      <ModalContent>
-        <ModalHeader closable className="flex flex-col gap-0.5">
-          <h2 className="text-lg font-bold">延迟趋势</h2>
-          <p className="text-xs font-normal text-muted-foreground">
-            {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
-            ，每 3 分钟一次
-          </p>
-        </ModalHeader>
-        <ModalBody className="space-y-3">
-          <div className="flex gap-1 self-start rounded-lg bg-muted p-1">
-            {RANGES.map((r) => (
-              <button
-                key={r.hours}
-                className={`rounded-md px-3 py-1 text-xs transition-colors ${
-                  hours === r.hours
-                    ? "bg-card font-medium shadow-sm"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-                type="button"
-                onClick={() => setHours(r.hours)}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
+    <div className="space-y-3">
+      <div className="flex gap-1 self-start rounded-lg bg-muted p-1">
+        {RANGES.map((r) => (
+          <button
+            key={r.hours}
+            className={`rounded-md px-3 py-1 text-xs transition-colors ${
+              hours === r.hours
+                ? "bg-card font-medium shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+            type="button"
+            onClick={() => setHours(r.hours)}
+          >
+            {r.label}
+          </button>
+        ))}
+      </div>
 
-          {loading && !trend ? (
-            <div className="flex h-52 items-center sm:h-64 justify-center">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
-          ) : rows.length === 0 ? (
-            <p className="flex h-52 items-center sm:h-64 justify-center text-sm text-muted-foreground">
-              这段时间还没有记录
-            </p>
-          ) : (
-            <div aria-label="延迟趋势图" className="h-52 sm:h-64" role="img">
-              <ResponsiveContainer height="100%" width="100%">
-                <LineChart data={rows}>
-                  <CartesianGrid
-                    stroke="var(--border)"
-                    strokeDasharray="3 3"
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey="t"
-                    fontSize={11}
-                    minTickGap={32}
-                    tickFormatter={(t: number) => timeLabel(t, hours)}
-                  />
-                  <YAxis
-                    fontSize={11}
-                    tickFormatter={(v: number) => `${Math.round(v)}ms`}
-                    width={52}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(0,0,0,0.8)",
-                      border: "none",
-                      borderRadius: "8px",
-                      fontSize: 12,
-                    }}
-                    formatter={(
-                      value: unknown,
-                      name: unknown,
-                      item: { payload?: unknown },
-                    ) => {
-                      const loss = Number(
-                        (item?.payload as Record<string, unknown>)?.[
-                          `${String(name)}\u0000loss`
-                        ] ?? 0,
-                      );
+      {loading && !trend ? (
+        <div className="flex h-52 items-center sm:h-64 justify-center">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </div>
+      ) : rows.length === 0 ? (
+        <p className="flex h-52 items-center sm:h-64 justify-center text-sm text-muted-foreground">
+          这段时间还没有记录
+        </p>
+      ) : (
+        <div aria-label="延迟趋势图" className="h-52 sm:h-64" role="img">
+          <ResponsiveContainer height="100%" width="100%">
+            <LineChart data={rows}>
+              <CartesianGrid
+                stroke="var(--border)"
+                strokeDasharray="3 3"
+                vertical={false}
+              />
+              <XAxis
+                dataKey="t"
+                fontSize={11}
+                minTickGap={32}
+                tickFormatter={(t: number) => timeLabel(t, hours)}
+              />
+              <YAxis
+                fontSize={11}
+                tickFormatter={(v: number) => `${Math.round(v)}ms`}
+                width={52}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "rgba(0,0,0,0.8)",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontSize: 12,
+                }}
+                formatter={(
+                  value: unknown,
+                  name: unknown,
+                  item: { payload?: unknown },
+                ) => {
+                  const loss = Number(
+                    (item?.payload as Record<string, unknown>)?.[
+                      `${String(name)}\u0000loss`
+                    ] ?? 0,
+                  );
 
-                      return [
-                        value === null || value === undefined
-                          ? "超时"
-                          : `${Number(value).toFixed(0)}ms${
-                              loss > 0 ? ` · 丢包 ${loss}%` : ""
-                            }`,
-                        String(name),
-                      ];
-                    }}
-                    itemStyle={{ padding: 0 }}
-                    labelFormatter={(t: unknown) =>
-                      timeLabel(Number(t), hours > 24 ? 48 : 24)
-                    }
-                    labelStyle={{ color: "#fff" }}
-                  />
-                  {points.map((p, i) => (
-                    <Line
-                      key={p.name}
-                      connectNulls={false}
-                      dataKey={p.name}
-                      dot={false}
-                      isAnimationActive={false}
-                      name={p.name}
-                      stroke={COLORS[i % COLORS.length]}
-                      strokeWidth={1.5}
-                      type="monotone"
+                  return [
+                    value === null || value === undefined
+                      ? "超时"
+                      : `${Number(value).toFixed(0)}ms${
+                          loss > 0 ? ` · 丢包 ${loss}%` : ""
+                        }`,
+                    String(name),
+                  ];
+                }}
+                itemStyle={{ padding: 0 }}
+                labelFormatter={(t: unknown) =>
+                  timeLabel(Number(t), hours > 24 ? 48 : 24)
+                }
+                labelStyle={{ color: "#fff" }}
+              />
+              {points.map((p, i) => (
+                <Line
+                  key={p.name}
+                  connectNulls={false}
+                  dataKey={p.name}
+                  dot={false}
+                  isAnimationActive={false}
+                  name={p.name}
+                  stroke={COLORS[i % COLORS.length]}
+                  strokeWidth={1.5}
+                  type="monotone"
+                />
+              ))}
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {points.length > 0 && (
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead className="text-muted-foreground">
+              <tr className="border-b border-divider">
+                <th className="py-1.5 text-left font-normal">测试点</th>
+                <th className="py-1.5 text-right font-normal">平均</th>
+                <th className="py-1.5 text-right font-normal">最高</th>
+                <th className="py-1.5 text-right font-normal">平均丢包</th>
+              </tr>
+            </thead>
+            <tbody className="font-mono">
+              {points.map((p, i) => (
+                <tr
+                  key={p.name}
+                  className="border-b border-divider last:border-0"
+                >
+                  <td className="py-1.5 font-sans">
+                    <span
+                      className="mr-2 inline-block h-2 w-2 rounded-full"
+                      style={{ background: COLORS[i % COLORS.length] }}
                     />
-                  ))}
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-
-          {points.length > 0 && (
-            <div className="overflow-x-auto">
-              <table className="w-full text-xs">
-                <thead className="text-muted-foreground">
-                  <tr className="border-b border-divider">
-                    <th className="py-1.5 text-left font-normal">测试点</th>
-                    <th className="py-1.5 text-right font-normal">平均</th>
-                    <th className="py-1.5 text-right font-normal">最高</th>
-                    <th className="py-1.5 text-right font-normal">平均丢包</th>
-                  </tr>
-                </thead>
-                <tbody className="font-mono">
-                  {points.map((p, i) => (
-                    <tr
-                      key={p.name}
-                      className="border-b border-divider last:border-0"
-                    >
-                      <td className="py-1.5 font-sans">
-                        <span
-                          className="mr-2 inline-block h-2 w-2 rounded-full"
-                          style={{ background: COLORS[i % COLORS.length] }}
-                        />
-                        {p.name}
-                      </td>
-                      <td className="py-1.5 text-right">
-                        {p.avgMs ? `${Math.round(p.avgMs)} ms` : "-"}
-                      </td>
-                      <td className="py-1.5 text-right">
-                        {p.maxMs ? `${p.maxMs} ms` : "-"}
-                      </td>
-                      <td
-                        className={`py-1.5 text-right ${p.lossPct >= 5 ? "text-danger" : ""}`}
-                      >
-                        {p.lossPct}%
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+                    {p.name}
+                  </td>
+                  <td className="py-1.5 text-right">
+                    {p.avgMs ? `${Math.round(p.avgMs)} ms` : "-"}
+                  </td>
+                  <td className="py-1.5 text-right">
+                    {p.maxMs ? `${p.maxMs} ms` : "-"}
+                  </td>
+                  <td
+                    className={`py-1.5 text-right ${p.lossPct >= 5 ? "text-danger" : ""}`}
+                  >
+                    {p.lossPct}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
   );
 }
