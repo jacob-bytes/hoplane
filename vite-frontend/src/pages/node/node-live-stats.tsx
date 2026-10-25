@@ -22,20 +22,21 @@ function tone(v: number): string {
   return v >= 85 ? "bg-danger" : v >= 60 ? "bg-warning" : "bg-primary/70";
 }
 
+/** One resource tile: label + value on top, a rounded meter underneath. */
 function Meter({ label, value }: { label: string; value?: number }) {
   return (
-    <div className="min-w-0 space-y-1">
+    <div className="min-w-0 space-y-1.5 rounded-md border border-border/60 bg-muted/30 px-2 py-1.5">
       <div className="flex items-baseline justify-between gap-1 text-[11px] leading-none">
         <span className="text-muted-foreground">{label}</span>
-        <span className="font-mono font-semibold">
+        <span className="font-mono font-semibold tabular-nums">
           {value === undefined ? "—" : `${Math.round(value)}%`}
         </span>
       </div>
-      <div className="h-1 overflow-hidden rounded-full bg-muted">
+      <div className="h-1.5 overflow-hidden rounded-full bg-background/80 dark:bg-background/50">
         {value !== undefined && (
           <div
-            className={`h-full rounded-full ${tone(value)}`}
-            style={{ width: `${Math.min(100, Math.max(2, value))}%` }}
+            className={`h-full rounded-full transition-[width] duration-500 ${tone(value)}`}
+            style={{ width: `${Math.min(100, Math.max(4, value))}%` }}
           />
         )}
       </div>
