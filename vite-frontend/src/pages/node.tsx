@@ -16,7 +16,17 @@ import {
   rectSortingStrategy,
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
-import { GripVertical, Settings2 } from "lucide-react";
+import {
+  Activity,
+  Crosshair,
+  GitBranch,
+  GripVertical,
+  Pencil,
+  Settings2,
+  SlidersHorizontal,
+  Terminal,
+  Trash2,
+} from "lucide-react";
 
 import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/shadcn-bridge/heroui/button";
@@ -2465,6 +2475,9 @@ export default function NodePage({
                         label: "删除",
                         section: "管理",
                         description: "移除服务器与它的 agent 配置",
+                        icon: Trash2,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
                         color: "danger" as const,
                         onPress: () => handleDelete(node),
                       },
@@ -2477,7 +2490,9 @@ export default function NodePage({
                               label: "监控",
                               section: "运行",
                               description: "实时 CPU、内存与网络曲线",
-                              color: "primary" as const,
+                              icon: Activity,
+                              hint: "打开",
+                              kind: "navigate" as const,
                               onPress: () => onOpenMonitor(node.id),
                             },
                           ]
@@ -2487,7 +2502,9 @@ export default function NodePage({
                         label: "安装命令",
                         section: "运行",
                         description: "复制 agent 安装脚本到剪贴板",
-                        color: "primary" as const,
+                        icon: Terminal,
+                        hint: "复制",
+                        kind: "copy" as const,
                         onPress: () => openInstallSelector(node),
                       },
                       {
@@ -2495,6 +2512,9 @@ export default function NodePage({
                         label: "调优",
                         section: "维护",
                         description: "内核与转发参数优化",
+                        icon: SlidersHorizontal,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
                         disabled: !online,
                         onPress: () => setTuneNode(node),
                       },
@@ -2503,29 +2523,31 @@ export default function NodePage({
                         label: "测试点",
                         section: "维护",
                         description: "选择延迟探测目标",
+                        icon: Crosshair,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
                         onPress: () => setTargetNodes([node]),
                       },
                       {
-                        key: "upgrade",
-                        label: "升级",
+                        key: "version",
+                        label: "版本",
                         section: "维护",
-                        description: "升级 agent 到新版本",
+                        description: "升级到新版本，或回退到上一版",
+                        icon: GitBranch,
+                        hint: node.version || undefined,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
                         disabled: !online,
                         onPress: () => openUpgradeModal("single", node.id),
-                      },
-                      {
-                        key: "rollback",
-                        label: "回退",
-                        section: "维护",
-                        description: "回退到上一个版本",
-                        disabled: !online,
-                        onPress: () => handleRollbackNode(node),
                       },
                       {
                         key: "edit",
                         label: "编辑",
                         section: "管理",
                         description: "修改名称、地址与端口",
+                        icon: Pencil,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
                         onPress: () => handleEdit(node),
                       },
                       ...(node.expiryTime &&
@@ -2546,6 +2568,9 @@ export default function NodePage({
                         label: "删除",
                         section: "管理",
                         description: "移除服务器与它的 agent 配置",
+                        icon: Trash2,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
                         color: "danger" as const,
                         onPress: () => handleDelete(node),
                       },
@@ -2642,6 +2667,9 @@ export default function NodePage({
 
       {/* 版本选择升级模态框 */}
       <UpgradeNodeModal
+        currentVersion={
+          nodeList.find((n) => n.id === upgradeTargetNodeId)?.version
+        }
         handleConfirmUpgrade={handleConfirmUpgrade}
         releases={releases}
         releasesLoading={releasesLoading}
@@ -2651,6 +2679,12 @@ export default function NodePage({
         setUpgradeModalOpen={setUpgradeModalOpen}
         upgradeModalOpen={upgradeModalOpen}
         upgradeTarget={upgradeTarget}
+        onRollback={() => {
+          const target = nodeList.find((n) => n.id === upgradeTargetNodeId);
+
+          setUpgradeModalOpen(false);
+          if (target) handleRollbackNode(target);
+        }}
       />
 
       {/* 批量删除确认模态框 */}

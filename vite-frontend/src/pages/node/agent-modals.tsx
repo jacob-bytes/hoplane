@@ -156,6 +156,9 @@ export interface UpgradeNodeModalProps {
   setUpgradeModalOpen: Dispatch<SetStateAction<boolean>>;
   upgradeModalOpen: boolean;
   upgradeTarget: "single" | "batch";
+  /** Only for a single node: shows the installed version and a way back. */
+  currentVersion?: string;
+  onRollback?: () => void;
 }
 
 /** Pick a version and upgrade the agent on one or more nodes. */
@@ -169,6 +172,8 @@ export function UpgradeNodeModal({
   setUpgradeModalOpen,
   upgradeModalOpen,
   upgradeTarget,
+  currentVersion,
+  onRollback,
 }: UpgradeNodeModalProps) {
   return (
     <Modal
@@ -189,7 +194,7 @@ export function UpgradeNodeModal({
               <h2 className="text-xl font-bold">
                 {upgradeTarget === "batch"
                   ? `批量升级 (${selectedIds.size} 个服务器)`
-                  : "升级服务器"}
+                  : "版本管理"}
               </h2>
             </ModalHeader>
             <ModalBody>
@@ -239,6 +244,25 @@ export function UpgradeNodeModal({
                 </div>
               )}
             </ModalBody>
+            {upgradeTarget === "single" && onRollback && (
+              <ModalBody className="border-t border-border pt-4">
+                <div className="rounded-lg border border-border p-3">
+                  <div className="text-sm font-medium">回退到上一版</div>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    当前版本 {currentVersion || "未知"}
+                    ，回退会重启 agent，正在转发的连接会短暂中断。
+                  </p>
+                  <Button
+                    className="mt-2 w-full"
+                    size="sm"
+                    variant="outline"
+                    onPress={onRollback}
+                  >
+                    回退
+                  </Button>
+                </div>
+              </ModalBody>
+            )}
             <ModalFooter>
               <Button variant="ghost" onPress={onClose}>
                 取消
