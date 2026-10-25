@@ -1,7 +1,7 @@
 import type { InboundProbe } from "@/api/types";
 import type { Node } from "@/pages/node/types";
 
-import { Suspense, lazy, useState } from "react";
+import { Suspense, lazy, useMemo, useState } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 
 import { RouteTag } from "@/components/route-modal";
@@ -49,6 +49,8 @@ export function LatencyDialog({
   onTargetsSaved: () => void;
 }) {
   const [tab, setTab] = useState<TabKey>("overview");
+  const [sortAsc, setSortAsc] = useState<boolean | null>(null);
+  const [onlyBad, setOnlyBad] = useState(false);
   const points = probePoints(probe);
   const okPoints = points.filter((p) => p.ok);
   const avg = okPoints.length
@@ -65,6 +67,23 @@ export function LatencyDialog({
     (w, p) => (!w || (p.latencyMs ?? 0) > (w.latencyMs ?? 0) ? p : w),
     null,
   );
+  const badCount = points.filter((p) => !p.ok || (p.lossPct ?? 0) >= 5).length;
+  const visible = useMemo(() => {
+    const list = onlyBad
+      ? points.filter((p) => !p.ok || (p.lossPct ?? 0) >= 5)
+      : [...points];
+
+    if (sortAsc !== null) {
+      list.sort(
+        (a, b) =>
+          (a.latencyMs ?? Number.MAX_SAFE_INTEGER) -
+          (b.latencyMs ?? Number.MAX_SAFE_INTEGER),
+      );
+      if (!sortAsc) list.reverse();
+    }
+
+    return list;
+  }, [points, onlyBad, sortAsc]);
   const checkedAgo = probe?.checkedAt
     ? (() => {
         const m = Math.max(
@@ -153,9 +172,34 @@ export function LatencyDialog({
                   </span>
                   {worst && ` · ${worst.name}`}
                 </span>
-                {probe && (
-                  <span className="ml-auto">每 3 分钟自动检测一次</span>
-                )}
+                <span className="ml-auto flex items-center gap-1">
+                  <button
+                    className={`rounded-md px-1.5 py-0.5 text-[11px] transition-colors ${
+                      sortAsc !== null
+                        ? "bg-muted font-medium text-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    type="button"
+                    onClick={() =>
+                      setSortAsc(
+                        sortAsc === null ? true : sortAsc ? false : null,
+                      )
+                    }
+                  >
+                    延迟 {sortAsc === null ? "排序" : sortAsc ? "↑" : "↓"}
+                  </button>
+                  <button
+                    className={`rounded-md px-1.5 py-0.5 text-[11px] transition-colors ${
+                      onlyBad
+                        ? "bg-danger/10 font-medium text-danger"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    type="button"
+                    onClick={() => setOnlyBad((v) => !v)}
+                  >
+                    只看异常{badCount > 0 ? ` ${badCount}` : ""}
+                  </button>
+                </span>
               </div>
             )}
             {points.length === 0 ? (
@@ -163,8 +207,12 @@ export function LatencyDialog({
                 还没有结果，点下方按钮检测
               </p>
             ) : (
-              <div className="grid flex-1 auto-rows-fr divide-y divide-border overflow-hidden rounded-lg border border-border">
-                {points.map((p) => {
+              <div
+                aria-label="测试点延迟"
+                className="grid flex-1 auto-rows-fr divide-y divide-border overflow-hidden rounded-lg border border-border"
+                role="list"
+              >
+                {visible.map((p) => {
                   const [pill, dot] = TONE[pointTone(p)];
                   const bad = !p.ok || (p.lossPct ?? 0) >= 5;
                   const slowest = p.ok && p === worst;
@@ -172,7 +220,9 @@ export function LatencyDialog({
                   return (
                     <div
                       key={p.name}
+                      aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : p.error || "连不上"}，丢包 ${p.lossPct ?? 0}%`}
                       className="relative flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 text-sm"
+                      role="listitem"
                     >
                       {(bad || slowest) && (
                         <span
@@ -208,6 +258,11 @@ export function LatencyDialog({
                     </div>
                   );
                 })}
+                {visible.length === 0 && (
+                  <p className="flex items-center justify-center px-3 py-8 text-sm text-muted-foreground">
+                    没有异常的测试点
+                  </p>
+                )}
               </div>
             )}
           </TabsContent>
