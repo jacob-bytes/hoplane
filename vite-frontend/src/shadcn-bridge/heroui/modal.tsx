@@ -303,7 +303,7 @@ export function ModalBody({
   return (
     <div
       className={cn(
-        "min-h-0 max-h-[60vh] flex-1 space-y-4 overflow-y-auto pr-1",
+        "min-h-0 max-h-[60vh] flex-1 space-y-4 overflow-y-auto pr-3 [scrollbar-gutter:stable]",
         context?.classNames?.body,
         className,
       )}

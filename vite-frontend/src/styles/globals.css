@@ -45,9 +45,9 @@
 
   --border: #e4e4e7;
   --input: #e4e4e7;
-  --ring: #3b82f6;
+  --ring: #2563eb;
 
-  --primary: #2563eb;
+  --primary: #1d4ed8;
   --primary-foreground: #ffffff;
 
   --secondary: #f4f4f5;
@@ -154,9 +154,9 @@
 
   --border: #26262a;
   --input: #2f2f35;
-  --ring: #60a5fa;
+  --ring: #3b82f6;
 
-  --primary: #3b82f6;
+  --primary: #2563eb;
   --primary-foreground: #ffffff;
 
   --secondary: #27272a;
@@ -507,6 +507,33 @@ body {
 }
 
 @layer utilities {
+  /* Thin, token-coloured scrollbars so they read as part of the surface. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 9999px;
+    background: var(--border);
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+    background-clip: content-box;
+  }
+
   .scrollbar-hide {
     /* IE and Edge */
     -ms-overflow-style: none;
