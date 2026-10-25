@@ -118,12 +118,6 @@ export function LatencyDialog({
         return m < 1 ? "刚刚检测" : `${m} 分钟前检测`;
       })()
     : null;
-  const badgeVariant = (tone: keyof typeof TONE) =>
-    tone === "success"
-      ? "success"
-      : tone === "warning"
-        ? "warning"
-        : "destructive";
 
   return (
     <Dialog
@@ -334,13 +328,28 @@ export function LatencyDialog({
                           <TableCell className="py-1.5">
                             <RouteTag short route={p.route} />
                           </TableCell>
-                          <TableCell className="py-1.5 text-right">
-                            <Badge
-                              className="font-mono tabular-nums"
-                              variant={badgeVariant(tone)}
-                            >
-                              {p.ok ? `${p.latencyMs} ms` : p.error || "连不上"}
-                            </Badge>
+                          <TableCell className="py-1.5">
+                            <span className="flex items-center justify-end gap-2">
+                              <span
+                                aria-hidden
+                                className="h-1.5 w-20 overflow-hidden rounded-full bg-muted"
+                              >
+                                <span
+                                  className={cn(
+                                    "block h-full rounded-full",
+                                    TONE[tone][1],
+                                  )}
+                                  style={{
+                                    width: `${p.ok ? Math.min(100, Math.max(3, p.latencyMs ?? 0)) : 100}%`,
+                                  }}
+                                />
+                              </span>
+                              <span className="w-14 text-right font-mono text-xs tabular-nums">
+                                {p.ok
+                                  ? `${p.latencyMs} ms`
+                                  : p.error || "连不上"}
+                              </span>
+                            </span>
                           </TableCell>
                           {hasLoss && (
                             <TableCell
