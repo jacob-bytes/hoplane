@@ -30,6 +30,16 @@ const ROUTES: Record<string, [string, string]> = {
   "移动 CMI": ["CMI", "bg-success/15 text-success dark:text-success-400"],
 };
 
+const ROUTE_TEXT: Record<string, string> = {
+  "电信 CN2 GIA": "text-warning-700 dark:text-warning-400",
+  "电信 CN2 GT": "text-warning-700 dark:text-warning-400",
+  "电信 163": "text-muted-foreground",
+  "联通 9929": "text-violet-700 dark:text-violet-300",
+  "联通 4837": "text-primary",
+  "移动 CMIN2": "text-success-700 dark:text-success-400",
+  "移动 CMI": "text-success-700 dark:text-success-400",
+};
+
 const NET_CLASS: Record<string, string> = {
   CN2: "text-warning",
   "163": "text-muted-foreground",
@@ -47,16 +57,22 @@ const NET_LABEL: Record<string, string> = { CT: "电信" };
 export function RouteTag({
   route,
   short,
+  plain,
 }: {
   route?: string;
   short?: boolean;
+  /** Muted chip with coloured text, for rows that already carry a colour. */
+  plain?: boolean;
 }) {
   if (!route || route === "未识别") return null;
   const [tag, cls] = ROUTES[route] ?? [route, ROUTES["电信 163"][1]];
+  const className = plain
+    ? `${ROUTE_TEXT[route] ?? "text-muted-foreground"} bg-muted/60`
+    : cls;
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded px-1 font-sans text-[11px] font-medium leading-4 ${cls}`}
+      className={`inline-flex shrink-0 items-center whitespace-nowrap rounded px-1 font-sans text-[11px] font-medium leading-4 ${className}`}
       title={`回程 ${route}`}
     >
       {short ? tag : route}
