@@ -730,6 +730,10 @@ export function AdminOverview() {
                 );
               })}
             </div>
+            <div className="mt-2 border-t border-border pt-2 text-[11px] text-muted-foreground">
+              共 {nodes.length} 台 · 在线{" "}
+              {nodes.filter((n) => n.status === 1).length} 台
+            </div>
           </Panel>
         )}
       </div>
