@@ -671,33 +671,41 @@ export function AdminOverview() {
               还没有流量数据（导入的节点不统计流量）
             </p>
           ) : (
-            <div className="grid min-h-0 flex-1 auto-rows-fr divide-y divide-border">
-              {top.map((i) => {
-                const total = i.uploadBytes + i.downloadBytes;
+            <>
+              <div className="grid min-h-0 flex-1 auto-rows-fr divide-y divide-border">
+                {top.map((i) => {
+                  const total = i.uploadBytes + i.downloadBytes;
+                  const share =
+                    up + down > 0 ? Math.round((total / (up + down)) * 100) : 0;
 
-                return (
-                  <div
-                    key={i.id}
-                    className="flex min-h-0 flex-col justify-center py-1.5"
-                  >
-                    <div className="flex items-baseline justify-between gap-2 text-sm">
-                      <span className="min-w-0 truncate">{i.name}</span>
-                      <span className="shrink-0 font-mono text-xs text-muted-foreground">
+                  return (
+                    <div
+                      key={i.id}
+                      className="grid min-h-0 grid-cols-[minmax(0,1fr)_minmax(48px,1fr)_92px_40px] items-center gap-3 py-1.5"
+                    >
+                      <span className="truncate text-sm">{i.name}</span>
+                      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                        <div
+                          className="h-full rounded-full bg-primary"
+                          style={{
+                            width: `${Math.max(3, (total / topMax) * 100)}%`,
+                          }}
+                        />
+                      </div>
+                      <span className="text-right font-mono text-[11px] text-muted-foreground">
                         {formatTraffic(total)}
                       </span>
+                      <span className="text-right text-[11px] tabular-nums text-muted-foreground">
+                        {share}%
+                      </span>
                     </div>
-                    <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="h-full rounded-full bg-primary"
-                        style={{
-                          width: `${Math.max(4, (total / topMax) * 100)}%`,
-                        }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+              <div className="mt-2 shrink-0 border-t border-border pt-2 text-[11px] text-muted-foreground">
+                合计 {formatTraffic(up + down)} · 前 {top.length} 个节点
+              </div>
+            </>
           )}
         </Panel>
 

@@ -33,7 +33,7 @@ export function RollbackNodeModal({
       isOpen={rollbackModalOpen}
       placement="center"
       scrollBehavior="inside"
-      size="2xl"
+      size="sm"
       onOpenChange={setRollbackModalOpen}
     >
       <ModalContent>
@@ -92,22 +92,22 @@ export function DeleteNodeModal({
       isOpen={deleteModalOpen}
       placement="center"
       scrollBehavior="inside"
-      size="2xl"
+      size="sm"
       onOpenChange={setDeleteModalOpen}
     >
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              <h2 className="text-xl font-bold">确认删除</h2>
+              <h2 className="text-base font-semibold">删除服务器</h2>
             </ModalHeader>
-            <ModalBody>
-              <p>
-                确定要删除服务器{" "}
-                <strong>&quot;{nodeToDelete?.name}&quot;</strong> 吗？
+            <ModalBody className="space-y-2">
+              <p className="text-sm">
+                确定要删除 <strong>{nodeToDelete?.name}</strong> 吗？
               </p>
-              <p className="text-small text-muted-foreground">
-                此操作不可恢复，请谨慎操作。
+              <p className="text-xs text-muted-foreground">
+                服务器会从面板移除；agent
+                仍在机器上运行，需要登录服务器手动卸载。此操作不可恢复。
               </p>
             </ModalBody>
             <ModalFooter>
@@ -161,15 +161,16 @@ export function BatchDeleteNodesModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              <h2 className="text-xl font-bold">确认删除</h2>
+              <h2 className="text-base font-semibold">批量删除服务器</h2>
             </ModalHeader>
-            <ModalBody>
-              <p>
+            <ModalBody className="space-y-2">
+              <p className="text-sm">
                 确定要删除选中的 <strong>{selectedIds.size}</strong>{" "}
                 个服务器吗？
               </p>
-              <p className="text-small text-muted-foreground">
-                此操作不可恢复，请谨慎操作。
+              <p className="text-xs text-muted-foreground">
+                这些服务器会从面板移除；agent
+                仍在机器上运行，需要登录服务器手动卸载。此操作不可恢复。
               </p>
             </ModalBody>
             <ModalFooter>
