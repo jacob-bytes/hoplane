@@ -606,7 +606,7 @@ function Editor({
               title="节点组"
             >
               {pickedGroups.length > 0 && (
-                <div className="divide-y divide-divider rounded-xl border border-divider">
+                <div className="divide-y divide-hairline rounded-xl border border-hairline">
                   {pickedGroups.map((g, i) => (
                     <div
                       key={g.id}
@@ -824,7 +824,7 @@ function Editor({
               }
               title="链式代理"
             >
-              <div className="rounded-xl border border-primary-200 bg-primary-50/60 p-4 dark:border-primary-500/30 dark:bg-primary-900/20">
+              <div className="rounded-xl border border-hairline bg-primary-soft/60 p-4">
                 <div className="flex items-center gap-2">
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-medium ${chainOn ? "bg-success-100 text-success-700 dark:bg-success-500/20" : "bg-muted text-muted-foreground"}`}
@@ -839,7 +839,7 @@ function Editor({
                         <span className="text-muted-foreground">→</span>
                       )}
                       <span
-                        className={`rounded-lg px-2 py-1 ${s === "中转节点" ? "bg-muted text-muted-foreground" : s === "落地节点" ? "bg-warning/10 text-warning-700 dark:text-warning-400" : "bg-card text-muted-foreground"}`}
+                        className={`rounded-md px-2 py-1 ${s === "中转节点" ? "bg-muted text-muted-foreground" : s === "落地节点" ? "bg-warning/10 text-warning-700 dark:text-warning-400" : "bg-card text-muted-foreground"}`}
                       >
                         {s}
                       </span>
@@ -853,7 +853,7 @@ function Editor({
               </div>
 
               {o.chainLanding && o.chainRelay && (
-                <p className="rounded-xl bg-warning-50 px-3 py-2 text-xs text-warning-700 dark:bg-warning-500/10">
+                <p className="rounded-lg bg-warning/10 px-3 py-2 text-xs text-warning-700 dark:text-warning-400">
                   现在用的是旧的关键词方式（落地：{o.chainLanding}，中转：
                   {o.chainRelay}）。在下面勾选节点后会改用勾选的节点
                 </p>
@@ -875,7 +875,7 @@ function Editor({
                   }}
                 />
                 {chainSources.length > 0 && (
-                  <div className="divide-y divide-divider rounded-xl border border-divider">
+                  <div className="divide-y divide-hairline rounded-xl border border-hairline">
                     {chainSources.map((src) => {
                       const role: ChainRole = o.chainLandingSources.includes(
                         src.id,
@@ -1087,7 +1087,7 @@ function Editor({
                       {slotLabel(kind)} · 「{view.name}」
                     </p>
                     {view.error ? (
-                      <p className="rounded-xl bg-danger-50 px-3 py-2 text-xs text-danger dark:bg-danger-500/10">
+                      <p className="rounded-lg bg-danger/10 px-3 py-2 text-xs text-danger">
                         模板出错：{view.error}
                       </p>
                     ) : (
@@ -1450,7 +1450,7 @@ export default function SubscriptionPage() {
   const row = (s: SubscriptionItem) => (
     <div
       key={s.id}
-      className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors max-lg:rounded-lg max-lg:border max-lg:border-border max-lg:bg-card lg:grid lg:gap-4 lg:px-4 lg:hover:bg-muted/40 lg:[grid-template-columns:var(--list-cols)]"
+      className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors max-lg:rounded-lg max-lg:border max-lg:border-hairline max-lg:bg-raised lg:grid lg:gap-4 lg:px-4 lg:hover:bg-surface lg:[grid-template-columns:var(--list-cols)]"
       data-slot="list-row"
       role="button"
       tabIndex={0}
@@ -1591,14 +1591,14 @@ export default function SubscriptionPage() {
             className={
               viewMode === "card"
                 ? CARD_GRID
-                : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+                : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised"
             }
             data-list={viewMode === "card" ? undefined : "subscription"}
             role={viewMode === "card" ? undefined : "list"}
           >
             {viewMode !== "card" && (
               <div
-                className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+                className="sticky top-0 z-10 hidden items-center gap-4 border-b border-hairline bg-surface px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                 data-slot="list-head"
               >
                 <div role="columnheader" />
