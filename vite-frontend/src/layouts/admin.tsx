@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import {
   Activity,
   ArrowLeftRight,
-  ChevronRight,
   Globe,
   LayoutDashboard,
   Link2,
@@ -287,7 +286,7 @@ export default function AdminLayout({
 
   return (
     <div
-      className={`flex ${isMobile ? "min-h-screen" : "h-screen"} overflow-hidden bg-background`}
+      className={`flex ${isMobile ? "min-h-screen" : "h-screen"} overflow-hidden bg-canvas`}
     >
       <a
         className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:shadow-md"
@@ -311,7 +310,7 @@ export default function AdminLayout({
         ${isMobile ? "fixed top-0 left-0 h-screen w-64 rounded-r-xl border-r border-border" : "relative h-full border-r border-border"}
         ${isMobile && !mobileMenuVisible ? "-translate-x-full" : "translate-x-0"}
         ${isMobile ? "" : isCollapsed ? "w-[76px]" : "w-[248px]"}
-        bg-card
+        bg-surface
         z-50
         transition-all duration-300 ease-in-out
         flex flex-col flex-shrink-0      `}
@@ -332,7 +331,7 @@ export default function AdminLayout({
         </div>
 
         {/* 菜单导航 */}
-        <nav className="flex-1 px-2.5 overflow-y-auto overflow-x-hidden scrollbar-hide">
+        <nav className="flex-1 px-2 overflow-y-auto overflow-x-hidden scrollbar-hide">
           <ul className="space-y-1">
             {filteredMenuItems.map((item) => {
               const isActive =
@@ -360,9 +359,8 @@ export default function AdminLayout({
                     aria-current={isActive ? "page" : undefined}
                     aria-disabled={isMonitorBlocked}
                     className={`
-                       group w-full flex items-center px-2.5 py-2 rounded-lg text-left
-                       relative min-h-[40px] overflow-hidden transition-colors duration-150
-                       [@media(max-height:760px)]:min-h-[36px] [@media(max-height:760px)]:py-1.5
+                       group w-full flex items-center px-2.5 py-1.5 rounded-md text-left
+                       relative min-h-9 overflow-hidden transition-colors duration-150
                        ${isMonitorBlocked ? "opacity-60" : ""}
                        ${
                          isActive
@@ -384,20 +382,18 @@ export default function AdminLayout({
                   >
                     {isActive && (
                       <motion.div
-                        className="absolute inset-0 rounded-lg bg-primary/10"
+                        className="absolute inset-0 rounded-md bg-primary-soft"
                         layoutId="sidebar-active"
                         transition={{
                           type: "spring",
                           stiffness: 380,
                           damping: 30,
                         }}
-                      >
-                        <span className="absolute left-0 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-primary" />
-                      </motion.div>
+                      />
                     )}
                     {!isActive && (
                       <motion.div
-                        className="absolute inset-0 rounded-lg bg-accent/60 opacity-0"
+                        className="absolute inset-0 rounded-md bg-surface opacity-0"
                         transition={{ duration: 0.15 }}
                         whileHover={{ opacity: 1 }}
                       />
@@ -447,7 +443,7 @@ export default function AdminLayout({
         className={`relative flex min-w-0 flex-1 flex-col ${isMobile ? "min-h-0" : "h-full overflow-hidden"}`}
       >
         {/* 顶栏：移动端菜单按钮 + 面包屑 */}
-        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border pl-3 pr-3 lg:pr-6">
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-hairline bg-raised pl-3 pr-3 lg:pr-6">
           {isMobile && (
             <Button
               isIconOnly
@@ -473,7 +469,10 @@ export default function AdminLayout({
             </Button>
           )}
           {isMobile && (
-            <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-border" />
+            <span
+              aria-hidden
+              className="mx-1 h-5 w-px shrink-0 bg-hairline-strong"
+            />
           )}
           {!isMobile && (
             <>
@@ -491,7 +490,10 @@ export default function AdminLayout({
                   <PanelLeftClose className="h-4 w-4" />
                 )}
               </Button>
-              <span aria-hidden className="mx-1 h-5 w-px shrink-0 bg-border" />
+              <span
+                aria-hidden
+                className="mx-1 h-5 w-px shrink-0 bg-hairline-strong"
+              />
             </>
           )}
           <nav
@@ -507,13 +509,17 @@ export default function AdminLayout({
             </button>
             {currentSection && (
               <>
-                <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                <span aria-hidden className="shrink-0 text-hairline-strong">
+                  /
+                </span>
                 <span className="truncate text-muted-foreground">
                   {currentSection}
                 </span>
               </>
             )}
-            <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+            <span aria-hidden className="shrink-0 text-hairline-strong">
+              /
+            </span>
             <span className="truncate font-medium text-foreground">
               {currentLabel}
             </span>
