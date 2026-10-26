@@ -55,11 +55,11 @@ interface PasswordForm {
 type Tone = "primary" | "success" | "warning" | "secondary" | "danger";
 
 const TONE: Record<Tone, string> = {
-  primary: "bg-primary/10 text-primary",
-  success: "bg-success/10 text-success",
-  warning: "bg-warning/10 text-warning",
-  secondary: "bg-secondary/10 text-secondary",
-  danger: "bg-danger/10 text-danger",
+  primary: "bg-surface text-ink-2",
+  success: "bg-surface text-ink-2",
+  warning: "bg-surface text-ink-2",
+  secondary: "bg-surface text-ink-2",
+  danger: "bg-surface text-danger",
 };
 
 function IconTile({
@@ -73,7 +73,7 @@ function IconTile({
 }) {
   return (
     <span
-      className={`flex shrink-0 items-center justify-center rounded-xl ${TONE[tone]} ${size === "lg" ? "h-11 w-11" : "h-8 w-8"}`}
+      className={`flex shrink-0 items-center justify-center rounded-lg ${TONE[tone]} ${size === "lg" ? "h-11 w-11" : "h-8 w-8"}`}
     >
       <Icon className={size === "lg" ? "h-5 w-5" : "h-4 w-4"} />
     </span>
@@ -496,7 +496,7 @@ export default function ProfilePage() {
           {logoutButton}
         </div>
       ) : (
-        <div className="mx-auto w-full max-w-3xl flex-1 space-y-6 px-6 py-6">
+        <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-6">
           <PageHeader description="你的账号信息和登录方式" title="账户与登录" />
 
           <section className="overflow-hidden rounded-xl border border-border bg-card">

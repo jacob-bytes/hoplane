@@ -4,7 +4,6 @@ import { toast } from "sonner";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
-import { title } from "@/components/primitives";
 import { updatePassword } from "@/api";
 import DefaultLayout from "@/layouts/default";
 import { safeLogout } from "@/utils/logout";
@@ -108,12 +107,12 @@ export default function ChangePasswordPage() {
     <DefaultLayout>
       <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 min-h-[calc(100dvh-200px)]">
         <div className="w-full max-w-lg">
-          <Card className="w-full">
+          <Card className="w-full rounded-[14px] border border-hairline bg-raised shadow-none">
             <CardHeader className="pb-0 pt-6 px-6 flex-col items-center">
-              <div className="w-12 h-12 bg-warning-100 rounded-full flex items-center justify-center mb-3">
+              <div className="mb-3 flex size-10 items-center justify-center rounded-full bg-warning/10">
                 <svg
                   aria-hidden="true"
-                  className="w-6 h-6 text-warning-600"
+                  className="size-5 text-warning"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -125,8 +124,8 @@ export default function ChangePasswordPage() {
                 </svg>
               </div>
 
-              <h1 className={title({ size: "sm" })}>安全提醒</h1>
-              <p className="text-small text-muted-foreground mt-2 text-center">
+              <h1 className="text-[22px] font-semibold tracking-[-0.01em]">安全提醒</h1>
+              <p className="mt-1.5 text-center text-[13px] leading-5 text-muted-foreground">
                 检测到您使用的是默认账号密码，为了您的账户安全，请立即修改
               </p>
             </CardHeader>
@@ -140,7 +139,6 @@ export default function ChangePasswordPage() {
                   label="新用户名"
                   placeholder="请输入新用户名（至少3位）"
                   value={form.newUsername}
-                  variant="bordered"
                   onChange={(e) =>
                     handleInputChange("newUsername", e.target.value)
                   }
@@ -155,7 +153,6 @@ export default function ChangePasswordPage() {
                   placeholder="请输入当前密码"
                   type="password"
                   value={form.currentPassword}
-                  variant="bordered"
                   onChange={(e) =>
                     handleInputChange("currentPassword", e.target.value)
                   }
@@ -170,7 +167,6 @@ export default function ChangePasswordPage() {
                   placeholder="请输入新密码（至少6位）"
                   type="password"
                   value={form.newPassword}
-                  variant="bordered"
                   onChange={(e) =>
                     handleInputChange("newPassword", e.target.value)
                   }
@@ -185,7 +181,6 @@ export default function ChangePasswordPage() {
                   placeholder="请再次输入新密码"
                   type="password"
                   value={form.confirmPassword}
-                  variant="bordered"
                   onChange={(e) =>
                     handleInputChange("confirmPassword", e.target.value)
                   }
@@ -193,18 +188,26 @@ export default function ChangePasswordPage() {
                 />
 
                 <Button
-                  className="mt-2"
+                  className="mt-2 h-10 rounded-md"
                   disabled={loading}
                   isLoading={loading}
-                  size="lg"
-                  variant="warning"
                   onPress={handleSubmit}
                 >
                   {loading ? "修改中..." : "立即修改账号密码"}
                 </Button>
 
-                <div className="bg-warning-50 border border-warning-200 text-warning-700 px-3 py-2 rounded-lg text-sm text-center">
-                  ⚠️ 注意：修改账号密码后需要重新登录
+                <div className="flex items-center justify-center gap-1.5 rounded-md border border-warning/25 bg-warning/10 px-3 py-2 text-center text-[13px] text-warning-700 dark:text-warning-400">
+                  <svg
+                    aria-hidden="true"
+                    className="size-3.5 shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.8}
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 9v4m0 4h.01M10.3 3.9 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" />
+                  </svg>
+                  修改账号密码后需要重新登录
                 </div>
               </div>
             </CardBody>
