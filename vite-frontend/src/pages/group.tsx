@@ -661,7 +661,7 @@ export default function GroupPage({
 
           {activeTab === "perm" && (
             <>
-              <div className="mb-4 rounded-xl border border-divider bg-card p-3 shadow-sm">
+              <div className="mb-4 rounded-xl border border-hairline bg-raised p-3">
                 <p className="mb-2 text-xs text-muted-foreground">
                   让用户分组里的用户可以使用隧道分组里的隧道
                 </p>

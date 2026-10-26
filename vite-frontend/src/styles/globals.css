@@ -383,11 +383,19 @@ body {
   --list-cols: 14px minmax(0, 1fr) 240px 96px;
 }
 
-/* Lists are always compact: 6px vertical padding on rows and headers. */
+/* Lists stay compact on phones; desktop rows get the v3 48px rhythm. */
 [data-slot="list-row-body"],
 [data-slot="list-row"]:not(:has([data-slot="list-row-body"])) {
   padding-top: 0.375rem;
   padding-bottom: 0.375rem;
+}
+
+@media (min-width: 1024px) {
+  [data-slot="list-row-body"],
+  [data-slot="list-row"]:not(:has([data-slot="list-row-body"])) {
+    padding-top: 0.875rem;
+    padding-bottom: 0.875rem;
+  }
 }
 
 [data-slot="list-head"] {
