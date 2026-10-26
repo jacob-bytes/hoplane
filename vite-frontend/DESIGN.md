@@ -83,7 +83,7 @@
 
 | 控件 | 高度 |
 |---|---|
-| `Button size="sm"` / 图例 chip | 28 / 24 |
+| `Button size="sm"` / 图例 chip | 32 / 24 |
 | `Button`（默认） | 36 |
 | `Button size="lg"` | 40 |
 | `Input` / `Select` | 36 |

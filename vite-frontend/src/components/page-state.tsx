@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Inbox } from "lucide-react";
+import { Inbox, Loader2 } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/shadcn-bridge/heroui/button";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 
 // After this long a load is probably stuck (requests time out after 30s).
 const SLOW_LOAD_MS = 10_000;
@@ -30,7 +29,10 @@ export const PageLoadingState = ({
       className={`flex flex-col items-center justify-center gap-3 ${className}`}
     >
       <div className="flex items-center gap-3">
-        <Spinner size="sm" />
+        <Loader2
+          aria-hidden
+          className="size-4 animate-spin motion-reduce:animate-none"
+        />
         <span className="text-muted-foreground">{message}</span>
       </div>
       {slow && (
@@ -40,8 +42,8 @@ export const PageLoadingState = ({
           </span>
           <Button
             size="sm"
-            variant="secondary"
-            onPress={() => window.location.reload()}
+            variant="outline"
+            onClick={() => window.location.reload()}
           >
             重新加载
           </Button>
@@ -71,7 +73,7 @@ export const PageErrorState = ({
 }: BaseStateProps) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <span className="text-danger">{message}</span>
+      <span className="text-destructive">{message}</span>
     </div>
   );
 };
@@ -89,7 +91,7 @@ export const ListPageSkeleton = ({ rows = 6 }: { rows?: number }) => (
           className="flex items-center gap-4 border-b border-border px-4 py-4 last:border-0"
         >
           <Skeleton className="h-2 w-2 shrink-0 rounded-full" />
-          <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex min-w-0 flex-1 flex-col gap-2">
             <Skeleton className="h-3.5 w-40" />
             <Skeleton className="h-3 w-64" />
           </div>

@@ -24,10 +24,12 @@ function tone(v: number): string {
 
 function Meter({ label, value }: { label: string; value?: number }) {
   return (
-    <div className="min-w-0 space-y-1">
+    <div className="flex min-w-0 flex-col gap-1">
       <div className="flex items-baseline justify-between gap-1 text-[11px] leading-none">
-        <span className="text-muted-foreground">{label}</span>
-        <span className="font-mono font-semibold tabular-nums">
+        <span className="shrink-0 whitespace-nowrap text-muted-foreground">
+          {label}
+        </span>
+        <span className="shrink-0 whitespace-nowrap font-mono font-semibold tabular-nums">
           {value === undefined ? "—" : `${Math.round(value)}%`}
         </span>
       </div>
@@ -141,7 +143,7 @@ export function NodeSpeed({
 
   return (
     <div
-      className={`space-y-0.5 text-[11px] font-medium leading-tight tabular-nums ${align === "end" ? "text-right" : ""}`}
+      className={`flex flex-col gap-0.5 text-[11px] font-medium leading-tight tabular-nums ${align === "end" ? "text-right" : ""}`}
     >
       <div
         className={`flex items-center gap-1 ${align === "end" ? "justify-end" : ""}`}

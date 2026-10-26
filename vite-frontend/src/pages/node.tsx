@@ -58,7 +58,7 @@ import { LatencyCell, probePoints } from "@/components/latency-cell";
 import { LatencyDialog } from "@/components/latency-dialog";
 import { LatencyTargetsModal } from "@/pages/node/latency-targets-modal";
 import { ListPageSkeleton } from "@/components/page-state";
-import { NodeActionsSheet } from "@/pages/node/node-actions-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   EmptyHint,
   ListRow,
@@ -2462,7 +2462,7 @@ export default function NodePage({
           : [];
 
         return (
-          <NodeActionsSheet
+          <ActionsDialog
             actions={
               !node
                 ? []
@@ -2688,7 +2688,7 @@ export default function NodePage({
                 )}
               </div>
             )}
-          </NodeActionsSheet>
+          </ActionsDialog>
         );
       })()}
       {/* 新增/编辑节点对话框 */}

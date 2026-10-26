@@ -13,10 +13,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 /**
- * The one action surface for a server, used by both the list row and the
- * card's 配置 button. Actions are grouped into tabs by their `section`.
+ * The one centered action dialog for an item (server, kernel, …).
+ * Actions are grouped into tabs by their `section`; a single group renders
+ * without a tab strip.
  */
-export function NodeActionsSheet({
+export function ActionsDialog({
   open,
   title,
   badge,
@@ -53,8 +54,12 @@ export function NodeActionsSheet({
   }, [actions]);
 
   const [tab, setTab] = useState<string | null>(null);
+  const groupKey = (key: string) => key || "other";
+  const firstKey = groupKey(groups[0]?.[0] ?? "");
   const activeKey =
-    groups.find(([key]) => key === tab)?.[0] ?? groups[0]?.[0] ?? "";
+    tab !== null && groups.some(([key]) => groupKey(key) === tab)
+      ? tab
+      : firstKey;
 
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
@@ -78,17 +83,19 @@ export function NodeActionsSheet({
         {children}
 
         <Tabs value={activeKey} onValueChange={setTab}>
-          <TabsList className="w-full">
-            {groups.map(([key]) => (
-              <TabsTrigger
-                key={key || "other"}
-                className="flex-1"
-                value={key || "other"}
-              >
-                {key || "操作"}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          {groups.length > 1 && (
+            <TabsList className="w-full">
+              {groups.map(([key]) => (
+                <TabsTrigger
+                  key={key || "other"}
+                  className="flex-1"
+                  value={key || "other"}
+                >
+                  {key || "操作"}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          )}
 
           {groups.map(([key, items]) => {
             const normal = items.filter((action) => action.color !== "danger");
@@ -98,7 +105,7 @@ export function NodeActionsSheet({
                 key={action.key}
                 className={`flex w-full items-center gap-3 border-b border-border px-4 py-2.5 text-left text-sm transition-colors last:border-b-0 ${
                   tone === "danger"
-                    ? "text-danger hover:bg-danger/10"
+                    ? "text-destructive hover:bg-destructive/10"
                     : "text-foreground hover:bg-accent/50"
                 } disabled:pointer-events-none disabled:opacity-50`}
                 disabled={action.disabled}
@@ -112,7 +119,7 @@ export function NodeActionsSheet({
                   <span
                     className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
                       tone === "danger"
-                        ? "bg-danger/10 text-danger"
+                        ? "bg-destructive/10 text-destructive"
                         : "bg-muted text-muted-foreground"
                     }`}
                   >
@@ -125,7 +132,7 @@ export function NodeActionsSheet({
                     <span
                       className={`mt-0.5 block truncate text-xs ${
                         tone === "danger"
-                          ? "text-danger/80"
+                          ? "text-destructive/80"
                           : "text-muted-foreground"
                       }`}
                       title={action.description}
@@ -138,9 +145,9 @@ export function NodeActionsSheet({
                   {action.hint}
                   {action.kind === "copy" ? (
                     <Copy className="h-3.5 w-3.5" />
-                  ) : (
+                  ) : action.kind === "navigate" ? (
                     <ChevronRight className="h-4 w-4 opacity-50" />
-                  )}
+                  ) : null}
                 </span>
               </button>
             );
@@ -153,7 +160,7 @@ export function NodeActionsSheet({
                   </div>
                 )}
                 {danger.length > 0 && (
-                  <div className="mt-2 overflow-hidden rounded-lg border border-danger/30 bg-danger/5">
+                  <div className="mt-2 overflow-hidden rounded-lg border border-destructive/30 bg-destructive/5">
                     {danger.map((action) => row(action, "danger"))}
                   </div>
                 )}

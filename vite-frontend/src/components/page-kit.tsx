@@ -1,18 +1,24 @@
 import type * as React from "react";
 import type { ViewMode } from "@/components/view-mode";
 
-import { MoreHorizontal, Search, X } from "lucide-react";
+import { Inbox, MoreHorizontal, Search, X } from "lucide-react";
 
 import { AnimatedPage } from "@/components/animated-page";
 import { ViewModeToggle } from "@/components/view-mode";
-import { Button } from "@/shadcn-bridge/heroui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Dropdown,
-  DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-} from "@/shadcn-bridge/heroui/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+} from "@/components/ui/empty";
 
 /*
  * Building blocks every page uses, so pages look alike:
@@ -61,20 +67,20 @@ export function PageHeader({
           {secondary && (
             <Button
               className="gap-1.5"
-              isDisabled={secondary.disabled}
+              disabled={secondary.disabled}
               size="sm"
-              startContent={secondary.icon}
               variant="outline"
-              onPress={secondary.onPress}
+              onClick={secondary.onPress}
             >
+              {secondary.icon}
               {secondary.label}
             </Button>
           )}
           {primary && (
             <Button
-              isDisabled={primary.disabled}
+              disabled={primary.disabled}
               size="sm"
-              onPress={primary.onPress}
+              onClick={primary.onPress}
             >
               {primary.label}
             </Button>
@@ -125,7 +131,7 @@ export function PageTabs<T extends string>({
               className={`shrink-0 rounded-full px-1.5 text-[11px] leading-4 tabular ${
                 value === t.key
                   ? "bg-primary/10 text-primary"
-                  : "bg-default-200 text-muted-foreground"
+                  : "bg-muted text-muted-foreground"
               }`}
             >
               {t.badge}
@@ -201,8 +207,8 @@ export function PageToolbar({
         {extra}
         {view && <ViewModeToggle value={view.value} onChange={view.onChange} />}
         {actions.length > 0 && (
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <button
                 aria-label="更多操作"
                 className="flex h-9 items-center gap-1 rounded-lg border border-border bg-card px-2.5 text-sm text-muted-foreground shadow-xs transition-colors duration-150 hover:bg-accent hover:text-foreground"
@@ -211,27 +217,27 @@ export function PageToolbar({
                 <MoreHorizontal className="h-4 w-4" />
                 <span className="hidden sm:inline">更多</span>
               </button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="更多操作">
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
               {actions.map((a) => (
-                <DropdownItem
+                <DropdownMenuItem
                   key={a.key}
-                  className={a.disabled ? "pointer-events-none opacity-50" : ""}
-                  color={a.danger ? "danger" : "default"}
-                  onPress={a.disabled ? undefined : a.onPress}
+                  className={a.danger ? "text-destructive" : undefined}
+                  disabled={a.disabled}
+                  onSelect={a.onPress}
                 >
                   {a.label}
-                </DropdownItem>
+                </DropdownMenuItem>
               ))}
-            </DropdownMenu>
-          </Dropdown>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
         {primary && (
           <Button
             className="shrink-0"
-            isDisabled={primary.disabled}
+            disabled={primary.disabled}
             size="sm"
-            onPress={primary.onPress}
+            onClick={primary.onPress}
           >
             {primary.label}
           </Button>
@@ -256,7 +262,7 @@ export function ToolbarButton({
       className={`flex h-9 shrink-0 items-center gap-1 rounded-full px-3.5 text-sm transition-colors ${
         active
           ? "bg-primary/10 font-medium text-primary"
-          : "bg-muted text-muted-foreground hover:bg-default-200"
+          : "bg-muted text-muted-foreground hover:bg-accent"
       }`}
       type="button"
       onClick={onPress}
@@ -281,25 +287,24 @@ export function SelectionBar({
   onExit: () => void;
 }) {
   return (
-    <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-divider bg-background/95 px-3 py-2 shadow-sm ">
+    <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-background/95 px-3 py-2 shadow-sm ">
       <span className="text-sm text-muted-foreground">已选 {count} 个</span>
       <div className="ml-auto flex flex-wrap justify-end gap-2">
-        <Button size="sm" variant="secondary" onPress={onToggleAll}>
+        <Button size="sm" variant="outline" onClick={onToggleAll}>
           {allSelected ? "取消全选" : "全选"}
         </Button>
         {actions.map((a) => (
           <Button
             key={a.key}
-            color={a.danger ? "danger" : "default"}
-            isDisabled={a.disabled || count === 0}
+            disabled={a.disabled || count === 0}
             size="sm"
-            variant="secondary"
-            onPress={a.onPress}
+            variant={a.danger ? "destructive" : "outline"}
+            onClick={a.onPress}
           >
             {a.label}
           </Button>
         ))}
-        <Button size="sm" variant="ghost" onPress={onExit}>
+        <Button size="sm" variant="ghost" onClick={onExit}>
           完成
         </Button>
       </div>
@@ -312,8 +317,8 @@ export type RowStatus = "ok" | "warn" | "bad" | "off";
 export const STATUS_DOT: Record<RowStatus, string> = {
   ok: "bg-success",
   warn: "bg-warning",
-  bad: "bg-danger",
-  off: "bg-default-300",
+  bad: "bg-destructive",
+  off: "bg-muted-foreground/40",
 };
 
 /**
@@ -346,7 +351,7 @@ export function ListTable({
     >
       {head && (
         <div
-          className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-xs font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
           data-slot="list-head"
           role="row"
         >
@@ -408,7 +413,7 @@ export function ListRow({
   } ${
     selected
       ? "border-primary/40 bg-primary/5 max-lg:border-primary/40 lg:bg-primary/5"
-      : "border-border bg-card hover:border-default-300 hover:bg-accent/40 lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-muted/40"
+      : "border-border bg-card hover:border-border hover:bg-accent/40 lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-muted/40"
   }`;
 
   return (
@@ -448,10 +453,7 @@ export function ListRow({
             role="presentation"
             onClick={(e) => e.stopPropagation()}
           >
-            <Checkbox
-              isSelected={selected}
-              onValueChange={() => onSelect?.()}
-            />
+            <Checkbox checked={selected} onCheckedChange={() => onSelect?.()} />
           </div>
         )}
         {status && (
@@ -507,7 +509,7 @@ export function ListGroup({
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-2">
+    <section className="flex flex-col gap-2">
       {title && (
         <h2 className="flex items-baseline gap-2 px-1 text-sm font-medium text-muted-foreground">
           {title}
@@ -530,7 +532,7 @@ export function ListGroup({
       >
         {columns && head && (
           <div
-            className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+            className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-xs font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
             data-slot="list-head"
           >
             {head.map((cell, i) => (
@@ -546,26 +548,6 @@ export function ListGroup({
   );
 }
 
-/** A quiet line drawing for empty lists; no external asset needed. */
-function EmptyIllustration() {
-  return (
-    <svg
-      aria-hidden="true"
-      className="mb-1 h-16 w-24 text-border"
-      fill="none"
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeWidth={1.5}
-      viewBox="0 0 96 64"
-    >
-      <rect height="34" rx="4" width="52" x="10" y="8" />
-      <path d="M18 18h20M18 26h32M18 34h14" />
-      <circle cx="76" cy="44" r="12" />
-      <path d="M76 38v8M76 50h.01" />
-    </svg>
-  );
-}
-
 export function EmptyHint({
   text,
   action,
@@ -574,20 +556,19 @@ export function EmptyHint({
   action?: PageAction;
 }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-card/50 px-4 py-10 text-center text-sm text-muted-foreground">
-      <EmptyIllustration />
-      <p className="max-w-sm text-balance">{text}</p>
+    <Empty className="rounded-xl border border-dashed border-border bg-card/50">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Inbox aria-hidden />
+        </EmptyMedia>
+        <EmptyDescription className="text-balance">{text}</EmptyDescription>
+      </EmptyHeader>
       {action && (
-        <Button
-          color="primary"
-          size="sm"
-          variant="secondary"
-          onPress={action.onPress}
-        >
+        <Button size="sm" variant="outline" onClick={action.onPress}>
           {action.label}
         </Button>
       )}
-    </div>
+    </Empty>
   );
 }
 
@@ -684,18 +665,18 @@ export function TablePagination({
       </span>
       <div className="flex items-center gap-2">
         <Button
-          isDisabled={page <= 1}
+          disabled={page <= 1}
           size="sm"
           variant="outline"
-          onPress={() => onPageChange(page - 1)}
+          onClick={() => onPageChange(page - 1)}
         >
           上一页
         </Button>
         <Button
-          isDisabled={page >= pages}
+          disabled={page >= pages}
           size="sm"
           variant="outline"
-          onPress={() => onPageChange(page + 1)}
+          onClick={() => onPageChange(page + 1)}
         >
           下一页
         </Button>

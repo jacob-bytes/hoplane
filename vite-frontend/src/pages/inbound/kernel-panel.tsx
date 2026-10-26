@@ -8,13 +8,21 @@ import type {
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { ChevronRight, Plus } from "lucide-react";
+import {
+  Play,
+  RefreshCcw,
+  RotateCw,
+  ScrollText,
+  Square,
+  Trash2,
+} from "lucide-react";
 
 import { groupItems } from "./group";
 import { eligibleNodes } from "./inbound-form-modal";
 import { KERNEL_STATUS } from "./presets";
 
 import { TONE } from "@/components/latency-cell";
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   controlKernel,
   getKernelLogs,
@@ -23,7 +31,7 @@ import {
 } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -308,11 +316,7 @@ export function KernelPanel({
                   <span className="min-w-0 flex-1 truncate text-sm font-semibold">
                     {g.title}
                   </span>
-                  {!online && (
-                    <Badge size="sm" variant="outline">
-                      离线
-                    </Badge>
-                  )}
+                  {!online && <Badge variant="outline">离线</Badge>}
                   <Button
                     className="h-7 min-w-0 gap-1 px-2 text-xs text-primary dark:text-primary"
                     size="sm"
@@ -344,7 +348,7 @@ export function KernelPanel({
         </div>
       )}
 
-      <ActionSheet
+      <ActionsDialog
         actions={
           sheetKernel
             ? [
@@ -352,23 +356,30 @@ export function KernelPanel({
                   ? {
                       key: "stop",
                       label: "停止",
+                      description: "停止后该内核承载的入站会断开",
+                      icon: Square,
                       onPress: () => doControl(sheetKernel, "stop"),
                     }
                   : {
                       key: "start",
                       label: "启动",
-                      color: "success" as const,
+                      description: "恢复该内核承载的入站",
+                      icon: Play,
                       onPress: () => doControl(sheetKernel, "start"),
                     },
                 {
                   key: "restart",
                   label: "重启",
+                  description: "断开后重新拉起，通常几秒",
                   disabled: !sheetKernel.enabled,
+                  icon: RotateCw,
                   onPress: () => doControl(sheetKernel, "restart"),
                 },
                 {
                   key: "logs",
                   label: "日志",
+                  description: "查看最近的运行输出",
+                  icon: ScrollText,
                   onPress: () => openLogs(sheetKernel),
                 },
                 // realm's version follows the panel.
@@ -379,6 +390,8 @@ export function KernelPanel({
                       {
                         key: "upgrade",
                         label: "换版本",
+                        description: "安装另一个版本，会短暂重启",
+                        icon: RefreshCcw,
                         onPress: () =>
                           openInstall(
                             sheetKernel.nodeId,
@@ -389,6 +402,8 @@ export function KernelPanel({
                 {
                   key: "remove",
                   label: "卸载",
+                  description: "从这台服务器移除该内核",
+                  icon: Trash2,
                   color: "danger" as const,
                   onPress: () => {
                     setRemoveFailed(false);
@@ -398,7 +413,24 @@ export function KernelPanel({
               ]
             : []
         }
-        isOpen={Boolean(sheetKernel)}
+        badge={
+          sheetKernel ? (
+            <Badge
+              variant={
+                KERNEL_STATUS[sheetKernel.status]?.color === "success"
+                  ? "success"
+                  : KERNEL_STATUS[sheetKernel.status]?.color === "warning"
+                    ? "warning"
+                    : KERNEL_STATUS[sheetKernel.status]?.color === "danger"
+                      ? "destructive"
+                      : "secondary"
+              }
+            >
+              {KERNEL_STATUS[sheetKernel.status]?.label ?? sheetKernel.status}
+            </Badge>
+          ) : undefined
+        }
+        open={Boolean(sheetKernel)}
         subtitle={
           sheetKernel &&
           `${sheetKernel.nodeName || `服务器 ${sheetKernel.nodeId}`} · ${
@@ -411,11 +443,11 @@ export function KernelPanel({
         onClose={() => setSheetFor(null)}
       >
         {sheetKernel?.lastError && (
-          <p className="text-xs text-danger break-all">
+          <p className="break-all text-xs text-destructive">
             {sheetKernel.lastError}
           </p>
         )}
-      </ActionSheet>
+      </ActionsDialog>
 
       <Modal
         backdrop="blur"
