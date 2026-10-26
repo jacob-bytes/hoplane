@@ -10,7 +10,7 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 | `src/main.tsx` | Entry: ReactDOM + BrowserRouter |
 | `src/api/` | Axios wrapper, sends raw JWT in `Authorization` |
 | `src/pages/` | Route views (forward, node, tunnel, settings, ...) |
-| `src/shadcn-bridge/heroui/` | HeroUI-compatible facade — **import from here only** |
+| `src/shadcn-bridge/heroui/` | HeroUI-compatible facade — used by not-yet-migrated pages |
 | `src/components/ui/` | shadcn/radix primitives |
 | `src/styles/globals.css` | Base styles — **must import `tailwind-theme.pcss`** |
 | `src/styles/tailwind-theme.pcss` | Tailwind v4 `@theme inline` semantic tokens |
@@ -29,6 +29,13 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 - Don't reintroduce `@heroui/*` or `@nextui-org/*` packages.
 - Don't add frontend tests (no test infrastructure).
 - Don't remove `tailwind-theme.pcss` import.
+
+## Design
+
+- `DESIGN.md` — tokens, density, type scale and component rules. Read before UI work.
+- `MIGRATION.md` — route-by-route plan for dropping the HeroUI bridge.
+- Until a page is listed as migrated there, keep importing from
+  `src/shadcn-bridge/heroui/*`; migrated pages compose `src/components/ui/*` directly.
 
 ## Commands
 
