@@ -1542,12 +1542,12 @@ export default function TunnelPage({
           >
             <div
               aria-label="隧道"
-              className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised"
               data-list="tunnel"
               role="table"
             >
               <div
-                className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+                className="sticky top-0 z-10 hidden items-center gap-4 border-b border-hairline bg-surface px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                 data-slot="list-head"
                 role="row"
               >
@@ -1567,9 +1567,8 @@ export default function TunnelPage({
                         badges={
                           <>
                             <Badge
-                              className="shrink-0 whitespace-nowrap"
-                              size="sm"
-                              variant="secondary"
+                              className="shrink-0 rounded-md whitespace-nowrap text-[11px] font-normal"
+                              variant="outline"
                             >
                               {getTunnelTypeDisplay(tunnel.type).text}
                             </Badge>
@@ -1611,7 +1610,10 @@ export default function TunnelPage({
                                 <span className="truncate text-sm font-medium text-foreground">
                                   {tunnel.name}
                                 </span>
-                                <Badge size="sm" variant="outline">
+                                <Badge
+                                  className="rounded-md text-[11px] font-normal"
+                                  variant="outline"
+                                >
                                   {getTunnelTypeDisplay(tunnel.type).text}
                                 </Badge>
                                 {tunnel.engine === "realm" && (
@@ -1635,7 +1637,7 @@ export default function TunnelPage({
                             <span
                               key="grip"
                               aria-label="拖动排序"
-                              className="relative z-10 cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                              className="relative z-10 inline-flex h-7 w-7 cursor-grab touch-none items-center justify-center justify-self-end rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
                               role="button"
                               title="拖动排序"
                               {...listeners}
@@ -1651,7 +1653,7 @@ export default function TunnelPage({
                         right={
                           !isSearching && (
                             <span
-                              className="cursor-grab touch-none p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                              className="inline-flex h-7 w-7 cursor-grab touch-none items-center justify-center rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
                               title="拖动排序"
                               {...listeners}
                             >

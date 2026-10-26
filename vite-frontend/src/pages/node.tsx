@@ -2338,7 +2338,7 @@ export default function NodePage({
                                 !isDisplayFiltered && (
                                   <span
                                     aria-label="拖动排序"
-                                    className="relative z-10 cursor-grab touch-none justify-self-end p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                                    className="relative z-10 inline-flex h-7 w-7 cursor-grab touch-none items-center justify-center justify-self-end rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
                                     role="button"
                                     title="拖动排序"
                                     {...listeners}
@@ -2373,7 +2373,7 @@ export default function NodePage({
                             </div>
                             {!isDisplayFiltered && (
                               <span
-                                className="cursor-grab touch-none p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+                                className="inline-flex h-7 w-7 cursor-grab touch-none items-center justify-center rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
                                 title="拖动排序"
                                 {...listeners}
                               >
