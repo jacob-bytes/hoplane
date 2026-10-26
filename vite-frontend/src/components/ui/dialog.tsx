@@ -61,7 +61,7 @@ function DialogContent({
       <DialogPrimitive.Content
         className={cn(
           "fixed left-[50%] top-[50%] z-50 flex max-h-[calc(100dvh-2rem)] w-full max-w-lg translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden",
-          "rounded-xl border border-border bg-card text-foreground shadow-lg",
+          "rounded-[14px] border border-hairline bg-raised text-foreground shadow-[0_16px_48px_-24px_rgba(15,23,42,0.35)]",
           "duration-200 motion-reduce:animate-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-bottom-2",
           className,
         )}

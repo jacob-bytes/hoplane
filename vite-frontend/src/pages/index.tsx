@@ -232,36 +232,35 @@ export default function IndexPage() {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-mesh-gradient overflow-hidden">
+    <div className="relative flex min-h-screen flex-col overflow-hidden bg-canvas">
       <section className="flex flex-col items-center justify-center flex-1 w-full p-4 relative z-10">
         <motion.div
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-[420px] px-4 sm:px-0"
-          initial={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, y: 6 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          <Card className="w-full bg-white/20 dark:bg-default-300 -3xl shadow-[0_20px_40px_rgba(0,0,0,0.15)] border-white/80 dark:border-white/10 rounded-[32px] p-2 sm:p-4">
+          <Card className="w-full rounded-[14px] border border-hairline bg-raised p-2 shadow-[0_16px_48px_-24px_rgba(15,23,42,0.35)] sm:p-4">
             <CardHeader className="pb-0 pt-6 px-6 flex-col items-center">
-              <BrandLogo className="w-14 h-14 rounded-xl mb-4" size={56} />
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              <BrandLogo className="mb-4 h-12 w-12 rounded-lg" size={48} />
+              <h1 className="text-[22px] font-semibold tracking-[-0.01em] text-foreground">
                 {siteConfig.name}
               </h1>
-              <p className="text-sm text-muted-foreground mt-2 font-medium">
-                Sign in to manage your networks
+              <p className="mt-1.5 text-[13px] text-muted-foreground">
+                登录以管理你的网络
               </p>
             </CardHeader>
             <CardBody className="px-6 py-6 mt-2">
               <div className="flex flex-col gap-5">
                 <Input
                   classNames={{
-                    inputWrapper:
-                      "bg-white/10 dark:bg-white/5  border border-white/30 dark:border-white/10 h-12 shadow-sm rounded-xl",
-                    input: "text-base font-medium",
+                    inputWrapper: "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
+                    input: "text-[14px]",
                   }}
                   errorMessage={errors.username}
                   isDisabled={loading}
                   isInvalid={!!errors.username}
-                  label="Username"
+                  label="用户名"
                   placeholder="admin"
                   value={form.username}
                   variant="bordered"
@@ -273,13 +272,12 @@ export default function IndexPage() {
 
                 <Input
                   classNames={{
-                    inputWrapper:
-                      "bg-white/10 dark:bg-white/5  border border-white/30 dark:border-white/10 h-12 shadow-sm rounded-xl",
-                    input: "text-base font-medium tracking-wider",
+                    inputWrapper: "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
+                    input: "text-[14px] tracking-wider",
                   }}
                   isDisabled={loading}
                   isInvalid={!!errors.password}
-                  label="Password"
+                  label="密码"
                   placeholder="••••••••"
                   type="password"
                   value={form.password}
@@ -291,20 +289,20 @@ export default function IndexPage() {
                 />
 
                 <Button
-                  className="mt-4 h-12 rounded-xl bg-primary text-white font-bold text-base shadow-[0_8px_16px_rgba(0,122,255,0.3)] transition-transform active:scale-[0.98]"
+                  className="mt-2 h-10 rounded-md bg-primary text-sm font-medium text-white shadow-none"
                   disabled={loading}
                   isLoading={loading}
                   onPress={handleLogin}
                 >
                   {loading
                     ? showCaptcha
-                      ? "Verifying..."
-                      : "Signing in..."
-                    : "Sign In"}
+                      ? "验证中…"
+                      : "登录中…"
+                    : "登录"}
                 </Button>
                 {passkeyEnabled && (
                   <Button
-                    className="h-12 rounded-xl"
+                    className="h-10 rounded-md"
                     disabled={loading}
                     variant="outline"
                     onPress={() => void handlePasskeyLogin()}
@@ -314,7 +312,7 @@ export default function IndexPage() {
                 )}
                 {githubEnabled && (
                   <Button
-                    className="h-12 rounded-xl"
+                    className="h-10 rounded-md"
                     disabled={loading}
                     variant="outline"
                     onPress={() => void handleGithubLogin()}
