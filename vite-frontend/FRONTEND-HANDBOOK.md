@@ -39,15 +39,16 @@ src/
 
 | 语义 | Tailwind | 用途 |
 |---|---|---|
-| 页面底 | `bg-canvas` | body |
-| 卡片/侧栏 | `bg-surface` | 卡片、表格容器 |
-| 浮层 | `bg-raised` | 弹窗、下拉、输入 |
+| 页面底 | `bg-canvas` | body（白） |
+| 弱块/侧栏 | `bg-surface` | 侧栏、表头、hover |
+| 卡片/浮层 | `bg-raised` | 卡片、弹窗、输入 |
 | 主文字 | `text-ink` | 标题、正文 |
 | 次级 | `text-ink-2` | 说明 |
 | 弱化 | `text-muted` | 表头、单位、meta |
 | 线 | `border-hairline` | 1px 分隔 |
 | 强线 | `border-hairline-strong` | hover、输入框 |
-| 信号 | `text-signal` / `ring-signal` | 链接、焦点、选中 |
+| 品牌/焦点 | `bg-primary` / `ring-primary` | 主按钮、选中、焦点、链接 |
+| 浅品牌底 | `bg-primary-soft` | 选中菜单、浅蓝标签 |
 | 状态 | `text-success` / `text-warning` / `text-danger` | 状态文字与点 |
 
 ### 允许 / 禁止
@@ -57,7 +58,8 @@ src/
 | `bg-surface`、`border-hairline` | `bg-zinc-50`、`border-[#e5e5e5]` |
 | `text-ink`、`text-muted` | `text-black/70`、`opacity-70` |
 | `gap-2`、`p-4` | `space-y-3`、`mt-[7px]` |
-| `rounded`（4）、`rounded-md`（6） | `rounded-2xl`、`rounded-full`（除计数） |
+| `rounded-md`（8）、`rounded-xl`（12） | `rounded-2xl`、`rounded-3xl` |
+| 状态徽章胶囊（浅底） | 高饱和实心药丸 |
 | `cn()` 组合条件类 | 模板字符串三元表达式 |
 | 语义变体（`variant`） | 页面里覆盖组件颜色 |
 
@@ -65,9 +67,9 @@ src/
 
 ### 密度与尺寸
 
-- 控件：32 / 36 / 40；行：36（密集）/ 44（常规）。
+- 控件：32 / 36 / 40；行：40（密集）/ 48（常规）。
 - 图标：16（默认）/ 14（行内）/ 20（空态）；`stroke-width: 1.5`。
-- 一屏最多 4 种字号（见 DESIGN §3）。
+- 一屏最多 4 种字号；圆角只用 6 / 8 / 12 / 14（见 DESIGN §3/§4）。
 - 数字必须 `font-mono tabular-nums`；单位小一号 `text-muted`。
 
 ## 4. 组件写法
@@ -122,6 +124,7 @@ src/
 ```
 
 - `Page` 负责最大宽度与内边距；页面不自己写 `px-6 py-6`。
+- `MetricCards` 用于 KPI（4 张圆角卡片，不写彩色底）。
 - 列表页必须有：工具栏、表头、空/加载/错误。
 - 详情页用 `<Facts items={[…]} />`（label 11 / value 14），不堆卡片。
 - 设置页：左侧分区（Tabs 或锚点）+ 右侧 `FieldGroup`，保存固定在底部右对齐。
