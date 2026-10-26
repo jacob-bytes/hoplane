@@ -75,7 +75,7 @@ export function TunnelFormModal({
       isOpen={modalOpen}
       placement="center"
       scrollBehavior="inside"
-      size="2xl"
+      size="xl"
       onOpenChange={setModalOpen}
     >
       <ModalContent>

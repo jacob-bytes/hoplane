@@ -1473,7 +1473,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         isOpen={isUserModalOpen}
         placement="center"
         scrollBehavior="inside"
-        size="2xl"
+        size="xl"
         onClose={onUserModalClose}
       >
         <ModalContent>

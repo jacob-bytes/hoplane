@@ -66,7 +66,7 @@ export function EditorTabs<T extends string>({
 }) {
   return (
     <div
-      className="grid gap-1 rounded-full bg-muted/90 p-1 "
+      className="grid gap-1 rounded-md border border-hairline bg-surface p-1"
       role="tablist"
       style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
     >
@@ -74,10 +74,10 @@ export function EditorTabs<T extends string>({
         <button
           key={t.key}
           aria-selected={value === t.key}
-          className={`relative whitespace-nowrap rounded-full px-1 py-1.5 text-sm transition-colors ${
+          className={`flex items-center justify-center gap-1.5 whitespace-nowrap rounded-sm border px-3 py-1.5 text-[13px] transition-colors ${
             value === t.key
-              ? "bg-card font-medium text-primary shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
+              ? "border-hairline bg-raised font-medium text-foreground shadow-sm"
+              : "border-transparent text-muted-foreground hover:text-foreground"
           }`}
           role="tab"
           type="button"
@@ -86,10 +86,10 @@ export function EditorTabs<T extends string>({
           {t.label}
           {t.badge !== undefined && t.badge !== "" && (
             <span
-              className={`absolute right-0.5 top-0.5 rounded-full px-1 text-[11px] leading-4 ${
+              className={`rounded-full px-1.5 text-[11px] leading-4 ${
                 value === t.key
-                  ? "bg-primary text-white"
-                  : "bg-default-300 text-foreground"
+                  ? "bg-primary-soft text-primary"
+                  : "bg-muted text-muted-foreground"
               }`}
             >
               {t.badge}
@@ -157,7 +157,7 @@ export function ToggleRow({
         onValueChange={onChange}
       />
       <label
-        className="flex cursor-pointer flex-col"
+        className="flex min-w-0 cursor-pointer flex-col gap-0.5"
         htmlFor={id}
         id={`${id}-label`}
       >
