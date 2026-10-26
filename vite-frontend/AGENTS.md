@@ -32,10 +32,10 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 
 ## Design
 
-- `DESIGN.md` — 视觉方向 v2.1「白底深蓝」：tokens、字号、间距、组件语言、动效。改 UI 前必读。
+- `DESIGN.md` — 视觉方向 v3「白底深蓝」：tokens、字号、间距、组件语言、动效。改 UI 前必读。
 - `FRONTEND-HANDBOOK.md` — 怎么写、怎么评审、怎么合并（目录、组件、表单、动效、DoD）。
-- `MIGRATION.md` — 旧迁移盘点（v2 决定整体重写，阶段仅作工作量参考）。
-- `prototype/design-v2.html` — 方向样张（静态 HTML，不参与构建）。
+- `MIGRATION.md` — 旧迁移盘点（v3 决定整体重写，阶段仅作工作量参考）。
+- `prototype/design-v3.html` — 方向样张（静态 HTML，不参与构建）。
 - Until a page is listed as migrated there, keep importing from
   `src/shadcn-bridge/heroui/*`; migrated pages compose `src/components/ui/*` directly.
 
