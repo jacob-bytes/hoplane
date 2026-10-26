@@ -303,11 +303,10 @@ function LatencyTrendContent({
       ) : (
         <>
           <ToggleGroup
-            className="flex flex-wrap justify-start gap-1"
+            className="flex flex-wrap justify-start gap-0.5"
             size="sm"
             type="multiple"
             value={visible.map((p) => p.name)}
-            variant="outline"
             onValueChange={(names) =>
               setHidden(
                 new Set(
@@ -318,15 +317,23 @@ function LatencyTrendContent({
               )
             }
           >
-            {points.map((p, i) => (
-              <ToggleGroupItem key={p.name} className="gap-1.5" value={p.name}>
-                <span
-                  className="size-2 rounded-full"
-                  style={{ background: COLORS[i % COLORS.length] }}
-                />
-                {p.name}
-              </ToggleGroupItem>
-            ))}
+            {points.map((p, i) => {
+              const on = !hidden.has(p.name);
+
+              return (
+                <ToggleGroupItem
+                  key={p.name}
+                  className="h-6 gap-1.5 rounded-md px-1.5 text-xs font-normal text-muted-foreground hover:bg-accent/50 hover:text-foreground data-[state=on]:bg-muted data-[state=on]:text-foreground"
+                  value={p.name}
+                >
+                  <span
+                    className={`size-2 rounded-full transition-opacity ${on ? "opacity-100" : "opacity-30"}`}
+                    style={{ background: COLORS[i % COLORS.length] }}
+                  />
+                  {p.name}
+                </ToggleGroupItem>
+              );
+            })}
           </ToggleGroup>
 
           <div
