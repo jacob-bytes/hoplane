@@ -133,25 +133,27 @@ function Pill({
   label?: boolean;
   spinning?: boolean;
 }) {
-  const [pill, dot] = TONE[pointTone(point)];
+  const [, dot] = TONE[pointTone(point)];
   const loss = point.ok ? (point.lossPct ?? 0) : 0;
 
   return (
-    <span
-      className={`inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium ${pill}`}
-    >
+    <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-[13px]">
       {spinning ? (
         <Loader2 className="h-3 w-3 animate-spin" />
       ) : (
         <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
       )}
       {label && (
-        <span className="hidden font-sans opacity-80 sm:inline">
+        <span className="hidden font-sans text-[12px] text-muted-foreground sm:inline">
           {point.name}
         </span>
       )}
-      <span className="font-mono">{valueText(point)}</span>
-      {loss > 0 && <span className="font-mono opacity-80">丢{loss}%</span>}
+      <span className="font-mono tabular-nums text-ink">
+        {valueText(point)}
+      </span>
+      {loss > 0 && (
+        <span className="font-mono text-[11px] text-danger">丢{loss}%</span>
+      )}
     </span>
   );
 }
@@ -164,13 +166,11 @@ function Row({
   point: InboundProbePoint;
   spinning?: boolean;
 }) {
-  const [pill, dot] = TONE[pointTone(point)];
+  const [, dot] = TONE[pointTone(point)];
   const loss = point.ok ? (point.lossPct ?? 0) : 0;
 
   return (
-    <span
-      className={`flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 rounded-lg px-2 py-1 text-left ${pill}`}
-    >
+    <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 px-2 py-1 text-left">
       <span className="flex min-w-0 items-center gap-1 text-[11px] opacity-80">
         {spinning ? (
           <Loader2 className="h-2.5 w-2.5 shrink-0 animate-spin" />
@@ -257,7 +257,7 @@ export function LatencyCell({
   if (points.length === 0) {
     return (
       <button
-        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${TONE.default[0]}`}
+        className="inline-flex items-center gap-1 rounded-md border border-hairline px-2 py-0.5 text-[12px] font-medium text-muted-foreground"
         disabled={probing}
         type="button"
         onClick={(e) => {
@@ -316,7 +316,7 @@ export function LatencyCell({
           </>
         ) : (
           <>
-            <Pill label={points.length > 1} point={worst} spinning={probing} />
+            <Pill label={false} point={worst} spinning={probing} />
             {others.length > 0 && (
               <span className="flex items-center gap-0.5">
                 {others.map((p) => (
@@ -369,7 +369,7 @@ export function LatencyCell({
             onClick={stop}
             onKeyDown={stop}
           >
-            <Pill label={points.length > 1} point={worst} spinning={probing} />
+            <Pill label={false} point={worst} spinning={probing} />
             {others.length > 0 && (
               <span className="flex items-center gap-0.5">
                 {others.map((p) => (

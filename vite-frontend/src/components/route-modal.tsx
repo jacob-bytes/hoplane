@@ -91,7 +91,7 @@ export function RouteTag({
   return (
     <Badge
       className={cn(
-        "shrink-0 font-sans font-normal",
+        "shrink-0 rounded-md border-hairline font-sans text-[11px] font-normal",
         ROUTE_TEXT[route] ?? "text-muted-foreground",
       )}
       title={`回程 ${route}`}

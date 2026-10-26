@@ -53,11 +53,11 @@ export function PageHeader({
   return (
     <div className="mb-4 flex items-start justify-between gap-3">
       <div className="min-w-0">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-[22px] leading-[30px] font-semibold tracking-[-0.01em] text-ink">
           {title}
         </h1>
         {description && (
-          <p className="mt-1 text-sm leading-5 text-muted-foreground">
+          <p className="mt-1.5 text-[13px] leading-5 text-muted-foreground">
             {description}
           </p>
         )}
@@ -178,7 +178,7 @@ export function PageToolbar({
         // With a main action too, the search gets a row of its own on a
         // phone instead of shrinking to its icon.
         <label
-          className={`flex h-9 min-w-0 flex-1 items-center gap-2 rounded-lg border border-input bg-card px-3 text-sm shadow-xs transition-[border-color,box-shadow] duration-150 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 sm:max-w-xs ${primary ? "basis-full sm:basis-auto" : ""}`}
+          className={`flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md border border-hairline bg-raised px-3 text-[13px] transition-[border-color,box-shadow] duration-150 focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30 sm:max-w-xs ${primary ? "basis-full sm:basis-auto" : ""}`}
         >
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
@@ -211,7 +211,7 @@ export function PageToolbar({
             <DropdownMenuTrigger asChild>
               <button
                 aria-label="更多操作"
-                className="flex h-9 items-center gap-1 rounded-lg border border-border bg-card px-2.5 text-sm text-muted-foreground shadow-xs transition-colors duration-150 hover:bg-accent hover:text-foreground"
+                className="flex h-9 items-center gap-1 rounded-md border border-hairline bg-raised px-2.5 text-[13px] text-muted-foreground transition-colors duration-150 hover:bg-accent hover:text-foreground"
                 type="button"
               >
                 <MoreHorizontal className="h-4 w-4" />
@@ -259,10 +259,10 @@ export function ToolbarButton({
 }) {
   return (
     <button
-      className={`flex h-9 shrink-0 items-center gap-1 rounded-full px-3.5 text-sm transition-colors ${
+      className={`flex h-9 shrink-0 items-center gap-1 rounded-md border px-3 text-[13px] transition-colors ${
         active
-          ? "bg-primary/10 font-medium text-primary"
-          : "bg-muted text-muted-foreground hover:bg-accent"
+          ? "border-primary bg-primary-soft font-medium text-primary"
+          : "border-hairline bg-raised text-muted-foreground hover:bg-surface"
       }`}
       type="button"
       onClick={onPress}
@@ -287,7 +287,7 @@ export function SelectionBar({
   onExit: () => void;
 }) {
   return (
-    <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-background/95 px-3 py-2 shadow-sm ">
+    <div className="sticky top-0 z-10 mb-3 flex flex-wrap items-center gap-2 rounded-lg border border-hairline bg-raised/95 px-3 py-2 shadow-sm ">
       <span className="text-sm text-muted-foreground">已选 {count} 个</span>
       <div className="ml-auto flex flex-wrap justify-end gap-2">
         <Button size="sm" variant="outline" onClick={onToggleAll}>
@@ -345,13 +345,13 @@ export function ListTable({
   return (
     <div
       aria-label={label}
-      className={`flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card list-enter ${className ?? ""}`}
+      className={`flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised list-enter ${className ?? ""}`}
       role="table"
       style={{ "--list-cols": columns } as React.CSSProperties}
     >
       {head && (
         <div
-          className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-xs font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          className="sticky top-0 z-10 hidden items-center gap-4 border-b border-hairline bg-surface px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
           data-slot="list-head"
           role="row"
         >
@@ -413,7 +413,7 @@ export function ListRow({
   } ${
     selected
       ? "border-primary/40 bg-primary/5 max-lg:border-primary/40 lg:bg-primary/5"
-      : "border-border bg-card hover:border-border hover:bg-accent/40 lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-muted/40"
+      : "border-border bg-card hover:border-hairline-strong hover:bg-surface lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-surface"
   }`;
 
   return (
@@ -430,7 +430,7 @@ export function ListRow({
 
       {cells && (
         <div
-          className="hidden items-center gap-4 px-4 py-3 lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          className="hidden items-center gap-4 px-4 py-3.5 lg:grid lg:[grid-template-columns:var(--list-cols)]"
           data-slot="list-row-body"
           role="row"
         >
@@ -571,7 +571,7 @@ export function ListGroup({
       )}
       <div
         aria-label={label}
-        className="list-enter flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+        className="list-enter flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised"
         role={columns ? "table" : undefined}
         style={
           columns
@@ -581,7 +581,7 @@ export function ListGroup({
       >
         {columns && head && (
           <div
-            className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-xs font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+            className="sticky top-0 z-10 hidden items-center gap-4 border-b border-hairline bg-surface px-4 py-2 text-[11px] font-medium tracking-[0.02em] text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
             data-slot="list-head"
           >
             {head.map((cell, i) => (
