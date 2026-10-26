@@ -254,7 +254,8 @@ export default function IndexPage() {
               <div className="flex flex-col gap-5">
                 <Input
                   classNames={{
-                    inputWrapper: "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
+                    inputWrapper:
+                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
                     input: "text-[14px]",
                   }}
                   errorMessage={errors.username}
@@ -272,7 +273,8 @@ export default function IndexPage() {
 
                 <Input
                   classNames={{
-                    inputWrapper: "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
+                    inputWrapper:
+                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
                     input: "text-[14px] tracking-wider",
                   }}
                   isDisabled={loading}
@@ -294,11 +296,7 @@ export default function IndexPage() {
                   isLoading={loading}
                   onPress={handleLogin}
                 >
-                  {loading
-                    ? showCaptcha
-                      ? "验证中…"
-                      : "登录中…"
-                    : "登录"}
+                  {loading ? (showCaptcha ? "验证中…" : "登录中…") : "登录"}
                 </Button>
                 {passkeyEnabled && (
                   <Button

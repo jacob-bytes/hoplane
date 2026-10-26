@@ -124,7 +124,9 @@ export default function ChangePasswordPage() {
                 </svg>
               </div>
 
-              <h1 className="text-[22px] font-semibold tracking-[-0.01em]">安全提醒</h1>
+              <h1 className="text-[22px] font-semibold tracking-[-0.01em]">
+                安全提醒
+              </h1>
               <p className="mt-1.5 text-center text-[13px] leading-5 text-muted-foreground">
                 检测到您使用的是默认账号密码，为了您的账户安全，请立即修改
               </p>

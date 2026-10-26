@@ -1637,7 +1637,7 @@ export default function TunnelPage({
                             <span
                               key="grip"
                               aria-label="拖动排序"
-                              className="relative z-10 inline-flex h-7 w-7 cursor-grab touch-none items-center justify-center justify-self-end rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
+                              className="relative z-10 hidden h-7 w-7 cursor-grab lg:inline-flex touch-none items-center justify-center justify-self-end rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
                               role="button"
                               title="拖动排序"
                               {...listeners}
@@ -1653,7 +1653,7 @@ export default function TunnelPage({
                         right={
                           !isSearching && (
                             <span
-                              className="inline-flex h-7 w-7 cursor-grab touch-none items-center justify-center rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
+                              className="hidden h-7 w-7 cursor-grab lg:inline-flex touch-none items-center justify-center rounded-md text-muted-foreground hover:bg-surface active:cursor-grabbing"
                               title="拖动排序"
                               {...listeners}
                             >

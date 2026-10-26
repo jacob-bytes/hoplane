@@ -95,21 +95,21 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
     },
   ];
 
-  const pageTitles: Record<string, string> = {
-    "/dashboard": "概览",
-    "/node": "服务器",
-    "/inbound": "节点",
-    "/relay": "中转",
-    "/subscription": "订阅",
-    "/user": "用户",
-    "/group": "分组",
-    "/limit": "限速",
-    "/config": "设置",
-    "/monitor": "监控",
-    "/profile": "更多",
-    "/forward": "规则",
-    "/my-subscriptions": "订阅",
-    "/panel-sharing": "共享",
+  const pageSections: Record<string, string> = {
+    "/node": "线路",
+    "/inbound": "线路",
+    "/relay": "线路",
+    "/tunnel": "线路",
+    "/forward": "线路",
+    "/monitor": "线路",
+    "/subscription": "分发",
+    "/user": "分发",
+    "/group": "分发",
+    "/limit": "分发",
+    "/panel-sharing": "分发",
+    "/my-subscriptions": "分发",
+    "/config": "系统",
+    "/profile": "系统",
   };
 
   useEffect(() => {
@@ -191,7 +191,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
           </h1>
           <span aria-hidden className="h-4 w-px shrink-0 bg-hairline-strong" />
           <span className="truncate text-sm text-muted-foreground">
-            {pageTitles[location.pathname] ?? ""}
+            {pageSections[location.pathname] ?? ""}
           </span>
         </div>
 

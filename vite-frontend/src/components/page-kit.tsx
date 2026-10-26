@@ -116,7 +116,7 @@ export function PageTabs<T extends string>({
         <button
           key={t.key}
           aria-selected={value === t.key}
-          className={`relative flex min-w-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 pb-2.5 pt-1 text-sm transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full after:transition-opacity ${
+          className={`relative flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-3 pb-2.5 pt-1 text-[13px] transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full after:transition-opacity ${
             value === t.key
               ? "font-medium text-foreground after:bg-primary after:opacity-100"
               : "text-muted-foreground after:opacity-0 hover:text-foreground"
