@@ -114,18 +114,10 @@ const KINDS: Record<
   },
 };
 
-const TONES = {
-  blue: ["bg-muted", "text-muted-foreground", "bg-primary"],
-  green: ["bg-muted", "text-muted-foreground", "bg-primary"],
-  purple: ["bg-muted", "text-muted-foreground", "bg-primary"],
-  orange: ["bg-muted", "text-muted-foreground", "bg-primary"],
-} as const;
-
 /** A headline figure, in the upstream metric card style. */
 function Metric({
   label,
   icon: Icon,
-  tone,
   value,
   total,
   foot,
@@ -135,7 +127,6 @@ function Metric({
 }: {
   label: string;
   icon: typeof Server;
-  tone: keyof typeof TONES;
   value: number;
   /** Shown as "value / total" with a bar, when set. */
   total?: number;
@@ -144,33 +135,35 @@ function Metric({
   footRight?: string;
   onPress: () => void;
 }) {
-  const [chip, iconColor, bar] = TONES[tone];
   const pct = total ? Math.round((value / total) * 100) : 0;
 
   return (
     <button
-      className="rounded-xl border border-border bg-card p-4 text-left shadow-xs transition-[box-shadow,border-color] duration-150 hover:border-default-300 hover:shadow-sm"
+      className="rounded-xl border border-hairline bg-raised p-4 text-left transition-colors duration-150 hover:border-hairline-strong"
       type="button"
       onClick={onPress}
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="truncate text-sm text-muted-foreground">{label}</span>
-        <span className={`flex-shrink-0 rounded-md p-1.5 ${chip}`}>
-          <Icon className={`h-4 w-4 ${iconColor}`} />
+        <span className="truncate text-[12px] text-muted-foreground">
+          {label}
         </span>
+        <Icon
+          aria-hidden
+          className="h-4 w-4 flex-shrink-0 text-muted-foreground"
+        />
       </div>
-      <div className="mt-1 text-2xl font-semibold tabular-nums">
+      <div className="mt-1.5 font-mono text-2xl font-medium tabular-nums tracking-tight">
         {value}
         {total !== undefined && (
-          <span className="ml-1 text-base font-normal text-muted-foreground">
+          <span className="ml-1 font-sans text-xs font-normal text-muted-foreground">
             / {total}
           </span>
         )}
       </div>
-      <div className="mt-2.5 h-1 overflow-hidden rounded-full bg-muted">
+      <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted">
         {total !== undefined && total > 0 && (
           <div
-            className={`h-full rounded-full ${bar}`}
+            className="h-full rounded-full bg-primary"
             style={{ width: `${pct}%` }}
           />
         )}
@@ -215,10 +208,10 @@ function Panel({
 }) {
   return (
     <section
-      className={`flex flex-col rounded-xl border border-border bg-card p-4 shadow-xs lg:p-5 ${className ?? ""}`}
+      className={`flex flex-col rounded-xl border border-hairline bg-raised p-4 lg:p-5 ${className ?? ""}`}
     >
       <div className="mb-3 flex shrink-0 items-center gap-2">
-        <h2 className="text-sm font-semibold lg:text-base">{title}</h2>
+        <h2 className="text-[15px] font-medium">{title}</h2>
         {badge}
         {action && <div className="ml-auto">{action}</div>}
       </div>
@@ -514,7 +507,6 @@ export function AdminOverview() {
           }
           icon={Server}
           label="服务器在线"
-          tone="blue"
           total={nodes.length}
           value={online}
           onPress={() => navigate("/node")}
@@ -545,7 +537,6 @@ export function AdminOverview() {
           }
           icon={Globe}
           label="节点运行"
-          tone="green"
           total={enabledInbounds.length}
           value={runningInbounds.length}
           onPress={() => navigate("/inbound")}
@@ -569,7 +560,6 @@ export function AdminOverview() {
           }
           icon={ArrowRightLeft}
           label="转发运行"
-          tone="purple"
           total={forwards.length || undefined}
           value={forwardsUp.length}
           onPress={() => navigate("/forward")}
@@ -592,7 +582,6 @@ export function AdminOverview() {
           }
           icon={Rss}
           label="有效订阅"
-          tone="orange"
           total={subs.length}
           value={activeSubs.length}
           onPress={() => navigate("/subscription")}
@@ -624,9 +613,9 @@ export function AdminOverview() {
                   onClick={() => navigate(item.path)}
                 >
                   <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${item.danger ? "bg-danger/10 text-danger" : "bg-warning/10 text-warning"}`}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center ${item.danger ? "text-danger" : "text-warning"}`}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon aria-hidden className="h-4 w-4" />
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-sm font-medium">
