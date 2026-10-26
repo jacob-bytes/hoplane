@@ -109,6 +109,26 @@ src/
 
 ## 5. 页面骨架
 
+### 壳（`AppShell`）
+
+```tsx
+<AppShell
+  breadcrumb={["后台", "线路", "服务器"]}
+  groups={[
+    { title: "线路", items: [servers, nodes, relays] },
+    { title: "分发", items: [subscriptions, users] },
+    { title: "系统", items: [monitor, sharing, settings] },
+  ]}
+>
+  <Page>…</Page>
+</AppShell>
+```
+
+- Header 固定顺序：logo → 折叠按钮 → 1px 竖线 → 面包屑；右侧放主题/账户。
+- 折叠状态持久化到 `localStorage`；折叠后侧栏 64 宽，仅图标，`aria-label` 保留。
+- 分组标题只做视觉分隔，不参与键盘 Tab 顺序。
+- 面包屑最后一项用 `aria-current="page"`；移动端只显示当前页。
+
 ```tsx
 <Page>
   <PageHeader
