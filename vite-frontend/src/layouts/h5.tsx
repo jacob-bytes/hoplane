@@ -3,7 +3,6 @@ import {
   ArrowLeftRight,
   Globe,
   LayoutDashboard,
-  Link2,
   Rss,
   Server,
   UserRound,
@@ -74,12 +73,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
       path: "/inbound",
       label: "节点",
       icon: <Globe className="h-5 w-5" />,
-      adminOnly: true,
-    },
-    {
-      path: "/relay",
-      label: "中转",
-      icon: <Link2 className="h-5 w-5" />,
       adminOnly: true,
     },
     {
@@ -208,6 +201,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
                 "/limit",
                 "/config",
                 "/panel-sharing",
+                "/relay",
               ].includes(location.pathname));
           const isMonitor = item.path === "/monitor";
           const isMonitorBlocked = isMonitor && monitorAllowed !== true;

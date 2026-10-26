@@ -441,51 +441,100 @@ export function ListRow({
           ))}
         </div>
       )}
-      <div
-        className={
-          cells ? "flex items-center gap-3 px-3 py-3 lg:hidden" : "contents"
-        }
-        data-slot="list-row-body"
-      >
-        {selectMode && (
-          <div
-            className="relative z-10 flex shrink-0"
-            role="presentation"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Checkbox checked={selected} onCheckedChange={() => onSelect?.()} />
+      {cells ? (
+        <div
+          className="flex flex-col gap-2 px-3 py-3 lg:hidden"
+          data-slot="list-row-body"
+        >
+          <div className="flex items-center gap-3">
+            {selectMode && (
+              <div
+                className="relative z-10 flex shrink-0"
+                role="presentation"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Checkbox
+                  checked={selected}
+                  onCheckedChange={() => onSelect?.()}
+                />
+              </div>
+            )}
+            {status && (
+              <span
+                className={`size-1.5 shrink-0 rounded-full ${STATUS_DOT[status]}`}
+                title={statusTitle}
+              />
+            )}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <span className="truncate text-sm font-medium text-foreground">
+                  {title}
+                </span>
+                {badges}
+              </div>
+              {meta && (
+                <div className="truncate text-xs text-muted-foreground tabular">
+                  {meta}
+                </div>
+              )}
+            </div>
+            {right && !selectMode && (
+              <div
+                className="relative z-10 flex shrink-0 items-center gap-2"
+                role="presentation"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {right}
+              </div>
+            )}
           </div>
-        )}
-        {status && (
-          <span
-            className={`h-1.5 w-1.5 shrink-0 rounded-full ${STATUS_DOT[status]}`}
-            title={statusTitle}
-          />
-        )}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
-            <span className="truncate text-sm font-medium text-foreground">
-              {title}
-            </span>
-            {badges}
-          </div>
-          {meta && (
-            <div className="truncate text-xs text-muted-foreground tabular">
-              {meta}
+          {footer && <div>{footer}</div>}
+        </div>
+      ) : (
+        <div className="contents" data-slot="list-row-body">
+          {selectMode && (
+            <div
+              className="relative z-10 flex shrink-0"
+              role="presentation"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Checkbox
+                checked={selected}
+                onCheckedChange={() => onSelect?.()}
+              />
             </div>
           )}
-          {footer && <div className="mt-1.5">{footer}</div>}
-        </div>
-        {right && !selectMode && (
-          <div
-            className="relative z-10 flex shrink-0 items-center gap-2"
-            role="presentation"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {right}
+          {status && (
+            <span
+              className={`size-1.5 shrink-0 rounded-full ${STATUS_DOT[status]}`}
+              title={statusTitle}
+            />
+          )}
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="truncate text-sm font-medium text-foreground">
+                {title}
+              </span>
+              {badges}
+            </div>
+            {meta && (
+              <div className="truncate text-xs text-muted-foreground tabular">
+                {meta}
+              </div>
+            )}
+            {footer && <div className="mt-1.5">{footer}</div>}
           </div>
-        )}
-      </div>
+          {right && !selectMode && (
+            <div
+              className="relative z-10 flex shrink-0 items-center gap-2"
+              role="presentation"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {right}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

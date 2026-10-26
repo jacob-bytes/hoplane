@@ -7,6 +7,7 @@ import {
   Fingerprint,
   Github,
   KeyRound,
+  Link2,
   LogOut,
   Settings,
   Share2,
@@ -303,6 +304,14 @@ export default function ProfilePage() {
       onPress: go("/panel-sharing"),
     },
     {
+      key: "/relay",
+      label: "中转",
+      description: "转发入口与隧道",
+      icon: Link2,
+      tone: "primary",
+      onPress: go("/relay"),
+    },
+    {
       key: "/config",
       label: "网站配置",
       description: "站点、登录与备份",
@@ -461,7 +470,7 @@ export default function ProfilePage() {
               <h2 className="px-1 text-xs font-medium text-muted-foreground">
                 管理
               </h2>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 {shortcuts.map((item) => (
                   <button
                     key={item.key}

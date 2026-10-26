@@ -305,7 +305,7 @@ function App() {
       />
       <Route
         element={
-          <ProtectedRoute useSimpleLayout={true}>
+          <ProtectedRoute>
             <UserHubPage />
           </ProtectedRoute>
         }
@@ -313,7 +313,7 @@ function App() {
       />
       <Route
         element={
-          <ProtectedRoute useSimpleLayout={true}>
+          <ProtectedRoute>
             <UserHubPage />
           </ProtectedRoute>
         }
@@ -329,7 +329,7 @@ function App() {
       />
       <Route
         element={
-          <ProtectedRoute useSimpleLayout={true}>
+          <ProtectedRoute>
             <UserHubPage />
           </ProtectedRoute>
         }
@@ -369,7 +369,7 @@ function App() {
       />
       <Route
         element={
-          <ProtectedRoute useSimpleLayout={true}>
+          <ProtectedRoute>
             <PanelSharingPage />
           </ProtectedRoute>
         }

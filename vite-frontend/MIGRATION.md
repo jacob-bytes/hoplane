@@ -1,5 +1,8 @@
 # 前端迁移清单：HeroUI 桥 → 纯 shadcn
 
+> **方向更新（v2）**：`DESIGN.md` 已改为「仪器」方向，并决定整体重写。
+> 下面的渐进阶段只保留作工作量参考，不再按"逐页改样式"执行；重写按 DESIGN v2 + `FRONTEND-HANDBOOK.md` 进行。
+
 > 配套文档：`vite-frontend/DESIGN.md`（设计规范）。
 > 目标：18 条路由全部直接使用 `src/components/ui/*`，删除 `src/shadcn-bridge/heroui/*`。
 > 方式：**渐进替换，不另起仓库**。API 层（`src/api`，200 个导出）与业务 hooks 全部复用。
