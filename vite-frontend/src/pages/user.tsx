@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { parseDate } from "@internationalized/date";
 
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   EmptyHint,
   ListGroup,
@@ -1391,7 +1391,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           : [];
 
         return (
-          <ActionSheet
+          <ActionsDialog
             actions={
               user
                 ? [
@@ -1420,7 +1420,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   ]
                 : []
             }
-            isOpen={Boolean(user)}
+            open={Boolean(user)}
             subtitle={user && getUserRowState(user).text}
             title={user ? user.name || user.user : ""}
             onClose={() => setSheetUserId(null)}
@@ -1460,7 +1460,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 ))}
               </div>
             )}
-          </ActionSheet>
+          </ActionsDialog>
         );
       })()}
 

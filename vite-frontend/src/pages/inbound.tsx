@@ -51,7 +51,7 @@ import { GroupHeader, groupItems, useCollapsed } from "@/pages/inbound/group";
 import { LatencyCell } from "@/components/latency-cell";
 import { RouteModal } from "@/components/route-modal";
 import { LatencyTrendModal } from "@/components/lazy-charts";
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import { SplitModal } from "@/pages/inbound/split-modal";
 import {
   EXTERNAL_LABEL,
@@ -1224,7 +1224,7 @@ export default function InboundPage() {
         </>
       )}
 
-      <ActionSheet
+      <ActionsDialog
         actions={
           sheetItem?.external
             ? [
@@ -1314,7 +1314,7 @@ export default function InboundPage() {
                 ]
               : []
         }
-        isOpen={Boolean(sheetItem)}
+        open={Boolean(sheetItem)}
         subtitle={
           sheetItem &&
           `${sheetItem.external ? EXTERNAL_LABEL : sheetItem.nodeName} · ${
@@ -1373,7 +1373,7 @@ export default function InboundPage() {
             )}
           </div>
         )}
-      </ActionSheet>
+      </ActionsDialog>
 
       <ShareModal item={sharing} onClose={() => setSharing(null)} />
       <SplitModal

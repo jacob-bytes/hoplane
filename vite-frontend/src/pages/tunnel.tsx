@@ -48,7 +48,7 @@ import {
   pageCached,
   useCachedState,
 } from "@/hooks/use-cached-state";
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   EmptyHint,
   ListRow,
@@ -1678,7 +1678,7 @@ export default function TunnelPage({
         </DndContext>
       )}
 
-      <ActionSheet
+      <ActionsDialog
         actions={
           sheetTunnel
             ? [
@@ -1702,7 +1702,7 @@ export default function TunnelPage({
               ]
             : []
         }
-        isOpen={Boolean(sheetTunnel)}
+        open={Boolean(sheetTunnel)}
         subtitle={
           sheetTunnel &&
           `${getTunnelTypeDisplay(sheetTunnel.type).text}${
@@ -1751,7 +1751,7 @@ export default function TunnelPage({
             {renderBestExitState(sheetTunnel.bestExitState)}
           </div>
         )}
-      </ActionSheet>
+      </ActionsDialog>
       {/* 新增/编辑模态框 */}
       <TunnelFormModal
         errors={errors}

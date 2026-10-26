@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   EmptyHint,
   ListGroup,
@@ -275,7 +275,7 @@ export default function LimitPage({
         </ListGroup>
       )}
 
-      <ActionSheet
+      <ActionsDialog
         actions={
           sheetRule
             ? [
@@ -294,7 +294,7 @@ export default function LimitPage({
               ]
             : []
         }
-        isOpen={Boolean(sheetRule)}
+        open={Boolean(sheetRule)}
         subtitle={sheetRule && (sheetRule.status === 1 ? "运行" : "异常")}
         title={sheetRule?.name ?? ""}
         onClose={() => setSheetRuleId(null)}
@@ -309,7 +309,7 @@ export default function LimitPage({
             </div>
           </div>
         )}
-      </ActionSheet>
+      </ActionsDialog>
 
       {/* 新增/编辑模态框 */}
       <Modal

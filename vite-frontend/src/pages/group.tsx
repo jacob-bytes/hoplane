@@ -7,7 +7,7 @@ import {
   pageCached,
   useCachedState,
 } from "@/hooks/use-cached-state";
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   EmptyHint,
   ListGroup,
@@ -747,7 +747,7 @@ export default function GroupPage({
             </>
           )}
 
-          <ActionSheet
+          <ActionsDialog
             actions={
               sheetTunnelGroup
                 ? [
@@ -802,7 +802,7 @@ export default function GroupPage({
                       ]
                     : []
             }
-            isOpen={Boolean(
+            open={Boolean(
               sheetTunnelGroup || sheetUserGroup || sheetPermission,
             )}
             subtitle={
@@ -868,7 +868,7 @@ export default function GroupPage({
                   formatDate(sheetPermission.createdTime, true) || "-",
                 ],
               ])}
-          </ActionSheet>
+          </ActionsDialog>
 
           <Modal
             backdrop="blur"

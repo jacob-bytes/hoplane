@@ -1,4 +1,4 @@
-import type { SheetAction } from "@/components/action-sheet";
+import type * as React from "react";
 
 import { useMemo, useState } from "react";
 import { ChevronRight, Copy } from "lucide-react";
@@ -11,6 +11,26 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
+export interface SheetAction {
+  key: string;
+  label: string;
+  /** Optional one-liner under the label, for actions that need context. */
+  description?: string;
+  /** Actions with the same section are grouped under one small heading. */
+  section?: string;
+  /** Leading glyph, so "opens a page" and "copies" do not look alike. */
+  icon?: React.ComponentType<{ className?: string }>;
+  /** Right-aligned hint: a value (当前版本) or the effect (复制 / 打开). */
+  hint?: string;
+  /** Drives the trailing affordance. */
+  kind?: "navigate" | "copy" | "dialog";
+  /** Dialog actions keep the panel open underneath; default true. */
+  closeOnSelect?: boolean;
+  color?: "primary" | "secondary" | "success" | "warning" | "danger";
+  disabled?: boolean;
+  onPress: () => void;
+}
 
 /**
  * The one centered action dialog for an item (server, kernel, …).

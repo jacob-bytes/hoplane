@@ -7,7 +7,7 @@ import { copyWithToast } from "@/utils/clipboard";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Badge } from "@/shadcn-bridge/heroui/badge";
 import { AnimatedPage } from "@/components/animated-page";
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import { PageLoadingState } from "@/components/page-state";
 import {
   EmptyHint,
@@ -571,7 +571,7 @@ export default function PanelSharingPage() {
           </ListGroup>
         ))}
 
-      <ActionSheet
+      <ActionsDialog
         actions={
           sheetShare
             ? [
@@ -600,7 +600,7 @@ export default function PanelSharingPage() {
               ]
             : []
         }
-        isOpen={Boolean(sheetShare)}
+        open={Boolean(sheetShare)}
         subtitle={sheetShare ? shareStatus(sheetShare)[1] : undefined}
         title={sheetShare?.name ?? ""}
         onClose={() => setSheetShareId(null)}
@@ -658,9 +658,9 @@ export default function PanelSharingPage() {
               )}
           </>
         )}
-      </ActionSheet>
+      </ActionsDialog>
 
-      <ActionSheet
+      <ActionsDialog
         actions={
           sheetRemote?.remoteUrl
             ? [
@@ -673,7 +673,7 @@ export default function PanelSharingPage() {
               ]
             : []
         }
-        isOpen={Boolean(sheetRemote)}
+        open={Boolean(sheetRemote)}
         subtitle={
           sheetRemote &&
           (sheetRemote.syncError ? "同步异常" : "远程服务器 · 同步正常")
@@ -730,7 +730,7 @@ export default function PanelSharingPage() {
             )}
           </>
         )}
-      </ActionSheet>
+      </ActionsDialog>
 
       {/* Create Share Modal */}
       <Modal

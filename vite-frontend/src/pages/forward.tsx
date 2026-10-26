@@ -21,7 +21,7 @@ import {
 } from "@dnd-kit/sortable";
 
 import { copyWithToast } from "@/utils/clipboard";
-import { ActionSheet } from "@/components/action-sheet";
+import { ActionsDialog } from "@/components/action-dialog";
 import {
   EmptyHint,
   ListGroup,
@@ -2829,7 +2829,14 @@ export default function ForwardPage({
                 : undefined
             }
             meta={meta.filter(Boolean).join(" · ")}
-            right={handle}
+            right={
+              <span className="flex items-center gap-3">
+                <span className="hidden font-mono text-[12px] tabular-nums text-muted-foreground lg:block">
+                  {getForwardFlowText(forward)}
+                </span>
+                {handle}
+              </span>
+            }
             selectMode={selectMode}
             selected={selectedIds.has(forward.id)}
             status={getForwardRowStatus(forward.status)}
@@ -3119,7 +3126,7 @@ export default function ForwardPage({
           : [];
 
         return (
-          <ActionSheet
+          <ActionsDialog
             actions={
               !forward
                 ? []
@@ -3178,7 +3185,7 @@ export default function ForwardPage({
                     },
                   ]
             }
-            isOpen={Boolean(forward)}
+            open={Boolean(forward)}
             subtitle={forward && getStatusDisplay(forward.status).text}
             title={forward?.name ?? ""}
             onClose={close}
@@ -3195,7 +3202,7 @@ export default function ForwardPage({
                 ))}
               </div>
             )}
-          </ActionSheet>
+          </ActionsDialog>
         );
       })()}
 
