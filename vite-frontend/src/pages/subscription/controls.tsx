@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 
 /** Small controls shared by the subscription editors. */
 
@@ -150,11 +150,10 @@ export function ToggleRow({
     <div className="flex items-start gap-3">
       <Switch
         aria-labelledby={`${id}-label`}
+        checked={value}
+        disabled={disabled}
         id={id}
-        isDisabled={disabled}
-        isSelected={value}
-        size="sm"
-        onValueChange={onChange}
+        onCheckedChange={onChange}
       />
       <label
         className="flex min-w-0 cursor-pointer flex-col gap-0.5"

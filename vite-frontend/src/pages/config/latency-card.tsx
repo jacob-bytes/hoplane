@@ -1,7 +1,7 @@
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import {
   Dropdown,
   DropdownItem,
@@ -9,7 +9,7 @@ import {
   DropdownTrigger,
 } from "@/shadcn-bridge/heroui/dropdown";
 import { Input } from "@/shadcn-bridge/heroui/input";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import {
   LATENCY_TARGETS_KEY,
   type LatencyTarget,
@@ -166,20 +166,21 @@ export function LatencySettings({
               <span className="flex items-center gap-1.5">
                 <Switch
                   aria-label="默认"
-                  isSelected={t.enabled}
-                  size="sm"
-                  onValueChange={(v) => update(i, { enabled: v })}
+                  checked={t.enabled}
+                  onCheckedChange={(v) => update(i, { enabled: v })}
                 />
                 默认
               </span>
-              <Checkbox
-                isDisabled={!t.pinned && pinnedCount >= MAX_PINNED}
-                isSelected={Boolean(t.pinned)}
-                size="sm"
-                onValueChange={(v) => update(i, { pinned: v })}
-              >
+              <div className="inline-flex items-center gap-2">
+                <Checkbox
+                  checked={Boolean(t.pinned)}
+                  disabled={!t.pinned && pinnedCount >= MAX_PINNED}
+                  onCheckedChange={checkboxHandler((v) =>
+                    update(i, { pinned: v }),
+                  )}
+                />
                 <span className="text-xs">卡片显示</span>
-              </Checkbox>
+              </div>
               <span className="ml-auto flex items-center gap-0.5">
                 <Button
                   aria-label="上移"

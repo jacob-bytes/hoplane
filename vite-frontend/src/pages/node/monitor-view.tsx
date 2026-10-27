@@ -53,7 +53,7 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Input } from "@/shadcn-bridge/heroui/input";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
@@ -2133,8 +2133,8 @@ export function MonitorView({
             </Select>
             <div className="flex items-center gap-2">
               <Switch
-                isSelected={monitorForm.enabled}
-                onValueChange={(v) =>
+                checked={monitorForm.enabled}
+                onCheckedChange={(v) =>
                   setMonitorForm((f) => ({ ...f, enabled: v }))
                 }
               />

@@ -3,7 +3,7 @@ import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
   Modal,
@@ -130,10 +130,11 @@ export function NodeTuneModal({
                       >
                         <div className="flex items-start gap-2">
                           <Checkbox
-                            isDisabled={!supported}
-                            isSelected={chosen.has(g.id) && supported}
-                            size="sm"
-                            onValueChange={(on) => toggle(g.id, on)}
+                            checked={chosen.has(g.id) && supported}
+                            disabled={!supported}
+                            onCheckedChange={checkboxHandler((on) =>
+                              toggle(g.id, on),
+                            )}
                           />
                           <div className="min-w-0 flex-1">
                             <div className="flex flex-wrap items-center gap-1.5">

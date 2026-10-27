@@ -2,7 +2,7 @@ import type * as React from "react";
 
 import { Button, buttonVariant } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 
 /*
  * Card for the card view of pages the upstream panel has no card for
@@ -85,9 +85,9 @@ export function InfoCard({
             {selectMode && (
               <div role="presentation" onClick={stop}>
                 <Checkbox
+                  checked={selected}
                   className="mt-0.5"
-                  isSelected={selected}
-                  onValueChange={() => onSelect?.()}
+                  onCheckedChange={checkboxHandler(() => onSelect?.())}
                 />
               </div>
             )}

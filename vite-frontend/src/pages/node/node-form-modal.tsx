@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
@@ -548,10 +548,9 @@ export function NodeFormModal({
                             禁用/启用
                           </div>
                           <Switch
-                            isDisabled={protocolControlsDisabled}
-                            isSelected={form.http === 1}
-                            size="sm"
-                            onValueChange={(v) =>
+                            checked={form.http === 1}
+                            disabled={protocolControlsDisabled}
+                            onCheckedChange={(v) =>
                               setForm((prev) => ({
                                 ...prev,
                                 http: v ? 1 : 0,
@@ -589,10 +588,9 @@ export function NodeFormModal({
                             禁用/启用
                           </div>
                           <Switch
-                            isDisabled={protocolControlsDisabled}
-                            isSelected={form.tls === 1}
-                            size="sm"
-                            onValueChange={(v) =>
+                            checked={form.tls === 1}
+                            disabled={protocolControlsDisabled}
+                            onCheckedChange={(v) =>
                               setForm((prev) => ({ ...prev, tls: v ? 1 : 0 }))
                             }
                           />
@@ -628,10 +626,9 @@ export function NodeFormModal({
                             禁用/启用
                           </div>
                           <Switch
-                            isDisabled={protocolControlsDisabled}
-                            isSelected={form.socks === 1}
-                            size="sm"
-                            onValueChange={(v) =>
+                            checked={form.socks === 1}
+                            disabled={protocolControlsDisabled}
+                            onCheckedChange={(v) =>
                               setForm((prev) => ({
                                 ...prev,
                                 socks: v ? 1 : 0,

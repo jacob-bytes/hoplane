@@ -6,7 +6,7 @@ import { Inbox, MoreHorizontal, Search, X } from "lucide-react";
 import { AnimatedPage } from "@/components/animated-page";
 import { ViewModeToggle } from "@/components/view-mode";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -455,7 +455,7 @@ export function ListRow({
               >
                 <Checkbox
                   checked={selected}
-                  onCheckedChange={() => onSelect?.()}
+                  onCheckedChange={checkboxHandler(() => onSelect?.())}
                 />
               </div>
             )}
@@ -500,7 +500,7 @@ export function ListRow({
             >
               <Checkbox
                 checked={selected}
-                onCheckedChange={() => onSelect?.()}
+                onCheckedChange={checkboxHandler(() => onSelect?.())}
               />
             </div>
           )}

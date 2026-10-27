@@ -28,4 +28,9 @@ function Checkbox({
   );
 }
 
+/** Adapt a boolean handler to Radix's CheckedState. */
+export function checkboxHandler(fn?: (checked: boolean) => void) {
+  return (checked: boolean | "indeterminate") => fn?.(checked === true);
+}
+
 export { Checkbox };

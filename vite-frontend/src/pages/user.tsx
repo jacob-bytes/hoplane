@@ -31,8 +31,8 @@ import {
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { RadioGroup, Radio } from "@/shadcn-bridge/heroui/radio";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
 import { DatePicker } from "@/shadcn-bridge/heroui/date-picker";
 import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
@@ -1736,17 +1736,17 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       <Loader2 className="size-4 animate-spin text-muted-foreground" />
                     ) : null}
                     <Switch
-                      isDisabled={
-                        !currentUser ||
-                        monitorPermissionLoading ||
-                        monitorPermissionMutatingUserId === currentUser.id
-                      }
-                      isSelected={
+                      checked={
                         currentUser
                           ? monitorPermissionUserIds.has(currentUser.id)
                           : false
                       }
-                      onValueChange={(v) =>
+                      disabled={
+                        !currentUser ||
+                        monitorPermissionLoading ||
+                        monitorPermissionMutatingUserId === currentUser.id
+                      }
+                      onCheckedChange={(v) =>
                         currentUser &&
                         void setUserMonitorPermission(currentUser.id, v)
                       }
@@ -1804,15 +1804,13 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           <div className="flex items-center justify-between gap-4">
                             <div className="flex items-center gap-3 flex-1 min-w-0">
                               <Checkbox
-                                color="primary"
-                                isDisabled={isAssigned}
-                                isSelected={isSelected}
-                                size="md"
+                                checked={isSelected}
+                                disabled={isAssigned}
+                                onCheckedChange={checkboxHandler(() =>
+                                  toggleTunnelSelection(tunnel.id),
+                                )}
                                 onClick={(event) => event.stopPropagation()}
                                 onKeyDown={(event) => event.stopPropagation()}
-                                onValueChange={() =>
-                                  toggleTunnelSelection(tunnel.id)
-                                }
                               />
                               <span
                                 className={`font-medium truncate ${isAssigned ? "text-muted-foreground" : "text-foreground dark:text-muted-foreground"}`}

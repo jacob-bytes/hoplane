@@ -32,7 +32,7 @@ import {
 import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ProgressBar as Progress } from "@/components/progress-bar";
@@ -1818,9 +1818,11 @@ export default function NodePage({
                                 </div>
                                 {selectMode && (
                                   <Checkbox
+                                    checked={selectedIds.has(node.id)}
                                     className="mt-0.5"
-                                    isSelected={selectedIds.has(node.id)}
-                                    onValueChange={() => toggleSelect(node.id)}
+                                    onCheckedChange={checkboxHandler(() =>
+                                      toggleSelect(node.id),
+                                    )}
                                   />
                                 )}
                                 <div className="min-w-0 flex-1 pt-0.5">

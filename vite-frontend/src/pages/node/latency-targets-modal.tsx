@@ -25,7 +25,7 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
   Modal,
@@ -258,13 +258,15 @@ export function LatencyTargetsPanel({
                   return (
                     <TableRow key={t.name}>
                       <TableCell className="py-1.5">
-                        <Checkbox
-                          isSelected={on}
-                          size="sm"
-                          onValueChange={(v) => toggle(t.name, v)}
-                        >
+                        <div className="inline-flex items-center gap-2">
+                          <Checkbox
+                            checked={on}
+                            onCheckedChange={checkboxHandler((v) =>
+                              toggle(t.name, v),
+                            )}
+                          />
                           <span className="text-sm">{t.name}</span>
-                        </Checkbox>
+                        </div>
                       </TableCell>
                       <TableCell className="py-1.5 font-mono text-[11px] text-muted-foreground">
                         {t.host}:{t.port}

@@ -15,7 +15,7 @@ import {
 } from "@/pages/inbound/sources";
 import { Segmented } from "@/pages/subscription/controls";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -25,7 +25,7 @@ import {
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 
 const modalBase =
   "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
@@ -198,7 +198,7 @@ export function ImportModal({
           {(subURL || fromFile) && (
             <div className="space-y-3 rounded-xl border border-divider p-3">
               <div className="flex items-start gap-2">
-                <Switch isSelected={sync} size="sm" onValueChange={setSync} />
+                <Switch checked={sync} onCheckedChange={setSync} />
                 <div>
                   <p className="text-sm">
                     {subURL ? "定时同步" : "存为订阅源"}
@@ -248,11 +248,15 @@ export function ImportModal({
               )}
             </div>
           )}
-          <Checkbox isSelected={relayOnly} onValueChange={setRelayOnly}>
+          <div className="inline-flex items-center gap-2">
+            <Checkbox
+              checked={relayOnly}
+              onCheckedChange={checkboxHandler(setRelayOnly)}
+            />
             <span className="text-sm">
               只通过我的转发访问（订阅里不放直连，只放中转线路）
             </span>
-          </Checkbox>
+          </div>
           {errors.length > 0 && (
             <ul className="space-y-1 rounded-xl bg-danger-50 p-3 text-xs text-danger">
               {errors.map((e) => (
@@ -445,14 +449,17 @@ export function ExternalEditModal({
                 variant="bordered"
                 onChange={(e) => set({ remark: e.target.value })}
               />
-              <Checkbox
-                isSelected={form.relayOnly}
-                onValueChange={(v) => set({ relayOnly: v })}
-              >
+              <div className="inline-flex items-center gap-2">
+                <Checkbox
+                  checked={form.relayOnly}
+                  onCheckedChange={checkboxHandler((v) =>
+                    set({ relayOnly: v }),
+                  )}
+                />
                 <span className="text-sm">
                   只通过我的转发访问（订阅里不放直连，只放中转线路）
                 </span>
-              </Checkbox>
+              </div>
             </div>
           )}
         </ModalBody>

@@ -41,7 +41,7 @@ import {
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 
 interface Props {
   isOpen: boolean;
@@ -550,9 +550,8 @@ export function InboundFormModal({
                 {vlessEncAllowed(form) && (
                   <div className="flex items-start gap-2">
                     <Switch
-                      isSelected={form.vlessEnc}
-                      size="sm"
-                      onValueChange={(v) => set("vlessEnc", v)}
+                      checked={form.vlessEnc}
+                      onCheckedChange={(v) => set("vlessEnc", v)}
                     />
                     <div>
                       <p className="text-sm">VLESS Encryption（抗量子加密）</p>
@@ -567,9 +566,8 @@ export function InboundFormModal({
                 {visionAllowed(form) && (
                   <div className="flex items-center gap-2">
                     <Switch
-                      isSelected={form.flowVision}
-                      size="sm"
-                      onValueChange={(v) => set("flowVision", v)}
+                      checked={form.flowVision}
+                      onCheckedChange={(v) => set("flowVision", v)}
                     />
                     <span className="text-sm">启用 XTLS Vision 流控</span>
                   </div>
@@ -1057,12 +1055,9 @@ export function InboundFormModal({
                       <p className="text-sm font-medium">中转相关</p>
                       <div className="flex items-start gap-2">
                         <Switch
-                          isDisabled={form.acceptProxyProtocol}
-                          isSelected={
-                            form.relayOnly || form.acceptProxyProtocol
-                          }
-                          size="sm"
-                          onValueChange={(v) => set("relayOnly", v)}
+                          checked={form.relayOnly || form.acceptProxyProtocol}
+                          disabled={form.acceptProxyProtocol}
+                          onCheckedChange={(v) => set("relayOnly", v)}
                         />
                         <div>
                           <p className="text-sm">仅通过中转提供</p>
@@ -1073,13 +1068,12 @@ export function InboundFormModal({
                       </div>
                       <div className="flex items-start gap-2">
                         <Switch
-                          isDisabled={
+                          checked={form.acceptProxyProtocol}
+                          disabled={
                             form.kernelType !== "xray" &&
                             !form.acceptProxyProtocol
                           }
-                          isSelected={form.acceptProxyProtocol}
-                          size="sm"
-                          onValueChange={(v) => set("acceptProxyProtocol", v)}
+                          onCheckedChange={(v) => set("acceptProxyProtocol", v)}
                         />
                         <div>
                           <p className="text-sm">
@@ -1094,9 +1088,8 @@ export function InboundFormModal({
                       </div>
                       <div className="flex items-start gap-2">
                         <Switch
-                          isSelected={form.relayWhitelist}
-                          size="sm"
-                          onValueChange={(v) => set("relayWhitelist", v)}
+                          checked={form.relayWhitelist}
+                          onCheckedChange={(v) => set("relayWhitelist", v)}
                         />
                         <div>
                           <p className="text-sm">

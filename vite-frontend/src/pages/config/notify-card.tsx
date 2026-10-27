@@ -3,9 +3,9 @@ import { toast } from "sonner";
 
 import { testNotify } from "@/api";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Input } from "@/shadcn-bridge/heroui/input";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import { Field, SubHeading } from "@/pages/config/section";
 
 const NOTIFY_EVENTS = [
@@ -159,9 +159,8 @@ export function NotifySettings({
       >
         <Switch
           aria-label="启用通知"
-          isSelected={enabled}
-          size="sm"
-          onValueChange={(on) =>
+          checked={enabled}
+          onCheckedChange={(on) =>
             onChange("notify_enabled", on ? "true" : "false")
           }
         />
@@ -198,18 +197,18 @@ export function NotifySettings({
       <SubHeading>通知哪些事件</SubHeading>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {NOTIFY_EVENTS.map((e) => (
-          <Checkbox
-            key={e.key}
-            isSelected={selected.includes(e.key)}
-            onValueChange={(on) => toggleEvent(e.key, on)}
-          >
+          <div key={e.key} className="inline-flex items-center gap-2">
+            <Checkbox
+              checked={selected.includes(e.key)}
+              onCheckedChange={checkboxHandler((on) => toggleEvent(e.key, on))}
+            />
             <div className="flex flex-col">
               <span className="text-sm">{e.label}</span>
               <span className="text-xs text-muted-foreground">
                 {e.description}
               </span>
             </div>
-          </Checkbox>
+          </div>
         ))}
       </div>
 

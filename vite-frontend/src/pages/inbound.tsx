@@ -73,7 +73,7 @@ import {
 } from "@/pages/inbound/presets";
 import { Button, buttonVariant } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Modal,
@@ -82,7 +82,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import { formatTraffic } from "@/utils/traffic";
 import { latestProbe } from "@/utils/latest-probe";
 
@@ -816,10 +816,9 @@ export default function InboundPage() {
           badges={badges}
           headerRight={
             <Switch
-              isDisabled={toggling === item.id}
-              isSelected={item.enabled}
-              size="sm"
-              onValueChange={() => handleToggle(item)}
+              checked={item.enabled}
+              disabled={toggling === item.id}
+              onCheckedChange={() => handleToggle(item)}
             />
           }
           rows={[
@@ -900,8 +899,8 @@ export default function InboundPage() {
           >
             <Checkbox
               aria-label={`选择 ${item.name}`}
-              isSelected={selected}
-              onValueChange={() => toggleSelect(item.id)}
+              checked={selected}
+              onCheckedChange={checkboxHandler(() => toggleSelect(item.id))}
             />
           </div>
         )}
@@ -948,10 +947,9 @@ export default function InboundPage() {
           onClick={(e) => e.stopPropagation()}
         >
           <Switch
-            isDisabled={toggling === item.id}
-            isSelected={item.enabled}
-            size="sm"
-            onValueChange={() => handleToggle(item)}
+            checked={item.enabled}
+            disabled={toggling === item.id}
+            onCheckedChange={() => handleToggle(item)}
           />
         </div>
       </div>

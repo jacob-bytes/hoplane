@@ -50,7 +50,7 @@ import {
 } from "@/hooks/use-cached-state";
 import { copyText, panelOrigin } from "@/pages/inbound/share";
 import { Button, buttonVariant } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { SubTrafficStats } from "@/components/lazy-charts";
@@ -61,7 +61,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import { formatTraffic } from "@/utils/traffic";
 import { SubClientGrid } from "@/pages/subscription/client-grid";
 import {
@@ -666,19 +666,22 @@ function Editor({
                     {groups
                       .filter((g) => !draft.groupIds.includes(g.id))
                       .map((g) => (
-                        <Checkbox
+                        <div
                           key={g.id}
-                          className="w-full"
-                          isSelected={false}
-                          onValueChange={() =>
-                            setGroupIds([...draft.groupIds, g.id])
-                          }
+                          className="inline-flex items-center gap-2"
                         >
+                          <Checkbox
+                            checked={false}
+                            className="w-full"
+                            onCheckedChange={checkboxHandler(() =>
+                              setGroupIds([...draft.groupIds, g.id]),
+                            )}
+                          />
                           <span className="text-sm">{g.name}</span>
                           <span className="ml-1 text-xs text-muted-foreground">
                             {g.nodeCount} 个节点 · {groupSourceText(g)}
                           </span>
-                        </Checkbox>
+                        </div>
                       ))}
                   </div>
                 )
@@ -791,19 +794,22 @@ function Editor({
                   </p>
                   <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {ruleGroups.map((g) => (
-                      <Checkbox
+                      <div
                         key={g.key}
-                        isSelected={o.ruleGroups.includes(g.key)}
-                        onValueChange={(on) =>
-                          setOpts({
-                            ruleGroups: on
-                              ? [...o.ruleGroups, g.key]
-                              : o.ruleGroups.filter((x) => x !== g.key),
-                          })
-                        }
+                        className="inline-flex items-center gap-2"
                       >
+                        <Checkbox
+                          checked={o.ruleGroups.includes(g.key)}
+                          onCheckedChange={checkboxHandler((on) =>
+                            setOpts({
+                              ruleGroups: on
+                                ? [...o.ruleGroups, g.key]
+                                : o.ruleGroups.filter((x) => x !== g.key),
+                            }),
+                          )}
+                        />
                         <span className="text-sm">{g.name}</span>
-                      </Checkbox>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -1374,10 +1380,9 @@ export default function SubscriptionPage() {
       </Button>
       <Switch
         aria-label={`${s.enabled ? "停用" : "启用"} ${s.name}`}
-        isDisabled={toggling === s.id}
-        isSelected={s.enabled}
-        size="sm"
-        onValueChange={() => toggle(s)}
+        checked={s.enabled}
+        disabled={toggling === s.id}
+        onCheckedChange={() => toggle(s)}
       />
     </>
   );
@@ -1402,10 +1407,9 @@ export default function SubscriptionPage() {
       headerRight={
         <Switch
           aria-label={`${s.enabled ? "停用" : "启用"} ${s.name}`}
-          isDisabled={toggling === s.id}
-          isSelected={s.enabled}
-          size="sm"
-          onValueChange={() => toggle(s)}
+          checked={s.enabled}
+          disabled={toggling === s.id}
+          onCheckedChange={() => toggle(s)}
         />
       }
       rows={[

@@ -15,7 +15,7 @@ import { deleteNodeGroup, previewNodeGroup, saveNodeGroup } from "@/api";
 import { EmptyHint } from "@/components/page-kit";
 import { PROTOCOL_LABELS } from "@/pages/inbound/presets";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
@@ -346,18 +346,18 @@ export function NodeGroupEditor({
       <div className="space-y-1">
         <p className="text-xs text-muted-foreground">{title}</p>
         {list.map((i) => (
-          <Checkbox
-            key={i.id}
-            className="w-full"
-            isSelected={draft.inboundIds.includes(i.id)}
-            onValueChange={(on) =>
-              set({
-                inboundIds: on
-                  ? [...draft.inboundIds, i.id]
-                  : draft.inboundIds.filter((x) => x !== i.id),
-              })
-            }
-          >
+          <div key={i.id} className="inline-flex items-center gap-2">
+            <Checkbox
+              checked={draft.inboundIds.includes(i.id)}
+              className="w-full"
+              onCheckedChange={checkboxHandler((on) =>
+                set({
+                  inboundIds: on
+                    ? [...draft.inboundIds, i.id]
+                    : draft.inboundIds.filter((x) => x !== i.id),
+                }),
+              )}
+            />
             <span className="text-sm">{i.name}</span>
             {!i.enabled && (
               <span className="ml-1 text-xs text-muted-foreground">已停用</span>
@@ -365,7 +365,7 @@ export function NodeGroupEditor({
             {(i.external || !MULTI_USER_PROTOCOLS.has(i.protocol)) && (
               <span className="ml-1 text-xs text-warning">共用凭据</span>
             )}
-          </Checkbox>
+          </div>
         ))}
       </div>
     );
@@ -439,23 +439,26 @@ export function NodeGroupEditor({
                         订阅源（整个源，更新后的节点自动跟上）
                       </p>
                       {sources.map((src) => (
-                        <Checkbox
+                        <div
                           key={src.id}
-                          className="w-full"
-                          isSelected={draft.sourceIds.includes(src.id)}
-                          onValueChange={(on) =>
-                            set({
-                              sourceIds: on
-                                ? [...draft.sourceIds, src.id]
-                                : draft.sourceIds.filter((x) => x !== src.id),
-                            })
-                          }
+                          className="inline-flex items-center gap-2"
                         >
+                          <Checkbox
+                            checked={draft.sourceIds.includes(src.id)}
+                            className="w-full"
+                            onCheckedChange={checkboxHandler((on) =>
+                              set({
+                                sourceIds: on
+                                  ? [...draft.sourceIds, src.id]
+                                  : draft.sourceIds.filter((x) => x !== src.id),
+                              }),
+                            )}
+                          />
                           <span className="text-sm">{src.name}</span>
                           <span className="ml-1 text-xs text-muted-foreground">
                             {src.nodeCount} 个节点
                           </span>
-                        </Checkbox>
+                        </div>
                       ))}
                     </div>
                   )}

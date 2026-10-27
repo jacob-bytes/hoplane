@@ -12,9 +12,9 @@ import { toast } from "sonner";
 import { Button, buttonVariant } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
-import { Switch } from "@/shadcn-bridge/heroui/switch";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
-import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Modal,
   ModalBody,
@@ -1223,10 +1223,9 @@ export default function ConfigPage() {
         return (
           <Switch
             aria-label={item.label}
+            checked={configs[item.key] === "true"}
             className={isChanged ? "ring-2 ring-warning-300" : undefined}
-            isSelected={configs[item.key] === "true"}
-            size="sm"
-            onValueChange={(checked) =>
+            onCheckedChange={(checked) =>
               handleConfigChange(item.key, checked ? "true" : "false")
             }
           />
@@ -1456,14 +1455,7 @@ export default function ConfigPage() {
                 onClick={() => toggleTypeSelection(option.value, setTypes)}
               >
                 <div className="flex items-center gap-3">
-                  <Checkbox
-                    classNames={{
-                      base: "pointer-events-none",
-                    }}
-                    color="primary"
-                    isSelected={isSelected}
-                    size="md"
-                  />
+                  <Checkbox checked={isSelected} />
                   <span
                     className={`font-medium ${
                       isSelected
@@ -1698,9 +1690,8 @@ export default function ConfigPage() {
                   <Field inline help="启用后在首页顶部显示" label="显示公告">
                     <Switch
                       aria-label="显示公告"
-                      isSelected={announcement.enabled === 1}
-                      size="sm"
-                      onValueChange={(checked) =>
+                      checked={announcement.enabled === 1}
+                      onCheckedChange={(checked) =>
                         setAnnouncement({
                           ...announcement,
                           enabled: checked ? 1 : 0,
