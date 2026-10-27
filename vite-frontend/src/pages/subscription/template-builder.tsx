@@ -18,7 +18,7 @@ import {
 
 import { getSubTemplateCatalog } from "@/api";
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
 
 const MAIN = "节点选择";
 
@@ -45,9 +45,8 @@ function GroupNameInput({
   return (
     <Input
       aria-label={label}
-      size="sm"
+      className="h-8 text-xs"
       value={draft}
-      variant="bordered"
       onBlur={() => {
         const next = draft.trim();
 
@@ -572,7 +571,6 @@ export function TemplateBuilder({
                 : "example.com"
             }
             value={custom.value}
-            variant="bordered"
             onChange={(e) => setCustom({ ...custom, value: e.target.value })}
           />
           <p className="self-center text-xs text-muted-foreground">
@@ -673,10 +671,9 @@ export function TemplateBuilder({
               </div>
               <Input
                 aria-label={`策略组 ${i + 1} 节点过滤`}
+                className="h-8 text-xs"
                 placeholder="节点名称正则，例如 (?i)港|HK"
-                size="sm"
                 value={g.filter}
-                variant="bordered"
                 onChange={(e) => editGroup(i, { filter: e.target.value })}
               />
             </div>

@@ -17,10 +17,9 @@ import { PROTOCOL_LABELS } from "@/pages/inbound/presets";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import {
-  TextField as Input,
-  TextAreaField as Textarea,
-} from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { ModalBody, ModalFooter, ModalHeader } from "@/components/modal";
 import { RenameRules } from "@/pages/subscription/rename-rules";
 import {
@@ -401,13 +400,15 @@ export function NodeGroupEditor({
         {page === "source" && (
           <div className="space-y-4">
             <Section title="基本">
-              <Input
-                label="名称"
-                placeholder="例如 香港专线 / 全部自建"
-                value={draft.name}
-                variant="bordered"
-                onChange={(e) => set({ name: e.target.value })}
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="group-name">名称</Label>
+                <Input
+                  id="group-name"
+                  placeholder="例如 香港专线 / 全部自建"
+                  value={draft.name}
+                  onChange={(e) => set({ name: e.target.value })}
+                />
+              </div>
               {usedBy.length > 0 && (
                 <p className="text-xs text-muted-foreground">
                   订阅{usedBy.map((s) => `「${s.name}」`).join("、")}
@@ -522,21 +523,27 @@ export function NodeGroupEditor({
                 </div>
               )}
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                <Input
-                  description="多个关键词用 | 分隔，或 /正则/"
-                  label="名称包含"
-                  placeholder="例如 IEPL|专线"
-                  value={o.include}
-                  variant="bordered"
-                  onChange={(e) => setOpts({ include: e.target.value })}
-                />
-                <Input
-                  label="名称排除"
-                  placeholder="例如 /过期|剩余/"
-                  value={o.exclude}
-                  variant="bordered"
-                  onChange={(e) => setOpts({ exclude: e.target.value })}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="group-include">名称包含</Label>
+                  <Input
+                    id="group-include"
+                    placeholder="例如 IEPL|专线"
+                    value={o.include}
+                    onChange={(e) => setOpts({ include: e.target.value })}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    多个关键词用 | 分隔，或 /正则/
+                  </p>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="group-exclude">名称排除</Label>
+                  <Input
+                    id="group-exclude"
+                    placeholder="例如 /过期|剩余/"
+                    value={o.exclude}
+                    onChange={(e) => setOpts({ exclude: e.target.value })}
+                  />
+                </div>
               </div>
               <ToggleRow
                 hint="地址、端口、协议都相同的只保留第一个"
@@ -571,13 +578,15 @@ export function NodeGroupEditor({
                 value={o.addFlag}
                 onChange={(addFlag) => setOpts({ addFlag })}
               />
-              <Input
-                label="名称前缀"
-                placeholder="例如 [家宽] "
-                value={o.prefix}
-                variant="bordered"
-                onChange={(e) => setOpts({ prefix: e.target.value })}
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="group-prefix">名称前缀</Label>
+                <Input
+                  id="group-prefix"
+                  placeholder="例如 [家宽] "
+                  value={o.prefix}
+                  onChange={(e) => setOpts({ prefix: e.target.value })}
+                />
+              </div>
               <div className="space-y-1.5">
                 <p className="text-xs font-medium">排序</p>
                 <Segmented
@@ -598,11 +607,9 @@ export function NodeGroupEditor({
               title="JS 脚本"
             >
               <Textarea
-                classNames={{ input: "font-mono text-xs" }}
-                minRows={6}
+                className="min-h-40 font-mono text-xs"
                 placeholder={"function operator(nodes) {\n  return nodes;\n}"}
                 value={o.script}
-                variant="bordered"
                 onChange={(e) => setOpts({ script: e.target.value })}
               />
               <div className="flex flex-wrap gap-2">

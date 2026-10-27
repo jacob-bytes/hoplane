@@ -15,7 +15,8 @@ import {
 } from "@/api";
 import { Segmented, ToggleRow } from "@/pages/subscription/controls";
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalBody,
@@ -404,15 +405,17 @@ export function RemoteSourcesSection({
                   </h2>
                 </ModalHeader>
                 <ModalBody className="space-y-4">
-                  <Input
-                    label="名称"
-                    placeholder="例如 某某机场"
-                    value={draft.name}
-                    variant="bordered"
-                    onChange={(e) =>
-                      setDraft({ ...draft, name: e.target.value })
-                    }
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="source-name">名称</Label>
+                    <Input
+                      id="source-name"
+                      placeholder="例如 某某机场"
+                      value={draft.name}
+                      onChange={(e) =>
+                        setDraft({ ...draft, name: e.target.value })
+                      }
+                    />
+                  </div>
                   <Segmented
                     options={[
                       ["url", "订阅地址"],
@@ -424,15 +427,17 @@ export function RemoteSourcesSection({
                     }
                   />
                   {draft.kind === "url" ? (
-                    <Input
-                      label="订阅地址"
-                      placeholder="https://..."
-                      value={draft.url}
-                      variant="bordered"
-                      onChange={(e) =>
-                        setDraft({ ...draft, url: e.target.value })
-                      }
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="source-url">订阅地址</Label>
+                      <Input
+                        id="source-url"
+                        placeholder="https://..."
+                        value={draft.url}
+                        onChange={(e) =>
+                          setDraft({ ...draft, url: e.target.value })
+                        }
+                      />
+                    </div>
                   ) : (
                     <FilePick
                       fileName={draft.fileName}
@@ -469,16 +474,25 @@ export function RemoteSourcesSection({
                     </div>
                   )}
                   {draft.kind === "url" && (
-                    <Input
-                      description="拉取订阅时发送的 UA。有的机场按 UA 决定返回的格式或节点，拿不到节点或缺节点时可以换成客户端的 UA，比如 mihomo/1.19.0、Shadowrocket/2070；留空用默认的 clash.meta/1.19.0"
-                      label="User-Agent（可选）"
-                      placeholder="clash.meta/1.19.0"
-                      value={draft.userAgent}
-                      variant="bordered"
-                      onChange={(e) =>
-                        setDraft({ ...draft, userAgent: e.target.value })
-                      }
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="source-user-agent">
+                        User-Agent（可选）
+                      </Label>
+                      <Input
+                        id="source-user-agent"
+                        placeholder="clash.meta/1.19.0"
+                        value={draft.userAgent}
+                        onChange={(e) =>
+                          setDraft({ ...draft, userAgent: e.target.value })
+                        }
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        拉取订阅时发送的 UA。有的机场按 UA
+                        决定返回的格式或节点，拿不到节点或缺节点时可以换成客户端的
+                        UA，比如 mihomo/1.19.0、Shadowrocket/2070；留空用默认的
+                        clash.meta/1.19.0
+                      </p>
+                    </div>
                   )}
                   <p className="text-xs text-muted-foreground">
                     {draft.kind === "url" ? "更新" : "重新上传"}
