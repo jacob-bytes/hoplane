@@ -7,7 +7,9 @@ const DOCS = "https://jacob-bytes.github.io/hoplane/guide/install";
 
 /** The demo's floating note: sample data, switch views, how to install. */
 export function DemoBanner() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(
+    () => typeof window === "undefined" || window.innerWidth >= 768,
+  );
   const role = demoRole();
 
   if (!open) {

@@ -102,8 +102,10 @@ export function MultiSelectField({
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"
-          className="max-h-72 w-[var(--radix-dropdown-menu-trigger-width)] overflow-y-auto"
+          className="max-h-[min(18rem,var(--radix-dropdown-menu-content-available-height))] w-[var(--radix-dropdown-menu-trigger-width)] overflow-y-auto"
+          collisionPadding={80}
           side={side}
+          sideOffset={4}
         >
           {options.length === 0 ? (
             <div className="px-2 py-1.5 text-xs text-muted-foreground">
