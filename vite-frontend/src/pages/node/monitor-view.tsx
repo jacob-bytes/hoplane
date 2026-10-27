@@ -269,11 +269,11 @@ function NodeMetricsStrip({ metric }: { metric: RealtimeNodeMetric }) {
 function ServerCard({
   node,
   metric,
-  onPress,
+  onClick,
 }: {
   node: any;
   metric: RealtimeNodeMetric | null;
-  onPress?: () => void;
+  onClick?: () => void;
 }) {
   const isOnline = node.connectionStatus === "online";
   const distro = parseDistroFromVersion(node.version);
@@ -282,7 +282,7 @@ function ServerCard({
   return (
     <Card
       className="group relative hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] transition-all duration-300 h-full flex flex-col cursor-pointer"
-      onClick={onPress}
+      onClick={onClick}
     >
       {/* Dynamic top gradient bar based on status */}
       <div
@@ -1459,7 +1459,7 @@ export function MonitorView({
                   key={node.id}
                   metric={realtimeNodeMetrics[node.id] || null}
                   node={node}
-                  onPress={() => {
+                  onClick={() => {
                     setDetailNodeId(node.id);
                     setSelectedNodeId(node.id);
                   }}
@@ -1496,7 +1496,7 @@ export function MonitorView({
                     status={isOnline ? "ok" : "bad"}
                     statusTitle={isOnline ? "在线" : "离线"}
                     title={node.name}
-                    onPress={() => {
+                    onClick={() => {
                       setDetailNodeId(node.id);
                       setSelectedNodeId(node.id);
                     }}

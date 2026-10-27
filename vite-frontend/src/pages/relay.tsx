@@ -290,12 +290,12 @@ function LinesView() {
       >
         <ToolbarButton
           active={onlyWithRelays}
-          onPress={() => setOnlyWithRelays((v) => !v)}
+          onClick={() => setOnlyWithRelays((v) => !v)}
         >
           只看有中转的
         </ToolbarButton>
         {relays.length > 0 && (
-          <ToolbarButton onPress={() => probe([])}>
+          <ToolbarButton onClick={() => probe([])}>
             {probingIds.size > 0 ? "测延迟中…" : "测延迟"}
           </ToolbarButton>
         )}
@@ -355,7 +355,7 @@ function LinesView() {
                             key: "add",
                             label: "添加中转",
                             color: "primary",
-                            onPress: () => setEditing(i),
+                            onClick: () => setEditing(i),
                           },
                         ]
                       : undefined
@@ -391,7 +391,7 @@ function LinesView() {
                         ? "warning"
                         : "success"
                   }
-                  onPress={() => setEditing(i)}
+                  onClick={() => setEditing(i)}
                 >
                   <div className="space-y-2">
                     <p className="truncate text-xs text-muted-foreground">
@@ -467,7 +467,7 @@ function LinesView() {
                       : "中转正常"
                 }
                 title={i.name}
-                onPress={() => setEditing(i)}
+                onClick={() => setEditing(i)}
               />
             );
           })}

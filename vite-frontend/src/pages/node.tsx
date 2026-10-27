@@ -1608,7 +1608,7 @@ export default function NodePage({
       {!embedded && (
         <PageHeader
           description="装了 agent 的机器：搭建节点和中转、看状态和监控"
-          primary={{ key: "add", label: "新建服务器", onPress: handleAdd }}
+          primary={{ key: "add", label: "新建服务器", onClick: handleAdd }}
           title="服务器"
         />
       )}
@@ -1630,7 +1630,7 @@ export default function NodePage({
               key: "upgrade",
               label: "升级",
               disabled: !canBatchUpgrade || batchUpgradeLoading,
-              onPress: () => openUpgradeModal("batch"),
+              onClick: () => openUpgradeModal("batch"),
             },
             {
               key: "targets",
@@ -1638,7 +1638,7 @@ export default function NodePage({
               disabled: !displayNodes.some(
                 (n) => selectedIds.has(n.id) && n.isRemote !== 1,
               ),
-              onPress: () =>
+              onClick: () =>
                 setTargetNodes(
                   displayNodes.filter(
                     (n) => selectedIds.has(n.id) && n.isRemote !== 1,
@@ -1649,7 +1649,7 @@ export default function NodePage({
               key: "delete",
               label: "删除",
               danger: true,
-              onPress: () => setBatchDeleteModalOpen(true),
+              onClick: () => setBatchDeleteModalOpen(true),
             },
           ]}
           allSelected={
@@ -1671,7 +1671,7 @@ export default function NodePage({
               key: "batch",
               label: "批量操作",
               disabled: displayNodes.length === 0,
-              onPress: toggleSelectMode,
+              onClick: toggleSelectMode,
             },
           ]}
           placeholder={
@@ -1684,7 +1684,7 @@ export default function NodePage({
           {canUseExpiryFilter && (
             <ToolbarButton
               active={nodeFilterMode !== "all"}
-              onPress={() => setIsFilterModalOpen(true)}
+              onClick={() => setIsFilterModalOpen(true)}
             >
               {nodeFilterMode !== "all" ? "已筛选" : "筛选"}
             </ToolbarButton>
@@ -1708,7 +1708,7 @@ export default function NodePage({
         <ListPageSkeleton />
       ) : nodeList.length === 0 ? (
         <EmptyHint
-          action={{ key: "add", label: "新建服务器", onPress: handleAdd }}
+          action={{ key: "add", label: "新建服务器", onClick: handleAdd }}
           text="还没有服务器。新建后在服务器上运行安装命令，服务器就会连上面板"
         />
       ) : displayNodes.length === 0 ? (
@@ -2378,7 +2378,7 @@ export default function NodePage({
                           getConnectionStatusMeta(node.connectionStatus).text
                         }
                         title={node.name}
-                        onPress={() => setSheetNodeId(node.id)}
+                        onClick={() => setSheetNodeId(node.id)}
                         onSelect={() => toggleSelect(node.id)}
                       />
                     )}
@@ -2466,7 +2466,7 @@ export default function NodePage({
                         kind: "dialog" as const,
                         closeOnSelect: false,
                         color: "danger" as const,
-                        onPress: () => handleDelete(node),
+                        onClick: () => handleDelete(node),
                       },
                     ]
                   : [
@@ -2480,7 +2480,7 @@ export default function NodePage({
                               icon: Activity,
                               hint: "打开",
                               kind: "navigate" as const,
-                              onPress: () => onOpenMonitor(node.id),
+                              onClick: () => onOpenMonitor(node.id),
                             },
                           ]
                         : []),
@@ -2492,7 +2492,7 @@ export default function NodePage({
                         icon: Terminal,
                         hint: "复制",
                         kind: "copy" as const,
-                        onPress: () => openInstallSelector(node),
+                        onClick: () => openInstallSelector(node),
                       },
                       {
                         key: "version",
@@ -2504,7 +2504,7 @@ export default function NodePage({
                         kind: "dialog" as const,
                         closeOnSelect: false,
                         disabled: !online,
-                        onPress: () => openUpgradeModal("single", node.id),
+                        onClick: () => openUpgradeModal("single", node.id),
                       },
                       {
                         key: "tune",
@@ -2516,7 +2516,7 @@ export default function NodePage({
                         kind: "dialog" as const,
                         closeOnSelect: false,
                         disabled: !online,
-                        onPress: () => setTuneNode(node),
+                        onClick: () => setTuneNode(node),
                       },
                       {
                         key: "targets",
@@ -2526,7 +2526,7 @@ export default function NodePage({
                         icon: Crosshair,
                         kind: "dialog" as const,
                         closeOnSelect: false,
-                        onPress: () => setTargetNodes([node]),
+                        onClick: () => setTargetNodes([node]),
                       },
                       ...(node.expiryTime &&
                       node.renewalCycle &&
@@ -2541,7 +2541,7 @@ export default function NodePage({
                               icon: BellOff,
                               kind: "dialog" as const,
                               closeOnSelect: false,
-                              onPress: () =>
+                              onClick: () =>
                                 handleDismissExpiryReminder(node.id),
                             },
                           ]
@@ -2554,7 +2554,7 @@ export default function NodePage({
                         icon: Pencil,
                         kind: "dialog" as const,
                         closeOnSelect: false,
-                        onPress: () => handleEdit(node),
+                        onClick: () => handleEdit(node),
                       },
                       {
                         key: "delete",
@@ -2565,7 +2565,7 @@ export default function NodePage({
                         kind: "dialog" as const,
                         closeOnSelect: false,
                         color: "danger" as const,
-                        onPress: () => handleDelete(node),
+                        onClick: () => handleDelete(node),
                       },
                     ]
             }

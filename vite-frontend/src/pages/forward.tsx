@@ -2741,7 +2741,7 @@ export default function ForwardPage({
     setSelectedIds(new Set());
   };
 
-  const addAction = { key: "add", label: "新建规则", onPress: handleAdd };
+  const addAction = { key: "add", label: "新建规则", onClick: handleAdd };
   const filterCount = activeFilterCount - (searchParams.name.trim() ? 1 : 0);
 
   const getForwardFlowText = (forward: Forward): string => {
@@ -2840,7 +2840,7 @@ export default function ForwardPage({
             status={getForwardRowStatus(forward.status)}
             statusTitle={statusDisplay.text}
             title={forward.name}
-            onPress={() => setSheetForwardId(forward.id)}
+            onClick={() => setSheetForwardId(forward.id)}
             onSelect={() => toggleSelect(forward.id)}
           />
         )}
@@ -2869,32 +2869,32 @@ export default function ForwardPage({
               key: "enable",
               label: "启用",
               disabled: batchLoading,
-              onPress: () => handleBatchToggleService(true),
+              onClick: () => handleBatchToggleService(true),
             },
             {
               key: "disable",
               label: "停用",
               disabled: batchLoading,
-              onPress: () => handleBatchToggleService(false),
+              onClick: () => handleBatchToggleService(false),
             },
             {
               key: "redeploy",
               label: "重新下发",
               disabled: batchLoading,
-              onPress: handleBatchRedeploy,
+              onClick: handleBatchRedeploy,
             },
             {
               key: "tunnel",
               label: "换隧道",
               disabled: batchLoading,
-              onPress: () => setBatchChangeTunnelModalOpen(true),
+              onClick: () => setBatchChangeTunnelModalOpen(true),
             },
             {
               key: "delete",
               label: "删除",
               danger: true,
               disabled: batchLoading,
-              onPress: () => setBatchDeleteModalOpen(true),
+              onClick: () => setBatchDeleteModalOpen(true),
             },
           ]}
           allSelected={isAllSelected}
@@ -2905,18 +2905,18 @@ export default function ForwardPage({
       ) : (
         <PageToolbar
           more={[
-            { key: "import", label: "导入", onPress: handleImport },
+            { key: "import", label: "导入", onClick: handleImport },
             {
               key: "export",
               label: "导出",
               disabled: exportLoading,
-              onPress: handleExport,
+              onClick: handleExport,
             },
             {
               key: "batch",
               label: "批量操作",
               disabled: sortedForwards.length === 0,
-              onPress: () => setSelectMode(true),
+              onClick: () => setSelectMode(true),
             },
           ]}
           placeholder="搜索规则名称"
@@ -2960,7 +2960,7 @@ export default function ForwardPage({
           action={{
             key: "reset",
             label: "清空条件",
-            onPress: resetSearchParams,
+            onClick: resetSearchParams,
           }}
           text="没有匹配的规则"
         />
@@ -3126,24 +3126,24 @@ export default function ForwardPage({
                       key: "edit",
                       label: "编辑",
                       color: "primary" as const,
-                      onPress: () => handleEdit(forward),
+                      onClick: () => handleEdit(forward),
                     },
                     {
                       key: "toggle",
                       label: forward.serviceRunning ? "暂停" : "启用",
                       disabled: forward.status !== 1 && forward.status !== 0,
-                      onPress: () => handleServiceToggle(forward),
+                      onClick: () => handleServiceToggle(forward),
                     },
                     {
                       key: "diagnose",
                       label: "诊断",
-                      onPress: () => handleDiagnose(forward),
+                      onClick: () => handleDiagnose(forward),
                     },
                     {
                       key: "copy-in",
                       label: "复制入口",
                       disabled: !formatInAddress(forward.inIp, forward.inPort),
-                      onPress: () =>
+                      onClick: () =>
                         showAddressModal(
                           forward.inIp,
                           forward.inPort,
@@ -3154,25 +3154,25 @@ export default function ForwardPage({
                       key: "copy-target",
                       label: "复制目标",
                       disabled: !forward.remoteAddr,
-                      onPress: () =>
+                      onClick: () =>
                         showAddressModal(forward.remoteAddr, null, "目标地址"),
                     },
                     {
                       key: "copy-name",
                       label: "复制名称",
-                      onPress: () => copyToClipboard(forward.name, "规则名"),
+                      onClick: () => copyToClipboard(forward.name, "规则名"),
                     },
                     {
                       key: "reset-flow",
                       label: "流量清零",
                       disabled: directFlow <= 0,
-                      onPress: () => handleResetFlow(forward),
+                      onClick: () => handleResetFlow(forward),
                     },
                     {
                       key: "delete",
                       label: "删除",
                       color: "danger" as const,
-                      onPress: () => handleDelete(forward),
+                      onClick: () => handleDelete(forward),
                     },
                   ]
             }

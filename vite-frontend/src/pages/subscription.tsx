@@ -1398,13 +1398,13 @@ export default function SubscriptionPage() {
           key: "copy",
           label: "复制链接",
           color: "primary",
-          onPress: () => copyText(url(s), "订阅链接已复制"),
+          onClick: () => copyText(url(s), "订阅链接已复制"),
         },
         {
           key: "import",
           label: "导入客户端",
           color: "secondary",
-          onPress: () => setDetail(s),
+          onClick: () => setDetail(s),
         },
       ]}
       badges={s.options.rules && <Badge variant="default">分流</Badge>}
@@ -1438,7 +1438,7 @@ export default function SubscriptionPage() {
       }
       title={s.name}
       tone={!s.enabled ? "default" : s.active ? "success" : "danger"}
-      onPress={() => setDetail(s)}
+      onClick={() => setDetail(s)}
     >
       <Usage s={s} />
     </InfoCard>
@@ -1510,19 +1510,19 @@ export default function SubscriptionPage() {
             ? {
                 key: "create",
                 label: "新建订阅",
-                onPress: () => setDraft(draftFrom(undefined, sources, groups)),
+                onClick: () => setDraft(draftFrom(undefined, sources, groups)),
               }
             : {
                 key: "create-group",
                 label: "新建节点组",
-                onPress: () => setGroupDraft(groupDraftFrom()),
+                onClick: () => setGroupDraft(groupDraftFrom()),
               }
         }
         secondary={{
           key: "templates",
           label: templates.length > 0 ? `模板 ${templates.length}` : "模板",
           icon: <LayoutTemplate className="h-3.5 w-3.5" />,
-          onPress: () => setTemplatesOpen(true),
+          onClick: () => setTemplatesOpen(true),
         }}
         title="订阅"
       />
@@ -1570,7 +1570,7 @@ export default function SubscriptionPage() {
               : {
                   key: "add",
                   label: "新建订阅",
-                  onPress: () =>
+                  onClick: () =>
                     setDraft(draftFrom(undefined, sources, groups)),
                 }
           }

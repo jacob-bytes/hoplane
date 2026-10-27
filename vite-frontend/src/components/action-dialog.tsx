@@ -29,7 +29,7 @@ export interface SheetAction {
   closeOnSelect?: boolean;
   color?: "primary" | "secondary" | "success" | "warning" | "danger";
   disabled?: boolean;
-  onPress: () => void;
+  onClick: () => void;
 }
 
 /**
@@ -132,7 +132,7 @@ export function ActionsDialog({
                 type="button"
                 onClick={() => {
                   if (action.closeOnSelect !== false) onClose();
-                  action.onPress();
+                  action.onClick();
                 }}
               >
                 {action.icon && (

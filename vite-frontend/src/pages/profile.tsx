@@ -93,7 +93,7 @@ interface SecurityItem {
   action: string;
   icon: LucideIcon;
   tone: Tone;
-  onPress: () => void;
+  onClick: () => void;
 }
 
 interface ShortcutItem {
@@ -102,7 +102,7 @@ interface ShortcutItem {
   description: string;
   icon: LucideIcon;
   tone: Tone;
-  onPress: () => void;
+  onClick: () => void;
 }
 
 function RoleChip({ isAdmin }: { isAdmin: boolean }) {
@@ -125,7 +125,7 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
           key={item.key}
           className="flex w-full items-center gap-3 px-4 py-3 text-left transition-colors active:bg-muted"
           type="button"
-          onClick={item.onPress}
+          onClick={item.onClick}
         >
           <IconTile icon={item.icon} tone={item.tone} />
           <span className="min-w-0 flex-1 truncate text-base">
@@ -175,7 +175,7 @@ function SecurityPanel({ items }: { items: SecurityItem[] }) {
               className="min-w-16"
               size="sm"
               variant="outline"
-              onClick={item.onPress}
+              onClick={item.onClick}
             >
               {item.action}
             </Button>
@@ -294,7 +294,7 @@ export default function ProfilePage() {
       description: "用户、分组和限速",
       icon: Users,
       tone: "primary",
-      onPress: go("/user"),
+      onClick: go("/user"),
     },
     {
       key: "/panel-sharing",
@@ -302,7 +302,7 @@ export default function ProfilePage() {
       description: "与其他面板联邦共享",
       icon: Share2,
       tone: "success",
-      onPress: go("/panel-sharing"),
+      onClick: go("/panel-sharing"),
     },
     {
       key: "/relay",
@@ -310,7 +310,7 @@ export default function ProfilePage() {
       description: "转发入口与隧道",
       icon: Link2,
       tone: "primary",
-      onPress: go("/relay"),
+      onClick: go("/relay"),
     },
     {
       key: "/config",
@@ -318,7 +318,7 @@ export default function ProfilePage() {
       description: "站点、登录与备份",
       icon: Settings,
       tone: "warning",
-      onPress: go("/config"),
+      onClick: go("/config"),
     },
   ];
 
@@ -404,7 +404,7 @@ export default function ProfilePage() {
       action: "修改",
       icon: KeyRound,
       tone: "primary",
-      onPress: onOpen,
+      onClick: onOpen,
     },
     ...(passkeyEnabled && !webView
       ? [
@@ -417,7 +417,7 @@ export default function ProfilePage() {
             action: "管理",
             icon: Fingerprint,
             tone: "success" as Tone,
-            onPress: () => setOpenLogin("passkey"),
+            onClick: () => setOpenLogin("passkey"),
           },
         ]
       : []),
@@ -434,7 +434,7 @@ export default function ProfilePage() {
             action: github.bound ? "解绑" : "绑定",
             icon: Github,
             tone: "secondary" as Tone,
-            onPress: () => setOpenLogin("github"),
+            onClick: () => setOpenLogin("github"),
           },
         ]
       : []),
@@ -476,7 +476,7 @@ export default function ProfilePage() {
                     key={item.key}
                     className="flex flex-col items-center gap-2 rounded-xl bg-raised px-2 py-4 shadow-sm transition-transform active:scale-[0.97]"
                     type="button"
-                    onClick={item.onPress}
+                    onClick={item.onClick}
                   >
                     <IconTile icon={item.icon} size="lg" tone={item.tone} />
                     <span className="text-sm">{item.label}</span>

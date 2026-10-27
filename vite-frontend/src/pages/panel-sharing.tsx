@@ -485,12 +485,12 @@ export default function PanelSharingPage() {
             ? {
                 key: "create",
                 label: "新建分享",
-                onPress: () => setCreateShareOpen(true),
+                onClick: () => setCreateShareOpen(true),
               }
             : {
                 key: "import",
                 label: "导入远程服务器",
-                onPress: () => setImportNodeOpen(true),
+                onClick: () => setImportNodeOpen(true),
               }
         }
         title="面板共享"
@@ -539,7 +539,7 @@ export default function PanelSharingPage() {
                   status={status}
                   statusTitle={statusTitle}
                   title={share.name}
-                  onPress={() => setSheetShareId(share.id)}
+                  onClick={() => setSheetShareId(share.id)}
                 />
               );
             })}
@@ -566,7 +566,7 @@ export default function PanelSharingPage() {
                   node.syncError ? formatSyncError(node.syncError) : "同步正常"
                 }
                 title={node.nodeName}
-                onPress={() => setSheetRemoteId(node.nodeId)}
+                onClick={() => setSheetRemoteId(node.nodeId)}
               />
             ))}
           </ListGroup>
@@ -580,23 +580,23 @@ export default function PanelSharingPage() {
                   key: "copy",
                   label: "复制 Token",
                   color: "primary",
-                  onPress: () => copyToken(sheetShare.token),
+                  onClick: () => copyToken(sheetShare.token),
                 },
                 {
                   key: "edit",
                   label: "编辑",
-                  onPress: () => openEditShare(sheetShare),
+                  onClick: () => openEditShare(sheetShare),
                 },
                 {
                   key: "reset",
                   label: "重置流量",
-                  onPress: () => handleResetShareFlow(sheetShare.id),
+                  onClick: () => handleResetShareFlow(sheetShare.id),
                 },
                 {
                   key: "delete",
                   label: "删除",
                   color: "danger",
-                  onPress: () => handleDeleteShare(sheetShare.id),
+                  onClick: () => handleDeleteShare(sheetShare.id),
                 },
               ]
             : []
@@ -668,7 +668,7 @@ export default function PanelSharingPage() {
                 {
                   key: "copy",
                   label: "复制地址",
-                  onPress: () =>
+                  onClick: () =>
                     void copyWithToast(sheetRemote.remoteUrl, "地址已复制"),
                 },
               ]

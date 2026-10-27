@@ -40,12 +40,12 @@ export function TargetButton({
   value,
   targets,
   missing,
-  onPress,
+  onClick,
 }: {
   value: TargetKey;
   targets: InboundApiItem[];
   missing?: boolean;
-  onPress: () => void;
+  onClick: () => void;
 }) {
   const t = targets.find((i) => String(i.id) === value);
   const title =
@@ -63,7 +63,7 @@ export function TargetButton({
         missing ? "border-destructive/50" : "border-hairline bg-raised"
       }`}
       type="button"
-      onClick={onPress}
+      onClick={onClick}
     >
       <TargetIcon k={value} />
       <span className="min-w-0 flex-1">

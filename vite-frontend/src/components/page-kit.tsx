@@ -32,7 +32,7 @@ import {
 export interface PageAction {
   key: string;
   label: string;
-  onPress: () => void;
+  onClick: () => void;
   disabled?: boolean;
   danger?: boolean;
   icon?: React.ReactNode;
@@ -70,7 +70,7 @@ export function PageHeader({
               disabled={secondary.disabled}
               size="sm"
               variant="outline"
-              onClick={secondary.onPress}
+              onClick={secondary.onClick}
             >
               {secondary.icon}
               {secondary.label}
@@ -80,7 +80,7 @@ export function PageHeader({
             <Button
               disabled={primary.disabled}
               size="sm"
-              onClick={primary.onPress}
+              onClick={primary.onClick}
             >
               {primary.label}
             </Button>
@@ -224,7 +224,7 @@ export function PageToolbar({
                   key={a.key}
                   className={a.danger ? "text-destructive" : undefined}
                   disabled={a.disabled}
-                  onSelect={a.onPress}
+                  onSelect={a.onClick}
                 >
                   {a.label}
                 </DropdownMenuItem>
@@ -237,7 +237,7 @@ export function PageToolbar({
             className="shrink-0"
             disabled={primary.disabled}
             size="sm"
-            onClick={primary.onPress}
+            onClick={primary.onClick}
           >
             {primary.label}
           </Button>
@@ -251,11 +251,11 @@ export function PageToolbar({
 export function ToolbarButton({
   active,
   children,
-  onPress,
+  onClick,
 }: {
   active?: boolean;
   children: React.ReactNode;
-  onPress: () => void;
+  onClick: () => void;
 }) {
   return (
     <button
@@ -265,7 +265,7 @@ export function ToolbarButton({
           : "border-hairline bg-raised text-muted-foreground hover:bg-surface"
       }`}
       type="button"
-      onClick={onPress}
+      onClick={onClick}
     >
       {children}
     </button>
@@ -299,7 +299,7 @@ export function SelectionBar({
             disabled={a.disabled || count === 0}
             size="sm"
             variant={a.danger ? "destructive" : "outline"}
-            onClick={a.onPress}
+            onClick={a.onClick}
           >
             {a.label}
           </Button>
@@ -380,7 +380,7 @@ export function ListRow({
   selectMode,
   selected,
   onSelect,
-  onPress,
+  onClick,
 }: {
   status?: RowStatus;
   statusTitle?: string;
@@ -400,9 +400,9 @@ export function ListRow({
   selectMode?: boolean;
   selected?: boolean;
   onSelect?: () => void;
-  onPress: () => void;
+  onClick: () => void;
 }) {
-  const activate = (selectMode ? onSelect : onPress) ?? (() => {});
+  const activate = (selectMode ? onSelect : onClick) ?? (() => {});
   const label =
     typeof title === "string" || typeof title === "number"
       ? String(title)
@@ -613,7 +613,7 @@ export function EmptyHint({
         <EmptyDescription className="text-balance">{text}</EmptyDescription>
       </EmptyHeader>
       {action && (
-        <Button size="sm" variant="outline" onClick={action.onPress}>
+        <Button size="sm" variant="outline" onClick={action.onClick}>
           {action.label}
         </Button>
       )}

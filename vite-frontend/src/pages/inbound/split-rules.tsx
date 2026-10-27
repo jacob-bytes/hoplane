@@ -228,7 +228,7 @@ export function SplitRulesEditor({
                     missing={missing}
                     targets={targets}
                     value={target}
-                    onPress={() => onChooseTarget(i)}
+                    onClick={() => onChooseTarget(i)}
                   />
                   {missing && (
                     <p className="text-xs text-destructive">

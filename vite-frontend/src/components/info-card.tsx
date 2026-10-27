@@ -38,7 +38,7 @@ export interface InfoCardAction {
     | "default";
   disabled?: boolean;
   loading?: boolean;
-  onPress: () => void;
+  onClick: () => void;
 }
 
 export function InfoCard({
@@ -53,7 +53,7 @@ export function InfoCard({
   selectMode,
   selected,
   onSelect,
-  onPress,
+  onClick,
 }: {
   title: React.ReactNode;
   status: string;
@@ -68,7 +68,7 @@ export function InfoCard({
   selectMode?: boolean;
   selected?: boolean;
   onSelect?: () => void;
-  onPress?: () => void;
+  onClick?: () => void;
 }) {
   const [pill, dot] = PILL[tone];
   const stop = (e: React.SyntheticEvent) => e.stopPropagation();
@@ -76,8 +76,8 @@ export function InfoCard({
 
   return (
     <Card
-      className={`group relative h-full flex flex-col overflow-visible ${onPress ? "cursor-pointer" : ""} ${selected ? "ring-2 ring-primary" : ""}`}
-      onClick={selectMode ? onSelect : onPress}
+      className={`group relative h-full flex flex-col overflow-visible ${onClick ? "cursor-pointer" : ""} ${selected ? "ring-2 ring-primary" : ""}`}
+      onClick={selectMode ? onSelect : onClick}
     >
       <CardHeader className="pb-3 md:pb-3">
         <div className="flex w-full items-start justify-between gap-3">
@@ -151,7 +151,7 @@ export function InfoCard({
                 disabled={a.disabled || a.loading}
                 size="sm"
                 variant={buttonVariant(a.color ?? "default")}
-                onClick={a.onPress}
+                onClick={a.onClick}
               >
                 {a.label}
               </Button>

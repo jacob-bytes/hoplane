@@ -1180,16 +1180,16 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
       {!embedded && (
         <PageHeader
           description="面板账号，分配隧道权限、流量和到期时间"
-          primary={{ key: "add", label: "新建用户", onPress: handleAdd }}
+          primary={{ key: "add", label: "新建用户", onClick: handleAdd }}
           title="用户"
         />
       )}
       <PageToolbar
-        more={[{ key: "refresh", label: "刷新列表", onPress: handleSearch }]}
+        more={[{ key: "refresh", label: "刷新列表", onClick: handleSearch }]}
         placeholder="搜索用户名"
         primary={
           embedded
-            ? { key: "add", label: "新建用户", onPress: handleAdd }
+            ? { key: "add", label: "新建用户", onClick: handleAdd }
             : undefined
         }
         search={searchKeyword}
@@ -1203,7 +1203,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           <EmptyHint text="没有匹配的用户" />
         ) : (
           <EmptyHint
-            action={{ key: "add", label: "新建用户", onPress: handleAdd }}
+            action={{ key: "add", label: "新建用户", onClick: handleAdd }}
             text="还没有用户"
           />
         )
@@ -1306,7 +1306,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   status={state.status}
                   statusTitle={state.text}
                   title={user.name || user.user}
-                  onPress={() => setSheetUserId(user.id)}
+                  onClick={() => setSheetUserId(user.id)}
                 />
               );
             })}
@@ -1377,23 +1377,23 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       key: "edit",
                       label: "编辑",
                       color: "primary" as const,
-                      onPress: () => void handleEdit(user),
+                      onClick: () => void handleEdit(user),
                     },
                     {
                       key: "perm",
                       label: "权限",
-                      onPress: () => handleManageTunnels(user),
+                      onClick: () => handleManageTunnels(user),
                     },
                     {
                       key: "reset",
                       label: "重置流量",
-                      onPress: () => handleResetFlow(user),
+                      onClick: () => handleResetFlow(user),
                     },
                     {
                       key: "delete",
                       label: "删除",
                       color: "danger" as const,
-                      onPress: () => handleDelete(user),
+                      onClick: () => handleDelete(user),
                     },
                   ]
                 : []

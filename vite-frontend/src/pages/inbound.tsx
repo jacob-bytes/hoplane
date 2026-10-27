@@ -799,18 +799,18 @@ export default function InboundPage() {
               key: "share",
               label: "分享",
               color: "primary",
-              onPress: () => setSharing(item),
+              onClick: () => setSharing(item),
             },
             {
               key: "relay",
               label: "中转",
               color: "secondary",
-              onPress: () => setRelaying(item),
+              onClick: () => setRelaying(item),
             },
             {
               key: "more",
               label: "更多",
-              onPress: () => setSheetFor(item.id),
+              onClick: () => setSheetFor(item.id),
             },
           ]}
           badges={badges}
@@ -859,7 +859,7 @@ export default function InboundPage() {
           }
           title={item.name}
           tone={tone}
-          onPress={() => setSheetFor(item.id)}
+          onClick={() => setSheetFor(item.id)}
           onSelect={() => toggleSelect(item.id)}
         >
           {latencyTiles ? latency : null}
@@ -1023,18 +1023,18 @@ export default function InboundPage() {
                   key: "probe",
                   label: probing ? "检测中…" : "检测节点连通性",
                   disabled: probing || inbounds.length === 0,
-                  onPress: runProbe,
+                  onClick: runProbe,
                 },
                 {
                   key: "import",
                   label: "导入节点",
-                  onPress: () => setImportOpen(true),
+                  onClick: () => setImportOpen(true),
                 },
                 {
                   key: "batch",
                   label: "批量操作",
                   disabled: inbounds.length === 0,
-                  onPress: () => setSelectMode(true),
+                  onClick: () => setSelectMode(true),
                 },
               ]}
               placeholder="搜索名称、服务器、协议、端口"
@@ -1042,7 +1042,7 @@ export default function InboundPage() {
                 key: "create",
                 label: "新建入站",
                 disabled: kernels.length === 0,
-                onPress: openCreate,
+                onClick: openCreate,
               }}
               search={searchKeyword}
               view={{ value: viewMode, onChange: setViewMode }}
@@ -1194,29 +1194,29 @@ export default function InboundPage() {
                   key: "share",
                   label: "分享",
                   color: "primary" as const,
-                  onPress: () => setSharing(sheetItem),
+                  onClick: () => setSharing(sheetItem),
                 },
                 {
                   key: "relay",
                   label: "中转",
                   color: "secondary" as const,
-                  onPress: () => setRelaying(sheetItem),
+                  onClick: () => setRelaying(sheetItem),
                 },
                 {
                   key: "details",
                   label: "参数",
-                  onPress: () => setDetails(sheetItem),
+                  onClick: () => setDetails(sheetItem),
                 },
                 {
                   key: "edit",
                   label: "编辑",
-                  onPress: () => setExternalEdit(sheetItem),
+                  onClick: () => setExternalEdit(sheetItem),
                 },
                 {
                   key: "delete",
                   label: "删除",
                   color: "danger" as const,
-                  onPress: () =>
+                  onClick: () =>
                     setConfirm({ action: "delete", item: sheetItem }),
                 },
               ]
@@ -1226,13 +1226,13 @@ export default function InboundPage() {
                     key: "share",
                     label: "分享",
                     color: "primary" as const,
-                    onPress: () => setSharing(sheetItem),
+                    onClick: () => setSharing(sheetItem),
                   },
                   {
                     key: "relay",
                     label: "中转",
                     color: "secondary" as const,
-                    onPress: () => setRelaying(sheetItem),
+                    onClick: () => setRelaying(sheetItem),
                   },
                   ...(sheetItem.kernelType === "snell"
                     ? []
@@ -1241,36 +1241,36 @@ export default function InboundPage() {
                           key: "split",
                           label: "出站",
                           color: "success" as const,
-                          onPress: () => setSplitting(sheetItem),
+                          onClick: () => setSplitting(sheetItem),
                         },
                       ]),
                   {
                     key: "details",
                     label: "参数",
-                    onPress: () => setDetails(sheetItem),
+                    onClick: () => setDetails(sheetItem),
                   },
                   {
                     key: "edit",
                     label: "编辑",
-                    onPress: () => openEdit(sheetItem),
+                    onClick: () => openEdit(sheetItem),
                   },
                   {
                     key: "reset",
                     label: "重置流量",
-                    onPress: () =>
+                    onClick: () =>
                       setConfirm({ action: "reset", item: sheetItem }),
                   },
                   {
                     key: "regenerate",
                     label: "换密钥",
-                    onPress: () =>
+                    onClick: () =>
                       setConfirm({ action: "regenerate", item: sheetItem }),
                   },
                   {
                     key: "delete",
                     label: "删除",
                     color: "danger" as const,
-                    onPress: () =>
+                    onClick: () =>
                       setConfirm({ action: "delete", item: sheetItem }),
                   },
                 ]

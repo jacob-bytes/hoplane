@@ -73,7 +73,7 @@ export default function NodeHubPage() {
             ? {
                 key: "add",
                 label: "新建服务器",
-                onPress: () => setAddNode((n) => n + 1),
+                onClick: () => setAddNode((n) => n + 1),
               }
             : undefined
         }

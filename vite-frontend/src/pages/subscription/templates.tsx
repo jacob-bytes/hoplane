@@ -887,7 +887,7 @@ export function TemplatesModal({
                       ].join(" · ")}
                       status={t.lastError ? "warn" : undefined}
                       title={t.name}
-                      onPress={() =>
+                      onClick={() =>
                         setEditing({
                           draft: {
                             id: t.id,

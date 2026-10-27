@@ -354,14 +354,14 @@ export function KernelPanel({
                       label: "停止",
                       description: "停止后该内核承载的入站会断开",
                       icon: Square,
-                      onPress: () => doControl(sheetKernel, "stop"),
+                      onClick: () => doControl(sheetKernel, "stop"),
                     }
                   : {
                       key: "start",
                       label: "启动",
                       description: "恢复该内核承载的入站",
                       icon: Play,
-                      onPress: () => doControl(sheetKernel, "start"),
+                      onClick: () => doControl(sheetKernel, "start"),
                     },
                 {
                   key: "restart",
@@ -369,14 +369,14 @@ export function KernelPanel({
                   description: "断开后重新拉起，通常几秒",
                   disabled: !sheetKernel.enabled,
                   icon: RotateCw,
-                  onPress: () => doControl(sheetKernel, "restart"),
+                  onClick: () => doControl(sheetKernel, "restart"),
                 },
                 {
                   key: "logs",
                   label: "日志",
                   description: "查看最近的运行输出",
                   icon: ScrollText,
-                  onPress: () => openLogs(sheetKernel),
+                  onClick: () => openLogs(sheetKernel),
                 },
                 // realm's version follows the panel.
                 ...(caps?.kernels.find((k) => k.type === sheetKernel.kernelType)
@@ -388,7 +388,7 @@ export function KernelPanel({
                         label: "换版本",
                         description: "安装另一个版本，会短暂重启",
                         icon: RefreshCcw,
-                        onPress: () =>
+                        onClick: () =>
                           openInstall(
                             sheetKernel.nodeId,
                             sheetKernel.kernelType,
@@ -401,7 +401,7 @@ export function KernelPanel({
                   description: "从这台服务器移除该内核",
                   icon: Trash2,
                   color: "danger" as const,
-                  onPress: () => {
+                  onClick: () => {
                     setRemoveFailed(false);
                     setRemoveTarget(sheetKernel);
                   },

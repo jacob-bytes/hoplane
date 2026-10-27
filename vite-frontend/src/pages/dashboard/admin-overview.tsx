@@ -123,7 +123,7 @@ function Metric({
   foot,
   footTone,
   footRight,
-  onPress,
+  onClick,
 }: {
   label: string;
   icon: typeof Server;
@@ -133,7 +133,7 @@ function Metric({
   foot: string;
   footTone?: "danger" | "warning" | "success";
   footRight?: string;
-  onPress: () => void;
+  onClick: () => void;
 }) {
   const pct = total ? Math.round((value / total) * 100) : 0;
 
@@ -141,7 +141,7 @@ function Metric({
     <button
       className="rounded-xl border border-hairline bg-raised p-4 text-left transition-colors duration-150 hover:border-hairline-strong"
       type="button"
-      onClick={onPress}
+      onClick={onClick}
     >
       <div className="flex items-center justify-between gap-2">
         <span className="truncate text-[12px] text-muted-foreground">
@@ -509,7 +509,7 @@ export function AdminOverview() {
           label="服务器在线"
           total={nodes.length}
           value={online}
-          onPress={() => navigate("/node")}
+          onClick={() => navigate("/node")}
         />
         <Metric
           foot={
@@ -539,7 +539,7 @@ export function AdminOverview() {
           label="节点运行"
           total={enabledInbounds.length}
           value={runningInbounds.length}
-          onPress={() => navigate("/inbound")}
+          onClick={() => navigate("/inbound")}
         />
         <Metric
           foot={
@@ -562,7 +562,7 @@ export function AdminOverview() {
           label="转发运行"
           total={forwards.length || undefined}
           value={forwardsUp.length}
-          onPress={() => navigate("/forward")}
+          onClick={() => navigate("/forward")}
         />
         <Metric
           foot={
@@ -584,7 +584,7 @@ export function AdminOverview() {
           label="有效订阅"
           total={subs.length}
           value={activeSubs.length}
-          onPress={() => navigate("/subscription")}
+          onClick={() => navigate("/subscription")}
         />
       </div>
 

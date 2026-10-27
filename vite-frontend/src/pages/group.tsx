@@ -568,7 +568,7 @@ export default function GroupPage({
                 primary={{
                   key: "create",
                   label: "新建隧道分组",
-                  onPress: openCreateTunnelGroup,
+                  onClick: openCreateTunnelGroup,
                 }}
                 search={search}
                 onSearch={setSearch}
@@ -580,7 +580,7 @@ export default function GroupPage({
                       ? {
                           key: "create",
                           label: "新建隧道分组",
-                          onPress: openCreateTunnelGroup,
+                          onClick: openCreateTunnelGroup,
                         }
                       : undefined
                   }
@@ -603,7 +603,7 @@ export default function GroupPage({
                       status={item.status === 1 ? "ok" : "off"}
                       statusTitle={item.status === 1 ? "启用" : "停用"}
                       title={item.name}
-                      onPress={() => setSheet({ kind: "tunnel", id: item.id })}
+                      onClick={() => setSheet({ kind: "tunnel", id: item.id })}
                     />
                   ))}
                 </ListGroup>
@@ -618,7 +618,7 @@ export default function GroupPage({
                 primary={{
                   key: "create",
                   label: "新建用户分组",
-                  onPress: openCreateUserGroup,
+                  onClick: openCreateUserGroup,
                 }}
                 search={search}
                 onSearch={setSearch}
@@ -630,7 +630,7 @@ export default function GroupPage({
                       ? {
                           key: "create",
                           label: "新建用户分组",
-                          onPress: openCreateUserGroup,
+                          onClick: openCreateUserGroup,
                         }
                       : undefined
                   }
@@ -653,7 +653,7 @@ export default function GroupPage({
                       status={item.status === 1 ? "ok" : "off"}
                       statusTitle={item.status === 1 ? "启用" : "停用"}
                       title={item.name}
-                      onPress={() => setSheet({ kind: "user", id: item.id })}
+                      onClick={() => setSheet({ kind: "user", id: item.id })}
                     />
                   ))}
                 </ListGroup>
@@ -733,7 +733,7 @@ export default function GroupPage({
                         .filter(Boolean)
                         .join(" · ")}
                       title={item.userGroupName || `#${item.userGroupId}`}
-                      onPress={() => setSheet({ kind: "perm", id: item.id })}
+                      onClick={() => setSheet({ kind: "perm", id: item.id })}
                     />
                   ))}
                 </ListGroup>
@@ -749,18 +749,18 @@ export default function GroupPage({
                       key: "assign",
                       label: "分配隧道",
                       color: "primary",
-                      onPress: () => openAssignTunnels(sheetTunnelGroup),
+                      onClick: () => openAssignTunnels(sheetTunnelGroup),
                     },
                     {
                       key: "edit",
                       label: "编辑",
-                      onPress: () => openEditTunnelGroup(sheetTunnelGroup),
+                      onClick: () => openEditTunnelGroup(sheetTunnelGroup),
                     },
                     {
                       key: "delete",
                       label: "删除",
                       color: "danger",
-                      onPress: () =>
+                      onClick: () =>
                         handleDeleteTunnelGroup(sheetTunnelGroup.id),
                     },
                   ]
@@ -770,18 +770,18 @@ export default function GroupPage({
                         key: "assign",
                         label: "分配用户",
                         color: "primary",
-                        onPress: () => openAssignUsers(sheetUserGroup),
+                        onClick: () => openAssignUsers(sheetUserGroup),
                       },
                       {
                         key: "edit",
                         label: "编辑",
-                        onPress: () => openEditUserGroup(sheetUserGroup),
+                        onClick: () => openEditUserGroup(sheetUserGroup),
                       },
                       {
                         key: "delete",
                         label: "删除",
                         color: "danger",
-                        onPress: () => handleDeleteUserGroup(sheetUserGroup.id),
+                        onClick: () => handleDeleteUserGroup(sheetUserGroup.id),
                       },
                     ]
                   : sheetPermission
@@ -790,7 +790,7 @@ export default function GroupPage({
                           key: "remove",
                           label: "回收",
                           color: "danger",
-                          onPress: () =>
+                          onClick: () =>
                             handleRemovePermission(sheetPermission.id),
                         },
                       ]

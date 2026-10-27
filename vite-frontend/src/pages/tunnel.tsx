@@ -1448,7 +1448,7 @@ export default function TunnelPage({
     ].join(" → ");
   };
   const isSearching = searchKeyword.trim() !== "";
-  const addAction = { key: "add", label: "新建隧道", onPress: handleAdd };
+  const addAction = { key: "add", label: "新建隧道", onClick: handleAdd };
   const sheetTunnel = tunnels.find((t) => t.id === sheetTunnelId) ?? null;
 
   if (loading && !pageCached(PAGE)) {
@@ -1472,13 +1472,13 @@ export default function TunnelPage({
               key: "redeploy",
               label: "下发",
               disabled: batchLoading,
-              onPress: handleBatchRedeploy,
+              onClick: handleBatchRedeploy,
             },
             {
               key: "delete",
               label: "删除",
               danger: true,
-              onPress: handleOpenBatchDeleteModal,
+              onClick: handleOpenBatchDeleteModal,
             },
           ]}
           allSelected={
@@ -1500,7 +1500,7 @@ export default function TunnelPage({
               key: "batch",
               label: "批量操作",
               disabled: sortedTunnels.length === 0,
-              onPress: toggleSelectMode,
+              onClick: toggleSelectMode,
             },
           ]}
           placeholder="搜索隧道名称或 IP"
@@ -1656,7 +1656,7 @@ export default function TunnelPage({
                         status={tunnel.status === 1 ? "ok" : "bad"}
                         statusTitle={tunnel.status === 1 ? "正常" : "不可用"}
                         title={tunnel.name}
-                        onPress={() => setSheetTunnelId(tunnel.id)}
+                        onClick={() => setSheetTunnelId(tunnel.id)}
                         onSelect={() => toggleSelect(tunnel.id)}
                       />
                     )}
@@ -1676,18 +1676,18 @@ export default function TunnelPage({
                   key: "edit",
                   label: "编辑",
                   color: "primary" as const,
-                  onPress: () => handleEdit(sheetTunnel),
+                  onClick: () => handleEdit(sheetTunnel),
                 },
                 {
                   key: "diagnose",
                   label: "诊断",
-                  onPress: () => handleDiagnose(sheetTunnel),
+                  onClick: () => handleDiagnose(sheetTunnel),
                 },
                 {
                   key: "delete",
                   label: "删除",
                   color: "danger" as const,
-                  onPress: () => handleDelete(sheetTunnel),
+                  onClick: () => handleDelete(sheetTunnel),
                 },
               ]
             : []

@@ -239,7 +239,7 @@ export default function LimitPage({
       {!embedded && (
         <PageHeader
           description="分配隧道权限时可选的带宽上限"
-          primary={{ key: "add", label: "新建限速规则", onPress: handleAdd }}
+          primary={{ key: "add", label: "新建限速规则", onClick: handleAdd }}
           title="限速"
         />
       )}
@@ -247,7 +247,7 @@ export default function LimitPage({
         placeholder="搜索规则名称"
         primary={
           embedded
-            ? { key: "add", label: "新建限速规则", onPress: handleAdd }
+            ? { key: "add", label: "新建限速规则", onClick: handleAdd }
             : undefined
         }
         search={searchKeyword}
@@ -256,7 +256,7 @@ export default function LimitPage({
 
       {rules.length === 0 ? (
         <EmptyHint
-          action={{ key: "add", label: "新建限速规则", onPress: handleAdd }}
+          action={{ key: "add", label: "新建限速规则", onClick: handleAdd }}
           text="还没有限速规则"
         />
       ) : filteredRules.length === 0 ? (
@@ -270,7 +270,7 @@ export default function LimitPage({
               status={rule.status === 1 ? "ok" : "bad"}
               statusTitle={rule.status === 1 ? "运行" : "异常"}
               title={rule.name}
-              onPress={() => setSheetRuleId(rule.id)}
+              onClick={() => setSheetRuleId(rule.id)}
             />
           ))}
         </ListGroup>
@@ -284,13 +284,13 @@ export default function LimitPage({
                   key: "edit",
                   label: "编辑",
                   color: "primary" as const,
-                  onPress: () => handleEdit(sheetRule),
+                  onClick: () => handleEdit(sheetRule),
                 },
                 {
                   key: "delete",
                   label: "删除",
                   color: "danger" as const,
-                  onPress: () => handleDelete(sheetRule),
+                  onClick: () => handleDelete(sheetRule),
                 },
               ]
             : []

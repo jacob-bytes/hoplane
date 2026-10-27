@@ -153,7 +153,7 @@ function SplitForm({
             missing={outboundMissing}
             targets={targets}
             value={outboundId || "direct"}
-            onPress={() => setPicking("default")}
+            onClick={() => setPicking("default")}
           />
           <p
             className={`text-xs ${outboundMissing ? "text-destructive" : "text-muted-foreground"}`}

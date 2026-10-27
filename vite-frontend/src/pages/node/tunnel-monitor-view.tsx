@@ -1546,7 +1546,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 status={status}
                 statusTitle={isEnabled ? "启用" : "禁用"}
                 title={tunnel.name}
-                onPress={() => setDetailTunnelId(tunnel.id)}
+                onClick={() => setDetailTunnelId(tunnel.id)}
               />
             );
           })}
