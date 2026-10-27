@@ -8,7 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import {
   LATENCY_TARGETS_KEY,
@@ -129,32 +129,24 @@ export function LatencySettings({
             <div className="grid grid-cols-[1fr_5rem] gap-2 sm:grid-cols-[8rem_1fr_5rem]">
               <Input
                 aria-label="名称"
-                classNames={{ base: "order-1" }}
+                className="order-1 h-8 text-xs"
                 placeholder="名称"
-                size="sm"
                 value={t.name}
-                variant="bordered"
                 onChange={(e) => update(i, { name: e.target.value })}
               />
               <Input
                 aria-label="地址"
-                classNames={{
-                  base: "order-3 col-span-2 min-w-0 sm:order-2 sm:col-span-1",
-                }}
+                className="order-3 col-span-2 h-8 min-w-0 text-xs sm:order-2 sm:col-span-1"
                 placeholder="域名或 IP"
-                size="sm"
                 value={t.host}
-                variant="bordered"
                 onChange={(e) => update(i, { host: e.target.value.trim() })}
               />
               <Input
                 aria-label="端口"
-                classNames={{ base: "order-2 sm:order-3" }}
+                className="order-2 h-8 text-xs sm:order-3"
                 inputMode="numeric"
                 placeholder="端口"
-                size="sm"
                 value={t.port ? String(t.port) : ""}
-                variant="bordered"
                 onChange={(e) =>
                   update(i, {
                     port: Number(e.target.value.replace(/\D/g, "")) || 0,

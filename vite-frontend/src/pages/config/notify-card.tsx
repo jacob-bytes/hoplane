@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { testNotify } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Field, SubHeading } from "@/pages/config/section";
 
@@ -140,12 +140,10 @@ export function NotifySettings({
 
   const input = (key: string, placeholder: string, type = "text") => (
     <Input
-      classNames={{ input: "text-sm", inputWrapper: changedClass(key) }}
+      className={`h-8 text-sm ${changedClass(key)}`}
       placeholder={placeholder}
-      size="sm"
       type={type}
       value={configs[key] ?? ""}
-      variant="bordered"
       onChange={(e) => onChange(key, e.target.value.trim())}
     />
   );
@@ -215,41 +213,39 @@ export function NotifySettings({
       {selected.includes("latency_bad") && (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field help="1–100，默认 20" label="丢包超过">
-            <Input
-              aria-label="丢包阈值"
-              classNames={{
-                input: "text-sm",
-                inputWrapper: changedClass("notify_latency_loss_pct"),
-              }}
-              endContent="%"
-              max={100}
-              min={1}
-              placeholder="20"
-              size="sm"
-              type="number"
-              value={configs.notify_latency_loss_pct ?? ""}
-              variant="bordered"
-              onChange={(e) =>
-                onChange("notify_latency_loss_pct", e.target.value)
-              }
-            />
+            <div className="relative">
+              <Input
+                aria-label="丢包阈值"
+                className={`h-8 pr-8 text-sm ${changedClass("notify_latency_loss_pct")}`}
+                max={100}
+                min={1}
+                placeholder="20"
+                type="number"
+                value={configs.notify_latency_loss_pct ?? ""}
+                onChange={(e) =>
+                  onChange("notify_latency_loss_pct", e.target.value)
+                }
+              />
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                %
+              </span>
+            </div>
           </Field>
           <Field help="留空不按延迟提醒，只看丢包" label="延迟超过（可选）">
-            <Input
-              aria-label="延迟阈值"
-              classNames={{
-                input: "text-sm",
-                inputWrapper: changedClass("notify_latency_ms"),
-              }}
-              endContent="ms"
-              min={0}
-              placeholder="不限"
-              size="sm"
-              type="number"
-              value={configs.notify_latency_ms ?? ""}
-              variant="bordered"
-              onChange={(e) => onChange("notify_latency_ms", e.target.value)}
-            />
+            <div className="relative">
+              <Input
+                aria-label="延迟阈值"
+                className={`h-8 pr-10 text-sm ${changedClass("notify_latency_ms")}`}
+                min={0}
+                placeholder="不限"
+                type="number"
+                value={configs.notify_latency_ms ?? ""}
+                onChange={(e) => onChange("notify_latency_ms", e.target.value)}
+              />
+              <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                ms
+              </span>
+            </div>
           </Field>
         </div>
       )}
@@ -259,22 +255,21 @@ export function NotifySettings({
           help="按面板服务器的时区（安装脚本默认 Asia/Shanghai），0–23 点"
           label="每日汇总发送时间"
         >
-          <Input
-            aria-label="每日汇总发送时间"
-            classNames={{
-              input: "text-sm",
-              inputWrapper: changedClass("notify_daily_hour"),
-            }}
-            endContent="点"
-            max={23}
-            min={0}
-            placeholder="9"
-            size="sm"
-            type="number"
-            value={configs.notify_daily_hour ?? ""}
-            variant="bordered"
-            onChange={(e) => onChange("notify_daily_hour", e.target.value)}
-          />
+          <div className="relative">
+            <Input
+              aria-label="每日汇总发送时间"
+              className={`h-8 pr-8 text-sm ${changedClass("notify_daily_hour")}`}
+              max={23}
+              min={0}
+              placeholder="9"
+              type="number"
+              value={configs.notify_daily_hour ?? ""}
+              onChange={(e) => onChange("notify_daily_hour", e.target.value)}
+            />
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+              点
+            </span>
+          </div>
         </Field>
       )}
 
