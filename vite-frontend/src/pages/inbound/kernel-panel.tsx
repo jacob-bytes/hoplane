@@ -40,7 +40,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 
 const modalBase =
   "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
@@ -463,137 +463,96 @@ export function KernelPanel({
               </ModalHeader>
               <ModalBody>
                 <div className="space-y-3">
-                  <Select
+                  <SelectField
                     label="服务器"
+                    options={installNodeOptions.map((n) => ({
+                      value: String(n.id),
+                      label: n.status === 1 ? n.name : `${n.name}（离线）`,
+                    }))}
                     placeholder="选择服务器"
-                    selectedKeys={
-                      installForm.nodeId ? [installForm.nodeId] : []
+                    value={installForm.nodeId}
+                    onValueChange={(nodeId) =>
+                      setInstallForm((p) => ({ ...p, nodeId }))
                     }
-                    onSelectionChange={(keys) =>
-                      setInstallForm((p) => ({
-                        ...p,
-                        nodeId: String(Array.from(keys)[0] ?? ""),
-                      }))
-                    }
-                  >
-                    {installNodeOptions.map((n) => (
-                      <SelectItem
-                        key={String(n.id)}
-                        textValue={
-                          n.status === 1 ? n.name : `${n.name}（离线）`
-                        }
-                      >
-                        {n.status === 1 ? n.name : `${n.name}（离线）`}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <Select
-                    disabledKeys={(caps?.kernels ?? [])
-                      .filter((k) => !k.implemented)
-                      .map((k) => k.type)}
+                  />
+                  <SelectField
                     label="内核"
-                    selectedKeys={[installForm.kernelType]}
-                    onSelectionChange={(keys) =>
+                    options={(caps?.kernels ?? [])
+                      .filter((k) => !k.relay)
+                      .map((k) => ({
+                        value: k.type,
+                        label: k.implemented ? k.name : `${k.name}（即将支持）`,
+                        disabled: !k.implemented,
+                      }))}
+                    value={installForm.kernelType}
+                    onValueChange={(kernelType) =>
                       setInstallForm((p) => ({
                         ...p,
-                        kernelType: String(Array.from(keys)[0] ?? "xray"),
+                        kernelType,
                         version:
-                          caps?.kernels.find(
-                            (k) => k.type === String(Array.from(keys)[0]),
-                          )?.versions?.[0] ?? "latest",
+                          caps?.kernels.find((k) => k.type === kernelType)
+                            ?.versions?.[0] ?? "latest",
                       }))
                     }
-                  >
-                    {(caps?.kernels ?? [])
-                      .filter((k) => !k.relay)
-                      .map((k) => (
-                        <SelectItem
-                          key={k.type}
-                          textValue={
-                            k.implemented ? k.name : `${k.name}（即将支持）`
-                          }
-                        >
-                          {k.implemented ? k.name : `${k.name}（即将支持）`}
-                        </SelectItem>
-                      ))}
-                  </Select>
+                  />
                   {pinnedVersions.length > 0 ? (
-                    <Select
+                    <SelectField
                       description="官方渠道不提供校验文件，仅开放已核对 SHA256 的版本"
                       label="版本"
-                      selectedKeys={[
+                      options={pinnedVersions.map((v) => ({
+                        value: v,
+                        label: (
+                          <>
+                            {v}
+                            {installForm.kernelType === "snell" &&
+                              v.startsWith("6.") && (
+                                <span className="ml-2 text-xs text-warning">
+                                  测试版 · 只接受 v6 客户端 · 无 armv7
+                                </span>
+                              )}
+                          </>
+                        ),
+                      }))}
+                      value={
                         pinnedVersions.includes(installForm.version)
                           ? installForm.version
-                          : pinnedVersions[0],
-                      ]}
-                      onSelectionChange={(keys) =>
-                        setInstallForm((p) => ({
-                          ...p,
-                          version: String(Array.from(keys)[0] ?? ""),
-                        }))
+                          : pinnedVersions[0]
                       }
-                    >
-                      {pinnedVersions.map((v) => (
-                        <SelectItem key={v} textValue={v}>
-                          {v}
-                          {installForm.kernelType === "snell" &&
-                            v.startsWith("6.") && (
-                              <span className="ml-2 text-xs text-warning">
-                                测试版 · 只接受 v6 客户端 · 无 armv7
-                              </span>
-                            )}
-                        </SelectItem>
-                      ))}
-                    </Select>
+                      onValueChange={(version) =>
+                        setInstallForm((p) => ({ ...p, version }))
+                      }
+                    />
                   ) : (
                     <>
                       {releaseItems.length > 0 && (
-                        <Select
+                        <SelectField
                           description="最新版出问题时可以选旧版本；预发布版不建议使用"
                           label="版本"
-                          selectedKeys={[
+                          options={[
+                            { value: "latest", label: "最新版（latest）" },
+                            ...releaseItems.map((r) => ({
+                              value: r.version,
+                              label: r.prerelease
+                                ? `${r.version}（预发布）`
+                                : r.version,
+                            })),
+                            { value: "custom", label: "手动输入…" },
+                          ]}
+                          value={
                             customVersion
                               ? "custom"
                               : installForm.version === "latest" ||
                                   !installForm.version
                                 ? "latest"
-                                : installForm.version,
-                          ]}
-                          onSelectionChange={(keys) => {
-                            const v = String(Array.from(keys)[0] ?? "latest");
-
+                                : installForm.version
+                          }
+                          onValueChange={(v) => {
                             setCustomVersion(v === "custom");
                             if (v !== "custom") {
                               setInstallForm((p) => ({ ...p, version: v }));
                             }
                           }}
-                        >
-                          {[
-                            <SelectItem
-                              key="latest"
-                              textValue="最新版（latest）"
-                            >
-                              最新版（latest）
-                            </SelectItem>,
-                            ...releaseItems.map((r) => (
-                              <SelectItem
-                                key={r.version}
-                                textValue={
-                                  r.prerelease
-                                    ? `${r.version}（预发布）`
-                                    : r.version
-                                }
-                              >
-                                {r.prerelease
-                                  ? `${r.version}（预发布）`
-                                  : r.version}
-                              </SelectItem>
-                            )),
-                            <SelectItem key="custom" textValue="手动输入…">
-                              手动输入…
-                            </SelectItem>,
-                          ]}
-                        </Select>
+                        />
                       )}
                       {(releaseItems.length === 0 || customVersion) && (
                         <Input

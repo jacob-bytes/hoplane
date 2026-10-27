@@ -54,7 +54,7 @@ import {
 } from "@/components/modal";
 import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Dropdown,
@@ -546,20 +546,22 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
       <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
         <h3 className="text-base font-semibold">服务器指标图表</h3>
         <div className="flex items-center gap-2">
-          <Select
+          <SelectField
+            aria-label="时间范围"
             className="w-28"
-            selectedKeys={[String(rangeMs)]}
-            onSelectionChange={(keys) => {
-              const v = Number(Array.from(keys)[0]);
+            options={[
+              { value: String(15 * 60 * 1000), label: "15分钟" },
+              { value: String(60 * 60 * 1000), label: "1小时" },
+              { value: String(6 * 60 * 60 * 1000), label: "6小时" },
+              { value: String(24 * 60 * 60 * 1000), label: "24小时" },
+            ]}
+            value={String(rangeMs)}
+            onValueChange={(next) => {
+              const v = Number(next);
 
               if (v > 0) onRangeChange(v);
             }}
-          >
-            <SelectItem key={String(15 * 60 * 1000)}>15分钟</SelectItem>
-            <SelectItem key={String(60 * 60 * 1000)}>1小时</SelectItem>
-            <SelectItem key={String(6 * 60 * 60 * 1000)}>6小时</SelectItem>
-            <SelectItem key={String(24 * 60 * 60 * 1000)}>24小时</SelectItem>
-          </Select>
+          />
           <Button
             disabled={loading}
             size="sm"
@@ -1648,25 +1650,21 @@ export function MonitorView({
                 <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
                   <h3 className="text-base font-semibold">服务监控图表</h3>
                   <div className="flex items-center gap-2">
-                    <Select
+                    <SelectField
+                      aria-label="服务监控时间范围"
                       className="w-28"
-                      selectedKeys={[String(serviceMonitorRangeMs)]}
-                      onSelectionChange={(keys) => {
-                        const v = Number(Array.from(keys)[0]);
+                      options={[
+                        { value: String(60 * 60 * 1000), label: "1小时" },
+                        { value: String(6 * 60 * 60 * 1000), label: "6小时" },
+                        { value: String(24 * 60 * 60 * 1000), label: "24小时" },
+                      ]}
+                      value={String(serviceMonitorRangeMs)}
+                      onValueChange={(next) => {
+                        const v = Number(next);
 
                         if (v > 0) setServiceMonitorRangeMs(v);
                       }}
-                    >
-                      <SelectItem key={String(60 * 60 * 1000)}>
-                        1小时
-                      </SelectItem>
-                      <SelectItem key={String(6 * 60 * 60 * 1000)}>
-                        6小时
-                      </SelectItem>
-                      <SelectItem key={String(24 * 60 * 60 * 1000)}>
-                        24小时
-                      </SelectItem>
-                    </Select>
+                    />
                     {resolvedActiveMonitorId != null && (
                       <Button
                         size="sm"
@@ -1924,20 +1922,18 @@ export function MonitorView({
             </div>
             {resultsMonitorId != null ? (
               <div className="flex shrink-0 items-center gap-2">
-                <Select
+                <SelectField
+                  aria-label="结果数量"
                   className="w-28"
-                  selectedKeys={[String(resultsLimit)]}
-                  onSelectionChange={(keys) => {
-                    const v = Number(Array.from(keys)[0]);
-
-                    if (v > 0) setResultsLimit(v);
-                  }}
-                >
-                  <SelectItem key="20">20条</SelectItem>
-                  <SelectItem key="50">50条</SelectItem>
-                  <SelectItem key="100">100条</SelectItem>
-                  <SelectItem key="200">200条</SelectItem>
-                </Select>
+                  options={[
+                    { value: "20", label: "20条" },
+                    { value: "50", label: "50条" },
+                    { value: "100", label: "100条" },
+                    { value: "200", label: "200条" },
+                  ]}
+                  value={String(resultsLimit)}
+                  onValueChange={(next) => setResultsLimit(Number(next))}
+                />
                 <Button
                   size="sm"
                   variant="secondary"
@@ -2018,12 +2014,14 @@ export function MonitorView({
                 setMonitorForm((f) => ({ ...f, name: e.target.value }))
               }
             />
-            <Select
+            <SelectField
               label="类型"
-              selectedKeys={[monitorForm.type]}
-              onSelectionChange={(keys) => {
-                const nextType = Array.from(keys)[0] as "tcp" | "icmp";
-
+              options={[
+                { value: "tcp", label: "TCP" },
+                { value: "icmp", label: "ICMP Ping" },
+              ]}
+              value={monitorForm.type}
+              onValueChange={(nextType) =>
                 setMonitorForm((f) => {
                   let nextNodeId = f.nodeId;
 
@@ -2033,15 +2031,12 @@ export function MonitorView({
 
                   return {
                     ...f,
-                    type: nextType,
+                    type: nextType as "tcp" | "icmp",
                     nodeId: nextNodeId,
                   };
-                });
-              }}
-            >
-              <SelectItem key="tcp">TCP</SelectItem>
-              <SelectItem key="icmp">ICMP Ping</SelectItem>
-            </Select>
+                })
+              }
+            />
             <Input
               label="目标"
               placeholder={
@@ -2108,31 +2103,28 @@ export function MonitorView({
                 }
               />
             </div>
-            <Select
+            <SelectField
               label="执行服务器"
-              selectedKeys={
-                monitorForm.type === "icmp"
-                  ? monitorForm.nodeId
-                    ? [String(monitorForm.nodeId)]
-                    : []
-                  : monitorForm.nodeId
-                    ? [String(monitorForm.nodeId)]
-                    : ["0"]
+              options={[
+                ...(monitorForm.type !== "icmp"
+                  ? [{ value: "0", label: "面板执行" }]
+                  : []),
+                ...onlineNodes.map((node) => ({
+                  value: String(node.id),
+                  label: node.name,
+                })),
+              ]}
+              value={
+                monitorForm.nodeId
+                  ? String(monitorForm.nodeId)
+                  : monitorForm.type === "icmp"
+                    ? ""
+                    : "0"
               }
-              onSelectionChange={(keys) =>
-                setMonitorForm((f) => ({
-                  ...f,
-                  nodeId: Number(Array.from(keys)[0]),
-                }))
+              onValueChange={(next) =>
+                setMonitorForm((f) => ({ ...f, nodeId: Number(next) }))
               }
-            >
-              {monitorForm.type !== "icmp" && (
-                <SelectItem key="0">面板执行</SelectItem>
-              )}
-              {onlineNodes.map((node) => (
-                <SelectItem key={String(node.id)}>{node.name}</SelectItem>
-              ))}
-            </Select>
+            />
             <div className="flex items-center gap-2">
               <Switch
                 checked={monitorForm.enabled}

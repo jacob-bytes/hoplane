@@ -13,7 +13,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem } from "@/components/accordion-field";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { type NodeRenewalCycle } from "@/pages/node/renewal";
 import { NodeForm } from "@/pages/node/types";
 
@@ -98,32 +98,22 @@ export function NodeFormModal({
               title="续费提醒"
             >
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Select
+                <SelectField
                   label="续费周期"
+                  options={[
+                    { value: "month", label: "月付" },
+                    { value: "quarter", label: "季付" },
+                    { value: "year", label: "年付" },
+                  ]}
                   placeholder="选择续费周期"
-                  selectedKeys={form.renewalCycle ? [form.renewalCycle] : []}
-                  variant="bordered"
-                  onSelectionChange={(keys) => {
-                    const selected = Array.from(keys)[0] as
-                      | NodeRenewalCycle
-                      | undefined;
-
+                  value={form.renewalCycle}
+                  onValueChange={(selected) =>
                     setForm((prev) => ({
                       ...prev,
-                      renewalCycle: selected || "",
-                    }));
-                  }}
-                >
-                  <SelectItem key="month" textValue="month">
-                    月付
-                  </SelectItem>
-                  <SelectItem key="quarter" textValue="quarter">
-                    季付
-                  </SelectItem>
-                  <SelectItem key="year" textValue="year">
-                    年付
-                  </SelectItem>
-                </Select>
+                      renewalCycle: selected as NodeRenewalCycle,
+                    }))
+                  }
+                />
 
                 <Input
                   errorMessage={errors.expiryTime}
@@ -214,28 +204,20 @@ export function NodeFormModal({
                   }
                 />
 
-                <Select
+                <SelectField
                   label="转发模式"
-                  selectedKeys={[form.forwardMode]}
-                  variant="bordered"
-                  onSelectionChange={(keys) => {
-                    const selected = Array.from(keys)[0] as
-                      | NodeForm["forwardMode"]
-                      | undefined;
-
+                  options={[
+                    { value: "agent", label: "agent 模式" },
+                    { value: "nftables", label: "nftables 模式" },
+                  ]}
+                  value={form.forwardMode}
+                  onValueChange={(selected) =>
                     setForm((prev) => ({
                       ...prev,
-                      forwardMode: selected || "agent",
-                    }));
-                  }}
-                >
-                  <SelectItem key="agent" textValue="agent">
-                    agent 模式
-                  </SelectItem>
-                  <SelectItem key="nftables" textValue="nftables">
-                    nftables 模式
-                  </SelectItem>
-                </Select>
+                      forwardMode: selected as NodeForm["forwardMode"],
+                    }))
+                  }
+                />
               </div>
 
               {form.forwardMode === "nftables" && (
@@ -320,29 +302,22 @@ export function NodeFormModal({
                           }
                         />
 
-                        <Select
+                        <SelectField
                           label="SSH 认证方式"
-                          selectedKeys={[form.sshAuthType]}
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selected = Array.from(keys)[0] as
-                              | "password"
-                              | "private_key"
-                              | undefined;
-
+                          options={[
+                            { value: "private_key", label: "私钥" },
+                            { value: "password", label: "密码" },
+                          ]}
+                          value={form.sshAuthType}
+                          onValueChange={(selected) =>
                             setForm((prev) => ({
                               ...prev,
-                              sshAuthType: selected || "private_key",
-                            }));
-                          }}
-                        >
-                          <SelectItem key="private_key" textValue="private_key">
-                            私钥
-                          </SelectItem>
-                          <SelectItem key="password" textValue="password">
-                            密码
-                          </SelectItem>
-                        </Select>
+                              sshAuthType: selected as
+                                | "password"
+                                | "private_key",
+                            }))
+                          }
+                        />
                       </div>
 
                       {form.sshAuthType === "password" ? (
@@ -393,33 +368,24 @@ export function NodeFormModal({
                         }
                       />
 
-                      <Select
+                      <SelectField
                         label="sudo 提权方式"
-                        selectedKeys={[form.sshSudoMode]}
-                        variant="bordered"
-                        onSelectionChange={(keys) => {
-                          const selected = Array.from(keys)[0] as
-                            | "none"
-                            | "sudo"
-                            | "sudo_su"
-                            | undefined;
-
+                        options={[
+                          { value: "none", label: "无需提权" },
+                          { value: "sudo", label: "sudo" },
+                          { value: "sudo_su", label: "sudo su" },
+                        ]}
+                        value={form.sshSudoMode}
+                        onValueChange={(selected) =>
                           setForm((prev) => ({
                             ...prev,
-                            sshSudoMode: selected || "none",
-                          }));
-                        }}
-                      >
-                        <SelectItem key="none" textValue="none">
-                          无需提权
-                        </SelectItem>
-                        <SelectItem key="sudo" textValue="sudo">
-                          sudo
-                        </SelectItem>
-                        <SelectItem key="sudo_su" textValue="sudo_su">
-                          sudo su
-                        </SelectItem>
-                      </Select>
+                            sshSudoMode: selected as
+                              | "none"
+                              | "sudo"
+                              | "sudo_su",
+                          }))
+                        }
+                      />
                     </div>
                   ) : (
                     <Alert variant="default">
