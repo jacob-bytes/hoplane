@@ -11,7 +11,8 @@ import {
   PageToolbar,
 } from "@/components/page-kit";
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalContent,
@@ -336,40 +337,51 @@ export default function LimitPage({
               </ModalHeader>
               <ModalBody>
                 <div className="space-y-4">
-                  <Input
-                    errorMessage={errors.name}
-                    isInvalid={!!errors.name}
-                    label="规则名称"
-                    placeholder="请输入限速规则名称"
-                    value={form.name}
-                    variant="bordered"
-                    onChange={(e) =>
-                      setForm((prev) => ({ ...prev, name: e.target.value }))
-                    }
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="limit-name">规则名称</Label>
+                    <Input
+                      aria-invalid={!!errors.name || undefined}
+                      id="limit-name"
+                      placeholder="请输入限速规则名称"
+                      value={form.name}
+                      onChange={(e) =>
+                        setForm((prev) => ({ ...prev, name: e.target.value }))
+                      }
+                    />
+                    {errors.name ? (
+                      <p className="text-xs text-destructive" role="alert">
+                        {errors.name}
+                      </p>
+                    ) : null}
+                  </div>
 
-                  <Input
-                    endContent={
-                      <div className="pointer-events-none flex items-center">
-                        <span className="text-muted-foreground text-small">
-                          Mbps
-                        </span>
-                      </div>
-                    }
-                    errorMessage={errors.speed}
-                    isInvalid={!!errors.speed}
-                    label="速度限制"
-                    placeholder="请输入速度限制"
-                    type="number"
-                    value={form.speed.toString()}
-                    variant="bordered"
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        speed: parseInt(e.target.value) || 0,
-                      }))
-                    }
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="limit-speed">速度限制</Label>
+                    <div className="relative">
+                      <Input
+                        aria-invalid={!!errors.speed || undefined}
+                        className="pr-14"
+                        id="limit-speed"
+                        placeholder="请输入速度限制"
+                        type="number"
+                        value={form.speed.toString()}
+                        onChange={(e) =>
+                          setForm((prev) => ({
+                            ...prev,
+                            speed: parseInt(e.target.value) || 0,
+                          }))
+                        }
+                      />
+                      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                        Mbps
+                      </span>
+                    </div>
+                    {errors.speed ? (
+                      <p className="text-xs text-destructive" role="alert">
+                        {errors.speed}
+                      </p>
+                    ) : null}
+                  </div>
                 </div>
               </ModalBody>
               <ModalFooter>

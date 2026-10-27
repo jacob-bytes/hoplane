@@ -2,7 +2,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { updatePassword } from "@/api";
 import DefaultLayout from "@/layouts/default";
@@ -134,60 +135,88 @@ export default function ChangePasswordPage() {
 
             <CardContent className="px-6 py-6">
               <div className="flex flex-col gap-4">
-                <Input
-                  errorMessage={errors.newUsername}
-                  isDisabled={loading}
-                  isInvalid={!!errors.newUsername}
-                  label="新用户名"
-                  placeholder="请输入新用户名（至少3位）"
-                  value={form.newUsername}
-                  onChange={(e) =>
-                    handleInputChange("newUsername", e.target.value)
-                  }
-                  onKeyDown={handleKeyPress}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="cp-new-username">新用户名</Label>
+                  <Input
+                    aria-invalid={!!errors.newUsername || undefined}
+                    disabled={loading}
+                    id="cp-new-username"
+                    placeholder="请输入新用户名（至少3位）"
+                    value={form.newUsername}
+                    onChange={(e) =>
+                      handleInputChange("newUsername", e.target.value)
+                    }
+                    onKeyDown={handleKeyPress}
+                  />
+                  {errors.newUsername ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.newUsername}
+                    </p>
+                  ) : null}
+                </div>
 
-                <Input
-                  errorMessage={errors.currentPassword}
-                  isDisabled={loading}
-                  isInvalid={!!errors.currentPassword}
-                  label="当前密码"
-                  placeholder="请输入当前密码"
-                  type="password"
-                  value={form.currentPassword}
-                  onChange={(e) =>
-                    handleInputChange("currentPassword", e.target.value)
-                  }
-                  onKeyDown={handleKeyPress}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="cp-current-password">当前密码</Label>
+                  <Input
+                    aria-invalid={!!errors.currentPassword || undefined}
+                    disabled={loading}
+                    id="cp-current-password"
+                    placeholder="请输入当前密码"
+                    type="password"
+                    value={form.currentPassword}
+                    onChange={(e) =>
+                      handleInputChange("currentPassword", e.target.value)
+                    }
+                    onKeyDown={handleKeyPress}
+                  />
+                  {errors.currentPassword ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.currentPassword}
+                    </p>
+                  ) : null}
+                </div>
 
-                <Input
-                  errorMessage={errors.newPassword}
-                  isDisabled={loading}
-                  isInvalid={!!errors.newPassword}
-                  label="新密码"
-                  placeholder="请输入新密码（至少6位）"
-                  type="password"
-                  value={form.newPassword}
-                  onChange={(e) =>
-                    handleInputChange("newPassword", e.target.value)
-                  }
-                  onKeyDown={handleKeyPress}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="cp-new-password">新密码</Label>
+                  <Input
+                    aria-invalid={!!errors.newPassword || undefined}
+                    disabled={loading}
+                    id="cp-new-password"
+                    placeholder="请输入新密码（至少6位）"
+                    type="password"
+                    value={form.newPassword}
+                    onChange={(e) =>
+                      handleInputChange("newPassword", e.target.value)
+                    }
+                    onKeyDown={handleKeyPress}
+                  />
+                  {errors.newPassword ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.newPassword}
+                    </p>
+                  ) : null}
+                </div>
 
-                <Input
-                  errorMessage={errors.confirmPassword}
-                  isDisabled={loading}
-                  isInvalid={!!errors.confirmPassword}
-                  label="确认新密码"
-                  placeholder="请再次输入新密码"
-                  type="password"
-                  value={form.confirmPassword}
-                  onChange={(e) =>
-                    handleInputChange("confirmPassword", e.target.value)
-                  }
-                  onKeyDown={handleKeyPress}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="cp-confirm-password">确认新密码</Label>
+                  <Input
+                    aria-invalid={!!errors.confirmPassword || undefined}
+                    disabled={loading}
+                    id="cp-confirm-password"
+                    placeholder="请再次输入新密码"
+                    type="password"
+                    value={form.confirmPassword}
+                    onChange={(e) =>
+                      handleInputChange("confirmPassword", e.target.value)
+                    }
+                    onKeyDown={handleKeyPress}
+                  />
+                  {errors.confirmPassword ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.confirmPassword}
+                    </p>
+                  ) : null}
+                </div>
 
                 <Button
                   className="mt-2 h-10 rounded-md"
