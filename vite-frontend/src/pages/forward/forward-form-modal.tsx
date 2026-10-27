@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import { TextField as Input } from "@/components/field-input";
 import { TextAreaField as Textarea } from "@/components/field-input";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   Modal,
   ModalContent,
@@ -96,7 +96,7 @@ export function ForwardFormModal({
                   }
                 />
 
-                <Select
+                <SelectField
                   description={
                     isEdit
                       ? "更改隧道将释放原端口并在新隧道分配端口"
@@ -105,21 +105,16 @@ export function ForwardFormModal({
                   errorMessage={errors.tunnelId}
                   isInvalid={!!errors.tunnelId}
                   label="选择隧道"
+                  options={tunnels.map((tunnel) => ({
+                    value: String(tunnel.id),
+                    label: tunnel.name,
+                  }))}
                   placeholder="请选择关联的隧道"
-                  selectedKeys={form.tunnelId ? [form.tunnelId.toString()] : []}
-                  variant="bordered"
-                  onSelectionChange={(keys) => {
-                    const selectedKey = Array.from(keys)[0] as string;
-
-                    if (selectedKey) {
-                      handleTunnelChange(selectedKey);
-                    }
+                  value={form.tunnelId ? form.tunnelId.toString() : ""}
+                  onValueChange={(selectedKey) => {
+                    if (selectedKey) handleTunnelChange(selectedKey);
                   }}
-                >
-                  {tunnels.map((tunnel) => (
-                    <SelectItem key={tunnel.id}>{tunnel.name}</SelectItem>
-                  ))}
-                </Select>
+                />
 
                 <Input
                   description={
@@ -144,7 +139,7 @@ export function ForwardFormModal({
                   }}
                 />
 
-                <Select
+                <SelectField
                   description={
                     isCurrentTunnelMultiEntrance
                       ? "多入口隧道不支持自定义监听IP，使用各服务器默认IP"
@@ -156,6 +151,13 @@ export function ForwardFormModal({
                     isCurrentTunnelMultiEntrance
                   }
                   label="监听IP"
+                  options={[
+                    { value: "__default__", label: "默认入口IP" },
+                    ...currentTunnelIpOptions.map((ip) => ({
+                      value: ip,
+                      label: ip,
+                    })),
+                  ]}
                   placeholder={
                     isCurrentTunnelMultiEntrance
                       ? "多入口隧道使用服务器默认IP"
@@ -165,24 +167,15 @@ export function ForwardFormModal({
                           : "当前隧道入口服务器暂无可选IP"
                         : "请先选择隧道"
                   }
-                  selectedKeys={[form.inIp || "__default__"]}
-                  variant="bordered"
-                  onSelectionChange={(keys) => {
-                    const selectedKey = Array.from(keys)[0] as string;
-
+                  value={form.inIp || "__default__"}
+                  onValueChange={(selectedKey) => {
                     setInIpTouched(true);
-
                     setForm((prev) => ({
                       ...prev,
                       inIp: selectedKey === "__default__" ? "" : selectedKey,
                     }));
                   }}
-                >
-                  <SelectItem key="__default__">默认入口IP</SelectItem>
-                  {currentTunnelIpOptions.map((ip) => (
-                    <SelectItem key={ip}>{ip}</SelectItem>
-                  ))}
-                </Select>
+                />
 
                 <Textarea
                   description="格式: IP:端口 或 域名:端口，支持多个地址（每行一个）"
@@ -203,23 +196,21 @@ export function ForwardFormModal({
                 />
 
                 {getAddressCount(form.remoteAddr) > 1 && (
-                  <Select
+                  <SelectField
                     description="多个目标地址的负载均衡策略"
                     label="负载策略"
+                    options={[
+                      { value: "fifo", label: "主备模式 - 自上而下" },
+                      { value: "round", label: "轮询模式 - 依次轮换" },
+                      { value: "rand", label: "随机模式 - 随机选择" },
+                      { value: "hash", label: "哈希模式 - IP哈希" },
+                    ]}
                     placeholder="请选择负载均衡策略"
-                    selectedKeys={[form.strategy]}
-                    variant="bordered"
-                    onSelectionChange={(keys) => {
-                      const selectedKey = Array.from(keys)[0] as string;
-
-                      setForm((prev) => ({ ...prev, strategy: selectedKey }));
-                    }}
-                  >
-                    <SelectItem key="fifo">主备模式 - 自上而下</SelectItem>
-                    <SelectItem key="round">轮询模式 - 依次轮换</SelectItem>
-                    <SelectItem key="rand">随机模式 - 随机选择</SelectItem>
-                    <SelectItem key="hash">哈希模式 - IP哈希</SelectItem>
-                  </Select>
+                    value={form.strategy}
+                    onValueChange={(selectedKey) =>
+                      setForm((prev) => ({ ...prev, strategy: selectedKey }))
+                    }
+                  />
                 )}
                 <Accordion className="px-0" variant="light">
                   <AccordionItem
@@ -274,35 +265,34 @@ export function ForwardFormModal({
                         }}
                       />
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                        <Select
+                        <SelectField
                           description="入口监听接收 PROXY protocol，用于读取上游传入的真实客户端 IP。"
                           label="Proxy Protocol 接收"
-                          placeholder="禁用"
-                          selectedKeys={[
-                            String(form.proxyProtocolReceive || 0),
+                          options={[
+                            { value: "0", label: "禁用" },
+                            { value: "1", label: "Version 1" },
+                            { value: "2", label: "Version 2" },
                           ]}
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selectedKey = Array.from(keys)[0] as string;
-
+                          placeholder="禁用"
+                          value={String(form.proxyProtocolReceive || 0)}
+                          onValueChange={(selectedKey) =>
                             setForm((prev) => ({
                               ...prev,
                               proxyProtocolReceive: Number(selectedKey),
-                            }));
-                          }}
-                        >
-                          <SelectItem key="0">禁用</SelectItem>
-                          <SelectItem key="1">Version 1</SelectItem>
-                          <SelectItem key="2">Version 2</SelectItem>
-                        </Select>
-                        <Select
+                            }))
+                          }
+                        />
+                        <SelectField
                           description="连接目标地址时发送 PROXY protocol，用于向下游透传客户端真实 IP。"
                           label="Proxy Protocol 发送"
+                          options={[
+                            { value: "0", label: "禁用" },
+                            { value: "1", label: "Version 1" },
+                            { value: "2", label: "Version 2" },
+                          ]}
                           placeholder="禁用"
-                          selectedKeys={[String(form.proxyProtocolSend || 0)]}
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selectedKey = Array.from(keys)[0] as string;
+                          value={String(form.proxyProtocolSend || 0)}
+                          onValueChange={(selectedKey) => {
                             const proxyProtocolSend = Number(selectedKey);
 
                             setForm((prev) => ({
@@ -311,76 +301,52 @@ export function ForwardFormModal({
                               proxyProtocolSend,
                             }));
                           }}
-                        >
-                          <SelectItem key="0">禁用</SelectItem>
-                          <SelectItem key="1">Version 1</SelectItem>
-                          <SelectItem key="2">Version 2</SelectItem>
-                        </Select>
+                        />
                       </div>
                       {isAdmin && (
-                        <Select
+                        <SelectField
                           label="规则限速"
+                          options={availableSpeedLimits.map((speedLimit) => ({
+                            value: speedLimit.id.toString(),
+                            label: speedLimit.name,
+                          }))}
                           placeholder="不限速"
-                          selectedKeys={
+                          value={
                             selectedSpeedId !== null
-                              ? [selectedSpeedId.toString()]
-                              : []
+                              ? selectedSpeedId.toString()
+                              : ""
                           }
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selectedKey = Array.from(keys)[0] as
-                              | string
-                              | undefined;
-
+                          onValueChange={(selectedKey) =>
                             setForm((prev) => ({
                               ...prev,
                               speedId: selectedKey ? Number(selectedKey) : null,
-                            }));
-                          }}
-                        >
-                          {availableSpeedLimits.map((speedLimit) => (
-                            <SelectItem
-                              key={speedLimit.id.toString()}
-                              textValue={speedLimit.name}
-                            >
-                              {speedLimit.name}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                            }))
+                          }
+                        />
                       )}
                       {isAdmin && (
-                        <Select
+                        <SelectField
                           description="每个客户端 IP 独享该限速规则；不选择表示不限制。"
                           label="每 IP 限速"
+                          options={availableSpeedLimits.map((speedLimit) => ({
+                            value: speedLimit.id.toString(),
+                            label: speedLimit.name,
+                          }))}
                           placeholder="不限速"
-                          selectedKeys={
+                          value={
                             selectedIPSpeedId !== null
-                              ? [selectedIPSpeedId.toString()]
-                              : []
+                              ? selectedIPSpeedId.toString()
+                              : ""
                           }
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selectedKey = Array.from(keys)[0] as
-                              | string
-                              | undefined;
-
+                          onValueChange={(selectedKey) =>
                             setForm((prev) => ({
                               ...prev,
                               ipSpeedId: selectedKey
                                 ? Number(selectedKey)
                                 : null,
-                            }));
-                          }}
-                        >
-                          {availableSpeedLimits.map((speedLimit) => (
-                            <SelectItem
-                              key={speedLimit.id.toString()}
-                              textValue={speedLimit.name}
-                            >
-                              {speedLimit.name}
-                            </SelectItem>
-                          ))}
-                        </Select>
+                            }))
+                          }
+                        />
                       )}
                     </div>
                   </AccordionItem>
