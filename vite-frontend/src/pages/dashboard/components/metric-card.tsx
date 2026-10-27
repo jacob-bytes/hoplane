@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface MetricCardProps {
   title: string;
@@ -19,7 +19,7 @@ export const MetricCard = ({
 }: MetricCardProps) => {
   return (
     <Card className="flex h-auto min-w-0 flex-col justify-between overflow-hidden">
-      <CardBody className="flex h-full min-w-0 flex-col justify-between overflow-visible !p-4">
+      <CardContent className="flex h-full min-w-0 flex-col justify-between overflow-visible !p-4">
         <div className="flex flex-col">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium text-muted-foreground truncate">
@@ -34,7 +34,7 @@ export const MetricCard = ({
           </p>
         </div>
         <div className="mt-2.5">{bottomContent}</div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

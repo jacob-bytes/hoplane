@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { motion } from "framer-motion";
 
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { siteConfig } from "@/config/site";
@@ -250,7 +250,7 @@ export default function IndexPage() {
                 登录以管理你的网络
               </p>
             </CardHeader>
-            <CardBody className="px-6 py-6 mt-2">
+            <CardContent className="px-6 py-6 mt-2">
               <div className="flex flex-col gap-5">
                 <Input
                   classNames={{
@@ -319,7 +319,7 @@ export default function IndexPage() {
                   </Button>
                 )}
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         </motion.div>
 

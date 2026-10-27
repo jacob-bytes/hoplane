@@ -30,7 +30,7 @@ import {
   installKernel,
 } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
@@ -292,10 +292,10 @@ export function KernelPanel({
 
       {kernels.length === 0 ? (
         <Card className="shadow-sm bg-muted/50">
-          <CardBody className="text-center py-10 text-sm text-muted-foreground">
+          <CardContent className="text-center py-10 text-sm text-muted-foreground">
             还没有在任何服务器上安装内核。点击“安装内核”，先在服务器上安装
             Xray，再到“节点”里创建入站。
-          </CardBody>
+          </CardContent>
         </Card>
       ) : (
         <div className="overflow-hidden rounded-xl border border-border bg-card">

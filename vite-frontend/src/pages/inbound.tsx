@@ -72,7 +72,7 @@ import {
   formFromItem,
 } from "@/pages/inbound/presets";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
@@ -1135,7 +1135,7 @@ export default function InboundPage() {
 
           {filtered.length === 0 ? (
             <Card className="shadow-sm bg-muted/50">
-              <CardBody className="text-center py-16 flex flex-col items-center justify-center gap-3">
+              <CardContent className="text-center py-16 flex flex-col items-center justify-center gap-3">
                 <h3 className="text-lg font-medium">
                   {inbounds.length === 0 ? "暂无入站" : "没有匹配的入站"}
                 </h3>
@@ -1160,7 +1160,7 @@ export default function InboundPage() {
                     去安装内核
                   </Button>
                 )}
-              </CardBody>
+              </CardContent>
             </Card>
           ) : !grouped ? (
             <StaggerList className={gridClass} data-list="inbound">

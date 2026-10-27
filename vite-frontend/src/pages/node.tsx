@@ -31,7 +31,7 @@ import {
 
 import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
@@ -1950,7 +1950,7 @@ export default function NodePage({
                             </div>
                           </CardHeader>
 
-                          <CardBody className="pt-0 pb-3 md:pt-0 md:pb-3 flex-1 flex flex-col">
+                          <CardContent className="pt-0 pb-3 md:pt-0 md:pb-3 flex-1 flex flex-col">
                             {isRemoteNode && node.syncError && (
                               <div className="mb-3 px-2 py-1.5 rounded-md bg-warning-50 dark:bg-warning-100/10 text-warning-700 dark:text-warning-400 text-xs">
                                 {getRemoteSyncErrorMessage(node.syncError)}
@@ -2199,7 +2199,7 @@ export default function NodePage({
                                 配置
                               </Button>
                             </div>
-                          </CardBody>
+                          </CardContent>
                         </Card>
                       )}
                     </SortableItem>

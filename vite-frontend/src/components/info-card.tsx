@@ -1,7 +1,7 @@
 import type * as React from "react";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 
 /*
@@ -117,7 +117,7 @@ export function InfoCard({
         </div>
       </CardHeader>
 
-      <CardBody className="flex flex-1 flex-col pb-3 pt-0 md:pb-3 md:pt-0">
+      <CardContent className="flex flex-1 flex-col pb-3 pt-0 md:pb-3 md:pt-0">
         {badges && <div className="mb-3 flex flex-wrap gap-1.5">{badges}</div>}
         <div className="mb-4 space-y-2 empty:hidden">
           {rows.map(([label, value]) => (
@@ -160,7 +160,7 @@ export function InfoCard({
             ))}
           </div>
         )}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

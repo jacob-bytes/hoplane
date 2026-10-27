@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { copyWithToast } from "@/utils/clipboard";
 import { AnimatedPage } from "@/components/animated-page";
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import {
   Dropdown,
@@ -874,7 +874,7 @@ function UserDashboard() {
               </span>
             </div>
           </CardHeader>
-          <CardBody className="pt-0">
+          <CardContent className="pt-0">
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
               {nodeExpiryReminders.slice(0, 6).map(renderNodeExpiryCard)}
             </div>
@@ -884,7 +884,7 @@ function UserDashboard() {
                 个服务器未展开显示，可前往服务器页面继续处理。
               </p>
             )}
-          </CardBody>
+          </CardContent>
         </Card>
       )}
 
@@ -913,7 +913,7 @@ function UserDashboard() {
               </span>
             </div>
           </CardHeader>
-          <CardBody className="pt-0">
+          <CardContent className="pt-0">
             {userTunnels.length === 0 ? (
               <PageEmptyState className="h-48" message="暂无隧道权限" />
             ) : (
@@ -1007,7 +1007,7 @@ function UserDashboard() {
                 })}
               </div>
             )}
-          </CardBody>
+          </CardContent>
         </Card>
       )}
 
@@ -1035,7 +1035,7 @@ function UserDashboard() {
             </span>
           </div>
         </CardHeader>
-        <CardBody className="pt-0">
+        <CardContent className="pt-0">
           {groupedForwards().length === 0 ? (
             <div className="text-center py-12">
               <svg
@@ -1162,7 +1162,7 @@ function UserDashboard() {
               ))}
             </div>
           )}
-        </CardBody>
+        </CardContent>
       </Card>
 
       {/* 地址列表弹窗 */}

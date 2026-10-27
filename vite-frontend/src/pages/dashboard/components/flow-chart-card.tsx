@@ -8,7 +8,7 @@ import {
 } from "recharts";
 import { ChartPie } from "lucide-react";
 
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PageEmptyState } from "@/components/page-state";
 
 interface FlowChartPoint {
@@ -37,7 +37,7 @@ export const FlowChartCard = ({
           </h2>
         </div>
       </CardHeader>
-      <CardBody className="pt-0">
+      <CardContent className="pt-0">
         {statisticsFlowsCount === 0 ? (
           <PageEmptyState className="h-48" message="暂无流量统计数据" />
         ) : (
@@ -118,7 +118,7 @@ export const FlowChartCard = ({
             </ResponsiveContainer>
           </div>
         )}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

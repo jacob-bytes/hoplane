@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { updatePassword } from "@/api";
 import DefaultLayout from "@/layouts/default";
 import { safeLogout } from "@/utils/logout";
@@ -132,7 +132,7 @@ export default function ChangePasswordPage() {
               </p>
             </CardHeader>
 
-            <CardBody className="px-6 py-6">
+            <CardContent className="px-6 py-6">
               <div className="flex flex-col gap-4">
                 <Input
                   errorMessage={errors.newUsername}
@@ -212,7 +212,7 @@ export default function ChangePasswordPage() {
                   修改账号密码后需要重新登录
                 </div>
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         </div>
       </section>

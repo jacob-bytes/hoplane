@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
 
-import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface AnnouncementBannerProps {
   announcement: AnnouncementData;
@@ -19,7 +19,7 @@ export const AnnouncementBanner = ({
 
   return (
     <Card className="mb-4 border border-primary/15 bg-primary/5 shadow-none lg:mb-6">
-      <CardBody className="p-4 sm:p-5">
+      <CardContent className="p-4 sm:p-5">
         <div className="flex items-center gap-3.5 sm:gap-4">
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-primary/15 bg-card sm:h-11 sm:w-11">
             <svg
@@ -89,7 +89,7 @@ export const AnnouncementBanner = ({
             </div>
           </div>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

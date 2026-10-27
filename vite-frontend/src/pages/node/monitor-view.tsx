@@ -62,7 +62,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@/shadcn-bridge/heroui/dropdown";
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
   DistroIcon,
@@ -318,7 +318,7 @@ function ServerCard({
         </div>
       </CardHeader>
 
-      <CardBody className="py-3 px-5 flex-1 flex flex-col justify-end gap-4 z-10 w-full overflow-hidden">
+      <CardContent className="py-3 px-5 flex-1 flex flex-col justify-end gap-4 z-10 w-full overflow-hidden">
         <div className="grid grid-cols-2 gap-5 w-full">
           <div className="space-y-1.5 min-w-0">
             <div className="flex justify-between items-center text-xs">
@@ -389,7 +389,7 @@ function ServerCard({
             </span>
           </div>
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }
@@ -571,7 +571,7 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
           </Button>
         </div>
       </CardHeader>
-      <CardBody className="space-y-4">
+      <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
           {METRIC_TYPE_BUTTONS.map((item) => (
             <Button
@@ -634,7 +634,7 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
             暂无指标数据
           </div>
         )}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 });
@@ -1394,12 +1394,12 @@ export function MonitorView({
             <Activity className="w-5 h-5 text-warning" />
             <h3 className="text-lg font-semibold">监控权限</h3>
           </CardHeader>
-          <CardBody>
+          <CardContent>
             <div className="text-sm text-muted-foreground">{accessDenied}</div>
             <div className="text-xs text-muted-foreground mt-2">
               如需使用监控功能，请联系管理员在用户页面授予监控权限。
             </div>
-          </CardBody>
+          </CardContent>
         </Card>
       )}
 
@@ -1691,7 +1691,7 @@ export function MonitorView({
                     </Button>
                   </div>
                 </CardHeader>
-                <CardBody className="space-y-4">
+                <CardContent className="space-y-4">
                   {monitorsLoading ? (
                     <div className="flex justify-center py-8">
                       <RefreshCw className="w-6 h-6 animate-spin" />
@@ -1876,7 +1876,7 @@ export function MonitorView({
                       暂无服务监控，点击&quot;添加监控&quot;创建
                     </div>
                   )}
-                </CardBody>
+                </CardContent>
               </Card>
             );
           })()}

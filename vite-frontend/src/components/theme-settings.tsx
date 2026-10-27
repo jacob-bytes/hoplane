@@ -12,7 +12,7 @@ import type { ThemeMode } from "@/themes/registry";
 import React from "react";
 import { toast } from "sonner";
 
-import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { useThemeContext } from "@/themes/context";
 
@@ -58,7 +58,7 @@ export const ThemeSettings: React.FC = () => {
 
   return (
     <Card className="shadow-md">
-      <CardBody className="p-6">
+      <CardContent className="p-6">
         <h2 className="text-lg font-medium text-foreground dark:text-white mb-5">
           主题设置
         </h2>
@@ -182,7 +182,7 @@ export const ThemeSettings: React.FC = () => {
             </Button>
           </div>
         )}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

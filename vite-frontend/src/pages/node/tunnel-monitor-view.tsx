@@ -45,7 +45,7 @@ import {
   getConfigByName,
 } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
@@ -283,7 +283,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
           </Button>
         </div>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         {loading ? (
           <div className="flex justify-center py-8">
             <RefreshCw className="w-6 h-6 animate-spin" />
@@ -355,7 +355,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
             暂无质量历史数据
           </div>
         )}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 });
@@ -407,7 +407,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
           </Button>
         </div>
       </CardHeader>
-      <CardBody>
+      <CardContent>
         {loading ? (
           <div className="flex justify-center py-8">
             <RefreshCw className="w-6 h-6 animate-spin" />
@@ -459,7 +459,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
             暂无流量数据
           </div>
         )}
-      </CardBody>
+      </CardContent>
     </Card>
   );
 });
@@ -715,7 +715,7 @@ const ForwardingChainTopology = React.memo(function ForwardingChainTopology({
           全链路拓扑状态 (实时)
         </h3>
       </CardHeader>
-      <CardBody className="py-2 px-4 pb-4">
+      <CardContent className="py-2 px-4 pb-4">
         <div className="max-h-80 space-y-1 overflow-auto pb-1">
           {topologyPaths.map((path, index) => (
             <div
@@ -730,7 +730,7 @@ const ForwardingChainTopology = React.memo(function ForwardingChainTopology({
             </div>
           ))}
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 });
@@ -1158,12 +1158,12 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           <Activity className="w-5 h-5 text-warning" />
           <h3 className="text-lg font-semibold">监控权限</h3>
         </CardHeader>
-        <CardBody>
+        <CardContent>
           <div className="text-sm text-muted-foreground">{accessDenied}</div>
           <div className="text-xs text-muted-foreground mt-2">
             如需使用监控功能，请联系管理员在用户页面授予监控权限。
           </div>
-        </CardBody>
+        </CardContent>
       </Card>
     );
   }
@@ -1205,7 +1205,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
         {/* Quality KPI Cards */}
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
           <Card className="border border-divider shadow-none">
-            <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
+            <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Zap className="w-3 h-3" />
                 入口 → 出口 延迟
@@ -1214,10 +1214,10 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 loading={qualityLoading}
                 value={quality?.entryToExitLatency}
               />
-            </CardBody>
+            </CardContent>
           </Card>
           <Card className="border border-divider shadow-none">
-            <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
+            <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span
                 className="text-xs text-muted-foreground flex items-center gap-1"
                 title={probeTargetLabel(quality)}
@@ -1229,10 +1229,10 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 loading={qualityLoading}
                 value={quality?.exitToBingLatency}
               />
-            </CardBody>
+            </CardContent>
           </Card>
           <Card className="border border-divider shadow-none">
-            <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
+            <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span className="text-xs text-muted-foreground">
                 入口 → 出口 丢包
               </span>
@@ -1243,10 +1243,10 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                   ? `${quality.entryToExitLoss.toFixed(1)}%`
                   : "-"}
               </span>
-            </CardBody>
+            </CardContent>
           </Card>
           <Card className="border border-divider shadow-none">
-            <CardBody className="flex flex-col items-start gap-1 px-3 py-2">
+            <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span
                 className="text-xs text-muted-foreground"
                 title={probeTargetLabel(quality)}
@@ -1260,7 +1260,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                   ? `${quality.exitToBingLoss.toFixed(1)}%`
                   : "-"}
               </span>
-            </CardBody>
+            </CardContent>
           </Card>
         </div>
 
@@ -1415,7 +1415,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                   </div>
                 </CardHeader>
 
-                <CardBody className="py-3 px-5 flex-1 flex flex-col justify-end gap-3 z-10 w-full overflow-hidden">
+                <CardContent className="py-3 px-5 flex-1 flex flex-col justify-end gap-3 z-10 w-full overflow-hidden">
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
                       <div className="text-[11px] text-muted-foreground flex items-center gap-1">
@@ -1471,7 +1471,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                       </span>
                     )}
                   </div>
-                </CardBody>
+                </CardContent>
               </Card>
             );
           })}
