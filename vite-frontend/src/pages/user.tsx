@@ -34,7 +34,7 @@ import { RadioGroup, Radio } from "@/shadcn-bridge/heroui/radio";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
 import { DatePicker } from "@/shadcn-bridge/heroui/date-picker";
-import { Progress } from "@/shadcn-bridge/heroui/progress";
+import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
   User,
   UserForm,

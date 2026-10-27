@@ -35,8 +35,8 @@ import { formatTraffic } from "@/utils/traffic";
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
-import { Progress } from "@/shadcn-bridge/heroui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
   createForward,
   getForwardList,
@@ -2938,11 +2938,9 @@ export default function ForwardPage({
 
       {batchProgress.active && (
         <div className="mb-3">
-          <Alert
-            color="primary"
-            description={batchProgress.label}
-            variant="flat"
-          />
+          <Alert variant="default">
+            <AlertDescription>{batchProgress.label}</AlertDescription>
+          </Alert>
           <Progress
             aria-label={batchProgress.label}
             className="mt-3"

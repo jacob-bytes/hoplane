@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface BatchActionResultModalProps {
   failures: BatchOperationFailure[];
@@ -86,12 +86,10 @@ export function BatchActionResultModal({
           <>
             <ModalHeader closable>{title}</ModalHeader>
             <ModalBody className="space-y-4">
-              <Alert
-                color="warning"
-                description={summary}
-                title={`共 ${failures.length} 项需要处理`}
-                variant="flat"
-              />
+              <Alert variant="warning">
+                <AlertTitle>{`共 ${failures.length} 项需要处理`}</AlertTitle>
+                <AlertDescription>{summary}</AlertDescription>
+              </Alert>
               <div className="space-y-3">
                 {failures.map((failure, index) => (
                   <details

@@ -13,7 +13,7 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge } from "@/components/ui/badge";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Radio, RadioGroup } from "@/shadcn-bridge/heroui/radio";
 import { Tunnel, TunnelDeleteAction } from "@/pages/tunnel/types";
 
@@ -89,12 +89,10 @@ export function DeleteTunnelModal({
                 </div>
               ) : deleteHasForwardDependencies ? (
                 <>
-                  <Alert
-                    color="warning"
-                    description={`隧道 \"${tunnelDeletePreview?.tunnelName || tunnelToDelete?.name || ""}\" 当前被 ${deletePreviewForwardCount} 条规则使用。删除前需要先处理这些规则。`}
-                    title="发现关联规则"
-                    variant="flat"
-                  />
+                  <Alert variant="warning">
+                    <AlertTitle>发现关联规则</AlertTitle>
+                    <AlertDescription>{`隧道 \"${tunnelDeletePreview?.tunnelName || tunnelToDelete?.name || ""}\" 当前被 ${deletePreviewForwardCount} 条规则使用。删除前需要先处理这些规则。`}</AlertDescription>
+                  </Alert>
 
                   {(tunnelDeletePreview?.sampleForwards?.length ?? 0) > 0 ? (
                     <div className="space-y-3 rounded-xl border border-divider bg-content2/40 p-3 sm:p-4">
@@ -169,11 +167,11 @@ export function DeleteTunnelModal({
                   </RadioGroup>
 
                   {deleteReplaceUnavailable ? (
-                    <Alert
-                      color="warning"
-                      description="当前没有其他启用中的隧道可用于承接这些规则，只能删除关联规则后再删除该隧道。"
-                      variant="flat"
-                    />
+                    <Alert variant="warning">
+                      <AlertDescription>
+                        当前没有其他启用中的隧道可用于承接这些规则，只能删除关联规则后再删除该隧道。
+                      </AlertDescription>
+                    </Alert>
                   ) : null}
 
                   {deleteAction === "replace" && !deleteReplaceUnavailable ? (
@@ -208,12 +206,10 @@ export function DeleteTunnelModal({
                   ) : null}
                 </>
               ) : (
-                <Alert
-                  color="warning"
-                  description={`当前未发现关联规则。确认后将直接删除“${tunnelToDelete?.name || "该隧道"}”，此操作不可撤销。`}
-                  title="可以直接删除"
-                  variant="flat"
-                />
+                <Alert variant="warning">
+                  <AlertTitle>可以直接删除</AlertTitle>
+                  <AlertDescription>{`当前未发现关联规则。确认后将直接删除“${tunnelToDelete?.name || "该隧道"}”，此操作不可撤销。`}</AlertDescription>
+                </Alert>
               )}
             </ModalBody>
             <ModalFooter>
@@ -310,12 +306,10 @@ export function BatchDeleteTunnelsModal({
                 </div>
               ) : batchDeleteHasForwardDependencies ? (
                 <>
-                  <Alert
-                    color="warning"
-                    description={`已选 ${selectedTunnelIdList.length} 条隧道，其中 ${batchDeleteDependentTunnelCount} 条仍被规则使用，共 ${batchDeleteTotalForwardCount} 条规则待处理。${batchDeleteDirectDeleteTunnelCount > 0 ? `其余 ${batchDeleteDirectDeleteTunnelCount} 条会直接删除。` : ""}`}
-                    title="发现关联规则"
-                    variant="flat"
-                  />
+                  <Alert variant="warning">
+                    <AlertTitle>发现关联规则</AlertTitle>
+                    <AlertDescription>{`已选 ${selectedTunnelIdList.length} 条隧道，其中 ${batchDeleteDependentTunnelCount} 条仍被规则使用，共 ${batchDeleteTotalForwardCount} 条规则待处理。${batchDeleteDirectDeleteTunnelCount > 0 ? `其余 ${batchDeleteDirectDeleteTunnelCount} 条会直接删除。` : ""}`}</AlertDescription>
+                  </Alert>
 
                   <div className="max-h-64 space-y-3 overflow-y-auto scrollbar-hide rounded-xl border border-divider bg-content2/40 p-3 sm:max-h-72 sm:p-4">
                     {batchDeleteDependentItems.map((item) => (
@@ -397,11 +391,11 @@ export function BatchDeleteTunnelsModal({
                   </RadioGroup>
 
                   {batchDeleteReplaceUnavailable ? (
-                    <Alert
-                      color="warning"
-                      description="当前没有可承接这些规则的启用隧道，只能删除关联规则后再删除所选隧道。"
-                      variant="flat"
-                    />
+                    <Alert variant="warning">
+                      <AlertDescription>
+                        当前没有可承接这些规则的启用隧道，只能删除关联规则后再删除所选隧道。
+                      </AlertDescription>
+                    </Alert>
                   ) : null}
 
                   {batchDeleteAction === "replace" &&
@@ -437,12 +431,10 @@ export function BatchDeleteTunnelsModal({
                   ) : null}
                 </>
               ) : (
-                <Alert
-                  color="warning"
-                  description={`已选 ${selectedTunnelIdList.length} 条隧道，当前未发现关联规则。确认后将直接删除这些隧道，此操作不可撤销。`}
-                  title="可以直接删除"
-                  variant="flat"
-                />
+                <Alert variant="warning">
+                  <AlertTitle>可以直接删除</AlertTitle>
+                  <AlertDescription>{`已选 ${selectedTunnelIdList.length} 条隧道，当前未发现关联规则。确认后将直接删除这些隧道，此操作不可撤销。`}</AlertDescription>
+                </Alert>
               )}
             </ModalBody>
             <ModalFooter>

@@ -34,8 +34,8 @@ import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
-import { Progress } from "@/shadcn-bridge/heroui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
   createNode,
   getNodeList,
@@ -1693,18 +1693,15 @@ export default function NodePage({
       )}
 
       {!wsConnected && (
-        <Alert
-          className="mb-3"
-          color="warning"
-          description={
-            wsConnecting
+        <Alert className="mb-3" variant="warning">
+          <AlertDescription>
+            {wsConnecting
               ? "监控连接中..."
               : usingPollingFallback
                 ? "监控连接已断开，已切换为列表自动刷新兜底模式。"
-                : "监控连接已断开，正在重连..."
-          }
-          variant="flat"
-        />
+                : "监控连接已断开，正在重连..."}
+          </AlertDescription>
+        </Alert>
       )}
 
       {loading ? (

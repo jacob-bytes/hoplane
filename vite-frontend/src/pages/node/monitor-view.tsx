@@ -63,7 +63,7 @@ import {
   DropdownItem,
 } from "@/shadcn-bridge/heroui/dropdown";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Progress } from "@/shadcn-bridge/heroui/progress";
+import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
   DistroIcon,
   getDistroColor,

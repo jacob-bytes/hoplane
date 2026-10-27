@@ -27,8 +27,8 @@ import { GripVertical } from "lucide-react";
 
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
-import { Progress } from "@/shadcn-bridge/heroui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
   createTunnel,
   batchDeleteTunnelsWithForwards,
@@ -1512,11 +1512,9 @@ export default function TunnelPage({
 
       {batchProgress.active && (
         <div className="mb-3">
-          <Alert
-            color="primary"
-            description={batchProgress.label}
-            variant="flat"
-          />
+          <Alert variant="default">
+            <AlertDescription>{batchProgress.label}</AlertDescription>
+          </Alert>
           <Progress
             aria-label={batchProgress.label}
             className="mt-3"

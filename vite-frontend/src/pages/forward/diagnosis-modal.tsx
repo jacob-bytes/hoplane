@@ -11,7 +11,7 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   getForwardDiagnosisQualityDisplay,
   type ForwardDiagnosisResult,
@@ -105,12 +105,12 @@ export function DiagnosisModal({
                   )}
 
                   {diagnosisProgress.timedOut && (
-                    <Alert
-                      color="warning"
-                      description="诊断超时（单条30秒 / 整体2分钟），以下为当前已完成结果。"
-                      title="诊断超时"
-                      variant="flat"
-                    />
+                    <Alert variant="warning">
+                      <AlertTitle>诊断超时</AlertTitle>
+                      <AlertDescription>
+                        诊断超时（单条30秒 / 整体2分钟），以下为当前已完成结果。
+                      </AlertDescription>
+                    </Alert>
                   )}
 
                   {/* 统计摘要 */}
@@ -569,11 +569,13 @@ export function DiagnosisModal({
                             <Alert
                               key={index}
                               className="text-xs"
-                              color="danger"
-                              description={result.message || "连接失败"}
-                              title={result.description}
-                              variant="flat"
-                            />
+                              variant="destructive"
+                            >
+                              <AlertTitle>{result.description}</AlertTitle>
+                              <AlertDescription>
+                                {result.message || "连接失败"}
+                              </AlertDescription>
+                            </Alert>
                           ))}
                       </div>
                     </div>

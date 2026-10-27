@@ -11,7 +11,7 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
-import { Alert } from "@/shadcn-bridge/heroui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { type NodeRenewalCycle } from "@/pages/node/renewal";
@@ -239,11 +239,12 @@ export function NodeFormModal({
               </div>
 
               {form.forwardMode === "nftables" && (
-                <Alert
-                  color="warning"
-                  description="nftables 模式仅支持纯转发，不支持隧道、流量控制和 agent 安装，规则由面板通过 SSH 下发。"
-                  variant="flat"
-                />
+                <Alert variant="warning">
+                  <AlertDescription>
+                    nftables 模式仅支持纯转发，不支持隧道、流量控制和 agent
+                    安装，规则由面板通过 SSH 下发。
+                  </AlertDescription>
+                </Alert>
               )}
             </FormSection>
 
@@ -421,11 +422,12 @@ export function NodeFormModal({
                       </Select>
                     </div>
                   ) : (
-                    <Alert
-                      color="primary"
-                      description="agent 模式下无需填写 SSH 配置；服务器安装 agent 后会自行接管转发。"
-                      variant="flat"
-                    />
+                    <Alert variant="default">
+                      <AlertDescription>
+                        agent 模式下无需填写 SSH 配置；服务器安装 agent
+                        后会自行接管转发。
+                      </AlertDescription>
+                    </Alert>
                   )}
 
                   <Input
@@ -512,12 +514,11 @@ export function NodeFormModal({
                       开启开关以屏蔽对应协议
                     </div>
                     {protocolControlsDisabled && (
-                      <Alert
-                        className="mb-2"
-                        color="warning"
-                        description={protocolControlsReason}
-                        variant="flat"
-                      />
+                      <Alert className="mb-2" variant="warning">
+                        <AlertDescription>
+                          {protocolControlsReason}
+                        </AlertDescription>
+                      </Alert>
                     )}
                     <div
                       className={`grid grid-cols-1 sm:grid-cols-3 gap-3 bg-card/30 dark:bg-card/20 p-3 rounded-md border border-divider ${protocolControlsDisabled ? "opacity-70" : ""}`}
@@ -645,11 +646,11 @@ export function NodeFormModal({
                     </div>
                   </div>
 
-                  <Alert
-                    color="danger"
-                    description="请不要在出口服务器执行屏蔽协议，否则可能影响转发；屏蔽协议仅需在入口服务器执行。"
-                    variant="flat"
-                  />
+                  <Alert variant="destructive">
+                    <AlertDescription>
+                      请不要在出口服务器执行屏蔽协议，否则可能影响转发；屏蔽协议仅需在入口服务器执行。
+                    </AlertDescription>
+                  </Alert>
                 </div>
               </AccordionItem>
             </Accordion>
