@@ -1,4 +1,4 @@
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 
 export function OutboundIPSelect({
   value,
@@ -14,7 +14,7 @@ export function OutboundIPSelect({
   const supported = kernelType === "xray" || kernelType === "singbox";
 
   return (
-    <Select
+    <SelectField
       description={
         supported
           ? value.startsWith("prefer_")
@@ -24,27 +24,15 @@ export function OutboundIPSelect({
       }
       isDisabled={!supported}
       label="出站 IP 策略"
-      selectedKeys={[value]}
-      variant="bordered"
-      onSelectionChange={(keys) =>
-        onChange(
-          keys.has("prefer_ipv4")
-            ? "prefer_ipv4"
-            : keys.has("prefer_ipv6")
-              ? "prefer_ipv6"
-              : keys.has("ipv6_only")
-                ? "ipv6_only"
-                : keys.has("ipv4_only")
-                  ? "ipv4_only"
-                  : "auto",
-        )
-      }
-    >
-      <SelectItem key="auto">自动（IPv4 / IPv6）</SelectItem>
-      <SelectItem key="ipv4_only">仅 IPv4 出站</SelectItem>
-      <SelectItem key="ipv6_only">仅 IPv6 出站</SelectItem>
-      <SelectItem key="prefer_ipv4">优先 IPv4（失败回退 IPv6）</SelectItem>
-      <SelectItem key="prefer_ipv6">优先 IPv6（失败回退 IPv4）</SelectItem>
-    </Select>
+      options={[
+        { value: "auto", label: "自动（IPv4 / IPv6）" },
+        { value: "ipv4_only", label: "仅 IPv4 出站" },
+        { value: "ipv6_only", label: "仅 IPv6 出站" },
+        { value: "prefer_ipv4", label: "优先 IPv4（失败回退 IPv6）" },
+        { value: "prefer_ipv6", label: "优先 IPv6（失败回退 IPv4）" },
+      ]}
+      value={value}
+      onValueChange={(next) => onChange(next as typeof value)}
+    />
   );
 }

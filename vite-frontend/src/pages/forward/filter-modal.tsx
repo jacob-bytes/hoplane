@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
 import { TextField as Input } from "@/components/field-input";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   Modal,
   ModalContent,
@@ -67,50 +67,44 @@ export function ForwardFilterModal({
             <ModalBody>
               <div className="flex flex-col gap-4 py-2">
                 {isAdmin && (
-                  <Select
+                  <SelectField
                     label="所属用户"
+                    options={[
+                      { value: "all", label: "全部用户" },
+                      ...uniqueUsers.map((user) => ({
+                        value: user.id.toString(),
+                        label: user.name,
+                      })),
+                    ]}
                     placeholder="选择用户"
-                    selectedKeys={[searchParams.userId]}
-                    variant="bordered"
-                    onSelectionChange={(keys) => {
-                      const key = Array.from(keys)[0] as string;
-
+                    value={searchParams.userId || "all"}
+                    onValueChange={(key) =>
                       setSearchParams((prev) => ({
                         ...prev,
                         userId: key || "all",
-                      }));
-                    }}
-                  >
-                    <SelectItem key="all">全部用户</SelectItem>
-                    {uniqueUsers.map((user) => (
-                      <SelectItem key={user.id.toString()}>
-                        {user.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                      }))
+                    }
+                  />
                 )}
 
-                <Select
+                <SelectField
                   label="所属隧道"
+                  options={[
+                    { value: "all", label: "全部隧道" },
+                    ...tunnels.map((tunnel) => ({
+                      value: tunnel.id.toString(),
+                      label: tunnel.name,
+                    })),
+                  ]}
                   placeholder="选择隧道"
-                  selectedKeys={[searchParams.tunnelId]}
-                  variant="bordered"
-                  onSelectionChange={(keys) => {
-                    const key = Array.from(keys)[0] as string;
-
+                  value={searchParams.tunnelId || "all"}
+                  onValueChange={(key) =>
                     setSearchParams((prev) => ({
                       ...prev,
                       tunnelId: key || "all",
-                    }));
-                  }}
-                >
-                  <SelectItem key="all">全部隧道</SelectItem>
-                  {tunnels.map((tunnel) => (
-                    <SelectItem key={tunnel.id.toString()}>
-                      {tunnel.name}
-                    </SelectItem>
-                  ))}
-                </Select>
+                    }))
+                  }
+                />
 
                 <Input
                   label="入口监听端口 (精确)"

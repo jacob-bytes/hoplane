@@ -1,5 +1,5 @@
 import { TextField as Input } from "@/components/field-input";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   parseTrafficInput,
   TRAFFIC_UNIT_MIB,
@@ -37,26 +37,22 @@ export function TrafficLimitField({
         value={value}
         onChange={(event) => onChange(event.target.value, unit)}
       />
-      <Select
+      <SelectField
         aria-label={`${label}单位`}
         label="单位"
-        selectedKeys={[unit]}
-        onSelectionChange={(keys) => {
-          const nextUnit = Array.from(keys)[0] as TrafficUnit | undefined;
-
-          if (!nextUnit) return;
+        options={UNITS.map((option) => ({ value: option, label: option }))}
+        value={unit}
+        onValueChange={(nextUnit) => {
           const mib = parseTrafficInput(value, unit);
 
           onChange(
-            mib === null ? value : String(mib / TRAFFIC_UNIT_MIB[nextUnit]),
-            nextUnit,
+            mib === null
+              ? value
+              : String(mib / TRAFFIC_UNIT_MIB[nextUnit as TrafficUnit]),
+            nextUnit as TrafficUnit,
           );
         }}
-      >
-        {UNITS.map((option) => (
-          <SelectItem key={option}>{option}</SelectItem>
-        ))}
-      </Select>
+      />
     </div>
   );
 }

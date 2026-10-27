@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { NodeFilterMode } from "@/pages/node/types";
 
 export interface NodeFilterModalProps {
@@ -53,30 +53,29 @@ export function NodeFilterModal({
               <div className="flex flex-col gap-4 py-2">
                 <div className="flex flex-col gap-2">
                   <p className="text-sm font-medium">按到期状态筛选</p>
-                  <Select
+                  <SelectField
                     aria-label="按到期状态筛选"
                     className="w-full"
-                    selectedKeys={[nodeFilterMode]}
-                    variant="bordered"
-                    onSelectionChange={(keys) => {
-                      const selected = Array.from(keys)[0] as
-                        | NodeFilterMode
-                        | undefined;
-
-                      setNodeFilterMode(selected || "all");
-                    }}
-                  >
-                    <SelectItem key="all">全部服务器</SelectItem>
-                    <SelectItem key="expiringSoon">
-                      7天内续费 ({nodeExpiryStats.expiringSoon})
-                    </SelectItem>
-                    <SelectItem key="expired">
-                      已逾期 ({nodeExpiryStats.expired})
-                    </SelectItem>
-                    <SelectItem key="withExpiry">
-                      已启用续费提醒 ({nodeExpiryStats.withExpiry})
-                    </SelectItem>
-                  </Select>
+                    options={[
+                      { value: "all", label: "全部服务器" },
+                      {
+                        value: "expiringSoon",
+                        label: `7天内续费 (${nodeExpiryStats.expiringSoon})`,
+                      },
+                      {
+                        value: "expired",
+                        label: `已逾期 (${nodeExpiryStats.expired})`,
+                      },
+                      {
+                        value: "withExpiry",
+                        label: `已启用续费提醒 (${nodeExpiryStats.withExpiry})`,
+                      },
+                    ]}
+                    value={nodeFilterMode}
+                    onValueChange={(value) =>
+                      setNodeFilterMode(value as NodeFilterMode)
+                    }
+                  />
                 </div>
               </div>
             </ModalBody>
