@@ -51,7 +51,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectItem } from "@/components/select-field";

@@ -15,7 +15,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 const modalBase =
   "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";

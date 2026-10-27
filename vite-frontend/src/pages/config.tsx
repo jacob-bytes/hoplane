@@ -21,7 +21,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import {
   updateConfigs,
   exportBackup,

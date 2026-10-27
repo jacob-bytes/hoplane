@@ -16,7 +16,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 const selectClass =
   "h-9 min-w-0 rounded-lg border border-divider bg-background px-2 text-sm";

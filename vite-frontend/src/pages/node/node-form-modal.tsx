@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";

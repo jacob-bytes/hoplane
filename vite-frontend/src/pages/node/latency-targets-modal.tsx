@@ -32,7 +32,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import {
   LATENCY_TARGETS_KEY,
   type LatencyTarget,

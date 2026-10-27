@@ -38,7 +38,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 export const TEMPLATE_KINDS: Array<[SubTemplateKind, string]> = [
   ["clash", "Mihomo"],

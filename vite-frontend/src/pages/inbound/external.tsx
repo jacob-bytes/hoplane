@@ -26,7 +26,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Select, SelectItem } from "@/components/select-field";
 import { Switch } from "@/components/ui/switch";
 

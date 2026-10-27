@@ -7,7 +7,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Node } from "@/pages/node/types";
 
 export interface RollbackNodeModalProps {

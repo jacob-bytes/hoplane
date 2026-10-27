@@ -39,7 +39,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Select, SelectItem } from "@/components/select-field";
 
 const modalBase =

@@ -9,7 +9,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface BatchActionResultModalProps {

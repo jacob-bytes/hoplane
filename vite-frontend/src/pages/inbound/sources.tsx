@@ -22,7 +22,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { formatTraffic } from "@/utils/traffic";
 
 const modalBase =

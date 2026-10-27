@@ -42,7 +42,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 // Short tag per return route.
 const ROUTES: Record<string, string> = {

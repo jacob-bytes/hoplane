@@ -15,7 +15,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 /** Where traffic goes: "direct", "block" or an inbound id. */
 export type TargetKey = string;

@@ -33,7 +33,7 @@ import {
   ModalBody,
   ModalContent,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 const RANGES = [
   { hours: 24, label: "24 小时" },

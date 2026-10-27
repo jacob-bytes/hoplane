@@ -81,7 +81,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Switch } from "@/components/ui/switch";
 import { formatTraffic } from "@/utils/traffic";
 import { latestProbe } from "@/utils/latest-probe";

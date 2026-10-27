@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { type ForwardAddressItem } from "@/pages/forward/address";
 import { Forward, Tunnel } from "@/pages/forward/types";
 

@@ -10,7 +10,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { beginGithubBind, unbindGithub, type GithubInfo } from "@/api";
 import { githubCallbackUrl, goToGithub } from "@/utils/github-login";
 

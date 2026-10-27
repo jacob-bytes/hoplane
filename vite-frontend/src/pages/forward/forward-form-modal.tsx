@@ -11,7 +11,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
 import { Tunnel, ForwardForm } from "@/pages/forward/types";
 

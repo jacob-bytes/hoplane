@@ -21,11 +21,7 @@ import {
   TextField as Input,
   TextAreaField as Textarea,
 } from "@/components/field-input";
-import {
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+import { ModalBody, ModalFooter, ModalHeader } from "@/components/modal";
 import { RenameRules } from "@/pages/subscription/rename-rules";
 import {
   ChipPicker,

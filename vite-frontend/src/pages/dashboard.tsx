@@ -17,7 +17,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { PageEmptyState, PageLoadingState } from "@/components/page-state";
 import { AnnouncementBanner } from "@/pages/dashboard/components/announcement-banner";
 import { AnnouncementModal } from "@/pages/dashboard/components/announcement-modal";

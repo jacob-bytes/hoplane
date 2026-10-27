@@ -9,7 +9,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Tunnel } from "@/pages/forward/types";
 
 export interface ForwardFilterModalProps {

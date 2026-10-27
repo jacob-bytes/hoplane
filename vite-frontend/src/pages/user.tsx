@@ -27,7 +27,7 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/components/select-field";
 import {

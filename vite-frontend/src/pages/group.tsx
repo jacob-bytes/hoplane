@@ -27,7 +27,7 @@ import {
   ModalFooter,
   ModalHeader,
   useDisclosure,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 import { Select, SelectItem } from "@/components/select-field";
 import {
   assignGroupPermission,

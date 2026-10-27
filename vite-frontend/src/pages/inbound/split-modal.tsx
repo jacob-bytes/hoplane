@@ -18,7 +18,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@/shadcn-bridge/heroui/modal";
+} from "@/components/modal";
 
 /** 出站: where an inbound's traffic leaves — IP version, default exit and 分流 rules. */
 export function SplitModal({
