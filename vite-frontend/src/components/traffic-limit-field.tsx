@@ -1,4 +1,7 @@
-import { TextField as Input } from "@/components/field-input";
+import { useId } from "react";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/select-native";
 import {
   parseTrafficInput,
@@ -25,18 +28,28 @@ export function TrafficLimitField({
   description,
   isRequired,
 }: TrafficLimitFieldProps) {
+  const id = useId();
+
   return (
     <div className="grid grid-cols-[minmax(0,1fr)_7rem] gap-2">
-      <Input
-        description={description}
-        isRequired={isRequired}
-        label={label}
-        min="0"
-        step="any"
-        type="number"
-        value={value}
-        onChange={(event) => onChange(event.target.value, unit)}
-      />
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor={id}>
+          {label}
+          {isRequired ? <span className="ml-1 text-destructive">*</span> : null}
+        </Label>
+        <Input
+          id={id}
+          min="0"
+          required={isRequired}
+          step="any"
+          type="number"
+          value={value}
+          onChange={(event) => onChange(event.target.value, unit)}
+        />
+        {description ? (
+          <p className="text-xs text-muted-foreground">{description}</p>
+        ) : null}
+      </div>
       <SelectField
         aria-label={`${label}单位`}
         label="单位"

@@ -16,10 +16,9 @@ import {
 import { Segmented } from "@/pages/subscription/controls";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
-import {
-  TextField as Input,
-  TextAreaField as Textarea,
-} from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Modal,
   ModalBody,
@@ -189,15 +188,22 @@ export function ImportModal({
               }
             }}
           />
-          <Textarea
-            description="支持：分享链接（ss / vmess / vless / trojan / hysteria2 / tuic / anytls / socks5，每行一个）、base64 订阅、Clash / Mihomo 配置、sing-box 配置、Surge / Loon 节点行，或直接填订阅地址（https://...）"
-            label="节点或订阅"
-            minRows={5}
-            placeholder={"vless://...\nss://...\n或 https://订阅地址"}
-            value={links}
-            variant="bordered"
-            onChange={(e) => setLinks(e.target.value)}
-          />
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="external-links">节点或订阅</Label>
+            <Textarea
+              className="min-h-32"
+              id="external-links"
+              placeholder={"vless://...\nss://...\n或 https://订阅地址"}
+              value={links}
+              onChange={(e) => setLinks(e.target.value)}
+            />
+            <p className="text-xs text-muted-foreground">
+              支持：分享链接（ss / vmess / vless / trojan / hysteria2 / tuic /
+              anytls / socks5，每行一个）、base64 订阅、Clash / Mihomo
+              配置、sing-box 配置、Surge / Loon
+              节点行，或直接填订阅地址（https://...）
+            </p>
+          </div>
           {(subURL || fromFile) && (
             <div className="space-y-3 rounded-xl border border-hairline p-3">
               <div className="flex items-start gap-2">
@@ -217,18 +223,20 @@ export function ImportModal({
               </div>
               {sync && (
                 <>
-                  <Input
-                    label="名称"
-                    placeholder={
-                      subURL
-                        ? subURL.hostname
-                        : fileName.replace(/\.[^.]+$/, "")
-                    }
-                    size="sm"
-                    value={sourceName}
-                    variant="bordered"
-                    onChange={(e) => setSourceName(e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="external-source-name">名称</Label>
+                    <Input
+                      className="h-8 text-xs"
+                      id="external-source-name"
+                      placeholder={
+                        subURL
+                          ? subURL.hostname
+                          : fileName.replace(/\.[^.]+$/, "")
+                      }
+                      value={sourceName}
+                      onChange={(e) => setSourceName(e.target.value)}
+                    />
+                  </div>
                   {subURL && (
                     <Segmented
                       options={INTERVALS}
@@ -390,28 +398,34 @@ export function ExternalEditModal({
         <ModalBody>
           {form && (
             <div className="space-y-3">
-              <Input
-                label="名称"
-                value={form.name}
-                variant="bordered"
-                onChange={(e) => set({ name: e.target.value })}
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="external-name">名称</Label>
+                <Input
+                  id="external-name"
+                  value={form.name}
+                  onChange={(e) => set({ name: e.target.value })}
+                />
+              </div>
               <div className="grid grid-cols-3 gap-3">
                 <div className="col-span-2">
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="external-host">地址</Label>
+                    <Input
+                      id="external-host"
+                      value={form.host}
+                      onChange={(e) => set({ host: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="external-port">端口</Label>
                   <Input
-                    label="地址"
-                    value={form.host}
-                    variant="bordered"
-                    onChange={(e) => set({ host: e.target.value })}
+                    id="external-port"
+                    type="number"
+                    value={form.port}
+                    onChange={(e) => set({ port: e.target.value })}
                   />
                 </div>
-                <Input
-                  label="端口"
-                  type="number"
-                  value={form.port}
-                  variant="bordered"
-                  onChange={(e) => set({ port: e.target.value })}
-                />
               </div>
               {legacy ? (
                 <>
@@ -424,30 +438,41 @@ export function ExternalEditModal({
                     value={form.method}
                     onValueChange={(method) => set({ method })}
                   />
-                  <Input
-                    label="密码"
-                    value={form.password}
-                    variant="bordered"
-                    onChange={(e) => set({ password: e.target.value })}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="external-password">密码</Label>
+                    <Input
+                      id="external-password"
+                      value={form.password}
+                      onChange={(e) => set({ password: e.target.value })}
+                    />
+                  </div>
                 </>
               ) : (
-                <Textarea
-                  description={`当前：${item?.importedSummary ?? ""}。原节点的密码、密钥等参数变了时，粘贴新的分享链接或节点行替换；留空保持不变`}
-                  label="用新链接替换参数（可选）"
-                  minRows={2}
-                  placeholder="vless://... / ss://..."
-                  value={form.link}
-                  variant="bordered"
-                  onChange={(e) => set({ link: e.target.value })}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="external-link">
+                    用新链接替换参数（可选）
+                  </Label>
+                  <Textarea
+                    className="min-h-20"
+                    id="external-link"
+                    placeholder="vless://... / ss://..."
+                    value={form.link}
+                    onChange={(e) => set({ link: e.target.value })}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    当前：{item?.importedSummary ?? ""}
+                    。原节点的密码、密钥等参数变了时，粘贴新的分享链接或节点行替换；留空保持不变
+                  </p>
+                </div>
               )}
-              <Input
-                label="备注"
-                value={form.remark}
-                variant="bordered"
-                onChange={(e) => set({ remark: e.target.value })}
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="external-remark">备注</Label>
+                <Input
+                  id="external-remark"
+                  value={form.remark}
+                  onChange={(e) => set({ remark: e.target.value })}
+                />
+              </div>
               <div className="inline-flex items-center gap-2">
                 <Checkbox
                   checked={form.relayOnly}
