@@ -186,10 +186,20 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 
 ## 9.3 HeroUI bridge 删除（2026-10-27）
 
-- 所有页面改用 `components/ui/*` 与本地 kit（field-input / modal / select-field / dropdown / accordion-field / tabs-field / date-picker-field / progress-bar）
+- 所有页面改用 `components/ui/*` 与本地 kit（modal / select-native / multi-select-field / accordion-field / tabs-field / date-picker-field / progress-bar / radio-group-field）
 - `src/shadcn-bridge/` 整个目录删除，`@react-aria/i18n` 依赖移除
 - `grep -rn "shadcn-bridge" src` 为 0；`tsc` / `eslint` / `vite build` 通过
 - 弹窗、下拉、折叠、Tabs、日期选择器、种子页导航均做过截图回归
+
+## 9.4 兼容层收尾（2026-10-27）
+
+- `field-input.tsx`、`select-field.tsx`、`dropdown.tsx` 全部删除；`selectedKeys`、`onPress`、`startContent` 调用为 0
+- 单选统一 `SelectField`（`ui/select`），多选统一 `MultiSelectField`（`ui/dropdown-menu` + `Checkbox`）
+- 普通输入改为 `Label + ui/input|textarea`，错误/说明放在字段下方；34 个表单文件全部迁移
+- `ui/button` 增加 `loading`，43 处提交/保存/删除按钮恢复转圈
+- legacy token：`border-divider` / `text-danger` / `bg-danger` / `bg-card` / `bg-default-*` / `bg-content2` 为 0
+- 演示浮层降到弹窗之下，移动端默认折叠；13 路由 × 320/375/768 页面横向溢出 0
+- Modal 保留 `components/modal.tsx` kit（内部是 `ui/dialog`），不逐页展开为 Dialog；42 个页面调用不变
 
 ## 9.2 v3 落地验收（2026-10-27）
 
@@ -208,10 +218,10 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 | 项 | 现状 |
 |---|---|
 | HeroUI bridge 退场 | ✅ 已完成：`src/shadcn-bridge` 已删除，`@react-aria/i18n` 依赖已移除 |
-| `space-y-*` 清理 | 约 220 处，视觉无影响，属代码规范清理 |
-| 裸色值/渐变残留 | 约 31 处（多为图表与历史状态色） |
+| `space-y-*` 清理 | 约 217 处，视觉无影响，属代码规范清理 |
+| 裸色值/渐变残留 | 约 52 处，多数是发行版/品牌图标与图表色 |
 | 320px 设置/分组 Tab | 横向滚动，未做折叠菜单 |
-| 演示站浮层 | 右下角 demo 提示会遮挡页面底部，仅演示环境 |
+| 演示站浮层 | ✅ 已降到弹窗之下，移动端默认折叠 |
 
 ## 10. 跟踪表
 

@@ -23,12 +23,12 @@ src/
   layouts/        壳：admin / h5 / h5-simple
   hooks/          可复用状态与实时逻辑
   styles/         globals.css + tailwind-theme.pcss（唯一 token 源）
-  components/*    业务 kit：field-input、modal、select-field、dropdown 等
+  components/*    业务 kit：modal、select-native、multi-select-field、progress-bar 等
 ```
 
 规则：
 
-- 页面只能 import `components/kit`、`components/ui`、`api`、`hooks`。
+- 页面只能 import `components/*` kit、`components/ui`、`api`、`hooks`。
 - 页面之间不互相 import；共享逻辑下沉到 `hooks` 或 `kit`。
 - 组件不直接 `fetch`，数据由页面/hook 传入。
 - 迁移期：新代码直接组合 `ui/*`；未迁页面继续走 bridge，**不得新增 bridge 组件**。
@@ -227,6 +227,8 @@ const reduce = useReducedMotion();
 
 - 迁移一页一提交，提交信息：`refactor(ui): migrate <page> to shadcn`。
 - 所有页面只使用 `components/ui/*` 与 `components/*` kit，禁止再引入 HeroUI。
+- 单选统一 `SelectField`（`select-native.tsx`），多选统一 `MultiSelectField`；普通输入用 `Label + Input`，错误文案放在字段下方。
+- 提交按钮用 `loading` 属性，不要只写 `disabled`。
 - 新组件只加到 `components/ui` 或 `components/*` kit。
 - bridge 已删除；如发现遗留引用按回归处理。
 - 校验：`grep -rn "shadcn-bridge" src` 必须为 0。
