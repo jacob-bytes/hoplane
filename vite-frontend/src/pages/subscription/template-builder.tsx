@@ -17,7 +17,7 @@ import {
 } from "./icon-picker";
 
 import { getSubTemplateCatalog } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 
 const MAIN = "节点选择";
@@ -579,11 +579,10 @@ export function TemplateBuilder({
             新规则放在最前面，保存时校验域名与 CIDR。
           </p>
           <Button
-            isDisabled={!custom.value.trim()}
+            disabled={!custom.value.trim()}
             size="sm"
-            startContent={<Plus className="h-4 w-4" />}
             variant="secondary"
-            onPress={() => {
+            onClick={() => {
               updateRules([
                 {
                   ...custom,
@@ -597,6 +596,7 @@ export function TemplateBuilder({
               setCustom({ ...custom, value: "" });
             }}
           >
+            {<Plus className="h-4 w-4" />}
             添加规则
           </Button>
         </div>
@@ -613,13 +613,13 @@ export function TemplateBuilder({
           {REGION_GROUPS.map((g) => (
             <Button
               key={g.name}
-              isDisabled={
+              disabled={
                 value.groups.length >= 20 ||
                 value.groups.some((x) => x.name === g.name)
               }
               size="sm"
               variant="secondary"
-              onPress={() =>
+              onClick={() =>
                 onChange({ ...value, groups: [...value.groups, { ...g }] })
               }
             >
@@ -682,10 +682,10 @@ export function TemplateBuilder({
             </div>
           ))}
           <Button
-            isDisabled={value.groups.length >= 20}
+            disabled={value.groups.length >= 20}
             size="sm"
             variant="secondary"
-            onPress={() => {
+            onClick={() => {
               let i = value.groups.length + 1;
 
               while (value.groups.some((g) => g.name === `分组 ${i}`)) i++;
@@ -729,22 +729,21 @@ export function TemplateBuilder({
             ))}
           </select>
           <Button
-            isDisabled={!activeLibrary}
-            isLoading={applying}
+            disabled={!activeLibrary || applying}
             size="sm"
             variant="secondary"
-            onPress={applyLibrary}
+            onClick={applyLibrary}
           >
             一键套用
           </Button>
           <Button
-            isDisabled={
+            disabled={
               !Object.keys(value.icons ?? {}).length &&
               !value.groups.some((g) => g.icon)
             }
             size="sm"
             variant="ghost"
-            onPress={() =>
+            onClick={() =>
               onChange({
                 ...value,
                 icons: undefined,

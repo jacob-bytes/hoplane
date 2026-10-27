@@ -18,7 +18,7 @@ import {
   PageToolbar,
   formatDate,
 } from "@/components/page-kit";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -706,9 +706,9 @@ export default function GroupPage({
                   </Select>
                   <Button
                     className="whitespace-nowrap px-4"
-                    isLoading={savingPermission}
+                    disabled={savingPermission}
                     size="sm"
-                    onPress={handleAssignPermission}
+                    onClick={handleAssignPermission}
                   >
                     分配
                   </Button>
@@ -904,10 +904,10 @@ export default function GroupPage({
                 </Select>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onTunnelGroupModalClose}>
+                <Button variant="ghost" onClick={onTunnelGroupModalClose}>
                   取消
                 </Button>
-                <Button isLoading={savingGroup} onPress={saveTunnelGroup}>
+                <Button disabled={savingGroup} onClick={saveTunnelGroup}>
                   保存
                 </Button>
               </ModalFooter>
@@ -948,10 +948,10 @@ export default function GroupPage({
                 </Select>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onUserGroupModalClose}>
+                <Button variant="ghost" onClick={onUserGroupModalClose}>
                   取消
                 </Button>
-                <Button isLoading={savingGroup} onPress={saveUserGroup}>
+                <Button disabled={savingGroup} onClick={saveUserGroup}>
                   保存
                 </Button>
               </ModalFooter>
@@ -995,10 +995,10 @@ export default function GroupPage({
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onTunnelAssignModalClose}>
+                <Button variant="ghost" onClick={onTunnelAssignModalClose}>
                   取消
                 </Button>
-                <Button isLoading={savingAssign} onPress={saveAssignTunnels}>
+                <Button disabled={savingAssign} onClick={saveAssignTunnels}>
                   保存
                 </Button>
               </ModalFooter>
@@ -1042,10 +1042,10 @@ export default function GroupPage({
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onUserAssignModalClose}>
+                <Button variant="ghost" onClick={onUserAssignModalClose}>
                   取消
                 </Button>
-                <Button isLoading={savingAssign} onPress={saveAssignUsers}>
+                <Button disabled={savingAssign} onClick={saveAssignUsers}>
                   保存
                 </Button>
               </ModalFooter>

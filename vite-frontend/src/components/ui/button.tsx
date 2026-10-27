@@ -40,7 +40,7 @@ const buttonVariants = cva(
   },
 );
 
-type ButtonProps = React.ComponentProps<"button"> &
+export type ButtonProps = React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
   };
@@ -61,5 +61,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+
+/** Map legacy HeroUI tones to a button variant. */
+export function buttonVariant(tone: string) {
+  if (tone === "danger" || tone === "destructive")
+    return "destructive" as const;
+  if (tone === "success") return "success" as const;
+  if (tone === "warning") return "warning" as const;
+  if (tone === "secondary") return "secondary" as const;
+  if (tone === "outline") return "outline" as const;
+  if (tone === "ghost" || tone === "light") return "light" as const;
+
+  return "default" as const;
+}
 
 export { Button, buttonVariants };

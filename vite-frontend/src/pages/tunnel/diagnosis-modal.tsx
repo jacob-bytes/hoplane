@@ -2,7 +2,7 @@ import type { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 import { Loader2 } from "lucide-react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalContent,
@@ -615,8 +615,8 @@ export function TunnelDiagnosisModal({
             <ModalFooter className="border-t border-divider">
               {currentDiagnosisTunnel && (
                 <Button
-                  isLoading={diagnosisLoading}
-                  onPress={() => handleDiagnose(currentDiagnosisTunnel)}
+                  disabled={diagnosisLoading}
+                  onClick={() => handleDiagnose(currentDiagnosisTunnel)}
                 >
                   重新诊断
                 </Button>

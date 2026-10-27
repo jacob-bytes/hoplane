@@ -5,7 +5,7 @@ import { ArrowDown, ArrowUp, ChevronDown, Plus, Trash2 } from "lucide-react";
 
 import { TargetButton } from "./target-picker";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 
 /** A 分流 rule as edited: domains and IPs are free text. */
@@ -233,35 +233,32 @@ export function SplitRulesEditor({
                 </div>
                 <div className="flex items-center justify-end gap-1 pt-1">
                   <Button
-                    isIconOnly
                     aria-label="上移"
-                    isDisabled={i === 0}
-                    size="sm"
+                    disabled={i === 0}
+                    size="icon"
                     variant="ghost"
-                    onPress={() => move(i, -1)}
+                    onClick={() => move(i, -1)}
                   >
                     <ArrowUp className="h-3.5 w-3.5" />
                   </Button>
                   <Button
-                    isIconOnly
                     aria-label="下移"
-                    isDisabled={i === rules.length - 1}
-                    size="sm"
+                    disabled={i === rules.length - 1}
+                    size="icon"
                     variant="ghost"
-                    onPress={() => move(i, 1)}
+                    onClick={() => move(i, 1)}
                   >
                     <ArrowDown className="h-3.5 w-3.5" />
                   </Button>
                   <Button
-                    color="danger"
                     size="sm"
-                    startContent={<Trash2 className="h-3.5 w-3.5" />}
                     variant="ghost"
-                    onPress={() => {
+                    onClick={() => {
                       onChange(rules.filter((_, j) => j !== i));
                       setOpen(null);
                     }}
                   >
+                    {<Trash2 className="h-3.5 w-3.5" />}
                     删除
                   </Button>
                 </div>

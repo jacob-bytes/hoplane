@@ -14,7 +14,7 @@ import {
   saveRemoteSource,
 } from "@/api";
 import { Segmented, ToggleRow } from "@/pages/subscription/controls";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -253,7 +253,7 @@ export function RemoteSourcesSection({
         <Button
           size="sm"
           variant="ghost"
-          onPress={() =>
+          onClick={() =>
             setDraft({
               name: "",
               url: "",
@@ -343,16 +343,15 @@ export function RemoteSourcesSection({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Button
-                    isIconOnly
                     aria-label={
                       s.kind === "file"
                         ? `重新上传 ${s.name}`
                         : `更新 ${s.name}`
                     }
-                    isLoading={refreshing === s.id}
-                    size="sm"
+                    disabled={refreshing === s.id}
+                    size="icon"
                     variant="secondary"
-                    onPress={() => {
+                    onClick={() => {
                       if (s.kind !== "file") {
                         void refresh(s);
 
@@ -522,21 +521,21 @@ export function RemoteSourcesSection({
                       </p>
                       <Button
                         variant="ghost"
-                        onPress={() => setConfirmDelete(false)}
+                        onClick={() => setConfirmDelete(false)}
                       >
                         取消
                       </Button>
                       <Button
-                        isDisabled={deleting}
+                        disabled={deleting}
                         variant="secondary"
-                        onPress={() => remove(true)}
+                        onClick={() => remove(true)}
                       >
                         保留节点
                       </Button>
                       <Button
-                        isLoading={deleting}
+                        disabled={deleting}
                         variant="destructive"
-                        onPress={() => remove(false)}
+                        onClick={() => remove(false)}
                       >
                         一起删除
                       </Button>
@@ -546,17 +545,16 @@ export function RemoteSourcesSection({
                       {draft.id && (
                         <Button
                           className="mr-auto"
-                          color="danger"
                           variant="ghost"
-                          onPress={() => setConfirmDelete(true)}
+                          onClick={() => setConfirmDelete(true)}
                         >
                           删除
                         </Button>
                       )}
-                      <Button variant="ghost" onPress={onClose}>
+                      <Button variant="ghost" onClick={onClose}>
                         取消
                       </Button>
-                      <Button isLoading={saving} onPress={save}>
+                      <Button disabled={saving} onClick={save}>
                         {draft.id
                           ? "保存"
                           : draft.kind === "file"

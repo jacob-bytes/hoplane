@@ -44,7 +44,7 @@ import {
   getMonitorTunnelQualityHistory,
   getConfigByName,
 } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
@@ -273,10 +273,10 @@ const QualityChartCard = React.memo(function QualityChartCard({
         <div className="flex items-center gap-2">
           <TimeRangeSelect value={rangeMs} onChange={onRangeChange} />
           <Button
-            isLoading={loading}
+            disabled={loading}
             size="sm"
             variant="secondary"
-            onPress={() => onRefresh(tunnelId)}
+            onClick={() => onRefresh(tunnelId)}
           >
             <RefreshCw className="w-4 h-4 mr-1" />
             刷新
@@ -397,10 +397,10 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
         <div className="flex items-center gap-2">
           <TimeRangeSelect value={rangeMs} onChange={onRangeChange} />
           <Button
-            isLoading={loading}
+            disabled={loading}
             size="sm"
             variant="secondary"
-            onPress={() => onRefresh(tunnelId)}
+            onClick={() => onRefresh(tunnelId)}
           >
             <RefreshCw className="w-4 h-4 mr-1" />
             刷新
@@ -1178,7 +1178,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
           <Button
             size="sm"
             variant="secondary"
-            onPress={() => {
+            onClick={() => {
               setDetailTunnelId(null);
               setQualityHistory([]);
               setTunnelMetrics([]);
@@ -1350,14 +1350,12 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
         </div>
         <Button
           className="shrink-0 gap-1"
-          isLoading={tunnelsLoading}
+          disabled={tunnelsLoading}
           size="sm"
-          startContent={
-            tunnelsLoading ? undefined : <RefreshCw className="h-4 w-4" />
-          }
           variant="secondary"
-          onPress={() => loadTunnels()}
+          onClick={() => loadTunnels()}
         >
+          {tunnelsLoading ? undefined : <RefreshCw className="h-4 w-4" />}
           刷新
         </Button>
       </div>

@@ -71,7 +71,7 @@ import {
   emptyForm,
   formFromItem,
 } from "@/pages/inbound/presets";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
@@ -935,20 +935,10 @@ export default function InboundPage() {
           role="presentation"
           onClick={(e) => e.stopPropagation()}
         >
-          <Button
-            color="default"
-            size="sm"
-            variant="outline"
-            onPress={() => setSharing(item)}
-          >
+          <Button size="sm" variant="outline" onClick={() => setSharing(item)}>
             分享
           </Button>
-          <Button
-            color="default"
-            size="sm"
-            variant="ghost"
-            onPress={() => setRelaying(item)}
-          >
+          <Button size="sm" variant="ghost" onClick={() => setRelaying(item)}>
             中转
           </Button>
         </div>
@@ -1012,15 +1002,14 @@ export default function InboundPage() {
             <PageToolbar
               extra={
                 <Button
-                  isIconOnly
                   aria-label={
                     everyGroupCollapsed ? "展开所有分组" : "折叠所有分组"
                   }
                   className="text-muted-foreground"
-                  isDisabled={groupIds.length === 0}
-                  size="sm"
+                  disabled={groupIds.length === 0}
+                  size="icon"
                   variant="outline"
-                  onPress={() =>
+                  onClick={() =>
                     setAllCollapsed(groupIds, !everyGroupCollapsed)
                   }
                 >
@@ -1091,42 +1080,38 @@ export default function InboundPage() {
               </span>
               <div className="ml-auto flex flex-wrap justify-end gap-2">
                 <Button
-                  color="primary"
-                  isDisabled={filtered.length === 0}
+                  disabled={filtered.length === 0}
                   size="sm"
                   variant="secondary"
-                  onPress={toggleSelectAll}
+                  onClick={toggleSelectAll}
                 >
                   {allFilteredSelected ? "取消全选" : "全选"}
                 </Button>
                 <Button
-                  color="success"
-                  isDisabled={selectedIds.size === 0 || batchToggling}
+                  disabled={selectedIds.size === 0 || batchToggling}
                   size="sm"
                   variant="secondary"
-                  onPress={() => runBatchToggle(true)}
+                  onClick={() => runBatchToggle(true)}
                 >
                   启用
                 </Button>
                 <Button
-                  color="warning"
-                  isDisabled={selectedIds.size === 0 || batchToggling}
+                  disabled={selectedIds.size === 0 || batchToggling}
                   size="sm"
                   variant="secondary"
-                  onPress={() => runBatchToggle(false)}
+                  onClick={() => runBatchToggle(false)}
                 >
                   停用
                 </Button>
                 <Button
-                  color="danger"
-                  isDisabled={selectedIds.size === 0}
+                  disabled={selectedIds.size === 0}
                   size="sm"
                   variant="secondary"
-                  onPress={() => setBatchDeleteOpen(true)}
+                  onClick={() => setBatchDeleteOpen(true)}
                 >
                   删除
                 </Button>
-                <Button size="sm" variant="ghost" onPress={exitSelectMode}>
+                <Button size="sm" variant="ghost" onClick={exitSelectMode}>
                   完成
                 </Button>
               </div>
@@ -1148,10 +1133,9 @@ export default function InboundPage() {
                 </p>
                 {kernels.length === 0 && inbounds.length === 0 && (
                   <Button
-                    color="primary"
                     size="sm"
                     variant="secondary"
-                    onPress={() =>
+                    onClick={() =>
                       navigate("/node", {
                         state: { tab: "kernels" } satisfies NodeHubState,
                       })
@@ -1420,11 +1404,10 @@ export default function InboundPage() {
                             {v}
                           </span>
                           <Button
-                            isIconOnly
                             aria-label={`复制${k}`}
-                            size="sm"
+                            size="icon"
                             variant="ghost"
-                            onPress={() => copyText(v)}
+                            onClick={() => copyText(v)}
                           >
                             <Copy className="w-3.5 h-3.5" />
                           </Button>
@@ -1472,13 +1455,13 @@ export default function InboundPage() {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="ghost" onPress={onClose}>
+                  <Button variant="ghost" onClick={onClose}>
                     取消
                   </Button>
                   <Button
-                    color={CONFIRM_TEXT[confirm.action].color}
-                    isLoading={confirmLoading}
-                    onPress={runConfirm}
+                    disabled={confirmLoading}
+                    variant={buttonVariant(CONFIRM_TEXT[confirm.action].color)}
+                    onClick={runConfirm}
                   >
                     {CONFIRM_TEXT[confirm.action].button}
                   </Button>
@@ -1519,13 +1502,13 @@ export default function InboundPage() {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button variant="ghost" onPress={onClose}>
+                  <Button variant="ghost" onClick={onClose}>
                     取消
                   </Button>
                   <Button
-                    isLoading={batchDeleting}
+                    disabled={batchDeleting}
                     variant="destructive"
-                    onPress={runBatchDelete}
+                    onClick={runBatchDelete}
                   >
                     删除
                   </Button>

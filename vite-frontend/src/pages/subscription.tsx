@@ -49,7 +49,7 @@ import {
   useCachedState,
 } from "@/hooks/use-cached-state";
 import { copyText, panelOrigin } from "@/pages/inbound/share";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
@@ -622,31 +622,28 @@ function Editor({
                         </div>
                       </div>
                       <Button
-                        isIconOnly
                         aria-label={`上移 ${g.name}`}
-                        isDisabled={i === 0}
-                        size="sm"
+                        disabled={i === 0}
+                        size="icon"
                         variant="ghost"
-                        onPress={() => moveGroup(i, -1)}
+                        onClick={() => moveGroup(i, -1)}
                       >
                         <ArrowUp className="h-4 w-4" />
                       </Button>
                       <Button
-                        isIconOnly
                         aria-label={`下移 ${g.name}`}
-                        isDisabled={i === pickedGroups.length - 1}
-                        size="sm"
+                        disabled={i === pickedGroups.length - 1}
+                        size="icon"
                         variant="ghost"
-                        onPress={() => moveGroup(i, 1)}
+                        onClick={() => moveGroup(i, 1)}
                       >
                         <ArrowDown className="h-4 w-4" />
                       </Button>
                       <Button
-                        isIconOnly
                         aria-label={`移除 ${g.name}`}
-                        size="sm"
+                        size="icon"
                         variant="ghost"
-                        onPress={() =>
+                        onClick={() =>
                           setGroupIds(draft.groupIds.filter((x) => x !== g.id))
                         }
                       >
@@ -1103,10 +1100,10 @@ function Editor({
         )}
       </ModalBody>
       <ModalFooter>
-        <Button variant="ghost" onPress={onClose}>
+        <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
-        <Button isLoading={saving} onPress={onSave}>
+        <Button disabled={saving} onClick={onSave}>
           保存
         </Button>
       </ModalFooter>
@@ -1368,11 +1365,10 @@ export default function SubscriptionPage() {
   const actions = (s: SubscriptionItem) => (
     <>
       <Button
-        isIconOnly
         aria-label={`复制 ${s.name} 的订阅链接`}
-        size="sm"
+        size="icon"
         variant="secondary"
-        onPress={() => copyText(url(s), "订阅链接已复制")}
+        onClick={() => copyText(url(s), "订阅链接已复制")}
       >
         <Copy className="h-4 w-4" />
       </Button>
@@ -1665,13 +1661,13 @@ export default function SubscriptionPage() {
                       </span>
                       <Button
                         className="h-7 min-w-0 px-2 text-xs"
-                        isDisabled={
-                          detail.uploadBytes + detail.downloadBytes === 0
+                        disabled={
+                          detail.uploadBytes + detail.downloadBytes === 0 ||
+                          resettingTraffic
                         }
-                        isLoading={resettingTraffic}
                         size="sm"
                         variant="secondary"
-                        onPress={resetTraffic}
+                        onClick={resetTraffic}
                       >
                         重置流量
                       </Button>
@@ -1707,11 +1703,10 @@ export default function SubscriptionPage() {
                     <>
                       <Button
                         className="w-full"
-                        color="primary"
-                        startContent={<Copy className="h-4 w-4" />}
                         variant="secondary"
-                        onPress={() => copyText(url(detail), "订阅链接已复制")}
+                        onClick={() => copyText(url(detail), "订阅链接已复制")}
                       >
+                        {<Copy className="h-4 w-4" />}
                         复制订阅链接（自动识别客户端）
                       </Button>
                       <SubClientGrid
@@ -1742,24 +1737,22 @@ export default function SubscriptionPage() {
                 </ModalBody>
                 <ModalFooter className="flex-wrap">
                   <Button
-                    color="danger"
                     size="sm"
                     variant="ghost"
-                    onPress={() => setConfirm("delete")}
+                    onClick={() => setConfirm("delete")}
                   >
                     删除
                   </Button>
                   <Button
-                    color="warning"
                     size="sm"
                     variant="ghost"
-                    onPress={() => setConfirm("reset")}
+                    onClick={() => setConfirm("reset")}
                   >
                     重置链接和凭据
                   </Button>
                   <Button
                     size="sm"
-                    onPress={() => {
+                    onClick={() => {
                       const s = detail;
 
                       onClose();
@@ -1861,13 +1854,15 @@ export default function SubscriptionPage() {
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button
-                  color={confirm === "delete" ? "danger" : "warning"}
-                  isLoading={saving}
-                  onPress={runConfirm}
+                  disabled={saving}
+                  variant={buttonVariant(
+                    confirm === "delete" ? "danger" : "warning",
+                  )}
+                  onClick={runConfirm}
                 >
                   {confirm === "delete" ? "删除" : "重置"}
                 </Button>

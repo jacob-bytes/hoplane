@@ -19,7 +19,7 @@ import {
   Users,
 } from "lucide-react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
 import { VersionFooter } from "@/components/version-footer";
 import { CommandPalette } from "@/components/command-palette";
@@ -446,12 +446,11 @@ export default function AdminLayout({
         <header className="flex h-14 shrink-0 items-center gap-2 border-b border-hairline bg-raised pl-3 pr-3 lg:pr-6">
           {isMobile && (
             <Button
-              isIconOnly
               aria-label="打开菜单"
               className="-ml-1 shrink-0"
-              size="sm"
+              size="icon"
               variant="ghost"
-              onPress={toggleMobileMenu}
+              onClick={toggleMobileMenu}
             >
               <svg
                 className="h-5 w-5 text-foreground"
@@ -477,12 +476,11 @@ export default function AdminLayout({
           {!isMobile && (
             <>
               <Button
-                isIconOnly
                 aria-label={isCollapsed ? "展开侧栏" : "收起侧栏"}
                 className="shrink-0 text-muted-foreground"
-                size="sm"
+                size="icon"
                 variant="ghost"
-                onPress={toggleCollapse}
+                onClick={toggleCollapse}
               >
                 {isCollapsed ? (
                   <PanelLeftOpen className="h-4 w-4" />

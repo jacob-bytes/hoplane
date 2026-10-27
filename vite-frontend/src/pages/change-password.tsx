@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { updatePassword } from "@/api";
@@ -191,9 +191,8 @@ export default function ChangePasswordPage() {
 
                 <Button
                   className="mt-2 h-10 rounded-md"
-                  disabled={loading}
-                  isLoading={loading}
-                  onPress={handleSubmit}
+                  disabled={loading || loading}
+                  onClick={handleSubmit}
                 >
                   {loading ? "修改中..." : "立即修改账号密码"}
                 </Button>

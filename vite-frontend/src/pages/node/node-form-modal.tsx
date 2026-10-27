@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
 import {
@@ -657,10 +657,10 @@ export function NodeFormModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" onPress={() => setDialogVisible(false)}>
+          <Button variant="ghost" onClick={() => setDialogVisible(false)}>
             取消
           </Button>
-          <Button isLoading={submitLoading} onPress={handleSubmit}>
+          <Button disabled={submitLoading} onClick={handleSubmit}>
             {submitLoading ? "提交中..." : form.id ? "保存" : "创建"}
           </Button>
         </ModalFooter>

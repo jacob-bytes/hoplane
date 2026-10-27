@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalBody,
@@ -140,11 +140,10 @@ export function PasskeyModal({
                     </div>
                   </div>
                   <Button
-                    color="danger"
                     disabled={busy}
                     size="sm"
                     variant="ghost"
-                    onPress={() => void remove(item.id)}
+                    onClick={() => void remove(item.id)}
                   >
                     删除
                   </Button>
@@ -168,7 +167,7 @@ export function PasskeyModal({
           />
         </ModalBody>
         <ModalFooter>
-          <Button isLoading={busy} onPress={() => void register()}>
+          <Button disabled={busy} onClick={() => void register()}>
             绑定新密钥
           </Button>
         </ModalFooter>

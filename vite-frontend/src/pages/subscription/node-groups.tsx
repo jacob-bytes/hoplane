@@ -14,7 +14,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import { deleteNodeGroup, previewNodeGroup, saveNodeGroup } from "@/api";
 import { EmptyHint } from "@/components/page-kit";
 import { PROTOCOL_LABELS } from "@/pages/inbound/presets";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
@@ -199,22 +199,20 @@ export function NodeGroupList({
             onClick={(e) => e.stopPropagation()}
           >
             <Button
-              isIconOnly
               aria-label={`上移 ${g.name}`}
-              isDisabled={i === 0}
-              size="sm"
+              disabled={i === 0}
+              size="icon"
               variant="ghost"
-              onPress={() => onMove(i, -1)}
+              onClick={() => onMove(i, -1)}
             >
               <ArrowUp className="h-4 w-4" />
             </Button>
             <Button
-              isIconOnly
               aria-label={`下移 ${g.name}`}
-              isDisabled={i === groups.length - 1}
-              size="sm"
+              disabled={i === groups.length - 1}
+              size="icon"
               variant="ghost"
-              onPress={() => onMove(i, 1)}
+              onClick={() => onMove(i, 1)}
             >
               <ArrowDown className="h-4 w-4" />
             </Button>
@@ -610,17 +608,16 @@ export function NodeGroupEditor({
                   <Button
                     size="sm"
                     variant="secondary"
-                    onPress={() => setOpts({ script: SCRIPT_EXAMPLE })}
+                    onClick={() => setOpts({ script: SCRIPT_EXAMPLE })}
                   >
                     插入示例
                   </Button>
                 )}
                 {o.script && (
                   <Button
-                    color="primary"
                     size="sm"
                     variant="secondary"
-                    onPress={() => setPage("preview")}
+                    onClick={() => setPage("preview")}
                   >
                     试运行并预览
                   </Button>
@@ -694,31 +691,30 @@ export function NodeGroupEditor({
               <span className="mr-auto self-center text-xs text-danger">
                 删除这个节点组？
               </span>
-              <Button variant="ghost" onPress={() => setConfirmDelete(false)}>
+              <Button variant="ghost" onClick={() => setConfirmDelete(false)}>
                 取消
               </Button>
-              <Button isLoading={saving} variant="destructive" onPress={remove}>
+              <Button disabled={saving} variant="destructive" onClick={remove}>
                 删除
               </Button>
             </>
           ) : (
             <Button
               className="mr-auto"
-              color="danger"
-              isDisabled={usedBy.length > 0}
+              disabled={usedBy.length > 0}
               title={usedBy.length > 0 ? "有订阅在用，先在订阅里取消选择" : ""}
               variant="ghost"
-              onPress={() => setConfirmDelete(true)}
+              onClick={() => setConfirmDelete(true)}
             >
               删除
             </Button>
           ))}
         {!confirmDelete && (
           <>
-            <Button variant="ghost" onPress={onClose}>
+            <Button variant="ghost" onClick={onClose}>
               取消
             </Button>
-            <Button isLoading={saving} onPress={save}>
+            <Button disabled={saving} onClick={save}>
               保存
             </Button>
           </>

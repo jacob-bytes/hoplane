@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { Loader2 } from "lucide-react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
   Modal,
@@ -213,19 +213,19 @@ export function DeleteTunnelModal({
               )}
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isDisabled={
+                disabled={
                   deletePreviewLoading ||
                   (deleteHasForwardDependencies &&
                     deleteAction === "replace" &&
-                    (!deleteTargetTunnelId || deleteReplaceUnavailable))
+                    (!deleteTargetTunnelId || deleteReplaceUnavailable)) ||
+                  deleteLoading
                 }
-                isLoading={deleteLoading}
                 variant="destructive"
-                onPress={confirmDelete}
+                onClick={confirmDelete}
               >
                 {deleteLoading ? "删除中..." : deleteConfirmLabel}
               </Button>
@@ -438,20 +438,20 @@ export function BatchDeleteTunnelsModal({
               )}
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isDisabled={
+                disabled={
                   batchDeletePreviewLoading ||
                   (batchDeleteHasForwardDependencies &&
                     batchDeleteAction === "replace" &&
                     (!batchDeleteTargetTunnelId ||
-                      batchDeleteReplaceUnavailable))
+                      batchDeleteReplaceUnavailable)) ||
+                  batchLoading
                 }
-                isLoading={batchLoading}
                 variant="destructive"
-                onPress={handleBatchDelete}
+                onClick={handleBatchDelete}
               >
                 {batchLoading ? "删除中..." : batchDeleteConfirmLabel}
               </Button>

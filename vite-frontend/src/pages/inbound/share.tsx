@@ -8,7 +8,7 @@ import { Copy, QrCode } from "lucide-react";
 
 import { copyWithToast } from "@/utils/clipboard";
 import { getInboundShare } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Modal,
@@ -126,8 +126,7 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
       <div className="flex gap-2">
         <Button
           className="flex-1"
-          startContent={<Copy className="w-4 h-4" />}
-          onPress={() =>
+          onClick={() =>
             copyText(
               text,
               asConf
@@ -138,14 +137,15 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
             )
           }
         >
+          {<Copy className="w-4 h-4" />}
           {asConf ? "复制配置" : surgeOnly ? "复制 Surge 配置" : "复制链接"}
         </Button>
         {!surgeOnly && (
           <Button
-            isIconOnly
             aria-label="二维码"
-            variant={showQr ? "solid" : "flat"}
-            onPress={() => setShowQr((v) => !v)}
+            size="icon"
+            variant={showQr ? "default" : "flat"}
+            onClick={() => setShowQr((v) => !v)}
           >
             <QrCode className="w-4 h-4" />
           </Button>

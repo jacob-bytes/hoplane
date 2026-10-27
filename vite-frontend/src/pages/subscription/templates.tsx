@@ -27,7 +27,7 @@ import {
   newTemplateBuilder,
 } from "@/pages/subscription/template-builder";
 import { Segmented } from "@/pages/subscription/controls";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -554,10 +554,10 @@ function Editor({
                 <div className="flex flex-wrap gap-2">
                   {saved && (
                     <Button
-                      isLoading={checking}
+                      disabled={checking}
                       size="sm"
                       variant="secondary"
-                      onPress={refresh}
+                      onClick={refresh}
                     >
                       立即更新
                     </Button>
@@ -565,7 +565,7 @@ function Editor({
                   <Button
                     size="sm"
                     variant="secondary"
-                    onPress={() => {
+                    onClick={() => {
                       // A pasted copy: editable, no longer follows the URL.
                       setDraft({
                         name: `${draft.name || "模板"} 副本`,
@@ -651,17 +651,16 @@ function Editor({
             </select>
             <Button
               className="ml-auto"
-              isDisabled={
-                building
+              disabled={
+                (building
                   ? !draft.builder
                   : fromUrl
                     ? !draft.sourceUrl.trim()
-                    : !draft.content
+                    : !draft.content) || checking
               }
-              isLoading={checking}
               size="sm"
               variant="secondary"
-              onPress={runCheck}
+              onClick={runCheck}
             >
               {building ? "生成并预览" : fromUrl ? "获取并检查" : "检查"}
             </Button>
@@ -750,37 +749,36 @@ function Editor({
               <span className="mr-auto self-center text-xs text-danger">
                 删除这个模板？
               </span>
-              <Button variant="ghost" onPress={() => setConfirmDelete(false)}>
+              <Button variant="ghost" onClick={() => setConfirmDelete(false)}>
                 取消
               </Button>
-              <Button variant="destructive" onPress={remove}>
+              <Button variant="destructive" onClick={remove}>
                 删除
               </Button>
             </>
           ) : (
             <Button
               className="mr-auto"
-              color="danger"
               variant="ghost"
-              onPress={() => setConfirmDelete(true)}
+              onClick={() => setConfirmDelete(true)}
             >
               删除
             </Button>
           ))}
         {!confirmDelete && (
           <>
-            <Button variant="ghost" onPress={onBack}>
+            <Button variant="ghost" onClick={onBack}>
               取消
             </Button>
             <Button
-              isDisabled={
+              disabled={
                 checking ||
                 (building &&
                   draft.builder?.preset !== "custom" &&
-                  !draft.builder?.rules.length)
+                  !draft.builder?.rules.length) ||
+                saving
               }
-              isLoading={saving}
-              onPress={save}
+              onClick={save}
             >
               保存
             </Button>
@@ -909,10 +907,8 @@ export function TemplatesModal({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button
-                  startContent={<Plus className="h-4 w-4" />}
-                  onPress={() => setEditing({ draft: blank() })}
-                >
+                <Button onClick={() => setEditing({ draft: blank() })}>
+                  {<Plus className="h-4 w-4" />}
                   新建模板
                 </Button>
               </ModalFooter>

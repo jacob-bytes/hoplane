@@ -13,7 +13,7 @@ import React from "react";
 import { toast } from "sonner";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { useThemeContext } from "@/themes/context";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
@@ -176,7 +176,7 @@ export const ThemeSettings: React.FC = () => {
               className="text-muted-foreground dark:text-muted-foreground"
               size="sm"
               variant="ghost"
-              onPress={handleReset}
+              onClick={handleReset}
             >
               ↩ 恢复默认主题
             </Button>

@@ -53,7 +53,11 @@ export function ProgressBar({
       )}
       <Progress
         aria-label={ariaLabel}
-        className={cn(size === "sm" && "h-1.5", size === "lg" && "h-3", className)}
+        className={cn(
+          size === "sm" && "h-1.5",
+          size === "lg" && "h-3",
+          className,
+        )}
         indicatorClassName={TONE[color]}
         value={value}
       />

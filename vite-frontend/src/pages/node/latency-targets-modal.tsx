@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/table";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
@@ -225,14 +225,14 @@ export function LatencyTargetsPanel({
               <Button
                 size="sm"
                 variant="ghost"
-                onPress={() => setPoints(pool.map((t) => t.name))}
+                onClick={() => setPoints(pool.map((t) => t.name))}
               >
                 全选
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                onPress={() => {
+                onClick={() => {
                   setPoints([]);
                   setPinned([]);
                 }}
@@ -310,14 +310,10 @@ export function LatencyTargetsPanel({
       )}
 
       <DialogFooter>
-        <Button variant="ghost" onPress={onClose}>
+        <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
-        <Button
-          isDisabled={pool.length === 0}
-          isLoading={saving}
-          onPress={save}
-        >
+        <Button disabled={pool.length === 0 || saving} onClick={save}>
           保存
         </Button>
       </DialogFooter>

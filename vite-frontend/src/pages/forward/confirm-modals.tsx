@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
   Modal,
@@ -59,13 +59,13 @@ export function DeleteForwardModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isLoading={deleteLoading}
+                disabled={deleteLoading}
                 variant="destructive"
-                onPress={confirmDelete}
+                onClick={confirmDelete}
               >
                 删除
               </Button>
@@ -125,16 +125,16 @@ export function ResetFlowModal({
             </ModalBody>
             <ModalFooter>
               <Button
-                isDisabled={resetFlowLoading}
+                disabled={resetFlowLoading}
                 variant="ghost"
-                onPress={onClose}
+                onClick={onClose}
               >
                 取消
               </Button>
               <Button
-                isLoading={resetFlowLoading}
+                disabled={resetFlowLoading}
                 variant="secondary"
-                onPress={confirmResetFlow}
+                onClick={confirmResetFlow}
               >
                 清零
               </Button>
@@ -178,7 +178,7 @@ export function AddressListModal({
         <ModalHeader className="text-base">{addressModalTitle}</ModalHeader>
         <ModalBody className="pb-6">
           <div className="mb-4 text-right">
-            <Button size="sm" onPress={copyAllAddresses}>
+            <Button size="sm" onClick={copyAllAddresses}>
               复制
             </Button>
           </div>
@@ -193,10 +193,10 @@ export function AddressListModal({
                   {item.address}
                 </code>
                 <Button
-                  isLoading={item.copying}
+                  disabled={item.copying}
                   size="sm"
                   variant="ghost"
-                  onPress={() => copyAddress(item)}
+                  onClick={() => copyAddress(item)}
                 >
                   复制
                 </Button>
@@ -243,13 +243,13 @@ export function BatchDeleteModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isLoading={batchLoading}
+                disabled={batchLoading}
                 variant="destructive"
-                onPress={handleBatchDelete}
+                onClick={handleBatchDelete}
               >
                 删除
               </Button>
@@ -317,13 +317,12 @@ export function BatchChangeTunnelModal({
               </Select>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isDisabled={!batchTargetTunnelId}
-                isLoading={batchLoading}
-                onPress={handleBatchChangeTunnel}
+                disabled={!batchTargetTunnelId || batchLoading}
+                onClick={handleBatchChangeTunnel}
               >
                 换隧道
               </Button>

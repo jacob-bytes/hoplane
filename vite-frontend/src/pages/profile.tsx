@@ -16,7 +16,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalContent,
@@ -174,7 +174,7 @@ function SecurityPanel({ items }: { items: SecurityItem[] }) {
               className="min-w-16"
               size="sm"
               variant="outline"
-              onPress={item.onPress}
+              onClick={item.onPress}
             >
               {item.action}
             </Button>
@@ -442,11 +442,10 @@ export default function ProfilePage() {
   const logoutButton = (
     <Button
       className="w-full gap-2 border-danger/30 text-danger hover:bg-danger/10"
-      color="danger"
-      startContent={<LogOut className="h-4 w-4" />}
       variant="outline"
-      onPress={handleLogout}
+      onClick={handleLogout}
     >
+      {<LogOut className="h-4 w-4" />}
       退出登录
     </Button>
   );
@@ -530,12 +529,11 @@ export default function ProfilePage() {
               </div>
               <Button
                 className="shrink-0 border-danger/30 text-danger hover:bg-danger/10"
-                color="danger"
                 size="sm"
-                startContent={<LogOut className="h-4 w-4" />}
                 variant="outline"
-                onPress={handleLogout}
+                onClick={handleLogout}
               >
+                {<LogOut className="h-4 w-4" />}
                 退出登录
               </Button>
             </div>
@@ -646,12 +644,12 @@ export default function ProfilePage() {
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button color="default" variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button
-                  isLoading={passwordLoading}
-                  onPress={handlePasswordSubmit}
+                  disabled={passwordLoading}
+                  onClick={handlePasswordSubmit}
                 >
                   修改密码
                 </Button>

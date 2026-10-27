@@ -1,7 +1,7 @@
 import type { BatchOperationFailure } from "@/api/types";
 
 import { copyWithToast } from "@/utils/clipboard";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Modal,
@@ -115,7 +115,7 @@ export function BatchActionResultModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={handleCopy}>
+              <Button variant="ghost" onClick={handleCopy}>
                 复制失败原因
               </Button>
             </ModalFooter>

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { copyWithToast } from "@/utils/clipboard";
 import { AnimatedPage } from "@/components/animated-page";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Dropdown,
   DropdownTrigger,
@@ -643,8 +643,8 @@ function UserDashboard() {
           <Dropdown placement="bottom-end">
             <DropdownTrigger>
               <Button
-                isIconOnly
                 className="h-9 w-9 min-w-0 rounded-full bg-primary text-sm font-semibold text-primary-foreground"
+                size="icon"
                 variant="default"
               >
                 {username.slice(0, 2).toUpperCase()}
@@ -1178,7 +1178,7 @@ function UserDashboard() {
           <ModalHeader className="text-base">{addressModalTitle}</ModalHeader>
           <ModalBody className="pb-6">
             <div className="mb-4 text-right">
-              <Button size="sm" onPress={copyAllAddresses}>
+              <Button size="sm" onClick={copyAllAddresses}>
                 复制全部
               </Button>
             </div>
@@ -1193,10 +1193,10 @@ function UserDashboard() {
                     {item.address}
                   </code>
                   <Button
-                    isLoading={item.copying}
+                    disabled={item.copying}
                     size="sm"
                     variant="ghost"
-                    onPress={() => copyAddress(item)}
+                    onClick={() => copyAddress(item)}
                   >
                     复制
                   </Button>

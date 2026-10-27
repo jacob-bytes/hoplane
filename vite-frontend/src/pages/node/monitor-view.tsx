@@ -44,7 +44,7 @@ import {
   deleteServiceMonitor,
   runServiceMonitor,
 } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import {
   Modal,
   ModalContent,
@@ -561,10 +561,10 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
             <SelectItem key={String(24 * 60 * 60 * 1000)}>24小时</SelectItem>
           </Select>
           <Button
-            isLoading={loading}
+            disabled={loading}
             size="sm"
             variant="secondary"
-            onPress={() => nodeId && onRefresh(nodeId)}
+            onClick={() => nodeId && onRefresh(nodeId)}
           >
             <RefreshCw className="w-4 h-4 mr-1" />
             刷新
@@ -576,10 +576,11 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
           {METRIC_TYPE_BUTTONS.map((item) => (
             <Button
               key={item.key}
-              color={activeMetricType === item.key ? "primary" : "default"}
               size="sm"
-              variant={activeMetricType === item.key ? "solid" : "flat"}
-              onPress={() => onMetricTypeChange(item.key)}
+              variant={buttonVariant(
+                activeMetricType === item.key ? "primary" : "default",
+              )}
+              onClick={() => onMetricTypeChange(item.key)}
             >
               {item.label}
             </Button>
@@ -1433,14 +1434,12 @@ export function MonitorView({
             {onRefresh && (
               <Button
                 className="shrink-0 gap-1"
-                isLoading={refreshing}
+                disabled={refreshing}
                 size="sm"
-                startContent={
-                  refreshing ? undefined : <RefreshCw className="h-4 w-4" />
-                }
                 variant="secondary"
-                onPress={onRefresh}
+                onClick={onRefresh}
               >
+                {refreshing ? undefined : <RefreshCw className="h-4 w-4" />}
                 刷新
               </Button>
             )}
@@ -1512,7 +1511,7 @@ export function MonitorView({
             <Button
               size="sm"
               variant="secondary"
-              onPress={() => (onBack ? onBack() : setDetailNodeId(null))}
+              onClick={() => (onBack ? onBack() : setDetailNodeId(null))}
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
               {onBack ? "返回服务器" : "返回总览"}
@@ -1670,7 +1669,7 @@ export function MonitorView({
                       <Button
                         size="sm"
                         variant="secondary"
-                        onPress={() => {
+                        onClick={() => {
                           void loadMonitorResults(resolvedActiveMonitorId, {
                             rangeMs: serviceMonitorRangeMs,
                           });
@@ -1681,10 +1680,9 @@ export function MonitorView({
                       </Button>
                     )}
                     <Button
-                      color="primary"
                       size="sm"
                       variant="secondary"
-                      onPress={() => handleOpenEditModal()}
+                      onClick={() => handleOpenEditModal()}
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       添加监控
@@ -1708,10 +1706,11 @@ export function MonitorView({
                           return (
                             <Button
                               key={monitor.id}
-                              color={isActive ? "primary" : "default"}
                               size="sm"
-                              variant={isActive ? "solid" : "flat"}
-                              onPress={() => {
+                              variant={buttonVariant(
+                                isActive ? "primary" : "default",
+                              )}
+                              onClick={() => {
                                 setActiveServiceMonitorId(monitor.id);
                                 // Load results for this monitor if not loaded
                                 if (
@@ -1776,11 +1775,9 @@ export function MonitorView({
                               <Button
                                 className="shrink-0"
                                 size="sm"
-                                startContent={
-                                  <MoreHorizontal className="h-4 w-4" />
-                                }
                                 variant="secondary"
                               >
+                                {<MoreHorizontal className="h-4 w-4" />}
                                 操作
                               </Button>
                             </DropdownTrigger>
@@ -1942,7 +1939,7 @@ export function MonitorView({
                 <Button
                   size="sm"
                   variant="secondary"
-                  onPress={() =>
+                  onClick={() =>
                     resultsMonitorId != null &&
                     handleRunMonitor(resultsMonitorId)
                   }
@@ -1951,10 +1948,10 @@ export function MonitorView({
                   检查
                 </Button>
                 <Button
-                  isLoading={resultsLoading}
+                  disabled={resultsLoading}
                   size="sm"
                   variant="secondary"
-                  onPress={() => void loadResultsForModal()}
+                  onClick={() => void loadResultsForModal()}
                 >
                   <RefreshCw className="w-4 h-4 mr-1" />
                   刷新
@@ -2145,10 +2142,10 @@ export function MonitorView({
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={() => setEditModalOpen(false)}>
+            <Button variant="ghost" onClick={() => setEditModalOpen(false)}>
               取消
             </Button>
-            <Button isLoading={submitLoading} onPress={handleSubmitMonitor}>
+            <Button disabled={submitLoading} onClick={handleSubmitMonitor}>
               {editingMonitor ? "更新" : "创建"}
             </Button>
           </ModalFooter>

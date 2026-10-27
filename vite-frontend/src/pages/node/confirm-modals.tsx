@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalContent,
@@ -53,10 +53,10 @@ export function RollbackNodeModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
-              <Button variant="secondary" onPress={confirmRollback}>
+              <Button variant="secondary" onClick={confirmRollback}>
                 回退
               </Button>
             </ModalFooter>
@@ -111,13 +111,13 @@ export function DeleteNodeModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isLoading={deleteLoading}
+                disabled={deleteLoading}
                 variant="destructive"
-                onPress={confirmDelete}
+                onClick={confirmDelete}
               >
                 {deleteLoading ? "删除中..." : "删除"}
               </Button>
@@ -174,13 +174,13 @@ export function BatchDeleteNodesModal({
               </p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isLoading={batchLoading}
+                disabled={batchLoading}
                 variant="destructive"
-                onPress={handleBatchDelete}
+                onClick={handleBatchDelete}
               >
                 {batchLoading ? "删除中..." : "删除"}
               </Button>

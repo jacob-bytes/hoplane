@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import {
   Dropdown,
@@ -104,10 +104,9 @@ export function LatencySettings({
           还没有测试点
           <div className="mt-2">
             <Button
-              color="primary"
               size="sm"
               variant="secondary"
-              onPress={() =>
+              onClick={() =>
                 add(
                   PRESETS.filter((p) => RECOMMENDED.includes(p.name)).map(
                     (p) => ({ ...p, pinned: true }),
@@ -183,32 +182,28 @@ export function LatencySettings({
               </Checkbox>
               <span className="ml-auto flex items-center gap-0.5">
                 <Button
-                  isIconOnly
                   aria-label="上移"
-                  isDisabled={i === 0}
-                  size="sm"
+                  disabled={i === 0}
+                  size="icon"
                   variant="ghost"
-                  onPress={() => move(i, -1)}
+                  onClick={() => move(i, -1)}
                 >
                   <ArrowUp className="h-3.5 w-3.5" />
                 </Button>
                 <Button
-                  isIconOnly
                   aria-label="下移"
-                  isDisabled={i === targets.length - 1}
-                  size="sm"
+                  disabled={i === targets.length - 1}
+                  size="icon"
                   variant="ghost"
-                  onPress={() => move(i, 1)}
+                  onClick={() => move(i, 1)}
                 >
                   <ArrowDown className="h-3.5 w-3.5" />
                 </Button>
                 <Button
-                  isIconOnly
                   aria-label="删除"
-                  color="danger"
-                  size="sm"
+                  size="icon"
                   variant="ghost"
-                  onPress={() => save(targets.filter((_, j) => j !== i))}
+                  onClick={() => save(targets.filter((_, j) => j !== i))}
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </Button>
@@ -221,7 +216,7 @@ export function LatencySettings({
       <div className="flex flex-wrap gap-2">
         <Dropdown>
           <DropdownTrigger>
-            <Button isDisabled={full} size="sm" variant="secondary">
+            <Button disabled={full} size="sm" variant="secondary">
               添加预设
             </Button>
           </DropdownTrigger>
@@ -239,14 +234,14 @@ export function LatencySettings({
           </DropdownMenu>
         </Dropdown>
         <Button
-          isDisabled={full}
+          disabled={full}
           size="sm"
-          startContent={<Plus className="h-3.5 w-3.5" />}
           variant="secondary"
-          onPress={() =>
+          onClick={() =>
             save([...targets, { name: "", host: "", port: 80, enabled: true }])
           }
         >
+          {<Plus className="h-3.5 w-3.5" />}
           自定义
         </Button>
         <span className="self-center text-xs text-muted-foreground">

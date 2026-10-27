@@ -170,7 +170,7 @@ export function useThemeContext(): ThemeContextValue {
  *
  * ```tsx
  * import { useThemedComponent } from "@/themes/context";
- * import { Button as DefaultButton } from "@/shadcn-bridge/heroui/button";
+ * import { Button as DefaultButton } from "@/components/ui/button";
  *
  * function MyPage() {
  *   const Button = useThemedComponent("Button", DefaultButton);

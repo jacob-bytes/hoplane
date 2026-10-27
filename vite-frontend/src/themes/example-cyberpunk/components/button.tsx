@@ -10,13 +10,13 @@
  *    or you can build a completely new component from scratch.
  */
 
-import type { ButtonProps } from "@/shadcn-bridge/heroui/button";
+import type { ButtonProps } from "@/components/ui/button";
 
 import React from "react";
 
 // Import the original Button's props interface for compatibility
 // Optionally import the original to wrap it
-import { Button as OriginalButton } from "@/shadcn-bridge/heroui/button";
+import { Button as OriginalButton } from "@/components/ui/button";
 
 /**
  * CyberpunkButton wraps the original Button and adds a neon glow effect.

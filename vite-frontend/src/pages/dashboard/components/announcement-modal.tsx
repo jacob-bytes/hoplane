@@ -3,7 +3,7 @@ import type { AnnouncementData } from "@/api";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalBody,
@@ -43,7 +43,7 @@ export const AnnouncementModal = ({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button variant="secondary" onPress={onDontShowAgain}>
+          <Button variant="secondary" onClick={onDontShowAgain}>
             不再提示
           </Button>
         </ModalFooter>

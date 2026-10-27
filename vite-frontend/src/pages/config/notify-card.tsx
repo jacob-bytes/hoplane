@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { testNotify } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
@@ -285,10 +285,10 @@ export function NotifySettings({
         </span>
         <Button
           className="shrink-0"
-          isLoading={testing}
+          disabled={testing}
           size="sm"
           variant="secondary"
-          onPress={runTest}
+          onClick={runTest}
         >
           发送测试
         </Button>

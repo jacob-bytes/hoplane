@@ -14,7 +14,7 @@ import {
   syncText,
 } from "@/pages/inbound/sources";
 import { Segmented } from "@/pages/subscription/controls";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
@@ -264,14 +264,10 @@ export function ImportModal({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" onPress={onClose}>
+          <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
-          <Button
-            isDisabled={!links.trim()}
-            isLoading={saving}
-            onPress={submit}
-          >
+          <Button disabled={!links.trim() || saving} onClick={submit}>
             {syncing ? (fromFile ? "添加订阅源" : "添加并同步") : "导入"}
           </Button>
         </ModalFooter>
@@ -461,10 +457,10 @@ export function ExternalEditModal({
           )}
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" onPress={onClose}>
+          <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
-          <Button isLoading={saving} onPress={submit}>
+          <Button disabled={saving} onClick={submit}>
             保存
           </Button>
         </ModalFooter>

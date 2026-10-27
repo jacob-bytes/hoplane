@@ -9,7 +9,7 @@ import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
@@ -994,41 +994,42 @@ export default function ConfigPage() {
             onChange={(event) => void handleBgImageUpload(event, key)}
           />
           <Button
-            isDisabled={bgImageUploading !== null && bgImageUploading !== key}
-            isLoading={bgImageUploading === key}
+            disabled={
+              (bgImageUploading !== null && bgImageUploading !== key) ||
+              bgImageUploading === key
+            }
             size="sm"
             variant="secondary"
-            onPress={() => bgImageFileInputRefs.current[key]?.click()}
+            onClick={() => bgImageFileInputRefs.current[key]?.click()}
           >
             上传图片
           </Button>
           {isDefault && (
             <Button
-              isDisabled={bgImageUploading !== null || isWallpaper}
+              disabled={bgImageUploading !== null || isWallpaper}
               size="sm"
               variant="secondary"
-              onPress={() => handleConfigChange(key, "wallpaper")}
+              onClick={() => handleConfigChange(key, "wallpaper")}
             >
               内置壁纸
             </Button>
           )}
           {isDefault && (
             <Button
-              isDisabled={bgImageUploading !== null || bgImage === "#ffffff"}
+              disabled={bgImageUploading !== null || bgImage === "#ffffff"}
               size="sm"
               variant="secondary"
-              onPress={() => handleConfigChange(key, "#ffffff")}
+              onClick={() => handleConfigChange(key, "#ffffff")}
             >
               白色纯色
             </Button>
           )}
           {bgImage && (
             <Button
-              color="danger"
-              isDisabled={bgImageUploading !== null}
+              disabled={bgImageUploading !== null}
               size="sm"
               variant="secondary"
-              onPress={() => handleConfigChange(key, "")}
+              onClick={() => handleConfigChange(key, "")}
             >
               {isDefault ? "恢复默认纯色" : "清除"}
             </Button>
@@ -1122,20 +1123,19 @@ export default function ConfigPage() {
           {renderBrandPreview(key)}
           <Button
             className="shrink-0"
-            isLoading={uploading}
+            disabled={uploading}
             size="sm"
             variant="secondary"
-            onPress={() => triggerBrandFilePicker(key)}
+            onClick={() => triggerBrandFilePicker(key)}
           >
             {value.length > 0 ? "替换" : "上传"}
           </Button>
           <Button
             className="shrink-0"
-            color="danger"
-            isDisabled={value.length === 0 || uploading}
+            disabled={value.length === 0 || uploading}
             size="sm"
             variant="secondary"
-            onPress={() => clearBrandAsset(key)}
+            onClick={() => clearBrandAsset(key)}
           >
             清除
           </Button>
@@ -1294,10 +1294,11 @@ export default function ConfigPage() {
     return (
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <Button
-          color={current === mirror && mirror ? "primary" : "default"}
           size="sm"
-          variant={current === mirror && mirror ? "solid" : "bordered"}
-          onPress={() => {
+          variant={buttonVariant(
+            current === mirror && mirror ? "primary" : "default",
+          )}
+          onClick={() => {
             if (!mirror) {
               toast.error("请先填写面板后端地址");
 
@@ -1311,7 +1312,7 @@ export default function ConfigPage() {
         <Button
           size="sm"
           variant="outline"
-          onPress={() =>
+          onClick={() =>
             handleConfigChange("github_proxy_url", DEFAULT_GITHUB_PROXY)
           }
         >
@@ -1426,13 +1427,13 @@ export default function ConfigPage() {
             <Button
               size="sm"
               variant="secondary"
-              onPress={() =>
+              onClick={() =>
                 setTypes(allSelected ? [] : [...BACKUP_TYPE_VALUES])
               }
             >
               {allSelected ? "取消全选" : "全选"}
             </Button>
-            <Button size="sm" variant="ghost" onPress={() => setTypes([])}>
+            <Button size="sm" variant="ghost" onClick={() => setTypes([])}>
               清空
             </Button>
           </div>
@@ -1733,9 +1734,9 @@ export default function ConfigPage() {
                     </span>
                     <Button
                       className="shrink-0"
-                      isLoading={announcementSaving}
+                      disabled={announcementSaving}
                       size="sm"
-                      onPress={saveAnnouncement}
+                      onClick={saveAnnouncement}
                     >
                       保存公告
                     </Button>
@@ -1771,10 +1772,10 @@ export default function ConfigPage() {
                 label="导出数据"
               >
                 <Button
-                  isLoading={exporting}
+                  disabled={exporting}
                   size="sm"
                   variant="secondary"
-                  onPress={() => setExportSelectorOpen(true)}
+                  onClick={() => setExportSelectorOpen(true)}
                 >
                   {exporting ? "导出中..." : "选择并导出"}
                 </Button>
@@ -1797,10 +1798,10 @@ export default function ConfigPage() {
                 label="导入数据"
               >
                 <Button
-                  isLoading={importing}
+                  disabled={importing}
                   size="sm"
                   variant="secondary"
-                  onPress={() => setImportSelectorOpen(true)}
+                  onClick={() => setImportSelectorOpen(true)}
                 >
                   {importing ? "导入中..." : "选择并导入"}
                 </Button>
@@ -1916,18 +1917,17 @@ export default function ConfigPage() {
 
               <div className="flex justify-end gap-2 border-t border-divider pt-3">
                 <Button
-                  isLoading={systemUpgradeChecking}
+                  disabled={systemUpgradeChecking}
                   size="sm"
                   variant="secondary"
-                  onPress={handleCheckSystemUpgrade}
+                  onClick={handleCheckSystemUpgrade}
                 >
                   检查更新
                 </Button>
                 <Button
-                  isDisabled={!canTriggerSystemUpgrade}
-                  isLoading={systemUpgradeExecuting}
+                  disabled={!canTriggerSystemUpgrade || systemUpgradeExecuting}
                   size="sm"
-                  onPress={handleOpenSystemUpgradeModal}
+                  onClick={handleOpenSystemUpgradeModal}
                 >
                   立即升级
                 </Button>
@@ -1949,9 +1949,9 @@ export default function ConfigPage() {
           </span>
           <Button
             className="shrink-0"
-            isLoading={saving}
+            disabled={saving}
             size="sm"
-            onPress={handleSave}
+            onClick={handleSave}
           >
             {saving ? "保存中..." : "保存"}
           </Button>
@@ -1974,10 +1974,10 @@ export default function ConfigPage() {
                 {renderTypeSelection("导出内容", exportTypes, setExportTypes)}
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
-                <Button isLoading={exporting} onPress={handleExport}>
+                <Button disabled={exporting} onClick={handleExport}>
                   {exporting ? "导出中..." : "导出"}
                 </Button>
               </ModalFooter>
@@ -2002,12 +2002,12 @@ export default function ConfigPage() {
                 {renderTypeSelection("导入内容", importTypes, setImportTypes)}
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button
-                  isDisabled={importTypes.length === 0}
-                  onPress={triggerImportFilePicker}
+                  disabled={importTypes.length === 0}
+                  onClick={triggerImportFilePicker}
                 >
                   下一步选择文件
                 </Button>
@@ -2055,16 +2055,15 @@ export default function ConfigPage() {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  isDisabled={systemUpgradeExecuting}
+                  disabled={systemUpgradeExecuting}
                   variant="ghost"
-                  onPress={onClose}
+                  onClick={onClose}
                 >
                   取消
                 </Button>
                 <Button
-                  isDisabled={systemUpgradeExecuting}
-                  isLoading={systemUpgradeExecuting}
-                  onPress={handleConfirmSystemUpgrade}
+                  disabled={systemUpgradeExecuting || systemUpgradeExecuting}
+                  onClick={handleConfirmSystemUpgrade}
                 >
                   升级
                 </Button>

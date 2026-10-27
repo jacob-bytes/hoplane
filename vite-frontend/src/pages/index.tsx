@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/shadcn-bridge/heroui/input";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { VersionFooter } from "@/components/version-footer";
 import { BrandLogo } from "@/components/brand-logo";
@@ -292,9 +292,8 @@ export default function IndexPage() {
 
                 <Button
                   className="mt-2 h-10 rounded-md bg-primary text-sm font-medium text-white shadow-none"
-                  disabled={loading}
-                  isLoading={loading}
-                  onPress={handleLogin}
+                  disabled={loading || loading}
+                  onClick={handleLogin}
                 >
                   {loading ? (showCaptcha ? "验证中…" : "登录中…") : "登录"}
                 </Button>
@@ -303,7 +302,7 @@ export default function IndexPage() {
                     className="h-10 rounded-md"
                     disabled={loading}
                     variant="outline"
-                    onPress={() => void handlePasskeyLogin()}
+                    onClick={() => void handlePasskeyLogin()}
                   >
                     选择通行证密钥登录
                   </Button>
@@ -313,7 +312,7 @@ export default function IndexPage() {
                     className="h-10 rounded-md"
                     disabled={loading}
                     variant="outline"
-                    onPress={() => void handleGithubLogin()}
+                    onClick={() => void handleGithubLogin()}
                   >
                     使用 GitHub 登录
                   </Button>

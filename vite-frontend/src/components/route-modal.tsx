@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -206,9 +206,9 @@ export function RoutePanel({ nodeId }: { nodeId: number | null }) {
           </EmptyHeader>
           <EmptyContent>
             <Button
-              isDisabled={probing || nodeId === null}
+              disabled={probing || nodeId === null}
               size="sm"
-              onPress={probe}
+              onClick={probe}
             >
               <RefreshCw className="size-3.5" />
               {probing ? "检测中…" : "开始检测"}
@@ -336,10 +336,10 @@ export function RoutePanel({ nodeId }: { nodeId: number | null }) {
 
       <div className="flex justify-end">
         <Button
-          isDisabled={probing || nodeId === null}
+          disabled={probing || nodeId === null}
           size="sm"
           variant="outline"
-          onPress={probe}
+          onClick={probe}
         >
           <RefreshCw className="size-3.5" />
           {probing ? "检测中…" : "重新检测回程"}

@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
@@ -141,7 +141,7 @@ export function ForwardFilterModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="secondary" onPress={resetSearchParams}>
+              <Button variant="secondary" onClick={resetSearchParams}>
                 重置
               </Button>
             </ModalFooter>

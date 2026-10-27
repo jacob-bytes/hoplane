@@ -1,7 +1,7 @@
 import type { SpeedLimitApiItem } from "@/api/types";
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
@@ -388,10 +388,10 @@ export function ForwardFormModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
-              <Button isLoading={submitLoading} onPress={handleSubmit}>
+              <Button disabled={submitLoading} onClick={handleSubmit}>
                 {isEdit ? "保存修改" : "创建规则"}
               </Button>
             </ModalFooter>

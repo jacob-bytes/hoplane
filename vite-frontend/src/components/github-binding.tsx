@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Github } from "lucide-react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -114,14 +114,13 @@ export function GithubBindingModal({
           />
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" onPress={onClose}>
+          <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
           <Button
-            color={bound ? "danger" : "primary"}
-            isLoading={busy}
-            variant={bound ? "flat" : "solid"}
-            onPress={() => void submit()}
+            disabled={busy}
+            variant={buttonVariant(bound ? "danger" : "primary")}
+            onClick={() => void submit()}
           >
             {bound ? "解绑" : "去 GitHub 授权"}
           </Button>

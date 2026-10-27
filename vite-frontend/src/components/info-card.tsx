@@ -1,6 +1,6 @@
 import type * as React from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 
@@ -148,12 +148,10 @@ export function InfoCard({
               <Button
                 key={a.key}
                 className="min-h-8"
-                color={a.color ?? "default"}
-                isDisabled={a.disabled}
-                isLoading={a.loading}
+                disabled={a.disabled || a.loading}
                 size="sm"
-                variant="secondary"
-                onPress={a.onPress}
+                variant={buttonVariant(a.color ?? "default")}
+                onClick={a.onPress}
               >
                 {a.label}
               </Button>

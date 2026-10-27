@@ -18,7 +18,7 @@ import {
   formatDate,
   type RowStatus,
 } from "@/components/page-kit";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -1621,29 +1621,26 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
 
                   <div className="flex flex-wrap gap-2">
                     <Button
-                      color="warning"
-                      isLoading={quotaResetLoading}
+                      disabled={quotaResetLoading}
                       size="sm"
                       variant="secondary"
-                      onPress={() => handleQuotaReset("daily")}
+                      onClick={() => handleQuotaReset("daily")}
                     >
                       重置每日配额
                     </Button>
                     <Button
-                      color="warning"
-                      isLoading={quotaResetLoading}
+                      disabled={quotaResetLoading}
                       size="sm"
                       variant="secondary"
-                      onPress={() => handleQuotaReset("monthly")}
+                      onClick={() => handleQuotaReset("monthly")}
                     >
                       重置每月配额
                     </Button>
                     <Button
-                      color="primary"
-                      isLoading={quotaResetLoading}
+                      disabled={quotaResetLoading}
                       size="sm"
                       variant="secondary"
-                      onPress={() => handleQuotaReset("all")}
+                      onClick={() => handleQuotaReset("all")}
                     >
                       全部重置并恢复
                     </Button>
@@ -1693,10 +1690,10 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={onUserModalClose}>
+            <Button variant="ghost" onClick={onUserModalClose}>
               取消
             </Button>
-            <Button isLoading={userFormLoading} onPress={handleSubmitUser}>
+            <Button disabled={userFormLoading} onClick={handleSubmitUser}>
               {isEdit ? "保存" : "创建"}
             </Button>
           </ModalFooter>
@@ -1887,9 +1884,10 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   <div className="flex flex-wrap items-center gap-2">
                     <Button
                       className="w-full sm:w-auto"
-                      isDisabled={batchTunnelSelections.size === 0}
-                      isLoading={assignLoading}
-                      onPress={handleBatchAssignTunnel}
+                      disabled={
+                        batchTunnelSelections.size === 0 || assignLoading
+                      }
+                      onClick={handleBatchAssignTunnel}
                     >
                       分配权限
                     </Button>
@@ -1957,22 +1955,21 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           <Button
                             size="sm"
                             variant="secondary"
-                            onPress={() => handleEditTunnel(userTunnel)}
+                            onClick={() => handleEditTunnel(userTunnel)}
                           >
                             编辑
                           </Button>
                           <Button
                             size="sm"
                             variant="secondary"
-                            onPress={() => handleResetTunnelFlow(userTunnel)}
+                            onClick={() => handleResetTunnelFlow(userTunnel)}
                           >
                             重置流量
                           </Button>
                           <Button
-                            color="danger"
                             size="sm"
                             variant="secondary"
-                            onPress={() => handleRemoveTunnel(userTunnel)}
+                            onClick={() => handleRemoveTunnel(userTunnel)}
                           >
                             删除
                           </Button>
@@ -2149,10 +2146,10 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={onEditTunnelModalClose}>
+            <Button variant="ghost" onClick={onEditTunnelModalClose}>
               取消
             </Button>
-            <Button isLoading={editTunnelLoading} onPress={handleUpdateTunnel}>
+            <Button disabled={editTunnelLoading} onClick={handleUpdateTunnel}>
               保存
             </Button>
           </ModalFooter>
@@ -2195,10 +2192,10 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={onDeleteModalClose}>
+            <Button variant="ghost" onClick={onDeleteModalClose}>
               取消
             </Button>
-            <Button variant="destructive" onPress={handleConfirmDelete}>
+            <Button variant="destructive" onClick={handleConfirmDelete}>
               删除
             </Button>
           </ModalFooter>
@@ -2243,10 +2240,10 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={onDeleteTunnelModalClose}>
+            <Button variant="ghost" onClick={onDeleteTunnelModalClose}>
               取消
             </Button>
-            <Button variant="destructive" onPress={handleConfirmRemoveTunnel}>
+            <Button variant="destructive" onClick={handleConfirmRemoveTunnel}>
               删除
             </Button>
           </ModalFooter>
@@ -2331,13 +2328,13 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={onResetFlowModalClose}>
+            <Button variant="ghost" onClick={onResetFlowModalClose}>
               取消
             </Button>
             <Button
-              isLoading={resetFlowLoading}
+              disabled={resetFlowLoading}
               variant="warning"
-              onPress={handleConfirmResetFlow}
+              onClick={handleConfirmResetFlow}
             >
               重置
             </Button>
@@ -2425,13 +2422,13 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={onResetTunnelFlowModalClose}>
+            <Button variant="ghost" onClick={onResetTunnelFlowModalClose}>
               取消
             </Button>
             <Button
-              isLoading={resetTunnelFlowLoading}
+              disabled={resetTunnelFlowLoading}
               variant="warning"
-              onPress={handleConfirmResetTunnelFlow}
+              onClick={handleConfirmResetTunnelFlow}
             >
               重置
             </Button>

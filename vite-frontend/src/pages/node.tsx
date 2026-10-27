@@ -30,7 +30,7 @@ import {
 } from "lucide-react";
 
 import { formatTraffic } from "@/utils/traffic";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
@@ -2190,7 +2190,7 @@ export default function NodePage({
                                 className="w-full gap-1.5"
                                 size="sm"
                                 variant="outline"
-                                onPress={() => setSheetNodeId(node.id)}
+                                onClick={() => setSheetNodeId(node.id)}
                               >
                                 <Settings2 className="h-3.5 w-3.5" />
                                 配置

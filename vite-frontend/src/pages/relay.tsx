@@ -29,7 +29,7 @@ import ForwardPage from "@/pages/forward";
 import { RelayModal } from "@/pages/inbound/relay-modal";
 import TunnelPage from "@/pages/tunnel";
 import { TunnelMonitorView } from "@/components/lazy-charts";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 type RelayTab = "lines" | "tunnels" | "rules" | "quality";
@@ -369,7 +369,7 @@ function LinesView() {
                         className="h-7 min-w-0 px-2.5 text-xs"
                         size="sm"
                         variant="ghost"
-                        onPress={() => setEditing(i)}
+                        onClick={() => setEditing(i)}
                       >
                         管理
                       </Button>

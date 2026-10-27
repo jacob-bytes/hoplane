@@ -16,7 +16,7 @@ import {
 import { QrImage, copyText, panelOrigin } from "@/pages/inbound/share";
 import { SubClientGrid } from "@/pages/subscription/client-grid";
 import { SubTrafficStats } from "@/components/lazy-charts";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalBody,
@@ -201,27 +201,22 @@ function SubscriptionCard({
       <div className="flex gap-2">
         <Button
           className="flex-1"
-          color="primary"
-          startContent={<Copy className="h-4 w-4" />}
           variant="secondary"
-          onPress={() => copyText(link(s), "订阅链接已复制")}
+          onClick={() => copyText(link(s), "订阅链接已复制")}
         >
+          {<Copy className="h-4 w-4" />}
           复制订阅链接
         </Button>
         <Button
-          isIconOnly
           aria-label="二维码"
+          size="icon"
           variant="secondary"
-          onPress={onQr}
+          onClick={onQr}
         >
           <QrCode className="h-4 w-4" />
         </Button>
-        <Button
-          color="danger"
-          startContent={<RefreshCw className="h-4 w-4" />}
-          variant="secondary"
-          onPress={onReset}
-        >
+        <Button variant="secondary" onClick={onReset}>
+          {<RefreshCw className="h-4 w-4" />}
           重置链接
         </Button>
       </div>
@@ -363,10 +358,10 @@ export default function MySubscriptionsPage() {
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={close}>
+                <Button variant="ghost" onClick={close}>
                   取消
                 </Button>
-                <Button isLoading={busy} variant="destructive" onPress={reset}>
+                <Button disabled={busy} variant="destructive" onClick={reset}>
                   重置
                 </Button>
               </ModalFooter>

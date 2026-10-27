@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 
 import { copyWithToast } from "@/utils/clipboard";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { AnimatedPage } from "@/components/animated-page";
 import { ActionsDialog } from "@/components/action-dialog";
@@ -836,10 +836,10 @@ export default function PanelSharingPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={() => setCreateShareOpen(false)}>
+            <Button variant="ghost" onClick={() => setCreateShareOpen(false)}>
               取消
             </Button>
-            <Button onPress={handleCreateShare}>创建</Button>
+            <Button onClick={handleCreateShare}>创建</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -941,10 +941,10 @@ export default function PanelSharingPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={() => setEditShareOpen(false)}>
+            <Button variant="ghost" onClick={() => setEditShareOpen(false)}>
               取消
             </Button>
-            <Button onPress={handleEditShare}>保存</Button>
+            <Button onClick={handleEditShare}>保存</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -979,10 +979,10 @@ export default function PanelSharingPage() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onPress={() => setImportNodeOpen(false)}>
+            <Button variant="ghost" onClick={() => setImportNodeOpen(false)}>
               取消
             </Button>
-            <Button onPress={handleImportNode}>导入</Button>
+            <Button onClick={handleImportNode}>导入</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

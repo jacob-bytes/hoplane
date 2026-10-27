@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalContent,
@@ -81,11 +81,7 @@ export function NodeFilterModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button
-                color="default"
-                variant="secondary"
-                onPress={resetNodeFilterMode}
-              >
+              <Button variant="secondary" onClick={resetNodeFilterMode}>
                 重置
               </Button>
             </ModalFooter>

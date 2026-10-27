@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -193,21 +193,19 @@ export function NodeTuneModal({
               {status?.hasBackup && (
                 <Button
                   className="mr-auto"
-                  isDisabled={busy !== ""}
-                  isLoading={busy === "restore"}
+                  disabled={busy !== ""}
                   variant="ghost"
-                  onPress={() => run("restore")}
+                  onClick={() => run("restore")}
                 >
                   恢复默认
                 </Button>
               )}
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isDisabled={!status || chosen.size === 0 || busy !== ""}
-                isLoading={busy === "apply"}
-                onPress={() => run("apply")}
+                disabled={!status || chosen.size === 0 || busy !== ""}
+                onClick={() => run("apply")}
               >
                 应用
               </Button>

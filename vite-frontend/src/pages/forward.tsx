@@ -33,7 +33,7 @@ import {
 } from "@/components/page-kit";
 import { formatTraffic } from "@/utils/traffic";
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button, buttonVariant } from "@/components/ui/button";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ProgressBar as Progress } from "@/components/progress-bar";
@@ -2926,10 +2926,9 @@ export default function ForwardPage({
         >
           <Button
             className="shrink-0"
-            color={filterCount > 0 ? "primary" : "default"}
             size="sm"
-            variant="secondary"
-            onPress={() => setIsSearchModalOpen(true)}
+            variant={buttonVariant(filterCount > 0 ? "primary" : "default")}
+            onClick={() => setIsSearchModalOpen(true)}
           >
             {filterCount > 0 ? `筛选 · ${filterCount}` : "筛选"}
           </Button>

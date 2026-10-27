@@ -31,7 +31,7 @@ import { DROP_NOTICE, savedDespiteDrop } from "./save-recovery";
 import { OutboundIPSelect } from "./outbound-ip-select";
 
 import { createInbound, updateInbound } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -425,10 +425,9 @@ export function InboundFormModal({
                       该服务器还没有安装 {kernelInfo?.name ?? form.kernelType}
                     </span>
                     <Button
-                      color="warning"
                       size="sm"
                       variant="secondary"
-                      onPress={() =>
+                      onClick={() =>
                         onInstallKernel(Number(form.nodeId), form.kernelType)
                       }
                     >
@@ -1143,10 +1142,10 @@ export function InboundFormModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
-              <Button isLoading={saving} onPress={submit}>
+              <Button disabled={saving} onClick={submit}>
                 {isEdit ? "保存并下发" : "创建并下发"}
               </Button>
             </ModalFooter>

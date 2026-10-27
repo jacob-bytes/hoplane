@@ -2,7 +2,7 @@ import type { ErrorInfo, ReactNode } from "react";
 
 import { Component } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 
 /** A page's code file that failed to download (gone after an upgrade). */
 function isChunkLoadError(error: unknown): boolean {
@@ -71,10 +71,9 @@ export class ErrorBoundary extends Component<
           {chunk ? "面板可能刚升级过，或者网络不稳定。重新加载即可。" : detail}
         </p>
         <Button
-          color="primary"
           size="sm"
           variant="secondary"
-          onPress={() => window.location.reload()}
+          onClick={() => window.location.reload()}
         >
           重新加载
         </Button>

@@ -37,7 +37,7 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { TONE, pointTone, probePoints } from "@/components/latency-cell";
 
 // recharts is heavy: keep it out of the page bundle until this tab is used.
@@ -144,10 +144,10 @@ export function LatencyDialog({
                 <Button
                   aria-label="重新检测延迟"
                   className="h-8 gap-1.5 px-2.5 text-xs"
-                  isDisabled={probing}
+                  disabled={probing}
                   size="sm"
                   variant="outline"
-                  onPress={onProbe}
+                  onClick={onProbe}
                 >
                   {probing ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -275,7 +275,7 @@ export function LatencyDialog({
                     <Button
                       size="sm"
                       variant="outline"
-                      onPress={() => setTab("targets")}
+                      onClick={() => setTab("targets")}
                     >
                       添加测试点
                     </Button>

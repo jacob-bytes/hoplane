@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
@@ -242,26 +242,9 @@ export function TunnelFormModal({
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-semibold">转发链配置</h3>
                       <Button
-                        color="primary"
                         size="sm"
-                        startContent={
-                          <svg
-                            aria-hidden="true"
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              d="M12 4v16m8-8H4"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                            />
-                          </svg>
-                        }
                         variant="secondary"
-                        onPress={() => {
+                        onClick={() => {
                           // 添加新的一跳（一个空组，或包含占位节点）
                           setForm((prev) => ({
                             ...prev,
@@ -279,6 +262,22 @@ export function TunnelFormModal({
                           }));
                         }}
                       >
+                        {
+                          <svg
+                            aria-hidden="true"
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              d="M12 4v16m8-8H4"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                            />
+                          </svg>
+                        }
                         添加一跳
                       </Button>
                     </div>
@@ -316,10 +315,9 @@ export function TunnelFormModal({
                                   第{groupIndex + 1}跳
                                 </span>
                                 <Button
-                                  color="danger"
                                   size="sm"
                                   variant="ghost"
-                                  onPress={() => removeChainNode(groupIndex)}
+                                  onClick={() => removeChainNode(groupIndex)}
                                 >
                                   移除
                                 </Button>
@@ -1060,10 +1058,10 @@ export function TunnelFormModal({
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
-              <Button isLoading={submitLoading} onPress={handleSubmit}>
+              <Button disabled={submitLoading} onClick={handleSubmit}>
                 {submitLoading
                   ? isEdit
                     ? "更新中..."

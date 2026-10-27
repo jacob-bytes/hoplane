@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { SearchIcon } from "@/components/icons";
 
@@ -34,13 +34,11 @@ export function SearchBar({
             transition={{ duration: 0.12 }}
           >
             <Button
-              isIconOnly
               aria-label="搜索"
               className="text-muted-foreground"
-              color="default"
-              size="sm"
+              size="icon"
               variant="secondary"
-              onPress={onOpen}
+              onClick={onOpen}
             >
               <SearchIcon className="w-4 h-4" />
             </Button>
@@ -66,13 +64,11 @@ export function SearchBar({
               onChange={(e) => onChange(e.target.value)}
             />
             <Button
-              isIconOnly
               aria-label="关闭搜索"
               className="text-muted-foreground shrink-0"
-              color="default"
-              size="sm"
+              size="icon"
               variant="ghost"
-              onPress={() => {
+              onClick={() => {
                 onClose();
                 onChange("");
               }}

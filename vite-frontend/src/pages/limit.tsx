@@ -10,7 +10,7 @@ import {
   PageShell,
   PageToolbar,
 } from "@/components/page-kit";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -373,10 +373,10 @@ export default function LimitPage({
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
-                <Button isLoading={submitLoading} onPress={handleSubmit}>
+                <Button disabled={submitLoading} onClick={handleSubmit}>
                   {isEdit ? "保存修改" : "创建规则"}
                 </Button>
               </ModalFooter>
@@ -416,13 +416,13 @@ export default function LimitPage({
                 </p>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button
-                  isLoading={deleteLoading}
+                  disabled={deleteLoading}
                   variant="destructive"
-                  onPress={confirmDelete}
+                  onClick={confirmDelete}
                 >
                   删除
                 </Button>

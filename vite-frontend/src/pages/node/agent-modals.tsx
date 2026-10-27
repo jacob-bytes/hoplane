@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -62,10 +62,9 @@ export function InstallCommandModal({
       />
       <Button
         className="absolute top-2 right-2"
-        color="primary"
         size="sm"
         variant="secondary"
-        onPress={() => handleCopyCommand(command)}
+        onClick={() => handleCopyCommand(command)}
       >
         复制
       </Button>
@@ -255,7 +254,7 @@ export function UpgradeNodeModal({
                     className="mt-2 w-full"
                     size="sm"
                     variant="outline"
-                    onPress={onRollback}
+                    onClick={onRollback}
                   >
                     回退
                   </Button>
@@ -263,13 +262,13 @@ export function UpgradeNodeModal({
               </ModalBody>
             )}
             <ModalFooter>
-              <Button variant="ghost" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button
-                isDisabled={releasesLoading}
+                disabled={releasesLoading}
                 variant="warning"
-                onPress={handleConfirmUpgrade}
+                onClick={handleConfirmUpgrade}
               >
                 升级
               </Button>

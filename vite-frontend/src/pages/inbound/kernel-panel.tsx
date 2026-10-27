@@ -29,7 +29,7 @@ import {
   getKernelVersions,
   installKernel,
 } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
@@ -280,12 +280,7 @@ export function KernelPanel({
         <p className="text-xs text-muted-foreground">
           点击内核可启停、重启、查看日志或卸载
         </p>
-        <Button
-          color="primary"
-          size="sm"
-          variant="secondary"
-          onPress={() => openInstall()}
-        >
+        <Button size="sm" variant="secondary" onClick={() => openInstall()}>
           安装内核
         </Button>
       </div>
@@ -320,10 +315,10 @@ export function KernelPanel({
                   <Button
                     className="h-7 min-w-0 gap-1 px-2 text-xs text-primary dark:text-primary"
                     size="sm"
-                    startContent={<Plus className="h-3.5 w-3.5" />}
                     variant="ghost"
-                    onPress={() => openInstall(g.items[0].nodeId)}
+                    onClick={() => openInstall(g.items[0].nodeId)}
                   >
+                    {<Plus className="h-3.5 w-3.5" />}
                     内核
                   </Button>
                 </div>
@@ -625,10 +620,10 @@ export function KernelPanel({
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
-                <Button isLoading={installing} onPress={doInstall}>
+                <Button disabled={installing} onClick={doInstall}>
                   安装
                 </Button>
               </ModalFooter>
@@ -673,7 +668,7 @@ export function KernelPanel({
               <ModalFooter>
                 <Button
                   variant="secondary"
-                  onPress={() => logsFor && openLogs(logsFor)}
+                  onClick={() => logsFor && openLogs(logsFor)}
                 >
                   刷新
                 </Button>
@@ -715,22 +710,22 @@ export function KernelPanel({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={onClose}>
+                <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 {removeFailed && (
                   <Button
-                    isLoading={busy === `${removeTarget?.id}-remove`}
+                    disabled={busy === `${removeTarget?.id}-remove`}
                     variant="warning"
-                    onPress={() => doRemove(true)}
+                    onClick={() => doRemove(true)}
                   >
                     强制删除
                   </Button>
                 )}
                 <Button
-                  isLoading={busy === `${removeTarget?.id}-remove`}
+                  disabled={busy === `${removeTarget?.id}-remove`}
                   variant="destructive"
-                  onPress={() => doRemove(false)}
+                  onClick={() => doRemove(false)}
                 >
                   卸载
                 </Button>

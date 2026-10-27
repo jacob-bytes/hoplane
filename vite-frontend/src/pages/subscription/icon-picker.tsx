@@ -10,7 +10,7 @@ import {
   getSubIconLibraryIcons,
   saveSubIconLibrary,
 } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalBody,
@@ -335,10 +335,10 @@ export function IconPicker({
                 onChange={(e) => setCustom(e.target.value)}
               />
               <Button
-                isDisabled={!customValid}
+                disabled={!customValid}
                 size="sm"
                 variant="secondary"
-                onPress={() => pick(custom.trim())}
+                onClick={() => pick(custom.trim())}
               >
                 使用
               </Button>
@@ -349,10 +349,10 @@ export function IconPicker({
                 {!fallback && "无图标"}
               </span>
               <Button
-                isDisabled={!value}
+                disabled={!value}
                 size="sm"
                 variant="ghost"
-                onPress={() => pick("")}
+                onClick={() => pick("")}
               >
                 恢复默认
               </Button>
@@ -374,11 +374,10 @@ export function IconPicker({
                 onChange={(e) => setNewLibrary(e.target.value)}
               />
               <Button
-                isDisabled={!/^https?:\/\/\S+$/.test(newLibrary.trim())}
-                isLoading={adding}
+                disabled={!/^https?:\/\/\S+$/.test(newLibrary.trim()) || adding}
                 size="sm"
                 variant="secondary"
-                onPress={addLibrary}
+                onClick={addLibrary}
               >
                 添加
               </Button>

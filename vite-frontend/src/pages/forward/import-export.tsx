@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
@@ -98,10 +98,11 @@ export function ExportModal({
             {exportData && (
               <div className="flex justify-between items-center">
                 <Button
-                  isDisabled={!selectedTunnelForExport}
-                  isLoading={exportLoading}
+                  disabled={!selectedTunnelForExport || exportLoading}
                   size="sm"
-                  startContent={
+                  onClick={executeExport}
+                >
+                  {
                     <svg
                       aria-hidden="true"
                       className="w-4 h-4"
@@ -115,13 +116,10 @@ export function ExportModal({
                       />
                     </svg>
                   }
-                  onPress={executeExport}
-                >
                   重新生成
                 </Button>
-                <Button
-                  size="sm"
-                  startContent={
+                <Button size="sm" variant="secondary" onClick={copyExportData}>
+                  {
                     <svg
                       aria-hidden="true"
                       className="w-4 h-4"
@@ -132,9 +130,6 @@ export function ExportModal({
                       <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                     </svg>
                   }
-                  variant="secondary"
-                  onPress={copyExportData}
-                >
                   复制
                 </Button>
               </div>
@@ -144,10 +139,11 @@ export function ExportModal({
             {!exportData && (
               <div className="text-right">
                 <Button
-                  isDisabled={!selectedTunnelForExport}
-                  isLoading={exportLoading}
+                  disabled={!selectedTunnelForExport || exportLoading}
                   size="sm"
-                  startContent={
+                  onClick={executeExport}
+                >
+                  {
                     <svg
                       aria-hidden="true"
                       className="w-4 h-4"
@@ -161,8 +157,6 @@ export function ExportModal({
                       />
                     </svg>
                   }
-                  onPress={executeExport}
-                >
                   生成导出数据
                 </Button>
               </div>
@@ -437,14 +431,15 @@ export function ImportModal({
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button variant="ghost" onPress={() => setImportModalOpen(false)}>
+          <Button variant="ghost" onClick={() => setImportModalOpen(false)}>
             取消
           </Button>
           <Button
-            isDisabled={!importData.trim() || !selectedTunnelForImport}
-            isLoading={importLoading}
+            disabled={
+              !importData.trim() || !selectedTunnelForImport || importLoading
+            }
             variant="warning"
-            onPress={executeImport}
+            onClick={executeImport}
           >
             开始导入
           </Button>

@@ -11,7 +11,7 @@ import { TargetButton, TargetPicker } from "./target-picker";
 import { OutboundIPSelect } from "./outbound-ip-select";
 
 import { updateInboundSplit } from "@/api";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Modal,
   ModalBody,
@@ -212,10 +212,10 @@ function SplitForm({
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="ghost" onPress={onClose}>
+        <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
-        <Button isLoading={saving} onPress={submit}>
+        <Button disabled={saving} onClick={submit}>
           保存并下发
         </Button>
       </ModalFooter>

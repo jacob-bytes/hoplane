@@ -16,7 +16,7 @@ import {
   updateInboundRelay,
 } from "@/api";
 import { RelayLatencyCell } from "@/components/relay-latency";
-import { Button } from "@/shadcn-bridge/heroui/button";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
@@ -309,16 +309,15 @@ export function RelayModal({
                             <Button
                               size="sm"
                               variant="ghost"
-                              onPress={() => setEditing(null)}
+                              onClick={() => setEditing(null)}
                             >
                               取消
                             </Button>
                             <Button
-                              color="primary"
-                              isLoading={saving}
+                              disabled={saving}
                               size="sm"
                               variant="secondary"
-                              onPress={saveEdit}
+                              onClick={saveEdit}
                             >
                               保存
                             </Button>
@@ -378,7 +377,7 @@ export function RelayModal({
                           <Button
                             size="sm"
                             variant="secondary"
-                            onPress={() =>
+                            onClick={() =>
                               setEditing({
                                 id: rel.id,
                                 name: rel.name,
@@ -389,10 +388,9 @@ export function RelayModal({
                             编辑
                           </Button>
                           <Button
-                            color="danger"
                             size="sm"
                             variant="secondary"
-                            onPress={() => {
+                            onClick={() => {
                               setRemoveFailed(false);
                               setRemoving(rel);
                             }}
@@ -475,12 +473,10 @@ export function RelayModal({
                       />
                     </div>
                     <Button
-                      color="primary"
-                      isDisabled={!form.tunnelId}
-                      isLoading={creating}
+                      disabled={!form.tunnelId || creating}
                       size="sm"
                       variant="secondary"
-                      onPress={create}
+                      onClick={create}
                     >
                       创建中转
                     </Button>
@@ -518,22 +514,22 @@ export function RelayModal({
                 )}
               </ModalBody>
               <ModalFooter>
-                <Button variant="ghost" onPress={close}>
+                <Button variant="ghost" onClick={close}>
                   取消
                 </Button>
                 {removeFailed && (
                   <Button
-                    isLoading={removeLoading}
+                    disabled={removeLoading}
                     variant="warning"
-                    onPress={() => remove(true)}
+                    onClick={() => remove(true)}
                   >
                     强制删除
                   </Button>
                 )}
                 <Button
-                  isLoading={removeLoading}
+                  disabled={removeLoading}
                   variant="destructive"
-                  onPress={() => remove(false)}
+                  onClick={() => remove(false)}
                 >
                   删除
                 </Button>
