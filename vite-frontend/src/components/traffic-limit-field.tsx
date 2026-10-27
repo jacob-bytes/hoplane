@@ -1,5 +1,5 @@
 import { TextField as Input } from "@/components/field-input";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import {
   parseTrafficInput,
   TRAFFIC_UNIT_MIB,

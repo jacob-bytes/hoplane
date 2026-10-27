@@ -28,7 +28,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@/shadcn-bridge/heroui/modal";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import {
   assignGroupPermission,
   assignTunnelsToGroup,

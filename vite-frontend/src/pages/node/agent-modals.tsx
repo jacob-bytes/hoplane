@@ -13,7 +13,7 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import { Tab, Tabs } from "@/shadcn-bridge/heroui/tabs";
 import { type ReleaseChannel } from "@/api";
 

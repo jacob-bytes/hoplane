@@ -54,7 +54,7 @@ import {
 } from "@/shadcn-bridge/heroui/modal";
 import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Dropdown,

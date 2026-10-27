@@ -5,7 +5,7 @@ import {
   TextField as Input,
   TextAreaField as Textarea,
 } from "@/components/field-input";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import {
   Modal,
   ModalContent,

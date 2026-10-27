@@ -1,4 +1,4 @@
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 
 export function OutboundIPSelect({
   value,

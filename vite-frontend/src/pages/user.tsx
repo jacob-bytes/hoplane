@@ -29,7 +29,7 @@ import {
   useDisclosure,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import {
   RadioGroupField as RadioGroup,
   RadioOption as Radio,

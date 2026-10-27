@@ -13,7 +13,7 @@ import { Button, buttonVariant } from "@/components/ui/button";
 import { TextField as Input } from "@/components/field-input";
 import { TextAreaField as Textarea } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
+import { Select, SelectItem } from "@/components/select-field";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Modal,
