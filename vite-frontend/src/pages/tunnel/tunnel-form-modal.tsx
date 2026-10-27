@@ -1,10 +1,9 @@
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  TextField as Input,
-  TextAreaField as Textarea,
-} from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
 import {
@@ -96,17 +95,23 @@ export function TunnelFormModal({
             </ModalHeader>
             <ModalBody>
               <div className="space-y-4">
-                <Input
-                  errorMessage={errors.name}
-                  isInvalid={!!errors.name}
-                  label="隧道名称"
-                  placeholder="请输入隧道名称"
-                  value={form.name}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, name: e.target.value }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="tunnel-name">隧道名称</Label>
+                  <Input
+                    aria-invalid={!!errors.name || undefined}
+                    id="tunnel-name"
+                    placeholder="请输入隧道名称"
+                    value={form.name}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, name: e.target.value }))
+                    }
+                  />
+                  {errors.name ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.name}
+                    </p>
+                  ) : null}
+                </div>
 
                 <SelectField
                   description={isEdit ? "编辑时无法修改隧道类型" : undefined}
@@ -760,43 +765,61 @@ export function TunnelFormModal({
                           }}
                         />
 
-                        <Input
-                          errorMessage={errors.trafficRatio}
-                          isInvalid={!!errors.trafficRatio}
-                          label="流量倍率"
-                          max={100}
-                          min={0.01}
-                          placeholder="例如：0.5 或 1 或 2"
-                          step="any"
-                          type="number"
-                          value={form.trafficRatio.toString()}
-                          variant="bordered"
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="tunnel-traffic-ratio">流量倍率</Label>
+                          <Input
+                            aria-invalid={!!errors.trafficRatio || undefined}
+                            id="tunnel-traffic-ratio"
+                            max={100}
+                            min={0.01}
+                            placeholder="例如：0.5 或 1 或 2"
+                            step="any"
+                            type="number"
+                            value={form.trafficRatio.toString()}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                trafficRatio: parseFloat(e.target.value) || 0,
+                              }))
+                            }
+                          />
+                          {errors.trafficRatio ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.trafficRatio}
+                            </p>
+                          ) : null}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="tunnel-in-ip">入口IP</Label>
+                        <Textarea
+                          aria-invalid={!!errors.inIp || undefined}
+                          className="min-h-24"
+                          id="tunnel-in-ip"
+                          placeholder={
+                            "一行一个IP地址或域名，例如:\n192.168.1.100\nexample.com"
+                          }
+                          value={form.inIp}
                           onChange={(e) =>
                             setForm((prev) => ({
                               ...prev,
-                              trafficRatio: parseFloat(e.target.value) || 0,
+                              inIp: e.target.value,
                             }))
                           }
                         />
+                        <p className="text-xs text-muted-foreground">
+                          入口IP由系统自动从入口服务器采集，无需手动填写。支持多个IP，每行一个地址，留空则使用入口服务器IP
+                        </p>
+                        {errors.inIp ? (
+                          <p className="text-xs text-destructive" role="alert">
+                            {errors.inIp}
+                          </p>
+                        ) : null}
                       </div>
-
-                      <Textarea
-                        description="入口IP由系统自动从入口服务器采集，无需手动填写。支持多个IP，每行一个地址，留空则使用入口服务器IP"
-                        errorMessage={errors.inIp}
-                        isInvalid={!!errors.inIp}
-                        label="入口IP"
-                        maxRows={5}
-                        minRows={3}
-                        placeholder="一行一个IP地址或域名，例如:&#10;192.168.1.100&#10;example.com"
-                        value={form.inIp}
-                        variant="bordered"
-                        onChange={(e) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            inIp: e.target.value,
-                          }))
-                        }
-                      />
 
                       {form.type === 2 && (
                         <SelectField
@@ -825,43 +848,61 @@ export function TunnelFormModal({
                         </p>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-[1fr_140px] gap-3">
-                        <Input
-                          errorMessage={errors.probeTargetHost}
-                          isInvalid={!!errors.probeTargetHost}
-                          label="Host"
-                          placeholder="www.bing.com"
-                          value={form.probeTargetHost || ""}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              probeTargetHost: e.target.value,
-                            }))
-                          }
-                        />
-                        <Input
-                          errorMessage={errors.probeTargetPort}
-                          isInvalid={!!errors.probeTargetPort}
-                          label="Port"
-                          max={65535}
-                          min={1}
-                          placeholder="443"
-                          type="number"
-                          value={
-                            form.probeTargetPort
-                              ? String(form.probeTargetPort)
-                              : ""
-                          }
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              probeTargetPort: e.target.value
-                                ? Number(e.target.value)
-                                : 0,
-                            }))
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="tunnel-probe-host">Host</Label>
+                          <Input
+                            aria-invalid={!!errors.probeTargetHost || undefined}
+                            id="tunnel-probe-host"
+                            placeholder="www.bing.com"
+                            value={form.probeTargetHost || ""}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                probeTargetHost: e.target.value,
+                              }))
+                            }
+                          />
+                          {errors.probeTargetHost ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.probeTargetHost}
+                            </p>
+                          ) : null}
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="tunnel-probe-port">Port</Label>
+                          <Input
+                            aria-invalid={!!errors.probeTargetPort || undefined}
+                            id="tunnel-probe-port"
+                            max={65535}
+                            min={1}
+                            placeholder="443"
+                            type="number"
+                            value={
+                              form.probeTargetPort
+                                ? String(form.probeTargetPort)
+                                : ""
+                            }
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                probeTargetPort: e.target.value
+                                  ? Number(e.target.value)
+                                  : 0,
+                              }))
+                            }
+                          />
+                          {errors.probeTargetPort ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.probeTargetPort}
+                            </p>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
                   </AccordionItem>

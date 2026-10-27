@@ -2,8 +2,9 @@ import type { SpeedLimitApiItem } from "@/api/types";
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
-import { TextAreaField as Textarea } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { SelectField } from "@/components/select-native";
 import {
   Modal,
@@ -84,17 +85,23 @@ export function ForwardFormModal({
             </ModalHeader>
             <ModalBody>
               <div className="space-y-4 pb-4">
-                <Input
-                  errorMessage={errors.name}
-                  isInvalid={!!errors.name}
-                  label="规则名称"
-                  placeholder="请输入规则名称"
-                  value={form.name}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, name: e.target.value }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="forward-name">规则名称</Label>
+                  <Input
+                    aria-invalid={!!errors.name || undefined}
+                    id="forward-name"
+                    placeholder="请输入规则名称"
+                    value={form.name}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, name: e.target.value }))
+                    }
+                  />
+                  {errors.name ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.name}
+                    </p>
+                  ) : null}
+                </div>
 
                 <SelectField
                   description={
@@ -116,28 +123,34 @@ export function ForwardFormModal({
                   }}
                 />
 
-                <Input
-                  description={
-                    currentTunnelPortRange
-                      ? `指定入口端口，留空自动分配 (允许范围: ${currentTunnelPortRange.min}-${currentTunnelPortRange.max})`
-                      : "指定入口端口，留空则从服务器可用端口中自动分配"
-                  }
-                  errorMessage={errors.inPort}
-                  isInvalid={!!errors.inPort}
-                  label="入口端口"
-                  placeholder="留空则自动分配可用端口"
-                  type="number"
-                  value={form.inPort !== null ? form.inPort.toString() : ""}
-                  variant="bordered"
-                  onChange={(e) => {
-                    const value = e.target.value;
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="forward-in-port">入口端口</Label>
+                  <Input
+                    aria-invalid={!!errors.inPort || undefined}
+                    id="forward-in-port"
+                    placeholder="留空则自动分配可用端口"
+                    type="number"
+                    value={form.inPort !== null ? form.inPort.toString() : ""}
+                    onChange={(e) => {
+                      const value = e.target.value;
 
-                    setForm((prev) => ({
-                      ...prev,
-                      inPort: value ? parseInt(value) : null,
-                    }));
-                  }}
-                />
+                      setForm((prev) => ({
+                        ...prev,
+                        inPort: value ? parseInt(value) : null,
+                      }));
+                    }}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {currentTunnelPortRange
+                      ? `指定入口端口，留空自动分配 (允许范围: ${currentTunnelPortRange.min}-${currentTunnelPortRange.max})`
+                      : "指定入口端口，留空则从服务器可用端口中自动分配"}
+                  </p>
+                  {errors.inPort ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.inPort}
+                    </p>
+                  ) : null}
+                </div>
 
                 <SelectField
                   description={
@@ -177,23 +190,32 @@ export function ForwardFormModal({
                   }}
                 />
 
-                <Textarea
-                  description="格式: IP:端口 或 域名:端口，支持多个地址（每行一个）"
-                  errorMessage={errors.remoteAddr}
-                  isInvalid={!!errors.remoteAddr}
-                  label="落地地址"
-                  maxRows={6}
-                  minRows={3}
-                  placeholder="请输入落地地址，多个地址用换行分隔，例如:&#10;192.168.1.100:10000&#10;[2001:db8::10]:10086&#10;test.example.com:10010"
-                  value={form.remoteAddr}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      remoteAddr: e.target.value,
-                    }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="forward-remote-addr">落地地址</Label>
+                  <Textarea
+                    aria-invalid={!!errors.remoteAddr || undefined}
+                    className="min-h-24"
+                    id="forward-remote-addr"
+                    placeholder={
+                      "请输入落地地址，多个地址用换行分隔，例如:\n192.168.1.100:10000\n[2001:db8::10]:10086\ntest.example.com:10010"
+                    }
+                    value={form.remoteAddr}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        remoteAddr: e.target.value,
+                      }))
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    格式: IP:端口 或 域名:端口，支持多个地址（每行一个）
+                  </p>
+                  {errors.remoteAddr ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.remoteAddr}
+                    </p>
+                  ) : null}
+                </div>
 
                 {getAddressCount(form.remoteAddr) > 1 && (
                   <SelectField
@@ -224,46 +246,58 @@ export function ForwardFormModal({
                     }
                   >
                     <div className="space-y-4 pb-2">
-                      <Input
-                        description="大于 0 时优先于用户全局限制；0 或空表示使用用户全局限制，用户也为 0 时不限制。"
-                        label="最大连接数"
-                        min="0"
-                        placeholder="0 或空表示使用用户全局限制"
-                        type="number"
-                        value={
-                          form.maxConn === 0 ? "" : String(form.maxConn || "")
-                        }
-                        variant="bordered"
-                        onChange={(e) => {
-                          const value = Math.max(
-                            Number(e.target.value) || 0,
-                            0,
-                          );
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="forward-max-conn">最大连接数</Label>
+                        <Input
+                          id="forward-max-conn"
+                          min="0"
+                          placeholder="0 或空表示使用用户全局限制"
+                          type="number"
+                          value={
+                            form.maxConn === 0 ? "" : String(form.maxConn || "")
+                          }
+                          onChange={(e) => {
+                            const value = Math.max(
+                              Number(e.target.value) || 0,
+                              0,
+                            );
 
-                          setForm((prev) => ({ ...prev, maxConn: value }));
-                        }}
-                      />
-                      <Input
-                        description="每个客户端 IP 可同时建立的最大连接数；0 或空表示不限制。"
-                        label="每 IP 最大连接数"
-                        min="0"
-                        placeholder="0 或空表示不限制"
-                        type="number"
-                        value={
-                          form.ipMaxConn === 0
-                            ? ""
-                            : String(form.ipMaxConn || "")
-                        }
-                        variant="bordered"
-                        onChange={(e) => {
-                          const value = Math.max(
-                            Number(e.target.value) || 0,
-                            0,
-                          );
+                            setForm((prev) => ({ ...prev, maxConn: value }));
+                          }}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          大于 0 时优先于用户全局限制；0
+                          或空表示使用用户全局限制，用户也为 0 时不限制。
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="forward-ip-max-conn">
+                          每 IP 最大连接数
+                        </Label>
+                        <Input
+                          id="forward-ip-max-conn"
+                          min="0"
+                          placeholder="0 或空表示不限制"
+                          type="number"
+                          value={
+                            form.ipMaxConn === 0
+                              ? ""
+                              : String(form.ipMaxConn || "")
+                          }
+                          onChange={(e) => {
+                            const value = Math.max(
+                              Number(e.target.value) || 0,
+                              0,
+                            );
 
-                          setForm((prev) => ({ ...prev, ipMaxConn: value }));
-                        }}
-                      />
+                            setForm((prev) => ({ ...prev, ipMaxConn: value }));
+                          }}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          每个客户端 IP 可同时建立的最大连接数；0
+                          或空表示不限制。
+                        </p>
+                      </div>
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <SelectField
                           description="入口监听接收 PROXY protocol，用于读取上游传入的真实客户端 IP。"
