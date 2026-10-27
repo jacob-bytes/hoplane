@@ -171,8 +171,8 @@ const BAR_TONE: Record<string, string> = {
   success: "bg-success",
   primary: "bg-primary",
   warning: "bg-warning",
-  danger: "bg-danger",
-  default: "bg-default-300",
+  danger: "bg-destructive",
+  default: "bg-muted",
 };
 
 /** A labelled usage bar for a list row (CPU, 内存). */
@@ -218,7 +218,7 @@ function MetricPair({
  * across the row.
  */
 function NodeMetricsStrip({ metric }: { metric: RealtimeNodeMetric }) {
-  const up = <span className="font-bold text-primary-500">↑</span>;
+  const up = <span className="font-bold text-primary">↑</span>;
   const down = <span className="font-bold text-success-500">↓</span>;
 
   return (
@@ -285,18 +285,18 @@ function ServerCard({
     >
       {/* Dynamic top gradient bar based on status */}
       <div
-        className={`absolute top-0 left-0 right-0 h-1 ${isOnline ? "bg-success" : "bg-danger"}`}
+        className={`absolute top-0 left-0 right-0 h-1 ${isOnline ? "bg-success" : "bg-destructive"}`}
       />
 
       {/* Decorative background glow */}
       <div
-        className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-2xl opacity-10 transition-opacity group-hover:opacity-20 ${isOnline ? "bg-success" : "bg-danger"}`}
+        className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-2xl opacity-10 transition-opacity group-hover:opacity-20 ${isOnline ? "bg-success" : "bg-destructive"}`}
       />
 
       <CardHeader className="pb-2 pt-5 px-5 flex flex-row justify-between items-start gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative flex-shrink-0">
-            <div className="w-10 h-10 rounded-xl bg-muted dark:bg-muted/10 flex items-center justify-center border border-divider">
+            <div className="w-10 h-10 rounded-xl bg-muted dark:bg-muted/10 flex items-center justify-center border border-hairline">
               <DistroIcon
                 className="w-5 h-5"
                 distro={distro}
@@ -304,7 +304,7 @@ function ServerCard({
               />
             </div>
             <span
-              className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${isOnline ? "bg-success" : "bg-danger"}`}
+              className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${isOnline ? "bg-success" : "bg-destructive"}`}
             />
           </div>
           <div className="flex flex-col min-w-0">
@@ -349,10 +349,10 @@ function ServerCard({
           </div>
         </div>
 
-        <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted dark:bg-muted/30 border border-divider mt-1 w-full">
+        <div className="flex items-center justify-between p-2.5 rounded-lg bg-muted dark:bg-muted/30 border border-hairline mt-1 w-full">
           <div className="flex flex-col gap-0.5 min-w-0 flex-1">
             <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-              <span className="text-primary-500 inline-block font-bold">↑</span>
+              <span className="text-primary inline-block font-bold">↑</span>
               <span>上传</span>
             </div>
             <span className="font-mono text-xs font-semibold truncate">
@@ -375,7 +375,7 @@ function ServerCard({
           </div>
         </div>
 
-        <div className="flex justify-between items-center mt-1 pt-3 border-t border-divider/50 w-full overflow-hidden">
+        <div className="flex justify-between items-center mt-1 pt-3 border-t border-hairline/50 w-full overflow-hidden">
           <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground min-w-0">
             <Clock className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
             <span className="font-mono truncate">
@@ -592,7 +592,9 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
             <RefreshCw className="w-6 h-6 animate-spin" />
           </div>
         ) : error ? (
-          <div className="text-center py-8 text-danger text-sm">{error}</div>
+          <div className="text-center py-8 text-destructive text-sm">
+            {error}
+          </div>
         ) : data.length > 0 ? (
           <>
             <div aria-label="节点性能趋势图" className="h-64" role="img">
@@ -1411,7 +1413,7 @@ export function MonitorView({
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <span
-                  className={`h-2 w-2 rounded-full ${wsConnected ? "bg-success" : wsConnecting ? "bg-warning" : "bg-default-300"}`}
+                  className={`h-2 w-2 rounded-full ${wsConnected ? "bg-success" : wsConnecting ? "bg-warning" : "bg-muted"}`}
                 />
                 {wsConnected
                   ? "实时已连接"
@@ -1535,7 +1537,7 @@ export function MonitorView({
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground ml-auto">
               <div
-                className={`w-2 h-2 rounded-full ${wsConnected ? "bg-success" : wsConnecting ? "bg-warning" : "bg-default-300"}`}
+                className={`w-2 h-2 rounded-full ${wsConnected ? "bg-success" : wsConnecting ? "bg-warning" : "bg-muted"}`}
               />
               <span>
                 {wsConnected
@@ -1584,13 +1586,13 @@ export function MonitorView({
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="min-w-0 rounded-xl border border-divider bg-card px-3 py-2"
+                  className="min-w-0 rounded-xl border border-hairline bg-raised px-3 py-2"
                 >
                   <div className="truncate text-xs text-muted-foreground">
                     {item.label}
                   </div>
                   <div
-                    className={`truncate font-mono text-sm font-semibold ${item.color === "danger" ? "text-danger" : item.color === "warning" ? "text-warning" : ""}`}
+                    className={`truncate font-mono text-sm font-semibold ${item.color === "danger" ? "text-destructive" : item.color === "warning" ? "text-warning" : ""}`}
                   >
                     {item.value}
                   </div>
@@ -1726,16 +1728,16 @@ export function MonitorView({
                               <div
                                 className={`w-2 h-2 rounded-full shrink-0 mr-1 ${
                                   monitor.enabled !== 1
-                                    ? "bg-default-300"
+                                    ? "bg-muted"
                                     : !lr
-                                      ? "bg-default-400"
+                                      ? "bg-muted"
                                       : lr.success === 1
                                         ? isActive
                                           ? "bg-white"
                                           : "bg-success"
                                         : isActive
                                           ? "bg-white"
-                                          : "bg-danger"
+                                          : "bg-destructive"
                                 }`}
                               />
                               {monitor.name}
@@ -1746,7 +1748,7 @@ export function MonitorView({
 
                       {/* Active monitor info bar */}
                       {resolvedActiveMonitor && (
-                        <div className="flex items-center justify-between gap-3 rounded-xl border border-divider bg-muted px-3 py-2">
+                        <div className="flex items-center justify-between gap-3 rounded-xl border border-hairline bg-muted px-3 py-2">
                           <div className="flex items-center gap-3 min-w-0 flex-wrap">
                             <Badge variant="default">
                               {resolvedActiveMonitor.type.toUpperCase()}
@@ -1810,7 +1812,7 @@ export function MonitorView({
                                 编辑
                               </DropdownItem>
                               <DropdownItem
-                                className="text-danger"
+                                className="text-destructive"
                                 color="danger"
                                 startContent={<Trash2 className="w-4 h-4" />}
                                 onPress={() =>
@@ -1970,7 +1972,7 @@ export function MonitorView({
                   <div key={r.id} className="py-2">
                     <div className="flex items-center gap-2 text-sm">
                       <span
-                        className={`h-2 w-2 shrink-0 rounded-full ${r.success === 1 ? "bg-success" : "bg-danger"}`}
+                        className={`h-2 w-2 shrink-0 rounded-full ${r.success === 1 ? "bg-success" : "bg-destructive"}`}
                         title={r.success === 1 ? "成功" : "失败"}
                       />
                       <span className="font-mono text-xs text-muted-foreground">
@@ -1982,13 +1984,13 @@ export function MonitorView({
                           : "-"}
                       </span>
                       <span
-                        className={`w-8 text-right text-xs ${r.success === 1 ? "text-muted-foreground" : "text-danger"}`}
+                        className={`w-8 text-right text-xs ${r.success === 1 ? "text-muted-foreground" : "text-destructive"}`}
                       >
                         {r.success === 1 ? "成功" : "失败"}
                       </span>
                     </div>
                     {r.errorMessage && (
-                      <div className="mt-0.5 break-all pl-4 text-xs text-danger">
+                      <div className="mt-0.5 break-all pl-4 text-xs text-destructive">
                         {r.errorMessage}
                       </div>
                     )}

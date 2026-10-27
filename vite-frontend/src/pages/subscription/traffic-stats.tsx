@@ -164,7 +164,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
       </div>
 
       {error ? (
-        <p className="py-8 text-center text-sm text-danger">{error}</p>
+        <p className="py-8 text-center text-sm text-destructive">{error}</p>
       ) : !shown ? (
         <p className="py-8 text-center text-sm text-muted-foreground">
           正在加载…
@@ -270,13 +270,13 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
             </span>
             {sinceAt && (
               <span className="flex items-center gap-1.5">
-                <span className="h-3 border-l border-dashed border-default-400" />
+                <span className="h-3 border-l border-dashed border-hairline-strong" />
                 本周期起（{sinceDate}）
               </span>
             )}
           </div>
 
-          <div className="overflow-hidden rounded-xl border border-divider">
+          <div className="overflow-hidden rounded-xl border border-hairline">
             <div className="grid grid-cols-[4.75rem_minmax(0,1fr)_4.5rem] gap-2 bg-muted/60 px-3 py-1.5 text-xs text-muted-foreground">
               <span>时间</span>
               <span>下载 / 上传</span>
@@ -285,7 +285,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
             {(all ? rows : rows.slice(0, 7)).map((p) => (
               <div
                 key={p.time}
-                className="grid grid-cols-[4.75rem_minmax(0,1fr)_4.5rem] items-center gap-2 border-t border-divider px-3 py-2"
+                className="grid grid-cols-[4.75rem_minmax(0,1fr)_4.5rem] items-center gap-2 border-t border-hairline px-3 py-2"
               >
                 <span className="truncate text-xs">{p.row}</span>
                 <div className="min-w-0 space-y-1">
@@ -342,7 +342,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
             ))}
             {rows.length > 7 && (
               <button
-                className="w-full border-t border-divider py-2 text-xs text-primary"
+                className="w-full border-t border-hairline py-2 text-xs text-primary"
                 type="button"
                 onClick={() => setAll(!all)}
               >

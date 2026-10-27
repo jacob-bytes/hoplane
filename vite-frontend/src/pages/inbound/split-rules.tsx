@@ -39,7 +39,7 @@ const chipClass = (on: boolean) =>
   `rounded-full border px-3 py-1 text-xs transition-colors ${
     on
       ? "border-primary bg-primary text-primary-foreground"
-      : "border-divider bg-card text-muted-foreground"
+      : "border-hairline bg-raised text-muted-foreground"
   }`;
 
 const countEntries = (v: string) => v.split(/[\s,，]+/).filter(Boolean).length;
@@ -93,7 +93,7 @@ export function SplitRulesEditor({
   return (
     <div className="space-y-2">
       {rules.length === 0 && (
-        <div className="rounded-xl border border-dashed border-divider px-4 py-6 text-center text-sm text-muted-foreground">
+        <div className="rounded-xl border border-dashed border-hairline px-4 py-6 text-center text-sm text-muted-foreground">
           还没有分流规则，所有流量走默认去向
         </div>
       )}
@@ -118,8 +118,8 @@ export function SplitRulesEditor({
         return (
           <div
             key={i}
-            className={`overflow-hidden rounded-xl border bg-card ${
-              isOpen ? "border-primary/40" : "border-divider"
+            className={`overflow-hidden rounded-xl border bg-raised ${
+              isOpen ? "border-primary/40" : "border-hairline"
             }`}
           >
             <button
@@ -142,7 +142,7 @@ export function SplitRulesEditor({
                 <span
                   className={`block truncate text-xs ${
                     r.action === "block" || missing || !target
-                      ? "text-danger"
+                      ? "text-destructive"
                       : "text-muted-foreground"
                   }`}
                 >
@@ -156,7 +156,7 @@ export function SplitRulesEditor({
               />
             </button>
             {isOpen && (
-              <div className="space-y-3 border-t border-divider px-3 pb-3 pt-3">
+              <div className="space-y-3 border-t border-hairline px-3 pb-3 pt-3">
                 {groups.map((g) => (
                   <div key={g} className="space-y-1.5">
                     <p className="text-[11px] text-muted-foreground">{g}</p>
@@ -226,7 +226,7 @@ export function SplitRulesEditor({
                     onPress={() => onChooseTarget(i)}
                   />
                   {missing && (
-                    <p className="text-xs text-danger">
+                    <p className="text-xs text-destructive">
                       所选节点已被删除，匹配的流量会被丢弃，请重新选择
                     </p>
                   )}

@@ -1731,13 +1731,13 @@ export default function NodePage({
               className={
                 card
                   ? CARD_GRID
-                  : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+                  : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-raised"
               }
               data-list={card ? undefined : "node"}
             >
               {!card && (
                 <div
-                  className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+                  className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-raised px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                   data-slot="list-head"
                   role="row"
                 >
@@ -1849,7 +1849,7 @@ export default function NodePage({
                                   <div className="group/info relative">
                                     <button
                                       aria-label={`查看服务器信息，共 ${infoCount} 项`}
-                                      className="relative flex h-7 w-7 items-center justify-center rounded-full border border-divider/80 bg-background/95 text-muted-foreground shadow-sm transition hover:border-border hover:text-foreground focus-visible:border-border focus-visible:text-foreground focus-visible:outline-none"
+                                      className="relative flex h-7 w-7 items-center justify-center rounded-full border border-hairline/80 bg-background/95 text-muted-foreground shadow-sm transition hover:border-border hover:text-foreground focus-visible:border-border focus-visible:text-foreground focus-visible:outline-none"
                                       type="button"
                                       onFocus={(event) =>
                                         updateInfoPopoverPlacement(
@@ -1879,11 +1879,11 @@ export default function NodePage({
                                         />
                                       </svg>
                                       {hasRemark && (
-                                        <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5 rounded-full border border-background bg-default-300 shadow-sm dark:bg-muted0" />
+                                        <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5 rounded-full border border-background bg-muted shadow-sm dark:bg-muted0" />
                                       )}
                                     </button>
                                     <div
-                                      className={`pointer-events-none invisible absolute z-[60] w-72 max-w-[min(18rem,calc(100vw-4rem))] rounded-xl border border-divider/80 bg-background/98 p-3 opacity-0 shadow-xl  transition-all duration-150 group-hover/info:visible group-hover/info:pointer-events-auto group-hover/info:opacity-100 group-focus-within/info:visible group-focus-within/info:pointer-events-auto group-focus-within/info:opacity-100 ${
+                                      className={`pointer-events-none invisible absolute z-[60] w-72 max-w-[min(18rem,calc(100vw-4rem))] rounded-xl border border-hairline/80 bg-background/98 p-3 opacity-0 shadow-xl  transition-all duration-150 group-hover/info:visible group-hover/info:pointer-events-auto group-hover/info:opacity-100 group-focus-within/info:visible group-focus-within/info:pointer-events-auto group-focus-within/info:opacity-100 ${
                                         infoPlacement === "bottom"
                                           ? "right-0 top-[calc(100%+0.75rem)] translate-y-1 group-hover/info:translate-y-0 group-focus-within/info:translate-y-0"
                                           : "right-[calc(100%+0.75rem)] top-1/2 -translate-y-1/2 translate-x-1 group-hover/info:translate-x-0 group-focus-within/info:translate-x-0"
@@ -1920,7 +1920,7 @@ export default function NodePage({
                                                 {expiryMeta.label}
                                               </Badge>
                                             </div>
-                                            <div className="rounded-lg border border-divider/80 bg-muted/80 px-3 py-2 text-xs leading-5 text-foreground">
+                                            <div className="rounded-lg border border-hairline/80 bg-muted/80 px-3 py-2 text-xs leading-5 text-foreground">
                                               {formatNodeRenewalTime(
                                                 expiryMeta.nextDueTime,
                                               )}
@@ -1934,7 +1934,7 @@ export default function NodePage({
                                               备注
                                             </div>
                                             <div
-                                              className="max-h-32 overflow-y-auto rounded-lg border border-divider/80 bg-muted/80 px-3 py-2 text-xs leading-5 text-foreground break-all [scrollbar-width:thin]"
+                                              className="max-h-32 overflow-y-auto rounded-lg border border-hairline/80 bg-muted/80 px-3 py-2 text-xs leading-5 text-foreground break-all [scrollbar-width:thin]"
                                               title={node.remark?.trim()}
                                             >
                                               {node.remark?.trim()}
@@ -2089,7 +2089,7 @@ export default function NodePage({
                                         <span className="text-muted-foreground">
                                           占用端口
                                         </span>
-                                        <span className="font-mono text-foreground dark:text-default-300">
+                                        <span className="font-mono text-foreground dark:text-muted-foreground">
                                           {remoteUsage.usedPorts.length}/
                                           {Math.max(
                                             remoteUsage.portRangeEnd -
@@ -2127,7 +2127,7 @@ export default function NodePage({
                                         <span className="text-muted-foreground">
                                           绑定明细
                                         </span>
-                                        <span className="font-mono text-foreground dark:text-default-300">
+                                        <span className="font-mono text-foreground dark:text-muted-foreground">
                                           {remoteUsage.activeBindingNum}
                                         </span>
                                       </div>
@@ -2584,13 +2584,13 @@ export default function NodePage({
                       ? "bg-muted text-muted-foreground"
                       : online
                         ? "bg-success/10 text-success-700 dark:text-success-400"
-                        : "bg-danger/10 text-danger"
+                        : "bg-destructive/10 text-destructive"
                   }`}
                   role="status"
                 >
                   {!isRemoteNode && (
                     <span
-                      className={`h-1.5 w-1.5 rounded-full ${online ? "bg-success" : "bg-danger"}`}
+                      className={`h-1.5 w-1.5 rounded-full ${online ? "bg-success" : "bg-destructive"}`}
                     />
                   )}
                   {isRemoteNode ? "远程" : online ? "在线" : "离线"}

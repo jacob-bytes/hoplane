@@ -316,13 +316,13 @@ function LinesView() {
           className={
             card
               ? CARD_GRID
-              : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-card"
+              : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-raised"
           }
           data-list={card ? undefined : "relay"}
         >
           {!card && (
             <div
-              className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+              className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-raised px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
               data-slot="list-head"
               role="row"
             >

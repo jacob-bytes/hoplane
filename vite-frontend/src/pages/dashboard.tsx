@@ -101,7 +101,7 @@ function UserDashboard() {
       return {
         label: "未设置",
         badgeClassName:
-          "bg-muted text-foreground dark:bg-muted dark:text-default-300",
+          "bg-muted text-foreground dark:bg-muted dark:text-muted-foreground",
         nextDueTime: undefined as number | undefined,
       };
     }
@@ -113,7 +113,7 @@ function UserDashboard() {
     if (renewalState === "expired" || diffDays <= 0) {
       return {
         label: "已逾期",
-        badgeClassName: "bg-danger/10 text-danger",
+        badgeClassName: "bg-destructive/10 text-destructive",
         nextDueTime,
       };
     }
@@ -167,7 +167,7 @@ function UserDashboard() {
           </span>
         </div>
 
-        <div className="mt-3 text-sm text-foreground dark:text-default-300">
+        <div className="mt-3 text-sm text-foreground dark:text-muted-foreground">
           {formatNodeRenewalTime(renewalSnapshot.nextDueTime)}
         </div>
 
@@ -234,8 +234,8 @@ function UserDashboard() {
 
     if (expDate < now) {
       return {
-        color: "text-danger",
-        bg: "bg-danger/10 border-danger/20",
+        color: "text-destructive",
+        bg: "bg-destructive/10 border-destructive/20",
         text: "已过期",
       };
     }
@@ -245,8 +245,8 @@ function UserDashboard() {
 
     if (diffDays <= 7) {
       return {
-        color: "text-danger",
-        bg: "bg-danger/10 border-danger/20",
+        color: "text-destructive",
+        bg: "bg-destructive/10 border-destructive/20",
         text: `${diffDays}天后过期`,
       };
     } else if (diffDays <= 30) {
@@ -674,7 +674,7 @@ function UserDashboard() {
               </DropdownItem>
               <DropdownItem
                 key="logout"
-                className="text-danger"
+                className="text-destructive"
                 color="danger"
                 startContent={
                   <svg
@@ -869,7 +869,7 @@ function UserDashboard() {
                   </p>
                 </div>
               </div>
-              <span className="inline-flex w-fit items-center rounded-full bg-card px-3 py-1 text-xs font-medium text-warning-700 ring-1 ring-warning/20 dark:text-warning-500 tabular">
+              <span className="inline-flex w-fit items-center rounded-full bg-raised px-3 py-1 text-xs font-medium text-warning-700 ring-1 ring-warning/20 dark:text-warning-500 tabular">
                 {nodeExpiryReminders.length} 个提醒
               </span>
             </div>
@@ -1065,7 +1065,7 @@ function UserDashboard() {
                     <h3 className="font-semibold text-foreground">
                       {group.tunnelName}
                     </h3>
-                    <span className="px-2 py-1 bg-primary-100 dark:bg-primary-500/20 text-primary-700 dark:text-primary-300 rounded-md text-sm">
+                    <span className="px-2 py-1 bg-primary-100 dark:bg-primary/20 text-primary-700 dark:text-primary-300 rounded-md text-sm">
                       {group.forwards.length} 个规则
                     </span>
                   </div>

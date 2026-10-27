@@ -122,7 +122,7 @@ export function PasskeyModal({
             绑定后可用设备解锁（指纹、面容等）登录。绑定和删除都需要当前密码。
           </p>
           {items.length > 0 && (
-            <div className="divide-y divide-divider overflow-hidden rounded-xl border border-divider">
+            <div className="divide-y divide-divider overflow-hidden rounded-xl border border-hairline">
               {items.map((item) => (
                 <div
                   key={item.id}

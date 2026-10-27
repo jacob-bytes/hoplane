@@ -19,7 +19,7 @@ function rate(v?: number): string {
 }
 
 function tone(v: number): string {
-  return v >= 85 ? "bg-danger" : v >= 60 ? "bg-warning" : "bg-primary/70";
+  return v >= 85 ? "bg-destructive" : v >= 60 ? "bg-warning" : "bg-primary/70";
 }
 
 function Meter({ label, value }: { label: string; value?: number }) {

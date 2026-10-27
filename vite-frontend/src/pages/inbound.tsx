@@ -653,7 +653,7 @@ export default function InboundPage() {
     : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised";
   const listHead = !card && (
     <div
-      className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-card px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
+      className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-raised px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
       data-slot="list-head"
     >
       <div role="columnheader" />
@@ -714,12 +714,12 @@ export default function InboundPage() {
     const activate = () =>
       selectMode ? toggleSelect(item.id) : setSheetFor(item.id);
     const dotClass = unreachable
-      ? "bg-danger"
+      ? "bg-destructive"
       : running
         ? "bg-success"
         : item.enabled
           ? "bg-warning"
-          : "bg-default-300";
+          : "bg-muted";
     const stateText = unreachable
       ? `连不上：${probe?.error ?? ""}`
       : running
@@ -968,7 +968,7 @@ export default function InboundPage() {
         key: "sources",
         label: "订阅源",
         badge: sources.some((s) => s.lastError) ? (
-          <span className="text-danger">异常</span>
+          <span className="text-destructive">异常</span>
         ) : (
           sources.length || undefined
         ),
@@ -1433,7 +1433,7 @@ export default function InboundPage() {
                 <ModalHeader>
                   <h2
                     className={`text-lg font-bold ${
-                      confirm.action === "delete" ? "text-danger" : ""
+                      confirm.action === "delete" ? "text-destructive" : ""
                     }`}
                   >
                     {CONFIRM_TEXT[confirm.action].title}
@@ -1485,7 +1485,7 @@ export default function InboundPage() {
             return (
               <>
                 <ModalHeader>
-                  <h2 className="text-lg font-bold text-danger">
+                  <h2 className="text-lg font-bold text-destructive">
                     删除 {chosen.length} 个入站
                   </h2>
                 </ModalHeader>

@@ -44,11 +44,11 @@ function status(s: UserSubscription): [string, string] {
 
   switch (s.status) {
     case "disabled":
-      return ["已停用", "bg-default-200 text-muted-foreground"];
+      return ["已停用", "bg-muted text-muted-foreground"];
     case "expired":
-      return ["已到期", "bg-danger/15 text-danger"];
+      return ["已到期", "bg-destructive/15 text-destructive"];
     case "over_quota":
-      return ["流量已用完", "bg-danger/15 text-danger"];
+      return ["流量已用完", "bg-destructive/15 text-destructive"];
   }
   if (s.trafficLimit && used >= s.trafficLimit * 0.9) {
     return ["流量快用完", "bg-warning/15 text-warning"];
@@ -81,7 +81,7 @@ function Traffic({ s }: { s: UserSubscription }) {
   const used = s.uploadBytes + s.downloadBytes;
   const pct = s.trafficLimit ? Math.min(100, (used / s.trafficLimit) * 100) : 0;
   const tone =
-    pct >= 100 ? "bg-danger" : pct >= 90 ? "bg-warning" : "bg-success";
+    pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-success";
 
   return (
     <div className="space-y-1.5">
@@ -95,7 +95,7 @@ function Traffic({ s }: { s: UserSubscription }) {
         {s.trafficLimit > 0 && <span>{Math.floor(pct)}%</span>}
       </div>
       {s.trafficLimit > 0 && (
-        <div className="h-2 overflow-hidden rounded-full bg-default-200">
+        <div className="h-2 overflow-hidden rounded-full bg-muted">
           <div
             className={`h-full rounded-full ${tone}`}
             style={{ width: `${Math.max(2, pct)}%` }}
@@ -129,7 +129,7 @@ function SubscriptionCard({
   const [traffic, setTraffic] = useState(false);
 
   return (
-    <div className="space-y-4 rounded-xl border border-divider bg-card p-4 shadow-sm sm:p-5">
+    <div className="space-y-4 rounded-xl border border-hairline bg-raised p-4 shadow-sm sm:p-5">
       <div className="flex items-center justify-between gap-2">
         <span className="min-w-0 truncate text-lg font-bold">{s.name}</span>
         <span
@@ -160,7 +160,7 @@ function SubscriptionCard({
       </button>
       {traffic && <SubTrafficStats mine id={s.id} />}
       {!usable && (
-        <p className="text-xs text-danger">
+        <p className="text-xs text-destructive">
           {s.status === "over_quota"
             ? "流量已用完，暂时连不上；到重置日或联系管理员恢复"
             : s.status === "expired"

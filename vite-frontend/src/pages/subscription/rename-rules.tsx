@@ -89,7 +89,7 @@ export function RenameRules({
             <div className="flex items-center gap-1.5">
               <input
                 aria-label={`第 ${i + 1} 条：正则表达式`}
-                className={`${field} flex-[3] ${err ? "border-danger" : "border-divider"}`}
+                className={`${field} flex-[3] ${err ? "border-destructive" : "border-hairline"}`}
                 placeholder="正则表达式"
                 value={row.pattern}
                 onChange={(e) =>
@@ -103,7 +103,7 @@ export function RenameRules({
               <span className="shrink-0 text-xs text-muted-foreground">→</span>
               <input
                 aria-label={`第 ${i + 1} 条：替换为`}
-                className={`${field} flex-[2] border-divider`}
+                className={`${field} flex-[2] border-hairline`}
                 placeholder="留空删除"
                 value={row.replacement}
                 onChange={(e) =>
@@ -116,14 +116,14 @@ export function RenameRules({
               />
               <button
                 aria-label={`删除第 ${i + 1} 条`}
-                className="shrink-0 rounded-lg p-2 text-muted-foreground hover:bg-danger-50 hover:text-danger"
+                className="shrink-0 rounded-lg p-2 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                 type="button"
                 onClick={() => update(rows.filter((_, j) => j !== i))}
               >
                 <Trash2 className="h-4 w-4" />
               </button>
             </div>
-            {err && <p className="text-xs text-danger">{err}</p>}
+            {err && <p className="text-xs text-destructive">{err}</p>}
           </div>
         );
       })}

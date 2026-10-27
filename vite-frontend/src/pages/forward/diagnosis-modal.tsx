@@ -52,7 +52,7 @@ export function DiagnosisModal({
     <Modal
       backdrop="blur"
       classNames={{
-        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden [&>div]:bg-card [&>div]:dark:bg-card",
+        base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden [&>div]:bg-raised [&>div]:dark:bg-raised",
       }}
       isOpen={diagnosisModalOpen}
       placement="center"
@@ -72,7 +72,7 @@ export function DiagnosisModal({
           <>
             <ModalHeader
               closable
-              className="flex flex-col gap-1 border-b border-divider"
+              className="flex flex-col gap-1 border-b border-hairline"
             >
               <h2 className="text-xl font-bold">规则诊断结果</h2>
               {currentDiagnosisForward && (
@@ -115,7 +115,7 @@ export function DiagnosisModal({
 
                   {/* 统计摘要 */}
                   <div className="grid grid-cols-3 gap-3">
-                    <div className="text-center p-3 bg-muted rounded-lg border border-divider">
+                    <div className="text-center p-3 bg-muted rounded-lg border border-hairline">
                       <div className="text-2xl font-bold text-foreground">
                         {diagnosisProgress.total > 0
                           ? diagnosisProgress.total
@@ -137,15 +137,15 @@ export function DiagnosisModal({
                         成功
                       </div>
                     </div>
-                    <div className="text-center p-3 bg-danger-50 dark:bg-danger-900/20 rounded-lg border border-danger-200 dark:border-danger-700">
-                      <div className="text-2xl font-bold text-danger-600 dark:text-danger-400">
+                    <div className="text-center p-3 bg-destructive/10 dark:bg-destructive/20/20 rounded-lg border border-destructive/30 dark:border-destructive/40">
+                      <div className="text-2xl font-bold text-destructive dark:text-destructive">
                         {diagnosisProgress.completed > 0 ||
                         diagnosisProgress.total > 0
                           ? diagnosisProgress.failed
                           : diagnosisResult.results.filter((r) => !r.success)
                               .length}
                       </div>
-                      <div className="text-xs text-danger-600 dark:text-danger-400/80 mt-1">
+                      <div className="text-xs text-destructive dark:text-destructive/80 mt-1">
                         失败
                       </div>
                     </div>
@@ -187,9 +187,9 @@ export function DiagnosisModal({
                         return (
                           <div
                             key={title}
-                            className="border border-divider rounded-lg overflow-hidden"
+                            className="border border-hairline rounded-lg overflow-hidden"
                           >
-                            <div className="bg-primary/10 dark:bg-primary/20 px-3 py-2 border-b border-divider">
+                            <div className="bg-primary/10 dark:bg-primary/20 px-3 py-2 border-b border-hairline">
                               <h3 className="text-sm font-semibold text-primary">
                                 {title}
                               </h3>
@@ -214,7 +214,7 @@ export function DiagnosisModal({
                                   </th>
                                 </tr>
                               </thead>
-                              <tbody className="divide-y divide-divider bg-card">
+                              <tbody className="divide-y divide-divider bg-raised">
                                 {results.map((result, index) => {
                                   const isDiagnosing = Boolean(
                                     result.diagnosing,
@@ -229,12 +229,12 @@ export function DiagnosisModal({
                                   return (
                                     <tr
                                       key={index}
-                                      className={`hover:bg-muted dark:hover:bg-default-300 ${
+                                      className={`hover:bg-muted dark:hover:bg-muted ${
                                         isDiagnosing
                                           ? "bg-warning-50 dark:bg-warning-900/20"
                                           : isSuccess
-                                            ? "bg-card"
-                                            : "bg-danger-50 dark:bg-danger-900/30"
+                                            ? "bg-raised"
+                                            : "bg-destructive/10 dark:bg-destructive/20/30"
                                       }`}
                                     >
                                       <td className="px-3 py-2">
@@ -246,7 +246,7 @@ export function DiagnosisModal({
                                               className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
                                                 isSuccess
                                                   ? "bg-success text-white"
-                                                  : "bg-danger text-white"
+                                                  : "bg-destructive text-white"
                                               }`}
                                             >
                                               {isSuccess ? "✓" : "✗"}
@@ -417,8 +417,8 @@ export function DiagnosisModal({
                                     isDiagnosing
                                       ? "border-warning-200 dark:border-warning-300/30 bg-warning-50 dark:bg-warning-900/20"
                                       : isSuccess
-                                        ? "border-divider bg-card"
-                                        : "border-danger-200 dark:border-danger-300/30 bg-danger-50 dark:bg-danger-900/30"
+                                        ? "border-hairline bg-raised"
+                                        : "border-destructive/30 dark:border-destructive/30/30 bg-destructive/10 dark:bg-destructive/20/30"
                                   }`}
                                 >
                                   <div className="flex items-start gap-2 mb-2">
@@ -429,7 +429,7 @@ export function DiagnosisModal({
                                         className={`w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
                                           isSuccess
                                             ? "bg-success text-white"
-                                            : "bg-danger text-white"
+                                            : "bg-destructive text-white"
                                         }`}
                                       >
                                         {isSuccess ? "✓" : "✗"}
@@ -462,7 +462,7 @@ export function DiagnosisModal({
                                   </div>
 
                                   {isSuccess ? (
-                                    <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-divider">
+                                    <div className="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-hairline">
                                       <div className="text-center">
                                         <div className="text-lg font-bold text-primary">
                                           {result.averageTime?.toFixed(0)}
@@ -504,12 +504,12 @@ export function DiagnosisModal({
                                       </div>
                                     </div>
                                   ) : (
-                                    <div className="mt-2 pt-2 border-t border-divider">
+                                    <div className="mt-2 pt-2 border-t border-hairline">
                                       <div
                                         className={`text-xs ${
                                           isDiagnosing
                                             ? "text-warning"
-                                            : "text-danger"
+                                            : "text-destructive"
                                         }`}
                                       >
                                         {isDiagnosing
@@ -559,7 +559,7 @@ export function DiagnosisModal({
                     (r) => r.success === false && !r.diagnosing,
                   ) && (
                     <div className="space-y-2 hidden md:block">
-                      <h4 className="text-sm font-semibold text-danger">
+                      <h4 className="text-sm font-semibold text-destructive">
                         失败详情
                       </h4>
                       <div className="space-y-2">
@@ -605,7 +605,7 @@ export function DiagnosisModal({
                 </div>
               )}
             </ModalBody>
-            <ModalFooter className="border-t border-divider">
+            <ModalFooter className="border-t border-hairline">
               {currentDiagnosisForward && (
                 <Button
                   disabled={diagnosisLoading}

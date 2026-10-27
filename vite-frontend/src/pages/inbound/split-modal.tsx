@@ -156,7 +156,7 @@ function SplitForm({
             onPress={() => setPicking("default")}
           />
           <p
-            className={`text-xs ${outboundMissing ? "text-danger" : "text-muted-foreground"}`}
+            className={`text-xs ${outboundMissing ? "text-destructive" : "text-muted-foreground"}`}
           >
             {outboundMissing
               ? "原出站节点已被删除，该入站的流量会被丢弃，请重新选择"

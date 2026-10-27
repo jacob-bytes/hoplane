@@ -159,7 +159,7 @@ export function NodeGroupList({
       {groups.map((g, i) => (
         <div
           key={g.id}
-          className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-card px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
+          className="flex cursor-pointer items-center gap-3 rounded-xl border border-hairline bg-raised px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
           role="button"
           tabIndex={0}
           onClick={() => onEdit(g)}
@@ -429,7 +429,7 @@ export function NodeGroupEditor({
                   包括以后新增的节点和订阅源；只想要一部分可以在“处理”里筛选
                 </p>
               ) : (
-                <div className="max-h-56 space-y-3 overflow-y-auto rounded-xl border border-divider p-2">
+                <div className="max-h-56 space-y-3 overflow-y-auto rounded-xl border border-hairline p-2">
                   {pickList("自建", selfBuilt)}
                   {pickList("导入", imported)}
                   {sources.length > 0 && (
@@ -637,7 +637,7 @@ export function NodeGroupEditor({
               </p>
             )}
             {preview?.scriptError && (
-              <p className="rounded-xl bg-danger-50 px-3 py-2 text-xs text-danger dark:bg-danger-500/10">
+              <p className="rounded-xl bg-destructive/10 px-3 py-2 text-xs text-destructive dark:bg-destructive/10">
                 {preview.scriptError}；节点组会先不经过脚本输出
               </p>
             )}
@@ -654,7 +654,7 @@ export function NodeGroupEditor({
                     刷新
                   </button>
                 </p>
-                <div className="max-h-96 overflow-y-auto rounded-xl border border-divider">
+                <div className="max-h-96 overflow-y-auto rounded-xl border border-hairline">
                   {preview.items.length === 0 ? (
                     <p className="p-3 text-xs text-muted-foreground">
                       没有节点
@@ -663,7 +663,7 @@ export function NodeGroupEditor({
                     preview.items.map((p, i) => (
                       <div
                         key={`${p.original}-${i}`}
-                        className="flex items-center gap-2 border-b border-divider px-3 py-1.5 text-xs last:border-b-0"
+                        className="flex items-center gap-2 border-b border-hairline px-3 py-1.5 text-xs last:border-b-0"
                       >
                         <span className="min-w-0 flex-1 truncate">
                           {p.name}
@@ -690,7 +690,7 @@ export function NodeGroupEditor({
         {draft.id &&
           (confirmDelete ? (
             <>
-              <span className="mr-auto self-center text-xs text-danger">
+              <span className="mr-auto self-center text-xs text-destructive">
                 删除这个节点组？
               </span>
               <Button variant="ghost" onClick={() => setConfirmDelete(false)}>

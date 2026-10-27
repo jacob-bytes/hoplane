@@ -29,7 +29,7 @@ export const TONE: Record<Tone, [string, string]> = {
     "bg-warning",
   ],
   danger: ["bg-destructive/10 text-destructive", "bg-destructive"],
-  default: ["bg-muted text-muted-foreground", "bg-default-400"],
+  default: ["bg-muted text-muted-foreground", "bg-muted"],
 };
 
 const RANK: Record<Tone, number> = {
@@ -152,7 +152,9 @@ function Pill({
         {valueText(point)}
       </span>
       {loss > 0 && (
-        <span className="font-mono text-[11px] text-danger">丢{loss}%</span>
+        <span className="font-mono text-[11px] text-destructive">
+          丢{loss}%
+        </span>
       )}
     </span>
   );
@@ -424,7 +426,7 @@ export function LatencyCell({
             })}
           </div>
           {footer}
-          <div className="grid auto-cols-fr grid-flow-col border-t border-divider">
+          <div className="grid auto-cols-fr grid-flow-col border-t border-hairline">
             <DropdownItem
               className="justify-center whitespace-nowrap px-1 text-xs text-primary"
               startContent={

@@ -32,7 +32,7 @@ export const DragHandle = ({
   title: string;
 }) => (
   <span
-    className="inline-flex cursor-grab touch-none p-1 text-default-300 hover:text-muted-foreground active:cursor-grabbing"
+    className="inline-flex cursor-grab touch-none p-1 text-muted-foreground hover:text-muted-foreground active:cursor-grabbing"
     title={title}
     {...attributes}
     {...listeners}

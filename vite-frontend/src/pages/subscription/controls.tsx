@@ -36,8 +36,8 @@ export function Segmented<T extends string>({
           aria-checked={value === k}
           className={`rounded-xl border px-2 py-2 text-sm transition-colors ${
             value === k
-              ? "border-primary bg-primary-50 font-medium text-primary dark:bg-primary-900/30"
-              : "border-border bg-card text-muted-foreground hover:border-default-400 dark:border-border"
+              ? "border-primary bg-primary-soft font-medium text-primary dark:bg-primary-900/30"
+              : "border-border bg-raised text-muted-foreground hover:border-hairline-strong dark:border-border"
           }`}
           role="radio"
           type="button"
@@ -119,7 +119,7 @@ export function QuickPickRow({
         {picks.map((p) => (
           <button
             key={p.label}
-            className="h-10 rounded-lg bg-muted text-sm text-foreground transition-colors hover:bg-default-200"
+            className="h-10 rounded-lg bg-muted text-sm text-foreground transition-colors hover:bg-muted"
             type="button"
             onClick={p.onPick}
           >
@@ -183,8 +183,8 @@ export function ChipPicker({
       <button
         className={`rounded-full border px-2.5 py-1 text-xs ${
           selected.length === 0
-            ? "border-primary bg-primary-50 text-primary dark:bg-primary-900/30"
-            : "border-divider text-muted-foreground"
+            ? "border-primary bg-primary-soft text-primary dark:bg-primary-900/30"
+            : "border-hairline text-muted-foreground"
         }`}
         type="button"
         onClick={() => onChange([])}
@@ -199,8 +199,8 @@ export function ChipPicker({
             key={value}
             className={`rounded-full border px-2.5 py-1 text-xs ${
               on
-                ? "border-primary bg-primary-50 text-primary dark:bg-primary-900/30"
-                : "border-divider text-muted-foreground"
+                ? "border-primary bg-primary-soft text-primary dark:bg-primary-900/30"
+                : "border-hairline text-muted-foreground"
             }`}
             type="button"
             onClick={() =>
@@ -237,7 +237,7 @@ export function Section({
   const shown = !collapsible || open;
 
   return (
-    <section className="space-y-3 border-t border-divider pt-4 first:border-t-0 first:pt-0">
+    <section className="space-y-3 border-t border-hairline pt-4 first:border-t-0 first:pt-0">
       {collapsible ? (
         <button
           aria-expanded={open}

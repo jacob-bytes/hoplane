@@ -289,7 +289,7 @@ export default function AdminLayout({
       className={`flex ${isMobile ? "min-h-screen" : "h-screen"} overflow-hidden bg-canvas`}
     >
       <a
-        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-card focus:px-3 focus:py-2 focus:text-sm focus:shadow-md"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-raised focus:px-3 focus:py-2 focus:text-sm focus:shadow-md"
         href="#main-content"
       >
         跳到主内容
@@ -548,7 +548,7 @@ export default function AdminLayout({
               </DropdownItem>
               <DropdownItem
                 key="logout"
-                className="text-danger"
+                className="text-destructive"
                 startContent={<LogOut className="h-4 w-4" />}
                 onPress={handleLogout}
               >

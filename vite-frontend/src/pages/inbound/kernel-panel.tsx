@@ -293,7 +293,7 @@ export function KernelPanel({
           </CardContent>
         </Card>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border bg-card">
+        <div className="overflow-hidden rounded-xl border border-border bg-raised">
           {nodeGroups.map((g) => {
             const online = g.items[0]?.nodeOnline;
 
@@ -305,7 +305,7 @@ export function KernelPanel({
                 <div className="flex items-center gap-2 px-4 pb-1 pt-2.5">
                   <span
                     className={`h-2 w-2 shrink-0 rounded-full ${
-                      online ? "bg-success" : "bg-default-300"
+                      online ? "bg-success" : "bg-muted"
                     }`}
                   />
                   <span className="min-w-0 flex-1 truncate text-sm font-semibold">
@@ -330,7 +330,7 @@ export function KernelPanel({
                       .map((k) => (
                         <p
                           key={k.id}
-                          className="line-clamp-2 break-all text-xs text-danger"
+                          className="line-clamp-2 break-all text-xs text-destructive"
                         >
                           {kernelName(k.kernelType)}：{k.lastError}
                         </p>
@@ -689,7 +689,7 @@ export function KernelPanel({
           {(onClose) => (
             <>
               <ModalHeader>
-                <h2 className="text-lg font-bold text-danger">卸载内核</h2>
+                <h2 className="text-lg font-bold text-destructive">卸载内核</h2>
               </ModalHeader>
               <ModalBody>
                 <p className="text-muted-foreground">
@@ -699,7 +699,7 @@ export function KernelPanel({
                   </span>{" "}
                   卸载 {kernelName(removeTarget?.kernelType ?? "")} 吗？
                 </p>
-                <p className="text-small text-danger">
+                <p className="text-small text-destructive">
                   该内核下的 {removeTarget?.inboundCount ?? 0}{" "}
                   个入站会一起删除，且无法恢复。
                 </p>

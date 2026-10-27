@@ -713,7 +713,7 @@ export default function PanelSharingPage() {
               ],
             ])}
             {sheetRemote.bindings && sheetRemote.bindings.length > 0 && (
-              <div className="space-y-1 border-t border-divider pt-2">
+              <div className="space-y-1 border-t border-hairline pt-2">
                 {sheetRemote.bindings.map((binding) => (
                   <p
                     key={binding.bindingId}

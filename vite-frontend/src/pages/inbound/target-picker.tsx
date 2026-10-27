@@ -29,7 +29,7 @@ export function targetSource(i: InboundApiItem): string {
 }
 
 function TargetIcon({ k }: { k: TargetKey }) {
-  if (k === "block") return <Ban className="h-4 w-4 text-danger" />;
+  if (k === "block") return <Ban className="h-4 w-4 text-destructive" />;
   if (k === "direct") return <Waypoints className="h-4 w-4 text-success" />;
 
   return null;
@@ -60,7 +60,7 @@ export function TargetButton({
   return (
     <button
       className={`flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left transition-colors active:bg-muted ${
-        missing ? "border-danger/50" : "border-divider bg-card"
+        missing ? "border-destructive/50" : "border-hairline bg-raised"
       }`}
       type="button"
       onClick={onPress}
@@ -69,7 +69,7 @@ export function TargetButton({
       <span className="min-w-0 flex-1">
         <span
           className={`block truncate text-sm ${
-            !value ? "text-muted-foreground" : missing ? "text-danger" : ""
+            !value ? "text-muted-foreground" : missing ? "text-destructive" : ""
           }`}
         >
           {title}
@@ -167,7 +167,7 @@ export function TargetPicker({
           <h2 className="text-lg font-bold">{title}</h2>
         </ModalHeader>
         {targets.length >= SEARCH_FROM && (
-          <label className="flex shrink-0 items-center gap-2 rounded-xl border border-divider bg-card px-3 py-2">
+          <label className="flex shrink-0 items-center gap-2 rounded-xl border border-hairline bg-raised px-3 py-2">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
               className="min-w-0 flex-1 bg-transparent text-sm outline-none"
@@ -179,7 +179,7 @@ export function TargetPicker({
         )}
         <ModalBody className="space-y-1 pb-4">
           {!q && (
-            <div className="rounded-xl bg-card">
+            <div className="rounded-xl bg-raised">
               {row("direct", "直连", "从本服务器出去")}
               {withBlock && row("block", "阻断", "丢弃匹配的流量")}
             </div>
@@ -187,7 +187,7 @@ export function TargetPicker({
           {groups.map((g) => (
             <div key={g} className="pt-2">
               <p className="px-3 pb-1 text-xs text-muted-foreground">{g}</p>
-              <div className="rounded-xl bg-card">
+              <div className="rounded-xl bg-raised">
                 {shown
                   .filter((t) => targetSource(t) === g)
                   .map((t) => row(String(t.id), t.name))}

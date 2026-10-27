@@ -94,7 +94,7 @@ export function BatchActionResultModal({
                 {failures.map((failure, index) => (
                   <details
                     key={`${failure.id ?? "unknown"}-${index}`}
-                    className="group rounded-xl border border-divider bg-content2/40 px-4 py-3"
+                    className="group rounded-xl border border-hairline bg-surface/40 px-4 py-3"
                   >
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
                       <div className="min-w-0">

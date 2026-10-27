@@ -147,7 +147,7 @@ function UsageBar({ s, track }: { s: SubscriptionItem; track: string }) {
   const used = s.uploadBytes + s.downloadBytes;
   const pct = s.trafficLimit ? Math.min(100, (used / s.trafficLimit) * 100) : 0;
   const tone =
-    pct >= 100 ? "bg-danger" : pct >= 90 ? "bg-warning" : "bg-primary";
+    pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-primary";
 
   return (
     <div className={`h-1.5 overflow-hidden rounded-full ${track}`}>
@@ -177,7 +177,7 @@ function Usage({ s, compact }: { s: SubscriptionItem; compact?: boolean }) {
         )}
       </div>
       {s.trafficLimit > 0 && (
-        <UsageBar s={s} track={compact ? "bg-muted" : "bg-default-200"} />
+        <UsageBar s={s} track={compact ? "bg-muted" : "bg-muted"} />
       )}
       {!compact && (
         <div className="font-mono text-xs text-muted-foreground">
@@ -523,7 +523,7 @@ function Editor({
                   {/* appearance-none: iOS otherwise draws the date field
                       taller than a text field. */}
                   <input
-                    className="block h-10 w-full appearance-none rounded-lg border border-divider bg-background px-2 text-left text-sm"
+                    className="block h-10 w-full appearance-none rounded-lg border border-hairline bg-background px-2 text-left text-sm"
                     id="sub-expire"
                     type="date"
                     value={draft.expire}
@@ -545,7 +545,7 @@ function Editor({
                   }))}
                 >
                   <input
-                    className="block h-10 w-full rounded-lg border border-divider bg-background px-2 pr-9 text-sm"
+                    className="block h-10 w-full rounded-lg border border-hairline bg-background px-2 pr-9 text-sm"
                     id="sub-limit"
                     inputMode="decimal"
                     placeholder="不限"
@@ -563,7 +563,7 @@ function Editor({
                     每月重置
                   </label>
                   <select
-                    className="h-10 rounded-lg border border-divider bg-background px-2 text-sm"
+                    className="h-10 rounded-lg border border-hairline bg-background px-2 text-sm"
                     id="sub-reset-day"
                     value={draft.resetDay}
                     onChange={(e) => set({ resetDay: Number(e.target.value) })}
@@ -719,7 +719,7 @@ function Editor({
                           {label}
                         </label>
                         <select
-                          className="block h-9 w-full rounded-lg border border-divider bg-background px-2 text-sm disabled:opacity-50"
+                          className="block h-9 w-full rounded-lg border border-hairline bg-background px-2 text-sm disabled:opacity-50"
                           disabled={options.length === 0}
                           id={`sub-tpl-${kind}`}
                           value={picked[kind] ?? 0}
@@ -842,7 +842,7 @@ function Editor({
                         <span className="text-muted-foreground">→</span>
                       )}
                       <span
-                        className={`rounded-md px-2 py-1 ${s === "中转节点" ? "bg-muted text-muted-foreground" : s === "落地节点" ? "bg-warning/10 text-warning-700 dark:text-warning-400" : "bg-card text-muted-foreground"}`}
+                        className={`rounded-md px-2 py-1 ${s === "中转节点" ? "bg-muted text-muted-foreground" : s === "落地节点" ? "bg-warning/10 text-warning-700 dark:text-warning-400" : "bg-raised text-muted-foreground"}`}
                       >
                         {s}
                       </span>
@@ -967,7 +967,7 @@ function Editor({
                     所选节点组里还没有节点
                   </p>
                 ) : (
-                  <div className="max-h-80 divide-y divide-divider overflow-y-auto rounded-xl border border-divider">
+                  <div className="max-h-80 divide-y divide-divider overflow-y-auto rounded-xl border border-hairline">
                     {chainNodes.map((n, i) => {
                       const role = chainRole(n);
                       const overridden = pickedRole(n.original) !== null;
@@ -1025,7 +1025,7 @@ function Editor({
                       刷新
                     </button>
                   </p>
-                  <div className="max-h-96 overflow-y-auto rounded-xl border border-divider">
+                  <div className="max-h-96 overflow-y-auto rounded-xl border border-hairline">
                     {preview.items.length === 0 ? (
                       <p className="p-3 text-xs text-muted-foreground">
                         没有节点
@@ -1034,7 +1034,7 @@ function Editor({
                       preview.items.map((p, i) => (
                         <div
                           key={`${p.original}-${i}`}
-                          className="flex items-center gap-2 border-b border-divider px-3 py-1.5 text-xs last:border-b-0"
+                          className="flex items-center gap-2 border-b border-hairline px-3 py-1.5 text-xs last:border-b-0"
                         >
                           <span className="min-w-0 flex-1 truncate">
                             {p.name}
@@ -1090,7 +1090,7 @@ function Editor({
                       {slotLabel(kind)} · 「{view.name}」
                     </p>
                     {view.error ? (
-                      <p className="rounded-lg bg-danger/10 px-3 py-2 text-xs text-danger">
+                      <p className="rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive">
                         模板出错：{view.error}
                       </p>
                     ) : (
@@ -1456,7 +1456,7 @@ export default function SubscriptionPage() {
       }}
     >
       <span
-        className={`h-2 w-2 shrink-0 rounded-full ${s.active ? "bg-success" : "bg-default-300"}`}
+        className={`h-2 w-2 shrink-0 rounded-full ${s.active ? "bg-success" : "bg-muted"}`}
       />
       <div className="min-w-0 flex-1 lg:flex-none">
         <div className="flex items-center gap-1.5">
@@ -1677,10 +1677,10 @@ export default function SubscriptionPage() {
                       </Button>
                     </div>
                     {detail.trafficLimit > 0 && (
-                      <UsageBar s={detail} track="bg-default-200" />
+                      <UsageBar s={detail} track="bg-muted" />
                     )}
                     <p
-                      className={`text-xs ${detail.overQuota ? "text-danger" : "text-muted-foreground"}`}
+                      className={`text-xs ${detail.overQuota ? "text-destructive" : "text-muted-foreground"}`}
                     >
                       {detail.overQuota
                         ? "流量已用完，已从服务器上断开"
@@ -1845,7 +1845,7 @@ export default function SubscriptionPage() {
             <>
               <ModalHeader>
                 <h2
-                  className={`text-lg font-bold ${confirm === "delete" ? "text-danger" : ""}`}
+                  className={`text-lg font-bold ${confirm === "delete" ? "text-destructive" : ""}`}
                 >
                   {confirm === "reset" ? "重置链接" : "删除订阅"}
                 </h2>
@@ -1904,8 +1904,8 @@ function ChainRoleButtons({
                 ? "border-warning bg-warning-50 text-warning-700 dark:bg-warning-500/20"
                 : r === "relay"
                   ? "border-primary bg-primary/5 text-primary"
-                  : "border-default-400 bg-muted text-foreground"
-              : "border-border text-muted-foreground hover:border-default-400 dark:border-border"
+                  : "border-hairline-strong bg-muted text-foreground"
+              : "border-border text-muted-foreground hover:border-hairline-strong dark:border-border"
           }`}
           type="button"
           onClick={() => onChange(r)}

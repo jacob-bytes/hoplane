@@ -521,10 +521,10 @@ export function NodeFormModal({
                       </Alert>
                     )}
                     <div
-                      className={`grid grid-cols-1 sm:grid-cols-3 gap-3 bg-card/30 dark:bg-card/20 p-3 rounded-md border border-divider ${protocolControlsDisabled ? "opacity-70" : ""}`}
+                      className={`grid grid-cols-1 sm:grid-cols-3 gap-3 bg-raised/30 dark:bg-raised/20 p-3 rounded-md border border-hairline ${protocolControlsDisabled ? "opacity-70" : ""}`}
                     >
                       {/* HTTP tile */}
-                      <div className="px-3 py-3 rounded-lg bg-card/55 dark:bg-card/35 border border-divider hover:border-primary-200 dark:hover:border-primary-500/30 transition-colors">
+                      <div className="px-3 py-3 rounded-lg bg-raised/55 dark:bg-raised/35 border border-hairline hover:border-primary-200 dark:hover:border-primary-500/30 transition-colors">
                         <div className="flex items-center gap-2 mb-2">
                           <svg
                             aria-hidden="true"
@@ -564,7 +564,7 @@ export function NodeFormModal({
                       </div>
 
                       {/* TLS tile */}
-                      <div className="px-3 py-3 rounded-lg bg-card/55 dark:bg-card/35 border border-divider hover:border-primary-200 dark:hover:border-primary-500/30 transition-colors">
+                      <div className="px-3 py-3 rounded-lg bg-raised/55 dark:bg-raised/35 border border-hairline hover:border-primary-200 dark:hover:border-primary-500/30 transition-colors">
                         <div className="flex items-center gap-2 mb-2">
                           <svg
                             aria-hidden="true"
@@ -601,7 +601,7 @@ export function NodeFormModal({
                       </div>
 
                       {/* SOCKS tile */}
-                      <div className="px-3 py-3 rounded-lg bg-card/55 dark:bg-card/35 border border-divider hover:border-primary-200 dark:hover:border-primary-500/30 transition-colors">
+                      <div className="px-3 py-3 rounded-lg bg-raised/55 dark:bg-raised/35 border border-hairline hover:border-primary-200 dark:hover:border-primary-500/30 transition-colors">
                         <div className="flex items-center gap-2 mb-2">
                           <svg
                             aria-hidden="true"

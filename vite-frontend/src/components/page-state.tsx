@@ -84,7 +84,7 @@ export const ListPageSkeleton = ({ rows = 6 }: { rows?: number }) => (
     <Skeleton className="h-6 w-40" />
     <Skeleton className="mt-2 h-4 w-64" />
     <Skeleton className="mt-5 h-9 w-full max-w-sm rounded-lg" />
-    <div className="mt-4 overflow-hidden rounded-xl border border-border bg-card">
+    <div className="mt-4 overflow-hidden rounded-xl border border-border bg-raised">
       {Array.from({ length: rows }).map((_, i) => (
         <div
           key={i}

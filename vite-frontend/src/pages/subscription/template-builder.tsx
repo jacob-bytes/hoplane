@@ -59,7 +59,7 @@ function GroupNameInput({
   );
 }
 const selectClass =
-  "h-9 min-w-0 rounded-lg border border-divider bg-background px-2 text-sm";
+  "h-9 min-w-0 rounded-lg border border-hairline bg-background px-2 text-sm";
 const PRESETS = [
   ["minimal", "极简规则"],
   ["balanced", "均衡规则（推荐）"],
@@ -385,7 +385,7 @@ export function TemplateBuilder({
           选择预设后仍可手动调整；自定义规则会保留。
         </p>
       </div>
-      <div className="rounded-xl border border-divider p-3">
+      <div className="rounded-xl border border-hairline p-3">
         <div className="mb-3 flex items-center justify-between gap-2">
           <span className="text-sm font-medium">
             已选择 {selected.size} 个类别
@@ -411,7 +411,7 @@ export function TemplateBuilder({
           </div>
         </div>
         {loadError ? (
-          <div className="text-sm text-danger">
+          <div className="text-sm text-destructive">
             规则库加载失败{" "}
             <button
               className="underline"
@@ -444,7 +444,7 @@ export function TemplateBuilder({
         )}
       </div>
 
-      <label className="flex items-start gap-2 rounded-xl border border-divider p-3 text-sm">
+      <label className="flex items-start gap-2 rounded-xl border border-hairline p-3 text-sm">
         <input
           checked={value.serviceGroups !== false}
           className="mt-0.5 accent-primary"
@@ -461,7 +461,7 @@ export function TemplateBuilder({
           </span>
         </span>
       </label>
-      <details className="rounded-xl border border-divider p-3">
+      <details className="rounded-xl border border-hairline p-3">
         <summary className="cursor-pointer text-sm font-medium">
           规则去向与顺序 · {value.rules.length} 条
         </summary>
@@ -515,7 +515,7 @@ export function TemplateBuilder({
               </button>
               <button
                 aria-label={`删除第 ${i + 1} 条规则`}
-                className="p-1 text-danger"
+                className="p-1 text-destructive"
                 type="button"
                 onClick={() =>
                   updateRules(value.rules.filter((_, j) => j !== i))
@@ -533,7 +533,7 @@ export function TemplateBuilder({
         </div>
       </details>
 
-      <details className="rounded-xl border border-divider p-3">
+      <details className="rounded-xl border border-hairline p-3">
         <summary className="cursor-pointer text-sm font-medium">
           添加自定义规则
         </summary>
@@ -602,7 +602,7 @@ export function TemplateBuilder({
         </div>
       </details>
 
-      <details className="rounded-xl border border-divider p-3">
+      <details className="rounded-xl border border-hairline p-3">
         <summary className="cursor-pointer text-sm font-medium">
           节点分组 · {value.groups.length} 个
         </summary>
@@ -655,7 +655,7 @@ export function TemplateBuilder({
                 </select>
                 <button
                   aria-label={`删除策略组 ${i + 1}`}
-                  className="p-1 text-danger"
+                  className="p-1 text-destructive"
                   type="button"
                   onClick={() =>
                     onChange({
@@ -703,7 +703,7 @@ export function TemplateBuilder({
         </div>
       </details>
 
-      <details className="rounded-xl border border-divider p-3">
+      <details className="rounded-xl border border-hairline p-3">
         <summary className="cursor-pointer text-sm font-medium">
           策略组图标 · {iconSlots.length} 个
         </summary>
@@ -820,7 +820,7 @@ export function TemplateRulePreview({
 }) {
   const target = (to: string) => (
     <span
-      className={`shrink-0 rounded-full px-2 py-1 text-xs ${to === "DIRECT" ? "bg-success/10 text-success" : to === "REJECT" ? "bg-danger/10 text-danger" : "bg-primary/10 text-primary"}`}
+      className={`shrink-0 rounded-full px-2 py-1 text-xs ${to === "DIRECT" ? "bg-success/10 text-success" : to === "REJECT" ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary"}`}
     >
       {to === "DIRECT" ? "直连" : to === "REJECT" ? "拦截" : `代理 · ${to}`}
     </span>
@@ -847,7 +847,7 @@ export function TemplateRulePreview({
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-divider">
+    <div className="overflow-hidden rounded-xl border border-hairline">
       <div className="flex justify-between gap-2 bg-muted/60 px-3 py-2 text-xs font-medium">
         <span>分流规则（从上往下匹配）</span>
         <span>去向</span>
@@ -861,7 +861,7 @@ export function TemplateRulePreview({
         return (
           <div
             key={`${i}-${r.type}`}
-            className="flex items-center gap-2 border-t border-divider px-3 py-2"
+            className="flex items-center gap-2 border-t border-hairline px-3 py-2"
           >
             <span className="w-5 shrink-0 text-xs text-muted-foreground">
               {i + 1}
@@ -891,7 +891,7 @@ export function TemplateRulePreview({
           </div>
         );
       })}
-      <div className="flex items-center gap-2 border-t border-divider bg-muted/40 px-3 py-2">
+      <div className="flex items-center gap-2 border-t border-hairline bg-muted/40 px-3 py-2">
         <span className="min-w-0 flex-1 text-xs">
           <b>兜底</b> · 未命中以上规则的流量
         </span>

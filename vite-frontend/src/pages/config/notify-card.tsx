@@ -278,7 +278,7 @@ export function NotifySettings({
         </Field>
       )}
 
-      <div className="flex items-center justify-between gap-3 border-t border-divider pt-3">
+      <div className="flex items-center justify-between gap-3 border-t border-hairline pt-3">
         <span className="text-xs text-muted-foreground">
           用当前填写的内容发送，不用先保存
         </span>

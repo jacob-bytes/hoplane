@@ -40,9 +40,9 @@ export const getNodeExpiryMeta = (
       label: "已过期",
       tone: "danger" as const,
       accentClassName:
-        "border-danger/30 bg-danger/10 shadow-red-100 dark:border-danger dark:bg-danger/10",
+        "border-destructive/30 bg-destructive/10 shadow-red-100 dark:border-destructive dark:bg-destructive/10",
       bannerClassName:
-        "bg-danger/10 text-danger dark:bg-danger/10 dark:text-danger-300",
+        "bg-destructive/10 text-destructive dark:bg-destructive/10 dark:text-destructive",
       isHighlighted: true,
       sortWeight: 0,
       nextDueTime: renewal.nextDueTime,

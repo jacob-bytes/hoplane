@@ -216,14 +216,14 @@ export function TemplateGroups({
           {w}
         </p>
       ))}
-      <div className="max-h-80 overflow-y-auto rounded-xl border border-divider">
+      <div className="max-h-80 overflow-y-auto rounded-xl border border-hairline">
         {groups.map((g) => {
           const empty = g.auto && g.nodes !== null && g.nodes.length === 0;
 
           return (
             <div
               key={g.name}
-              className="flex items-center gap-2 border-b border-divider px-3 py-1.5 text-xs last:border-b-0"
+              className="flex items-center gap-2 border-b border-hairline px-3 py-1.5 text-xs last:border-b-0"
             >
               <span className="w-32 shrink-0 truncate font-medium sm:w-40">
                 {g.name}
@@ -241,7 +241,7 @@ export function TemplateGroups({
                         className={`mr-1.5 rounded-full px-1.5 py-0.5 ${
                           empty
                             ? "bg-warning-100 text-warning-700 dark:bg-warning-500/20"
-                            : "bg-primary-50 text-primary dark:bg-primary-500/20"
+                            : "bg-primary-soft text-primary dark:bg-primary/20"
                         }`}
                       >
                         {empty ? "0 · 空组" : `${g.nodes?.length ?? 0} 个节点`}
@@ -539,7 +539,7 @@ function Editor({
             <p className="text-xs text-muted-foreground">
               面板每天下载一次，下载失败继续用上次的内容
               {saved?.lastError && (
-                <span className="text-danger">
+                <span className="text-destructive">
                   ；上次更新失败：{saved.lastError}
                 </span>
               )}
@@ -593,7 +593,7 @@ function Editor({
               {REGION_PRESETS.map(([name, kw]) => (
                 <button
                   key={name}
-                  className="rounded-lg bg-muted px-2 py-1 text-xs text-foreground hover:bg-default-200"
+                  className="rounded-lg bg-muted px-2 py-1 text-xs text-foreground hover:bg-muted"
                   title={kw ? `收名字含 ${kw} 的节点` : "收全部节点"}
                   type="button"
                   onClick={() => insertGroup(name, kw)}
@@ -638,7 +638,7 @@ function Editor({
             <span className="text-xs text-muted-foreground">用订阅预演：</span>
             <select
               aria-label="用哪个订阅预演"
-              className="h-8 rounded-lg border border-divider bg-background px-2 text-xs"
+              className="h-8 rounded-lg border border-hairline bg-background px-2 text-xs"
               value={sampleId}
               onChange={(e) => {
                 setSampleId(Number(e.target.value));
@@ -697,7 +697,7 @@ function Editor({
                 </p>
               )}
               {building && (
-                <details className="rounded-lg border border-divider p-2">
+                <details className="rounded-lg border border-hairline p-2">
                   <summary className="cursor-pointer text-xs">
                     查看生成的配置
                   </summary>
@@ -712,7 +712,7 @@ function Editor({
                 </details>
               )}
               {check.builder ? (
-                <details className="space-y-2 rounded-lg border border-divider p-2">
+                <details className="space-y-2 rounded-lg border border-hairline p-2">
                   <summary className="cursor-pointer text-xs">
                     代理节点详情 · {check.sample}（{check.nodes} 个节点）
                   </summary>
@@ -749,7 +749,7 @@ function Editor({
         {saved &&
           (confirmDelete ? (
             <>
-              <span className="mr-auto self-center text-xs text-danger">
+              <span className="mr-auto self-center text-xs text-destructive">
                 删除这个模板？
               </span>
               <Button variant="ghost" onClick={() => setConfirmDelete(false)}>

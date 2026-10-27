@@ -216,7 +216,7 @@ function MonitorOverview() {
         {stats.map((s) => (
           <div
             key={s.key}
-            className="min-w-0 rounded-xl border border-divider bg-card px-3 py-2"
+            className="min-w-0 rounded-xl border border-hairline bg-raised px-3 py-2"
           >
             <div className="truncate text-xs text-muted-foreground">
               {s.label}
@@ -239,7 +239,7 @@ function MonitorOverview() {
       <PageToolbar view={{ value: viewMode, onChange: setViewMode }} />
 
       {nodesError && activeTab === "nodes" && (
-        <div className="mb-3 rounded-xl border border-divider bg-card px-3 py-2 text-sm text-muted-foreground">
+        <div className="mb-3 rounded-xl border border-hairline bg-raised px-3 py-2 text-sm text-muted-foreground">
           {nodesError}
         </div>
       )}

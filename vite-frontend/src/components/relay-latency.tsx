@@ -12,7 +12,7 @@ function RelayPath({ latency }: { latency: RelayLatency }) {
   if (latency.hops.length === 0 && !latency.error) return null;
 
   return (
-    <div className="space-y-1 border-t border-divider px-2 py-2 text-xs">
+    <div className="space-y-1 border-t border-hairline px-2 py-2 text-xs">
       <div className="text-muted-foreground">
         {pathOnly
           ? "入口到节点的各段延迟"
@@ -39,7 +39,7 @@ function RelayPath({ latency }: { latency: RelayLatency }) {
         </div>
       ))}
       {latency.hops.length === 0 && latency.error && (
-        <div className="text-danger">{latency.error}</div>
+        <div className="text-destructive">{latency.error}</div>
       )}
     </div>
   );

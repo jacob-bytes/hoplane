@@ -21,9 +21,9 @@ export type CardTone = "success" | "danger" | "warning" | "default";
 
 const PILL: Record<CardTone, [string, string]> = {
   success: ["bg-success/20 text-success", "bg-success"],
-  danger: ["bg-danger/20 text-danger", "bg-danger"],
+  danger: ["bg-destructive/20 text-destructive", "bg-destructive"],
   warning: ["bg-warning/20 text-warning", "bg-warning"],
-  default: ["bg-default-200/70 text-muted-foreground", "bg-default-400"],
+  default: ["bg-muted/70 text-muted-foreground", "bg-muted"],
 };
 
 export interface InfoCardAction {

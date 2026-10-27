@@ -21,7 +21,7 @@ export const AnnouncementBanner = ({
     <Card className="mb-4 border border-primary/15 bg-primary/5 shadow-none lg:mb-6">
       <CardContent className="p-4 sm:p-5">
         <div className="flex items-center gap-3.5 sm:gap-4">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-primary/15 bg-card sm:h-11 sm:w-11">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg border border-primary/15 bg-raised sm:h-11 sm:w-11">
             <svg
               aria-hidden="true"
               className="h-5 w-5 text-primary"

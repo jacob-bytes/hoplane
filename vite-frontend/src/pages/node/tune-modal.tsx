@@ -110,7 +110,9 @@ export function NodeTuneModal({
             </ModalHeader>
             <ModalBody>
               {error ? (
-                <p className="py-6 text-center text-sm text-danger">{error}</p>
+                <p className="py-6 text-center text-sm text-destructive">
+                  {error}
+                </p>
               ) : !status ? (
                 <div className="flex justify-center py-10">
                   <Loader2 className="size-4 animate-spin text-muted-foreground" />
@@ -126,7 +128,7 @@ export function NodeTuneModal({
                     return (
                       <div
                         key={g.id}
-                        className="rounded-xl border border-divider px-3 py-2.5"
+                        className="rounded-xl border border-hairline px-3 py-2.5"
                       >
                         <div className="flex items-start gap-2">
                           <Checkbox

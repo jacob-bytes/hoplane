@@ -326,7 +326,7 @@ export function RelayModal({
                       ) : (
                         <div
                           key={rel.id}
-                          className="flex items-center justify-between gap-3 rounded-xl border border-divider px-3 py-2"
+                          className="flex items-center justify-between gap-3 rounded-xl border border-hairline px-3 py-2"
                         >
                           <div className="min-w-0 flex-1">
                             <div className="flex min-w-0 items-center gap-2">
@@ -402,7 +402,7 @@ export function RelayModal({
                     )}
                   </div>
 
-                  <div className="space-y-3 rounded-xl border border-divider p-3">
+                  <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">添加中转</p>
                     {usable.length === 0 && !loading && (
                       <p className="text-xs text-warning">
@@ -499,7 +499,7 @@ export function RelayModal({
           {(close) => (
             <>
               <ModalHeader>
-                <h2 className="text-lg font-bold text-danger">删除中转</h2>
+                <h2 className="text-lg font-bold text-destructive">删除中转</h2>
               </ModalHeader>
               <ModalBody>
                 <p className="text-sm text-muted-foreground">

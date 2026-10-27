@@ -956,7 +956,7 @@ export default function ConfigPage() {
     return (
       <div
         className={`flex flex-col gap-2 rounded-lg border p-3 ${
-          isChanged ? "border-warning-300" : "border-divider"
+          isChanged ? "border-warning-300" : "border-hairline"
         }`}
       >
         <div className="flex items-baseline justify-between gap-2">
@@ -971,14 +971,14 @@ export default function ConfigPage() {
         {bgImage && isImage && (
           <img
             alt={`${label}预览`}
-            className="h-20 w-full rounded-md border border-divider object-cover"
+            className="h-20 w-full rounded-md border border-hairline object-cover"
             src={bgImage}
           />
         )}
 
         {bgImage && isSolidColor && (
           <div
-            className="h-10 rounded-md border border-divider"
+            className="h-10 rounded-md border border-hairline"
             style={{ backgroundColor: bgImage }}
           />
         )}
@@ -1046,13 +1046,13 @@ export default function ConfigPage() {
     const showImage = previewUrl.length > 0 && !failed;
 
     return (
-      <div className="flex min-w-0 flex-1 items-center rounded-md border border-divider bg-background px-2 py-1.5">
+      <div className="flex min-w-0 flex-1 items-center rounded-md border border-hairline bg-background px-2 py-1.5">
         {key === "app_logo" ? (
           <div className="flex min-w-0 items-center gap-2">
             {showImage ? (
               <img
                 alt="导航栏图标预览"
-                className="h-6 w-6 shrink-0 rounded-sm border border-divider object-cover"
+                className="h-6 w-6 shrink-0 rounded-sm border border-hairline object-cover"
                 src={previewUrl}
                 onError={() =>
                   setPreviewLoadFailed((prev) => ({ ...prev, [key]: true }))
@@ -1062,7 +1062,7 @@ export default function ConfigPage() {
                 }
               />
             ) : (
-              <div className="h-6 w-6 shrink-0 rounded-sm bg-default-200" />
+              <div className="h-6 w-6 shrink-0 rounded-sm bg-muted" />
             )}
             <span className="truncate text-sm font-semibold">
               {appNamePreview}
@@ -1083,7 +1083,7 @@ export default function ConfigPage() {
                 }
               />
             ) : (
-              <div className="h-4 w-4 shrink-0 rounded-sm bg-default-300" />
+              <div className="h-4 w-4 shrink-0 rounded-sm bg-muted" />
             )}
             <span className="truncate text-xs text-muted-foreground">
               {appNamePreview}
@@ -1105,7 +1105,7 @@ export default function ConfigPage() {
     return (
       <div
         className={`space-y-1.5 rounded-lg border p-2 ${
-          isChanged ? "border-warning-300" : "border-divider"
+          isChanged ? "border-warning-300" : "border-hairline"
         }`}
       >
         <input
@@ -1142,7 +1142,7 @@ export default function ConfigPage() {
         </div>
 
         {value.length > 0 && failed ? (
-          <p className="text-xs text-danger">图片加载失败，请重新上传</p>
+          <p className="text-xs text-destructive">图片加载失败，请重新上传</p>
         ) : null}
 
         {value.length > 0 && !isPngDataURL(value) ? (
@@ -1419,7 +1419,7 @@ export default function ConfigPage() {
     return (
       <div className="space-y-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="text-sm font-medium text-foreground dark:text-default-300">
+          <span className="text-sm font-medium text-foreground dark:text-muted-foreground">
             {label}
           </span>
           <div className="flex items-center gap-2">
@@ -1448,7 +1448,7 @@ export default function ConfigPage() {
                 aria-pressed={isSelected}
                 className={`w-full px-3 py-2 rounded-lg border transition-all duration-200 cursor-pointer text-left ${
                   isSelected
-                    ? "bg-primary-50 dark:bg-primary-900/20 border-primary-300 dark:border-primary-500/50 shadow-sm"
+                    ? "bg-primary-soft dark:bg-primary-900/20 border-primary-300 dark:border-primary-500/50 shadow-sm"
                     : "bg-white dark:bg-muted border-border dark:border-border/30 hover:border-primary-200 dark:hover:border-primary-500/30 hover:shadow-sm"
                 }`}
                 type="button"
@@ -1459,7 +1459,7 @@ export default function ConfigPage() {
                   <span
                     className={`font-medium ${
                       isSelected
-                        ? "text-default-900 dark:text-default-100"
+                        ? "text-foreground dark:text-muted-foreground"
                         : "text-foreground dark:text-muted-foreground"
                     }`}
                   >
@@ -1542,7 +1542,7 @@ export default function ConfigPage() {
         onChange={(key) => setTab(key as typeof tab)}
       />
 
-      <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
+      <div className="overflow-hidden rounded-xl border border-border bg-raised shadow-xs">
         {tab === "basic" && (
           <Accordion
             type="multiple"
@@ -1719,7 +1719,7 @@ export default function ConfigPage() {
                     />
                   </Field>
 
-                  <div className="flex items-center justify-between gap-3 border-t border-divider pt-3">
+                  <div className="flex items-center justify-between gap-3 border-t border-hairline pt-3">
                     <span className="text-xs text-muted-foreground">
                       公告单独保存，不随下方“保存”提交
                     </span>
@@ -1906,7 +1906,7 @@ export default function ConfigPage() {
                 </>
               )}
 
-              <div className="flex justify-end gap-2 border-t border-divider pt-3">
+              <div className="flex justify-end gap-2 border-t border-hairline pt-3">
                 <Button
                   disabled={systemUpgradeChecking}
                   size="sm"
@@ -2025,7 +2025,7 @@ export default function ConfigPage() {
             <>
               <ModalHeader>确认面板升级</ModalHeader>
               <ModalBody>
-                <div className="space-y-3 text-sm text-foreground dark:text-default-300">
+                <div className="space-y-3 text-sm text-foreground dark:text-muted-foreground">
                   <p>
                     升级过程需要访问 Docker
                     Socket，并会在短时间内中断当前面板服务。

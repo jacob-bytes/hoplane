@@ -75,7 +75,7 @@ export const ThemeSettings: React.FC = () => {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                   mode === opt.value
                     ? "bg-primary text-white shadow-sm"
-                    : "text-muted-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-default-300"
+                    : "text-muted-foreground dark:text-muted-foreground hover:bg-muted dark:hover:bg-muted"
                 }`}
                 type="button"
                 onClick={() => handleModeChange(opt.value)}

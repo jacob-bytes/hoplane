@@ -150,7 +150,7 @@ function UsageBar({ user }: { user: User }) {
   if (limit <= 0) return null;
   const pct = Math.min(100, (calculateUserTotalUsedFlow(user) / limit) * 100);
   const tone =
-    pct >= 100 ? "bg-danger" : pct >= 90 ? "bg-warning" : "bg-primary";
+    pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-primary";
 
   return (
     <div className="h-1.5 max-w-md overflow-hidden rounded-full bg-muted">
@@ -1784,7 +1784,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                               isAssigned
                                 ? "bg-muted/50 dark:bg-muted/50 border-border/50 dark:border-border/20 opacity-60 cursor-not-allowed"
                                 : isSelected
-                                  ? "bg-primary-50 dark:bg-primary-900/20 border-primary-300 dark:border-primary-500/50 shadow-sm"
+                                  ? "bg-primary-soft dark:bg-primary-900/20 border-primary-300 dark:border-primary-500/50 shadow-sm"
                                   : "bg-white dark:bg-muted border-border dark:border-border/30 hover:border-primary-200 dark:hover:border-primary-500/30 hover:shadow-sm"
                             }
                           `}
@@ -1915,14 +1915,14 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                     {userTunnels.map((userTunnel) => (
                       <div
                         key={userTunnel.id}
-                        className="rounded-xl border border-divider bg-card px-3 py-2.5"
+                        className="rounded-xl border border-hairline bg-raised px-3 py-2.5"
                       >
                         <div className="flex items-center gap-2">
                           <span
                             className={`h-2 w-2 shrink-0 rounded-full ${
                               userTunnel.status === 1
                                 ? "bg-success"
-                                : "bg-default-300"
+                                : "bg-muted"
                             }`}
                             title={userTunnel.status === 1 ? "正常" : "禁用"}
                           />
@@ -2175,13 +2175,13 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           </ModalHeader>
           <ModalBody>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-danger-100 rounded-full flex items-center justify-center">
-                <DeleteIcon className="w-6 h-6 text-danger" />
+              <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center">
+                <DeleteIcon className="w-6 h-6 text-destructive" />
               </div>
               <div className="flex-1">
                 <p className="text-foreground">
                   确定要删除用户{" "}
-                  <span className="font-semibold text-danger">
+                  <span className="font-semibold text-destructive">
                     &quot;{userToDelete?.user}&quot;
                   </span>{" "}
                   吗？
@@ -2221,15 +2221,15 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           </ModalHeader>
           <ModalBody>
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-danger-100 rounded-full flex items-center justify-center">
-                <DeleteIcon className="w-6 h-6 text-danger" />
+              <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center">
+                <DeleteIcon className="w-6 h-6 text-destructive" />
               </div>
               <div className="flex-1">
                 <p className="text-foreground">
                   确定要删除用户{" "}
                   <span className="font-semibold">{currentUser?.user}</span>{" "}
                   对隧道{" "}
-                  <span className="font-semibold text-danger">
+                  <span className="font-semibold text-destructive">
                     &quot;{tunnelToDelete?.tunnelName}&quot;
                   </span>{" "}
                   的权限吗？

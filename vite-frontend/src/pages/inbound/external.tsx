@@ -199,7 +199,7 @@ export function ImportModal({
             onChange={(e) => setLinks(e.target.value)}
           />
           {(subURL || fromFile) && (
-            <div className="space-y-3 rounded-xl border border-divider p-3">
+            <div className="space-y-3 rounded-xl border border-hairline p-3">
               <div className="flex items-start gap-2">
                 <Switch checked={sync} onCheckedChange={setSync} />
                 <div>
@@ -261,7 +261,7 @@ export function ImportModal({
             </span>
           </div>
           {errors.length > 0 && (
-            <ul className="space-y-1 rounded-xl bg-danger-50 p-3 text-xs text-danger">
+            <ul className="space-y-1 rounded-xl bg-destructive/10 p-3 text-xs text-destructive">
               {errors.map((e) => (
                 <li key={e} className="break-all">
                   {e}

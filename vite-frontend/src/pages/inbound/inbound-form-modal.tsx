@@ -454,8 +454,8 @@ export function InboundFormModal({
                             key={p.key}
                             className={`text-left rounded-xl border px-3 py-2 transition-colors ${
                               active
-                                ? "border-primary bg-primary-50 dark:bg-primary-500/10"
-                                : "border-divider hover:bg-muted"
+                                ? "border-primary bg-primary-soft dark:bg-primary/10"
+                                : "border-hairline hover:bg-muted"
                             }`}
                             type="button"
                             onClick={() =>
@@ -753,7 +753,7 @@ export function InboundFormModal({
                 )}
 
                 {form.securityType === "reality" && (
-                  <div className="space-y-3 rounded-xl border border-divider p-3">
+                  <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">Reality</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <Input
@@ -806,7 +806,7 @@ export function InboundFormModal({
                 )}
 
                 {form.securityType === "shadowtls" && (
-                  <div className="space-y-3 rounded-xl border border-divider p-3">
+                  <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">ShadowTLS v3</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <Input
@@ -830,7 +830,7 @@ export function InboundFormModal({
                 )}
 
                 {form.securityType === "tls" && (
-                  <div className="space-y-3 rounded-xl border border-divider p-3">
+                  <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">TLS</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <Input
@@ -1054,7 +1054,7 @@ export function InboundFormModal({
                       value={form.outboundIpStrategy}
                       onChange={(value) => set("outboundIpStrategy", value)}
                     />
-                    <div className="space-y-3 rounded-xl border border-divider p-3">
+                    <div className="space-y-3 rounded-xl border border-hairline p-3">
                       <p className="text-sm font-medium">中转相关</p>
                       <div className="flex items-start gap-2">
                         <Switch

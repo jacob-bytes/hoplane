@@ -100,7 +100,7 @@ export function LatencySettings({
       </p>
 
       {targets.length === 0 && (
-        <div className="rounded-lg border border-dashed border-divider px-3 py-4 text-center text-sm text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-hairline px-3 py-4 text-center text-sm text-muted-foreground">
           还没有测试点
           <div className="mt-2">
             <Button
@@ -124,7 +124,7 @@ export function LatencySettings({
         {targets.map((t, i) => (
           <div
             key={i}
-            className="space-y-2 rounded-lg border border-divider p-2.5"
+            className="space-y-2 rounded-lg border border-hairline p-2.5"
           >
             <div className="grid grid-cols-[1fr_5rem] gap-2 sm:grid-cols-[8rem_1fr_5rem]">
               <Input

@@ -87,7 +87,7 @@ export function Field({
 /** Small heading inside a section, for a group of fields. */
 export function SubHeading({ children }: { children: React.ReactNode }) {
   return (
-    <p className="border-t border-divider pt-3 text-xs font-semibold text-muted-foreground first:border-t-0 first:pt-0">
+    <p className="border-t border-hairline pt-3 text-xs font-semibold text-muted-foreground first:border-t-0 first:pt-0">
       {children}
     </p>
   );

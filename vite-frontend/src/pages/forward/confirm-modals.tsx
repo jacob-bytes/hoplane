@@ -44,7 +44,7 @@ export function DeleteForwardModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex flex-col gap-1">
-              <h2 className="text-lg font-bold text-danger">确认删除</h2>
+              <h2 className="text-lg font-bold text-destructive">确认删除</h2>
             </ModalHeader>
             <ModalBody>
               <p className="text-muted-foreground">

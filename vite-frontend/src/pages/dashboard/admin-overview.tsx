@@ -172,7 +172,7 @@ function Metric({
         <span
           className={`truncate ${
             footTone === "danger"
-              ? "text-danger"
+              ? "text-destructive"
               : footTone === "warning"
                 ? "text-warning-600"
                 : footTone === "success"
@@ -591,7 +591,7 @@ export function AdminOverview() {
       <Panel
         badge={
           attention.length > 0 && (
-            <span className="rounded-full bg-danger/10 px-2 text-xs font-semibold text-danger">
+            <span className="rounded-full bg-destructive/10 px-2 text-xs font-semibold text-destructive">
               {attention.length}
             </span>
           )
@@ -613,7 +613,7 @@ export function AdminOverview() {
                   onClick={() => navigate(item.path)}
                 >
                   <span
-                    className={`flex h-5 w-5 shrink-0 items-center justify-center ${item.danger ? "text-danger" : "text-warning"}`}
+                    className={`flex h-5 w-5 shrink-0 items-center justify-center ${item.danger ? "text-destructive" : "text-warning"}`}
                   >
                     <Icon aria-hidden className="h-4 w-4" />
                   </span>
@@ -727,7 +727,7 @@ export function AdminOverview() {
                     onClick={() => navigate("/node")}
                   >
                     <span
-                      className={`h-1.5 w-1.5 shrink-0 rounded-full ${onlineNode ? "bg-success" : "bg-danger"}`}
+                      className={`h-1.5 w-1.5 shrink-0 rounded-full ${onlineNode ? "bg-success" : "bg-destructive"}`}
                     />
                     <span className="min-w-0 flex-1 truncate text-sm">
                       {n.name}

@@ -19,7 +19,7 @@ import {
 } from "@/components/modal";
 
 const selectClass =
-  "h-9 min-w-0 rounded-lg border border-divider bg-background px-2 text-sm";
+  "h-9 min-w-0 rounded-lg border border-hairline bg-background px-2 text-sm";
 
 /** A group's icon; a blank square when there is none or it fails to load. */
 export function GroupIcon({
@@ -269,7 +269,7 @@ export function IconPicker({
             {current && !current.builtin && (
               <button
                 aria-label="删除这个图标库"
-                className="p-1 text-danger"
+                className="p-1 text-destructive"
                 type="button"
                 onClick={removeLibrary}
               >
@@ -277,7 +277,7 @@ export function IconPicker({
               </button>
             )}
           </div>
-          <label className="flex items-center gap-2 rounded-xl border border-divider bg-card px-3 py-2">
+          <label className="flex items-center gap-2 rounded-xl border border-hairline bg-raised px-3 py-2">
             <Search className="h-4 w-4 text-muted-foreground" />
             <input
               className="min-w-0 flex-1 bg-transparent text-sm outline-none"
@@ -293,7 +293,7 @@ export function IconPicker({
               正在加载图标库…
             </p>
           ) : error ? (
-            <p className="py-6 text-center text-sm text-danger">{error}</p>
+            <p className="py-6 text-center text-sm text-destructive">{error}</p>
           ) : (
             <div className="grid grid-cols-5 gap-2 sm:grid-cols-7">
               {shown.slice(0, 300).map((icon) => (
@@ -323,7 +323,7 @@ export function IconPicker({
             </div>
           )}
 
-          <div className="space-y-2 rounded-xl border border-divider p-3">
+          <div className="space-y-2 rounded-xl border border-hairline p-3">
             <p className="text-sm font-medium">使用图片地址</p>
             <div className="flex items-center gap-2">
               <GroupIcon src={customValid ? custom.trim() : undefined} />
@@ -359,7 +359,7 @@ export function IconPicker({
             </div>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-divider p-3">
+          <div className="space-y-2 rounded-xl border border-hairline p-3">
             <p className="text-sm font-medium">添加图标库</p>
             <p className="text-xs text-muted-foreground">
               填写图标订阅 JSON 地址（Quantumult X / Loon / BoxJs 通用格式，含

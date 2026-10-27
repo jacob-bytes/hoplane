@@ -363,7 +363,7 @@ export function ImportModal({
                       className={`p-2 rounded border ${
                         result.success
                           ? "bg-success-50 dark:bg-success-100/10 border-success-200 dark:border-success-300/20"
-                          : "bg-danger-50 dark:bg-danger-100/10 border-danger-200 dark:border-danger-300/20"
+                          : "bg-destructive/10 dark:bg-destructive/10/10 border-destructive/30 dark:border-destructive/30/20"
                       }`}
                     >
                       <div className="flex items-center gap-2">
@@ -383,7 +383,7 @@ export function ImportModal({
                         ) : (
                           <svg
                             aria-hidden="true"
-                            className="w-3 h-3 text-danger-600 flex-shrink-0"
+                            className="w-3 h-3 text-destructive flex-shrink-0"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                           >
@@ -400,7 +400,7 @@ export function ImportModal({
                               className={`text-xs font-medium ${
                                 result.success
                                   ? "text-success-700 dark:text-success-300"
-                                  : "text-danger-700 dark:text-danger-300"
+                                  : "text-destructive dark:text-destructive"
                               }`}
                             >
                               {result.success ? "成功" : "失败"}
@@ -416,7 +416,7 @@ export function ImportModal({
                             className={`text-xs ${
                               result.success
                                 ? "text-success-600 dark:text-success-400"
-                                : "text-danger-600 dark:text-danger-400"
+                                : "text-destructive dark:text-destructive"
                             }`}
                           >
                             {result.message}

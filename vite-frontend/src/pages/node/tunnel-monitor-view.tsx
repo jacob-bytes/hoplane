@@ -115,7 +115,7 @@ function LatencyDisplay({
   const ms = value.toFixed(0);
   let colorClass = "text-success";
 
-  if (value > 200) colorClass = "text-danger";
+  if (value > 200) colorClass = "text-destructive";
   else if (value > 100) colorClass = "text-warning";
   else if (value > 50) colorClass = "text-primary";
 
@@ -164,7 +164,7 @@ function UptimeHistoryBar({
             return (
               <div
                 key={idx}
-                className="w-1.5 h-4 rounded-full bg-default-200 dark:bg-muted/50"
+                className="w-1.5 h-4 rounded-full bg-muted dark:bg-muted/50"
                 title="暂无数据"
               />
             );
@@ -178,13 +178,13 @@ function UptimeHistoryBar({
           let statusText = "优秀";
 
           if (q.errorMessage || (loss !== undefined && loss > 0)) {
-            colorClass = "bg-danger";
+            colorClass = "bg-destructive";
             statusText = q.errorMessage ? "错误" : `丢包 ${loss?.toFixed(1)}%`;
           } else if (latency < 0) {
-            colorClass = "bg-danger";
+            colorClass = "bg-destructive";
             statusText = "探测失败";
           } else if (latency > 200) {
-            colorClass = "bg-danger";
+            colorClass = "bg-destructive";
             statusText = "极差";
           } else if (latency > 100) {
             colorClass = "bg-warning";
@@ -289,7 +289,9 @@ const QualityChartCard = React.memo(function QualityChartCard({
             <RefreshCw className="w-6 h-6 animate-spin" />
           </div>
         ) : error ? (
-          <div className="text-center py-8 text-danger text-sm">{error}</div>
+          <div className="text-center py-8 text-destructive text-sm">
+            {error}
+          </div>
         ) : data.length > 0 ? (
           <div aria-label="隧道质量趋势图" className="h-64" role="img">
             <ResponsiveContainer height="100%" width="100%">
@@ -413,7 +415,9 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
             <RefreshCw className="w-6 h-6 animate-spin" />
           </div>
         ) : error ? (
-          <div className="text-center py-8 text-danger text-sm">{error}</div>
+          <div className="text-center py-8 text-destructive text-sm">
+            {error}
+          </div>
         ) : data.length > 0 ? (
           <div className="h-64">
             <ResponsiveContainer height="100%" width="100%">
@@ -613,11 +617,11 @@ function TunnelTopologyPathRow({ path }: { path: TunnelTopologyPath }) {
           Boolean(hop.errorMessage) || hop.latency < 0 || hop.loss > 0;
         const colorClass =
           hop.latency < 0 || hop.errorMessage
-            ? "text-danger"
+            ? "text-destructive"
             : hop.loss > 0
               ? "text-warning"
               : "text-success";
-        const borderColor = hasError ? "border-danger" : "";
+        const borderColor = hasError ? "border-destructive" : "";
 
         return (
           <React.Fragment
@@ -641,7 +645,7 @@ function TunnelTopologyPathRow({ path }: { path: TunnelTopologyPath }) {
                   : "超时"}
               </span>
               <div
-                className={`relative flex h-[2px] w-full items-center justify-end bg-default-200 ${hop.latency < 0 || hop.errorMessage ? "!bg-danger" : ""}`}
+                className={`relative flex h-[2px] w-full items-center justify-end bg-muted ${hop.latency < 0 || hop.errorMessage ? "!bg-destructive" : ""}`}
               >
                 <ArrowRight
                   className={`absolute -right-2 z-10 h-3.5 w-3.5 rounded-full bg-background p-[1px] ${colorClass}`}
@@ -708,7 +712,7 @@ const ForwardingChainTopology = React.memo(function ForwardingChainTopology({
   if (topologyPaths.length === 0) return null;
 
   return (
-    <Card className="border border-divider/60 shadow-sm transition-shadow bg-gradient-to-br from-background to-default-50/50 mt-4">
+    <Card className="border border-hairline/60 shadow-sm transition-shadow bg-gradient-to-br from-background to-default-50/50 mt-4">
       <CardHeader className="py-3 px-4 flex flex-row items-center justify-between pb-1">
         <h3 className="text-sm font-semibold flex items-center gap-1.5 text-foreground">
           <Activity className="w-4 h-4 text-primary" />
@@ -723,7 +727,7 @@ const ForwardingChainTopology = React.memo(function ForwardingChainTopology({
               className={
                 index === 0
                   ? "overflow-x-auto"
-                  : "overflow-x-auto border-t border-dashed border-divider/60"
+                  : "overflow-x-auto border-t border-dashed border-hairline/60"
               }
             >
               <TunnelTopologyPathRow path={path} />
@@ -1204,7 +1208,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
 
         {/* Quality KPI Cards */}
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-          <Card className="border border-divider shadow-none">
+          <Card className="border border-hairline shadow-none">
             <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span className="text-xs text-muted-foreground flex items-center gap-1">
                 <Zap className="w-3 h-3" />
@@ -1216,7 +1220,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
               />
             </CardContent>
           </Card>
-          <Card className="border border-divider shadow-none">
+          <Card className="border border-hairline shadow-none">
             <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span
                 className="text-xs text-muted-foreground flex items-center gap-1"
@@ -1231,7 +1235,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
               />
             </CardContent>
           </Card>
-          <Card className="border border-divider shadow-none">
+          <Card className="border border-hairline shadow-none">
             <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span className="text-xs text-muted-foreground">
                 入口 → 出口 丢包
@@ -1245,7 +1249,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
               </span>
             </CardContent>
           </Card>
-          <Card className="border border-divider shadow-none">
+          <Card className="border border-hairline shadow-none">
             <CardContent className="flex flex-col items-start gap-1 px-3 py-2">
               <span
                 className="text-xs text-muted-foreground"
@@ -1287,7 +1291,9 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
             </span>
           )}
           {quality?.errorMessage && (
-            <span className="text-danger ml-2">{quality.errorMessage}</span>
+            <span className="text-destructive ml-2">
+              {quality.errorMessage}
+            </span>
           )}
         </div>
 
@@ -1361,7 +1367,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
       </div>
 
       {tunnelsError ? (
-        <div className="rounded-xl border border-divider bg-card px-3 py-2 text-sm text-muted-foreground">
+        <div className="rounded-xl border border-hairline bg-raised px-3 py-2 text-sm text-muted-foreground">
           {tunnelsError}
         </div>
       ) : null}
@@ -1378,26 +1384,26 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
             return (
               <Card
                 key={tunnel.id}
-                className="group relative overflow-hidden shadow-sm border border-divider dark:border-border hover:-translate-y-1 hover:shadow-lg transition-all duration-300 h-full flex flex-col cursor-pointer bg-background"
+                className="group relative overflow-hidden shadow-sm border border-hairline dark:border-border hover:-translate-y-1 hover:shadow-lg transition-all duration-300 h-full flex flex-col cursor-pointer bg-background"
                 onClick={() => setDetailTunnelId(tunnel.id)}
               >
                 <div
-                  className={`absolute top-0 left-0 right-0 h-1 ${isEnabled ? "bg-success" : "bg-danger"}`}
+                  className={`absolute top-0 left-0 right-0 h-1 ${isEnabled ? "bg-success" : "bg-destructive"}`}
                 />
                 <div
-                  className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-2xl opacity-10 transition-opacity group-hover:opacity-20 ${isEnabled ? "bg-success" : "bg-danger"}`}
+                  className={`absolute -right-8 -top-8 w-24 h-24 rounded-full blur-2xl opacity-10 transition-opacity group-hover:opacity-20 ${isEnabled ? "bg-success" : "bg-destructive"}`}
                 />
 
                 <CardHeader className="pb-2 pt-5 px-5 flex flex-row justify-between items-start gap-4">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="relative flex-shrink-0">
-                      <div className="w-10 h-10 rounded-xl bg-muted dark:bg-muted/10 flex items-center justify-center border border-divider">
+                      <div className="w-10 h-10 rounded-xl bg-muted dark:bg-muted/10 flex items-center justify-center border border-hairline">
                         <ArrowRightLeft
-                          className={`w-5 h-5 ${isEnabled ? "text-success" : "text-danger"}`}
+                          className={`w-5 h-5 ${isEnabled ? "text-success" : "text-destructive"}`}
                         />
                       </div>
                       <span
-                        className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${isEnabled ? "bg-success" : "bg-danger"}`}
+                        className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-background ${isEnabled ? "bg-success" : "bg-destructive"}`}
                       />
                     </div>
                     <div className="flex flex-col min-w-0">
@@ -1445,9 +1451,9 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center pt-2 border-t border-divider/50">
+                  <div className="flex justify-between items-center pt-2 border-t border-hairline/50">
                     {quality?.errorMessage ? (
-                      <span className="text-[11px] text-danger truncate">
+                      <span className="text-[11px] text-destructive truncate">
                         {quality.errorMessage}
                       </span>
                     ) : quality?.timestamp ? (

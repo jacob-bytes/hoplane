@@ -255,7 +255,7 @@ export default function IndexPage() {
                 <Input
                   classNames={{
                     inputWrapper:
-                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
+                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-destructive",
                     input: "text-[14px]",
                   }}
                   errorMessage={errors.username}
@@ -274,7 +274,7 @@ export default function IndexPage() {
                 <Input
                   classNames={{
                     inputWrapper:
-                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-danger",
+                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-destructive",
                     input: "text-[14px] tracking-wider",
                   }}
                   isDisabled={loading}
@@ -327,7 +327,7 @@ export default function IndexPage() {
         <VersionFooter
           containerClassName="fixed inset-x-0 bottom-4 text-center py-4"
           poweredClassName="text-xs text-muted-foreground"
-          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-danger/90 px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white"
+          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-destructive/90 px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white"
           version={isWebView ? siteConfig.app_version : siteConfig.version}
           versionClassName="text-xs text-muted-foreground mt-1"
         />
@@ -351,7 +351,7 @@ export default function IndexPage() {
               }}
             />
             {/* 验证码容器 */}
-            <div className="mb-4 relative z-50 bg-white dark:bg-default-300 p-6 rounded-lg shadow-xl">
+            <div className="mb-4 relative z-50 bg-white dark:bg-muted p-6 rounded-lg shadow-xl">
               <div className="mb-4 text-center text-sm font-medium text-foreground">
                 请完成安全验证
               </div>

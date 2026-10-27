@@ -177,7 +177,7 @@ export function LatencyDialog({
               {badCount > 0 && (
                 <span
                   aria-hidden
-                  className="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-danger"
+                  className="ml-1 inline-block h-1.5 w-1.5 rounded-full bg-destructive"
                 />
               )}
               {badCount > 0 && (

@@ -215,7 +215,7 @@ export function CommandPalette() {
     <>
       <button
         aria-label="搜索或跳转（⌘K）"
-        className="hidden shrink-0 items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:flex"
+        className="hidden shrink-0 items-center gap-2 rounded-lg border border-border bg-raised px-2.5 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-accent hover:text-foreground sm:flex"
         type="button"
         onClick={() => setOpen(true)}
       >

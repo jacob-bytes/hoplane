@@ -85,7 +85,7 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
   const text = (asConf && entry.conf) || entry.uri || entry.surge;
 
   return (
-    <div className="rounded-xl border border-divider p-4 space-y-3">
+    <div className="rounded-xl border border-hairline p-4 space-y-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2 min-w-0">
           <Badge

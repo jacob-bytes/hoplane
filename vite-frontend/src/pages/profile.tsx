@@ -59,7 +59,7 @@ const TONE: Record<Tone, string> = {
   success: "bg-surface text-ink-2",
   warning: "bg-surface text-ink-2",
   secondary: "bg-surface text-ink-2",
-  danger: "bg-surface text-danger",
+  danger: "bg-surface text-destructive",
 };
 
 function IconTile({
@@ -118,7 +118,7 @@ function RoleChip({ isAdmin }: { isAdmin: boolean }) {
 /** Phone: iOS-settings style rows, the status on the right. */
 function SecurityList({ items }: { items: SecurityItem[] }) {
   return (
-    <div className="divide-y divide-divider overflow-hidden rounded-xl bg-card shadow-sm">
+    <div className="divide-y divide-divider overflow-hidden rounded-xl bg-raised shadow-sm">
       {items.map((item) => (
         <button
           key={item.key}
@@ -135,7 +135,7 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
           >
             {item.status}
           </span>
-          <ChevronRight className="h-4 w-4 shrink-0 text-default-300" />
+          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
         </button>
       ))}
     </div>
@@ -145,7 +145,7 @@ function SecurityList({ items }: { items: SecurityItem[] }) {
 /** Desktop: one row per method with what it is, its state and a button. */
 function SecurityPanel({ items }: { items: SecurityItem[] }) {
   return (
-    <section className="overflow-hidden rounded-xl border border-border bg-card">
+    <section className="overflow-hidden rounded-xl border border-border bg-raised">
       <div className="border-b border-border px-5 py-4">
         <h2 className="text-sm font-medium">登录与安全</h2>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -441,7 +441,7 @@ export default function ProfilePage() {
 
   const logoutButton = (
     <Button
-      className="w-full gap-2 border-danger/30 text-danger hover:bg-danger/10"
+      className="w-full gap-2 border-destructive/30 text-destructive hover:bg-destructive/10"
       variant="outline"
       onClick={handleLogout}
     >
@@ -456,7 +456,7 @@ export default function ProfilePage() {
         <div className="w-full flex-1 space-y-6">
           <PageHeader title="更多" />
 
-          <div className="flex items-center gap-4 rounded-xl bg-card px-4 py-4 shadow-sm">
+          <div className="flex items-center gap-4 rounded-xl bg-raised px-4 py-4 shadow-sm">
             <Avatar name={username} size="md" />
             <div className="min-w-0 flex-1 space-y-1">
               <div className="truncate text-lg font-semibold">{username}</div>
@@ -473,7 +473,7 @@ export default function ProfilePage() {
                 {shortcuts.map((item) => (
                   <button
                     key={item.key}
-                    className="flex flex-col items-center gap-2 rounded-xl bg-card px-2 py-4 shadow-sm transition-transform active:scale-[0.97]"
+                    className="flex flex-col items-center gap-2 rounded-xl bg-raised px-2 py-4 shadow-sm transition-transform active:scale-[0.97]"
                     type="button"
                     onClick={item.onPress}
                   >
@@ -498,7 +498,7 @@ export default function ProfilePage() {
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-6 py-6">
           <PageHeader description="你的账号信息和登录方式" title="账户与登录" />
 
-          <section className="overflow-hidden rounded-xl border border-border bg-card">
+          <section className="overflow-hidden rounded-xl border border-border bg-raised">
             <div className="flex items-center gap-4 p-5">
               <Avatar name={username} size="lg" />
               <div className="min-w-0 flex-1">
@@ -519,7 +519,7 @@ export default function ProfilePage() {
 
           <SecurityPanel items={securityItems} />
 
-          <section className="overflow-hidden rounded-xl border border-border bg-card">
+          <section className="overflow-hidden rounded-xl border border-border bg-raised">
             <div className="flex flex-wrap items-center justify-between gap-3 p-5">
               <div className="min-w-0">
                 <h2 className="text-sm font-medium">会话</h2>
@@ -528,7 +528,7 @@ export default function ProfilePage() {
                 </p>
               </div>
               <Button
-                className="shrink-0 border-danger/30 text-danger hover:bg-danger/10"
+                className="shrink-0 border-destructive/30 text-destructive hover:bg-destructive/10"
                 size="sm"
                 variant="outline"
                 onClick={handleLogout}
@@ -546,7 +546,7 @@ export default function ProfilePage() {
         <VersionFooter
           containerClassName="mt-8 text-center"
           poweredClassName="text-xs text-muted-foreground"
-          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-danger px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white"
+          updateBadgeClassName="ml-2 inline-flex items-center rounded-full bg-destructive px-2 py-0.5 text-[11px] font-semibold tracking-wide text-white"
           version={
             isWebViewFunc() ? siteConfig.app_version : siteConfig.version
           }

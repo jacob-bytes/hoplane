@@ -205,7 +205,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
       <div aria-hidden className="h-[calc(4rem+var(--safe-area-bottom))]" />
 
       {/* 底部Tabbar */}
-      <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-[calc(4rem+var(--safe-area-bottom))] flex-shrink-0 items-center justify-around border-t border-border bg-card px-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-[calc(4rem+var(--safe-area-bottom))] flex-shrink-0 items-center justify-around border-t border-border bg-raised px-2">
         {filteredTabItems.map((item) => {
           const isActive =
             location.pathname === item.path ||

@@ -269,7 +269,7 @@ export function RemoteSourcesSection({
         </Button>
       </div>
       {sources.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-divider px-3 py-4 text-center text-xs text-muted-foreground">
+        <p className="rounded-xl border border-dashed border-hairline px-3 py-4 text-center text-xs text-muted-foreground">
           填机场或别人的订阅链接，或上传订阅文件：节点出现在“入站”里，可以给自建节点做前置中转，也能和自己的节点一起放进订阅。在“导入”里粘贴订阅地址并打开“定时同步”也会存到这里
         </p>
       ) : (
@@ -280,7 +280,7 @@ export function RemoteSourcesSection({
             return (
               <div
                 key={s.id}
-                className="flex cursor-pointer items-center gap-3 rounded-xl border border-divider bg-card px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
+                className="flex cursor-pointer items-center gap-3 rounded-xl border border-hairline bg-raised px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
                 role="button"
                 tabIndex={0}
                 onClick={() => setDraft(draftOf(s))}
@@ -295,10 +295,10 @@ export function RemoteSourcesSection({
                 <span
                   className={`h-2 w-2 shrink-0 rounded-full ${
                     s.lastError
-                      ? "bg-danger"
+                      ? "bg-destructive"
                       : s.lastFetch
                         ? "bg-success"
-                        : "bg-default-300"
+                        : "bg-muted"
                   }`}
                 />
                 <div className="min-w-0 flex-1">
@@ -326,7 +326,7 @@ export function RemoteSourcesSection({
                         : " · 手动更新"}
                   </div>
                   {s.lastError ? (
-                    <div className="truncate text-xs text-danger">
+                    <div className="truncate text-xs text-destructive">
                       {s.lastError}
                     </div>
                   ) : (
@@ -516,7 +516,7 @@ export function RemoteSourcesSection({
                 <ModalFooter className="flex-wrap">
                   {confirmDelete ? (
                     <>
-                      <p className="w-full text-sm text-danger">
+                      <p className="w-full text-sm text-destructive">
                         删除这个订阅源？它导入的节点可以保留，也可以一起删除
                       </p>
                       <Button
@@ -588,7 +588,7 @@ export function FilePick({
   return (
     <div className="space-y-1">
       <button
-        className="flex w-full items-center gap-2 rounded-xl border border-dashed border-divider px-3 py-3 text-left text-sm hover:bg-muted"
+        className="flex w-full items-center gap-2 rounded-xl border border-dashed border-hairline px-3 py-3 text-left text-sm hover:bg-muted"
         type="button"
         onClick={() => input.current?.click()}
       >

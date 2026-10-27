@@ -413,7 +413,7 @@ export function ListRow({
   } ${
     selected
       ? "border-primary/40 bg-primary/5 max-lg:border-primary/40 lg:bg-primary/5"
-      : "border-border bg-card hover:border-hairline-strong hover:bg-surface lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-surface"
+      : "border-border bg-raised hover:border-hairline-strong hover:bg-surface lg:border-0 lg:bg-transparent lg:hover:border-0 lg:hover:bg-surface"
   }`;
 
   return (
@@ -605,7 +605,7 @@ export function EmptyHint({
   action?: PageAction;
 }) {
   return (
-    <Empty className="rounded-xl border border-dashed border-border bg-card/50">
+    <Empty className="rounded-xl border border-dashed border-border bg-raised/50">
       <EmptyHeader>
         <EmptyMedia variant="icon">
           <Inbox aria-hidden />
