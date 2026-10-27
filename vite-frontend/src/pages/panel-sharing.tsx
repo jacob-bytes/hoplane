@@ -17,7 +17,8 @@ import {
   PageTabs,
   formatDate,
 } from "@/components/page-kit";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { TrafficLimitField } from "@/components/traffic-limit-field";
 import {
   formatTraffic,
@@ -745,14 +746,17 @@ export default function PanelSharingPage() {
         <ModalContent>
           <ModalHeader>创建分享</ModalHeader>
           <ModalBody>
-            <Input
-              label="名称"
-              placeholder="备注名称"
-              value={shareForm.name}
-              onChange={(e) =>
-                setShareForm({ ...shareForm, name: e.target.value })
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="share-name">名称</Label>
+              <Input
+                id="share-name"
+                placeholder="备注名称"
+                value={shareForm.name}
+                onChange={(e) =>
+                  setShareForm({ ...shareForm, name: e.target.value })
+                }
+              />
+            </div>
             <SelectField
               label="选择服务器"
               options={nodes.map((node) => ({
@@ -764,41 +768,50 @@ export default function PanelSharingPage() {
               onValueChange={(nodeId) => setShareForm({ ...shareForm, nodeId })}
             />
             <div className="flex gap-4">
-              <Input
-                label="起始端口"
-                type="number"
-                value={shareForm.portRangeStart.toString()}
-                onChange={(e) =>
-                  setShareForm({
-                    ...shareForm,
-                    portRangeStart: parseInt(e.target.value),
-                  })
-                }
-              />
-              <Input
-                label="结束端口"
-                type="number"
-                value={shareForm.portRangeEnd.toString()}
-                onChange={(e) =>
-                  setShareForm({
-                    ...shareForm,
-                    portRangeEnd: parseInt(e.target.value),
-                  })
-                }
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="share-port-start">起始端口</Label>
+                <Input
+                  id="share-port-start"
+                  type="number"
+                  value={shareForm.portRangeStart.toString()}
+                  onChange={(e) =>
+                    setShareForm({
+                      ...shareForm,
+                      portRangeStart: parseInt(e.target.value),
+                    })
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="share-port-end">结束端口</Label>
+                <Input
+                  id="share-port-end"
+                  type="number"
+                  value={shareForm.portRangeEnd.toString()}
+                  onChange={(e) =>
+                    setShareForm({
+                      ...shareForm,
+                      portRangeEnd: parseInt(e.target.value),
+                    })
+                  }
+                />
+              </div>
             </div>
-            <Input
-              description="0 表示永久"
-              label="有效期 (天)"
-              type="number"
-              value={shareForm.expiryDays.toString()}
-              onChange={(e) =>
-                setShareForm({
-                  ...shareForm,
-                  expiryDays: parseInt(e.target.value),
-                })
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="share-expiry">有效期 (天)</Label>
+              <Input
+                id="share-expiry"
+                type="number"
+                value={shareForm.expiryDays.toString()}
+                onChange={(e) =>
+                  setShareForm({
+                    ...shareForm,
+                    expiryDays: parseInt(e.target.value),
+                  })
+                }
+              />
+              <p className="text-xs text-muted-foreground">0 表示永久</p>
+            </div>
             <TrafficLimitField
               description="0 表示不限流量"
               label="流量上限"
@@ -812,24 +825,34 @@ export default function PanelSharingPage() {
                 setShareUnit(unit);
               }}
             />
-            <Input
-              description="限制使用此Token的来源面板域名，多个域名用逗号分隔，留空不限制"
-              label="允许的域名 (可选)"
-              placeholder="example.com, panel.test.com"
-              value={shareForm.allowedDomains}
-              onChange={(e) =>
-                setShareForm({ ...shareForm, allowedDomains: e.target.value })
-              }
-            />
-            <Input
-              description="仅白名单IP可导入此分享，支持IPv4/IPv6/CIDR，多个用逗号分隔"
-              label="允许的API IP (可选)"
-              placeholder="203.0.113.10, 2001:db8::10, 198.51.100.0/24"
-              value={shareForm.allowedIps}
-              onChange={(e) =>
-                setShareForm({ ...shareForm, allowedIps: e.target.value })
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="share-domains">允许的域名 (可选)</Label>
+              <Input
+                id="share-domains"
+                placeholder="example.com, panel.test.com"
+                value={shareForm.allowedDomains}
+                onChange={(e) =>
+                  setShareForm({ ...shareForm, allowedDomains: e.target.value })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                限制使用此Token的来源面板域名，多个域名用逗号分隔，留空不限制
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="share-ips">允许的API IP (可选)</Label>
+              <Input
+                id="share-ips"
+                placeholder="203.0.113.10, 2001:db8::10, 198.51.100.0/24"
+                value={shareForm.allowedIps}
+                onChange={(e) =>
+                  setShareForm({ ...shareForm, allowedIps: e.target.value })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                仅白名单IP可导入此分享，支持IPv4/IPv6/CIDR，多个用逗号分隔
+              </p>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={() => setCreateShareOpen(false)}>
@@ -853,37 +876,46 @@ export default function PanelSharingPage() {
         <ModalContent>
           <ModalHeader>编辑分享</ModalHeader>
           <ModalBody>
-            <Input
-              label="名称"
-              placeholder="备注名称"
-              value={editForm.name}
-              onChange={(e) =>
-                setEditForm({ ...editForm, name: e.target.value })
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="edit-share-name">名称</Label>
+              <Input
+                id="edit-share-name"
+                placeholder="备注名称"
+                value={editForm.name}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, name: e.target.value })
+                }
+              />
+            </div>
             <div className="flex gap-4">
-              <Input
-                label="起始端口"
-                type="number"
-                value={editForm.portRangeStart.toString()}
-                onChange={(e) =>
-                  setEditForm({
-                    ...editForm,
-                    portRangeStart: parseInt(e.target.value) || 0,
-                  })
-                }
-              />
-              <Input
-                label="结束端口"
-                type="number"
-                value={editForm.portRangeEnd.toString()}
-                onChange={(e) =>
-                  setEditForm({
-                    ...editForm,
-                    portRangeEnd: parseInt(e.target.value) || 0,
-                  })
-                }
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="edit-share-port-start">起始端口</Label>
+                <Input
+                  id="edit-share-port-start"
+                  type="number"
+                  value={editForm.portRangeStart.toString()}
+                  onChange={(e) =>
+                    setEditForm({
+                      ...editForm,
+                      portRangeStart: parseInt(e.target.value) || 0,
+                    })
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="edit-share-port-end">结束端口</Label>
+                <Input
+                  id="edit-share-port-end"
+                  type="number"
+                  value={editForm.portRangeEnd.toString()}
+                  onChange={(e) =>
+                    setEditForm({
+                      ...editForm,
+                      portRangeEnd: parseInt(e.target.value) || 0,
+                    })
+                  }
+                />
+              </div>
             </div>
             <TrafficLimitField
               description="0 表示不限流量"
@@ -899,42 +931,57 @@ export default function PanelSharingPage() {
                 setEditBandwidthChanged(true);
               }}
             />
-            <Input
-              description="留空或清除表示永久有效"
-              label="过期时间"
-              type="datetime-local"
-              value={
-                editForm.expiryTime > 0
-                  ? new Date(editForm.expiryTime).toISOString().slice(0, 16)
-                  : ""
-              }
-              onChange={(e) =>
-                setEditForm({
-                  ...editForm,
-                  expiryTime: e.target.value
-                    ? new Date(e.target.value).getTime()
-                    : 0,
-                })
-              }
-            />
-            <Input
-              description="限制使用此Token的来源面板域名，多个域名用逗号分隔，留空不限制"
-              label="允许的域名 (可选)"
-              placeholder="example.com, panel.test.com"
-              value={editForm.allowedDomains}
-              onChange={(e) =>
-                setEditForm({ ...editForm, allowedDomains: e.target.value })
-              }
-            />
-            <Input
-              description="仅白名单IP可导入此分享，支持IPv4/IPv6/CIDR，多个用逗号分隔"
-              label="允许的API IP (可选)"
-              placeholder="203.0.113.10, 2001:db8::10, 198.51.100.0/24"
-              value={editForm.allowedIps}
-              onChange={(e) =>
-                setEditForm({ ...editForm, allowedIps: e.target.value })
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="edit-share-expiry">过期时间</Label>
+              <Input
+                id="edit-share-expiry"
+                type="datetime-local"
+                value={
+                  editForm.expiryTime > 0
+                    ? new Date(editForm.expiryTime).toISOString().slice(0, 16)
+                    : ""
+                }
+                onChange={(e) =>
+                  setEditForm({
+                    ...editForm,
+                    expiryTime: e.target.value
+                      ? new Date(e.target.value).getTime()
+                      : 0,
+                  })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                留空或清除表示永久有效
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="edit-share-domains">允许的域名 (可选)</Label>
+              <Input
+                id="edit-share-domains"
+                placeholder="example.com, panel.test.com"
+                value={editForm.allowedDomains}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, allowedDomains: e.target.value })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                限制使用此Token的来源面板域名，多个域名用逗号分隔，留空不限制
+              </p>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="edit-share-ips">允许的API IP (可选)</Label>
+              <Input
+                id="edit-share-ips"
+                placeholder="203.0.113.10, 2001:db8::10, 198.51.100.0/24"
+                value={editForm.allowedIps}
+                onChange={(e) =>
+                  setEditForm({ ...editForm, allowedIps: e.target.value })
+                }
+              />
+              <p className="text-xs text-muted-foreground">
+                仅白名单IP可导入此分享，支持IPv4/IPv6/CIDR，多个用逗号分隔
+              </p>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={() => setEditShareOpen(false)}>
@@ -957,22 +1004,28 @@ export default function PanelSharingPage() {
         <ModalContent>
           <ModalHeader>导入远程服务器</ModalHeader>
           <ModalBody>
-            <Input
-              label="远程面板地址"
-              placeholder="http://panel.example.com:8088"
-              value={importForm.remoteUrl}
-              onChange={(e) =>
-                setImportForm({ ...importForm, remoteUrl: e.target.value })
-              }
-            />
-            <Input
-              label="Token"
-              placeholder="对方面板分享的 Token"
-              value={importForm.token}
-              onChange={(e) =>
-                setImportForm({ ...importForm, token: e.target.value })
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="import-remote-url">远程面板地址</Label>
+              <Input
+                id="import-remote-url"
+                placeholder="http://panel.example.com:8088"
+                value={importForm.remoteUrl}
+                onChange={(e) =>
+                  setImportForm({ ...importForm, remoteUrl: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="import-token">Token</Label>
+              <Input
+                id="import-token"
+                placeholder="对方面板分享的 Token"
+                value={importForm.token}
+                onChange={(e) =>
+                  setImportForm({ ...importForm, token: e.target.value })
+                }
+              />
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button variant="ghost" onClick={() => setImportNodeOpen(false)}>
