@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { TextAreaField as Textarea } from "@/components/field-input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Modal,
   ModalContent,
@@ -51,14 +51,8 @@ export function InstallCommandModal({
     <div className="relative">
       <Textarea
         readOnly
-        className="font-mono text-sm"
-        classNames={{
-          input: "font-mono text-sm",
-        }}
-        maxRows={10}
-        minRows={6}
+        className="min-h-32 font-mono text-sm"
         value={command}
-        variant="bordered"
       />
       <Button
         className="absolute top-2 right-2"

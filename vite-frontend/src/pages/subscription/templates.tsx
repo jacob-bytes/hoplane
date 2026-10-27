@@ -28,10 +28,9 @@ import {
 } from "@/pages/subscription/template-builder";
 import { Segmented } from "@/pages/subscription/controls";
 import { Button } from "@/components/ui/button";
-import {
-  TextField as Input,
-  TextAreaField as Textarea,
-} from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Modal,
   ModalBody,
@@ -477,13 +476,15 @@ function Editor({
       </ModalHeader>
       <ModalBody className="space-y-3">
         <div className="grid gap-3 sm:grid-cols-2">
-          <Input
-            label="名称"
-            placeholder="例如 我的分流 / ACL4SSR 精简版"
-            value={draft.name}
-            variant="bordered"
-            onChange={(e) => set({ name: e.target.value })}
-          />
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="tpl-name">名称</Label>
+            <Input
+              id="tpl-name"
+              placeholder="例如 我的分流 / ACL4SSR 精简版"
+              value={draft.name}
+              onChange={(e) => set({ name: e.target.value })}
+            />
+          </div>
           <div className="space-y-1.5">
             <p className="text-sm font-medium">格式</p>
             <Segmented
@@ -531,9 +532,9 @@ function Editor({
         ) : fromUrl ? (
           <div className="space-y-2">
             <Input
+              aria-label="订阅地址"
               placeholder="https://raw.githubusercontent.com/.../config.yaml"
               value={draft.sourceUrl}
-              variant="bordered"
               onChange={(e) => set({ sourceUrl: e.target.value })}
             />
             <p className="text-xs text-muted-foreground">
@@ -548,10 +549,8 @@ function Editor({
               <>
                 <Textarea
                   readOnly
-                  classNames={{ input: "font-mono text-xs" }}
-                  minRows={10}
+                  className="min-h-40 font-mono text-xs"
                   value={draft.content}
-                  variant="bordered"
                   wrap="off"
                 />
                 <div className="flex flex-wrap gap-2">
@@ -615,13 +614,11 @@ function Editor({
               )}
             </div>
             <Textarea
-              classNames={{ input: "font-mono text-xs" }}
+              className="min-h-56 font-mono text-xs"
               id="tpl-content"
-              minRows={14}
               placeholder={`粘贴你的 ${kindLabel(draft.kind)} 配置；节点列表留空，面板会填入订阅里的节点`}
               spellCheck={false}
               value={draft.content}
-              variant="bordered"
               wrap="off"
               onChange={(e) => {
                 set({ content: e.target.value, builder: undefined });
@@ -703,10 +700,8 @@ function Editor({
                   </summary>
                   <Textarea
                     readOnly
-                    classNames={{ input: "font-mono text-xs" }}
-                    minRows={10}
+                    className="min-h-40 font-mono text-xs"
                     value={draft.content}
-                    variant="bordered"
                     wrap="off"
                   />
                 </details>

@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { TextAreaField as Textarea } from "@/components/field-input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { SelectField } from "@/components/select-native";
 import {
   Modal,
@@ -159,15 +160,9 @@ export function ExportModal({
               <div className="relative">
                 <Textarea
                   readOnly
-                  className="font-mono text-sm"
-                  classNames={{
-                    input: "font-mono text-sm",
-                  }}
-                  maxRows={20}
-                  minRows={10}
+                  className="min-h-48 font-mono text-sm"
                   placeholder="暂无数据"
                   value={exportData}
-                  variant="bordered"
                 />
               </div>
             )}
@@ -301,22 +296,20 @@ export function ImportModal({
             />
 
             {/* 输入区域 */}
-            <Textarea
-              classNames={{
-                input: "font-mono text-sm",
-              }}
-              label="导入数据"
-              maxRows={12}
-              minRows={8}
-              placeholder={
-                importFormat === "hoplane"
-                  ? "请输入要导入的规则数据，格式：目标地址|规则名称|入口端口"
-                  : '请输入ny格式数据，每行一个JSON对象，如：{"dest":["1.2.3.4:80"],"listen_port":8080,"name":"规则1"}；listen_port可省略自动分配'
-              }
-              value={importData}
-              variant="flat"
-              onChange={(e) => setImportData(e.target.value)}
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="forward-import-data">导入数据</Label>
+              <Textarea
+                className="min-h-40 font-mono text-sm"
+                id="forward-import-data"
+                placeholder={
+                  importFormat === "hoplane"
+                    ? "请输入要导入的规则数据，格式：目标地址|规则名称|入口端口"
+                    : '请输入ny格式数据，每行一个JSON对象，如：{"dest":["1.2.3.4:80"],"listen_port":8080,"name":"规则1"}；listen_port可省略自动分配'
+                }
+                value={importData}
+                onChange={(e) => setImportData(e.target.value)}
+              />
+            </div>
 
             {/* 导入结果 */}
             {importResults.length > 0 && (
