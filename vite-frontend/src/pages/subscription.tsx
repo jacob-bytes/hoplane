@@ -52,7 +52,8 @@ import { copyText, panelOrigin } from "@/pages/inbound/share";
 import { Button, buttonVariant } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SubTrafficStats } from "@/components/lazy-charts";
 import {
   Modal,
@@ -498,13 +499,15 @@ function Editor({
         {page === "basic" && (
           <div className="space-y-4">
             <Section title="基本">
-              <Input
-                label="名称"
-                placeholder="例如 我的手机 / 小明"
-                value={draft.name}
-                variant="bordered"
-                onChange={(e) => set({ name: e.target.value })}
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="sub-name">名称</Label>
+                <Input
+                  id="sub-name"
+                  placeholder="例如 我的手机 / 小明"
+                  value={draft.name}
+                  onChange={(e) => set({ name: e.target.value })}
+                />
+              </div>
               <p className="text-xs text-muted-foreground">
                 有独立的 UUID /
                 密码：停用、到期或流量用完后从服务器上删除，已导入的配置也连不上
@@ -582,13 +585,15 @@ function Editor({
                 </p>
               </div>
             </Section>
-            <Input
-              label="备注"
-              placeholder="可选"
-              value={draft.remark}
-              variant="bordered"
-              onChange={(e) => set({ remark: e.target.value })}
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="sub-remark">备注</Label>
+              <Input
+                id="sub-remark"
+                placeholder="可选"
+                value={draft.remark}
+                onChange={(e) => set({ remark: e.target.value })}
+              />
+            </div>
             <ToggleRow
               hint="在节点列表最前面加两个占位节点，名字显示到期日期和剩余流量，给不显示订阅信息的客户端看；它们连不上，不要选。停用、到期或流量用完后，订阅只返回一个写明原因的占位节点（不受这个开关影响）"
               id="sub-info-nodes"
@@ -915,10 +920,9 @@ function Editor({
                           {role && (
                             <Input
                               aria-label={`${src.name} 名称筛选`}
+                              className="h-8 text-xs"
                               placeholder="名称筛选，如 香港|日本；留空用全部"
-                              size="sm"
                               value={filter}
-                              variant="bordered"
                               onChange={(e) =>
                                 setOpts({
                                   chainSourceFilters: {

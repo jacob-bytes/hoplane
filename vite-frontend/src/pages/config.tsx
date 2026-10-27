@@ -1696,10 +1696,9 @@ export default function ConfigPage() {
                   >
                     <Textarea
                       aria-label="公告内容"
-                      minRows={4}
+                      className="min-h-24"
                       placeholder="例如：**加粗**、[链接](https://example.com)、- 列表"
                       value={announcement.content}
-                      variant="bordered"
                       onChange={(e) =>
                         setAnnouncement({
                           ...announcement,

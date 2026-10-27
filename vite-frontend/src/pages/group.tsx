@@ -19,7 +19,8 @@ import {
   formatDate,
 } from "@/components/page-kit";
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalBody,
@@ -876,11 +877,14 @@ export default function GroupPage({
                 {editingTunnelGroup ? "编辑隧道分组" : "新建隧道分组"}
               </ModalHeader>
               <ModalBody className="space-y-3">
-                <Input
-                  label="分组名称"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="tunnel-group-name">分组名称</Label>
+                  <Input
+                    id="tunnel-group-name"
+                    value={groupName}
+                    onChange={(e) => setGroupName(e.target.value)}
+                  />
+                </div>
                 <SelectField
                   label="状态"
                   options={[
@@ -915,11 +919,14 @@ export default function GroupPage({
                 {editingUserGroup ? "编辑用户分组" : "新建用户分组"}
               </ModalHeader>
               <ModalBody className="space-y-3">
-                <Input
-                  label="分组名称"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="user-group-name">分组名称</Label>
+                  <Input
+                    id="user-group-name"
+                    value={groupName}
+                    onChange={(e) => setGroupName(e.target.value)}
+                  />
+                </div>
                 <SelectField
                   label="状态"
                   options={[
