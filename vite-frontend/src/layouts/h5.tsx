@@ -189,10 +189,17 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
           <h1 className="truncate text-sm font-bold text-foreground">
             {siteConfig.name}
           </h1>
-          <span aria-hidden className="h-4 w-px shrink-0 bg-hairline-strong" />
-          <span className="truncate text-sm text-muted-foreground">
-            {pageSections[location.pathname] ?? ""}
-          </span>
+          {pageSections[location.pathname] ? (
+            <>
+              <span
+                aria-hidden
+                className="h-4 w-px shrink-0 bg-hairline-strong"
+              />
+              <span className="truncate text-sm text-muted-foreground">
+                {pageSections[location.pathname]}
+              </span>
+            </>
+          ) : null}
         </div>
 
         <div className="flex items-center gap-2" />
