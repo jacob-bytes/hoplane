@@ -32,7 +32,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalBody,
@@ -555,24 +556,26 @@ export function KernelPanel({
                         />
                       )}
                       {(releaseItems.length === 0 || customVersion) && (
-                        <Input
-                          description={
-                            releases?.error && releaseItems.length === 0
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="kernel-custom-version">
+                            {releaseItems.length > 0 ? "自定义版本" : "版本"}
+                          </Label>
+                          <Input
+                            id="kernel-custom-version"
+                            value={installForm.version}
+                            onChange={(e) =>
+                              setInstallForm((p) => ({
+                                ...p,
+                                version: e.target.value,
+                              }))
+                            }
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            {releases?.error && releaseItems.length === 0
                               ? `${releases.error}，可手动填写版本号，latest 表示最新版`
-                              : "latest 表示最新版，也可填写具体版本号"
-                          }
-                          label={
-                            releaseItems.length > 0 ? "自定义版本" : "版本"
-                          }
-                          value={installForm.version}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setInstallForm((p) => ({
-                              ...p,
-                              version: e.target.value,
-                            }))
-                          }
-                        />
+                              : "latest 表示最新版，也可填写具体版本号"}
+                          </p>
+                        </div>
                       )}
                     </>
                   )}

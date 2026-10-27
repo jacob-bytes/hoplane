@@ -6,7 +6,8 @@ import { ArrowDown, ArrowUp, ChevronDown, Plus, Trash2 } from "lucide-react";
 import { TargetButton } from "./target-picker";
 
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 /** A 分流 rule as edited: domains and IPs are free text. */
 export interface SplitRuleForm {
@@ -189,22 +190,26 @@ export function SplitRulesEditor({
                 ))}
                 {r.domains || r.ips || customOpen.has(i) ? (
                   <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                    <Input
-                      label="自定义域名"
-                      placeholder="example.com，含子域名，逗号分隔"
-                      size="sm"
-                      value={r.domains}
-                      variant="bordered"
-                      onChange={(e) => update(i, { domains: e.target.value })}
-                    />
-                    <Input
-                      label="自定义 IP"
-                      placeholder="1.2.3.4、1.2.3.0/24，逗号分隔"
-                      size="sm"
-                      value={r.ips}
-                      variant="bordered"
-                      onChange={(e) => update(i, { ips: e.target.value })}
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor={`split-domains-${i}`}>自定义域名</Label>
+                      <Input
+                        className="h-8 text-xs"
+                        id={`split-domains-${i}`}
+                        placeholder="example.com，含子域名，逗号分隔"
+                        value={r.domains}
+                        onChange={(e) => update(i, { domains: e.target.value })}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor={`split-ips-${i}`}>自定义 IP</Label>
+                      <Input
+                        className="h-8 text-xs"
+                        id={`split-ips-${i}`}
+                        placeholder="1.2.3.4、1.2.3.0/24，逗号分隔"
+                        value={r.ips}
+                        onChange={(e) => update(i, { ips: e.target.value })}
+                      />
+                    </div>
                   </div>
                 ) : (
                   <button

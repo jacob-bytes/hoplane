@@ -18,7 +18,8 @@ import {
 import { RelayLatencyCell } from "@/components/relay-latency";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalBody,
@@ -283,27 +284,31 @@ export function RelayModal({
                           className="space-y-3 rounded-xl border border-primary/40 px-3 py-3"
                         >
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <Input
-                              label="名称"
-                              value={editing.name}
-                              variant="bordered"
-                              onChange={(e) =>
-                                setEditing((p) =>
-                                  p ? { ...p, name: e.target.value } : p,
-                                )
-                              }
-                            />
-                            <Input
-                              label="分享地址"
-                              placeholder="默认入口 IP"
-                              value={editing.shareHost}
-                              variant="bordered"
-                              onChange={(e) =>
-                                setEditing((p) =>
-                                  p ? { ...p, shareHost: e.target.value } : p,
-                                )
-                              }
-                            />
+                            <div className="flex flex-col gap-1.5">
+                              <Label htmlFor="relay-edit-name">名称</Label>
+                              <Input
+                                id="relay-edit-name"
+                                value={editing.name}
+                                onChange={(e) =>
+                                  setEditing((p) =>
+                                    p ? { ...p, name: e.target.value } : p,
+                                  )
+                                }
+                              />
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                              <Label htmlFor="relay-edit-share">分享地址</Label>
+                              <Input
+                                id="relay-edit-share"
+                                placeholder="默认入口 IP"
+                                value={editing.shareHost}
+                                onChange={(e) =>
+                                  setEditing((p) =>
+                                    p ? { ...p, shareHost: e.target.value } : p,
+                                  )
+                                }
+                              />
+                            </div>
                           </div>
                           <div className="flex justify-end gap-2">
                             <Button
@@ -430,34 +435,43 @@ export function RelayModal({
                       </p>
                     )}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      <Input
-                        label="入口端口"
-                        placeholder="留空自动"
-                        type="number"
-                        value={form.inPort}
-                        variant="bordered"
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, inPort: e.target.value }))
-                        }
-                      />
-                      <Input
-                        label="名称"
-                        placeholder="默认：隧道 → 入站"
-                        value={form.name}
-                        variant="bordered"
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, name: e.target.value }))
-                        }
-                      />
-                      <Input
-                        label="分享地址"
-                        placeholder="默认入口 IP"
-                        value={form.shareHost}
-                        variant="bordered"
-                        onChange={(e) =>
-                          setForm((p) => ({ ...p, shareHost: e.target.value }))
-                        }
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="relay-in-port">入口端口</Label>
+                        <Input
+                          id="relay-in-port"
+                          placeholder="留空自动"
+                          type="number"
+                          value={form.inPort}
+                          onChange={(e) =>
+                            setForm((p) => ({ ...p, inPort: e.target.value }))
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="relay-name">名称</Label>
+                        <Input
+                          id="relay-name"
+                          placeholder="默认：隧道 → 入站"
+                          value={form.name}
+                          onChange={(e) =>
+                            setForm((p) => ({ ...p, name: e.target.value }))
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="relay-share">分享地址</Label>
+                        <Input
+                          id="relay-share"
+                          placeholder="默认入口 IP"
+                          value={form.shareHost}
+                          onChange={(e) =>
+                            setForm((p) => ({
+                              ...p,
+                              shareHost: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
                     </div>
                     <Button
                       disabled={!form.tunnelId || creating}

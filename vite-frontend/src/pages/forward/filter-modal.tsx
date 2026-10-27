@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/select-native";
 import {
   Modal,
@@ -106,32 +107,36 @@ export function ForwardFilterModal({
                   }
                 />
 
-                <Input
-                  label="入口监听端口 (精确)"
-                  placeholder="请输入具体端口号"
-                  type="number"
-                  value={searchParams.inPort}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setSearchParams((prev) => ({
-                      ...prev,
-                      inPort: e.target.value,
-                    }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="ff-in-port">入口监听端口 (精确)</Label>
+                  <Input
+                    id="ff-in-port"
+                    placeholder="请输入具体端口号"
+                    type="number"
+                    value={searchParams.inPort}
+                    onChange={(e) =>
+                      setSearchParams((prev) => ({
+                        ...prev,
+                        inPort: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
 
-                <Input
-                  label="目标地址或端口 (模糊)"
-                  placeholder="请输入目标IP、域名或端口"
-                  value={searchParams.remoteAddr}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setSearchParams((prev) => ({
-                      ...prev,
-                      remoteAddr: e.target.value,
-                    }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="ff-remote">目标地址或端口 (模糊)</Label>
+                  <Input
+                    id="ff-remote"
+                    placeholder="请输入目标IP、域名或端口"
+                    value={searchParams.remoteAddr}
+                    onChange={(e) =>
+                      setSearchParams((prev) => ({
+                        ...prev,
+                        remoteAddr: e.target.value,
+                      }))
+                    }
+                  />
+                </div>
               </div>
             </ModalBody>
             <ModalFooter>
