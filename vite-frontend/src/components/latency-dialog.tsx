@@ -38,7 +38,6 @@ import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { cn } from "@/lib/utils";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { TONE, pointTone, probePoints } from "@/components/latency-cell";
 
 // recharts is heavy: keep it out of the page bundle until this tab is used.
@@ -390,7 +389,7 @@ export function LatencyDialog({
               <Suspense
                 fallback={
                   <div className="flex h-52 items-center justify-center">
-                    <Spinner />
+                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
                   </div>
                 }
               >

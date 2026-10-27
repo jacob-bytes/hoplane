@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import {
   Modal,
   ModalContent,
@@ -113,7 +113,7 @@ export function NodeTuneModal({
                 <p className="py-6 text-center text-sm text-danger">{error}</p>
               ) : !status ? (
                 <div className="flex justify-center py-10">
-                  <Spinner />
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
                 </div>
               ) : (
                 <div className="space-y-2">

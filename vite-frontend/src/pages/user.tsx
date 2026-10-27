@@ -1,5 +1,6 @@
 import type { SubscriptionItem } from "@/api";
 
+import { Loader2 } from "lucide-react";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { parseDate } from "@internationalized/date";
@@ -33,7 +34,6 @@ import { RadioGroup, Radio } from "@/shadcn-bridge/heroui/radio";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
 import { DatePicker } from "@/shadcn-bridge/heroui/date-picker";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
   User,
@@ -1735,7 +1735,9 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
-                    {monitorPermissionLoading ? <Spinner size="sm" /> : null}
+                    {monitorPermissionLoading ? (
+                      <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                    ) : null}
                     <Switch
                       isDisabled={
                         !currentUser ||
@@ -1905,7 +1907,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 <h3 className="text-lg font-semibold mb-4">已有权限</h3>
                 {tunnelListLoading ? (
                   <div className="flex justify-center py-6">
-                    <Spinner />
+                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
                   </div>
                 ) : userTunnels.length === 0 ? (
                   <EmptyHint text="暂无隧道权限" />

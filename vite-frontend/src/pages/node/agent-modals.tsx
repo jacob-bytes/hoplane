@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
@@ -12,7 +13,6 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { Tab, Tabs } from "@/shadcn-bridge/heroui/tabs";
 import { type ReleaseChannel } from "@/api";
@@ -200,7 +200,7 @@ export function UpgradeNodeModal({
             <ModalBody>
               {releasesLoading ? (
                 <div className="flex justify-center py-8">
-                  <Spinner size="lg" />
+                  <Loader2 className="size-7 animate-spin text-muted-foreground" />
                 </div>
               ) : (
                 <div className="space-y-4">

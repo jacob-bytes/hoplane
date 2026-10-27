@@ -1,6 +1,8 @@
 import type { TunnelDeletePreviewApiData } from "@/api/types";
 import type { Dispatch, SetStateAction } from "react";
 
+import { Loader2 } from "lucide-react";
+
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
@@ -11,7 +13,6 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge } from "@/components/ui/badge";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Radio, RadioGroup } from "@/shadcn-bridge/heroui/radio";
 import { Tunnel, TunnelDeleteAction } from "@/pages/tunnel/types";
@@ -83,7 +84,7 @@ export function DeleteTunnelModal({
             <ModalBody className="space-y-3 sm:space-y-4">
               {deletePreviewLoading ? (
                 <div className="flex items-center gap-3 rounded-xl border border-divider bg-content2/40 px-3 py-5 text-sm text-muted-foreground sm:px-4 sm:py-6">
-                  <Spinner size="sm" />
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
                   正在检查是否有规则正在使用该隧道...
                 </div>
               ) : deleteHasForwardDependencies ? (
@@ -304,7 +305,7 @@ export function BatchDeleteTunnelsModal({
             <ModalBody className="space-y-3 sm:space-y-4">
               {batchDeletePreviewLoading ? (
                 <div className="flex items-center gap-3 rounded-xl border border-divider bg-content2/40 px-3 py-5 text-sm text-muted-foreground sm:px-4 sm:py-6">
-                  <Spinner size="sm" />
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
                   正在检查选中隧道是否有关联规则...
                 </div>
               ) : batchDeleteHasForwardDependencies ? (

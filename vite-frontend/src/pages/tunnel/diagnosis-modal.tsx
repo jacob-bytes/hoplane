@@ -1,5 +1,7 @@
 import type { Dispatch, MutableRefObject, SetStateAction } from "react";
 
+import { Loader2 } from "lucide-react";
+
 import { Button } from "@/shadcn-bridge/heroui/button";
 import {
   Modal,
@@ -9,7 +11,6 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import {
   getDiagnosisQualityDisplay,
@@ -99,7 +100,7 @@ export function TunnelDiagnosisModal({
                   {diagnosisLoading && (
                     <div className="flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-3 py-2">
                       <div className="flex items-center gap-2 text-sm text-primary">
-                        <Spinner size="sm" />
+                        <Loader2 className="size-4 animate-spin text-muted-foreground" />
                         <span>
                           正在诊断 {diagnosisProgress.completed}/
                           {diagnosisProgress.total > 0
@@ -246,7 +247,7 @@ export function TunnelDiagnosisModal({
                                       <td className="px-3 py-2">
                                         <div className="flex items-center gap-2">
                                           {isDiagnosing ? (
-                                            <Spinner size="sm" />
+                                            <Loader2 className="size-4 animate-spin text-muted-foreground" />
                                           ) : (
                                             <span
                                               className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
@@ -429,7 +430,7 @@ export function TunnelDiagnosisModal({
                                 >
                                   <div className="flex items-start gap-2 mb-2">
                                     {isDiagnosing ? (
-                                      <Spinner size="sm" />
+                                      <Loader2 className="size-4 animate-spin text-muted-foreground" />
                                     ) : (
                                       <span
                                         className={`w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${

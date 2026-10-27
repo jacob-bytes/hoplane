@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { Link } from "@/shadcn-bridge/heroui/link";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand,
@@ -65,9 +64,8 @@ export const Navbar = () => {
         <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
           <NavbarBrand className="gap-2 max-w-fit">
             <Link
-              className="flex justify-start items-center gap-2 max-w-[200px] sm:max-w-none"
-              color="foreground"
-              href="/"
+              className="flex max-w-[200px] items-center justify-start gap-2 text-foreground transition-colors hover:text-foreground/80 sm:max-w-none"
+              to="/"
             >
               <BrandLogo size={24} />
               <p className="font-bold text-inherit truncate">{appName}</p>

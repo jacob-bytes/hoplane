@@ -11,7 +11,7 @@ import {
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Divider } from "@/shadcn-bridge/heroui/divider";
+import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
 import { getTunnelForwardMode } from "@/pages/tunnel/helpers";
 import { ChainTunnel, Node, TunnelForm } from "@/pages/tunnel/types";
@@ -164,7 +164,7 @@ export function TunnelFormModal({
                     </Select>
                   ))}
 
-                <Divider />
+                <Separator />
                 <h3 className="text-lg font-semibold">入口配置</h3>
 
                 <div className="space-y-2">
@@ -238,7 +238,7 @@ export function TunnelFormModal({
                 {/* 隧道转发时显示转发链配置 */}
                 {form.type === 2 && (
                   <>
-                    <Divider />
+                    <Separator />
                     <div className="flex items-center justify-between">
                       <h3 className="text-lg font-semibold">转发链配置</h3>
                       <Button
@@ -570,7 +570,7 @@ export function TunnelFormModal({
                 {/* 隧道转发时显示出口配置 */}
                 {form.type === 2 && (
                   <>
-                    <Divider />
+                    <Separator />
                     <h3 className="text-lg font-semibold">出口配置</h3>
 
                     {(() => {

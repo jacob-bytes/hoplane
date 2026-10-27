@@ -5,13 +5,13 @@ import type {
 } from "@/api/types";
 
 import { useState, useEffect, useRef } from "react";
+import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Textarea } from "@/shadcn-bridge/heroui/input";
-import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
@@ -1484,7 +1484,10 @@ export default function ConfigPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Spinner label="加载配置中..." size="lg" />
+        <span className="inline-flex items-center gap-2">
+          <Loader2 className="size-7 animate-spin text-muted-foreground" />
+          <span className="text-sm text-muted-foreground">加载配置中...</span>
+        </span>
       </div>
     );
   }
@@ -1687,7 +1690,7 @@ export default function ConfigPage() {
             >
               {announcementLoading ? (
                 <div className="flex justify-center py-4">
-                  <Spinner size="sm" />
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
                 </div>
               ) : (
                 <>
@@ -1820,7 +1823,7 @@ export default function ConfigPage() {
               <SubHeading>面板自升级</SubHeading>
               {systemUpgradeLoading ? (
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Spinner size="sm" />
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
                   正在加载升级状态...
                 </div>
               ) : (
