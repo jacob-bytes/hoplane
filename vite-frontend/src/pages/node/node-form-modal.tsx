@@ -1,8 +1,9 @@
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
-import { TextAreaField as Textarea } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Modal,
   ModalContent,
@@ -67,30 +68,38 @@ export function NodeFormModal({
         <ModalBody>
           <div className="space-y-6">
             <FormSection title="基本信息">
-              <Input
-                errorMessage={errors.name}
-                isInvalid={!!errors.name}
-                label="服务器名称"
-                placeholder="请输入服务器名称"
-                value={form.name}
-                variant="bordered"
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="field-0">服务器名称</Label>
+                <Input
+                  id="field-0"
+                  placeholder="请输入服务器名称"
+                  value={form.name}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, name: e.target.value }))
+                  }
+                />
+                {errors.name ? (
+                  <p className="text-xs text-destructive" role="alert">
+                    {errors.name}
+                  </p>
+                ) : null}
+              </div>
 
-              <Textarea
-                description="可记录供应商、用途、续费说明等补充信息"
-                label="备注"
-                maxRows={3}
-                minRows={2}
-                placeholder="例如: 搬瓦工年付，2026-12 续费，日本中转"
-                value={form.remark}
-                variant="bordered"
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, remark: e.target.value }))
-                }
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="node-remark">备注</Label>
+                <Textarea
+                  className="min-h-20"
+                  id="node-remark"
+                  placeholder="例如: 搬瓦工年付，2026-12 续费，日本中转"
+                  value={form.remark}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, remark: e.target.value }))
+                  }
+                />
+                <p className="text-xs text-muted-foreground">
+                  可记录供应商、用途、续费说明等补充信息
+                </p>
+              </div>
             </FormSection>
 
             <FormSection
@@ -115,27 +124,32 @@ export function NodeFormModal({
                   }
                 />
 
-                <Input
-                  errorMessage={errors.expiryTime}
-                  isInvalid={!!errors.expiryTime}
-                  label="续费基准时间"
-                  max="9999-12-31"
-                  type="date"
-                  value={
-                    form.expiryTime > 0
-                      ? new Date(form.expiryTime).toISOString().slice(0, 10)
-                      : ""
-                  }
-                  variant="bordered"
-                  onChange={(e) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      expiryTime: e.target.value
-                        ? new Date(e.target.value).getTime()
-                        : 0,
-                    }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="field-1">续费基准时间</Label>
+                  <Input
+                    id="field-1"
+                    max="9999-12-31"
+                    type="date"
+                    value={
+                      form.expiryTime > 0
+                        ? new Date(form.expiryTime).toISOString().slice(0, 10)
+                        : ""
+                    }
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        expiryTime: e.target.value
+                          ? new Date(e.target.value).getTime()
+                          : 0,
+                      }))
+                    }
+                  />
+                  {errors.expiryTime ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.expiryTime}
+                    </p>
+                  ) : null}
+                </div>
               </div>
 
               <p className="text-xs text-muted-foreground">
@@ -148,61 +162,90 @@ export function NodeFormModal({
               description="填写入口 / 出口服务器的地址，不是面板地址"
               title="连接方式"
             >
-              <Input
-                description="可选：不带协议、不带端口。建议在 IPv4 和 IPv6 都未填写时使用"
-                errorMessage={errors.serverHost}
-                isInvalid={!!errors.serverHost}
-                label="域名/主机名"
-                placeholder="例如: test.example.com"
-                value={form.serverHost}
-                variant="bordered"
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, serverHost: e.target.value }))
-                }
-              />
-
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="field-2">域名/主机名</Label>
                 <Input
-                  errorMessage={errors.serverIpV4}
-                  isInvalid={!!errors.serverIpV4}
-                  label="IPv4 地址"
-                  placeholder="例如: 192.168.1.100"
-                  value={form.serverIpV4}
-                  variant="bordered"
+                  id="field-2"
+                  placeholder="例如: test.example.com"
+                  value={form.serverHost}
                   onChange={(e) =>
-                    setForm((prev) => ({ ...prev, serverIpV4: e.target.value }))
+                    setForm((prev) => ({ ...prev, serverHost: e.target.value }))
                   }
                 />
-
-                <Input
-                  errorMessage={errors.serverIpV6}
-                  isInvalid={!!errors.serverIpV6}
-                  label="IPv6 地址"
-                  placeholder="例如: 2001:db8::10"
-                  value={form.serverIpV6}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, serverIpV6: e.target.value }))
-                  }
-                />
+                <p className="text-xs text-muted-foreground">
+                  可选：不带协议、不带端口。建议在 IPv4 和 IPv6 都未填写时使用
+                </p>
+                {errors.serverHost ? (
+                  <p className="text-xs text-destructive" role="alert">
+                    {errors.serverHost}
+                  </p>
+                ) : null}
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <Input
-                  classNames={{
-                    input: "font-mono",
-                  }}
-                  description="单个端口(80)、多个(80,443)或范围(10000-65535)"
-                  errorMessage={errors.port}
-                  isInvalid={!!errors.port}
-                  label="可用端口"
-                  placeholder="例如: 80,443,10000-65535"
-                  value={form.port}
-                  variant="bordered"
-                  onChange={(e) =>
-                    setForm((prev) => ({ ...prev, port: e.target.value }))
-                  }
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="field-3">IPv4 地址</Label>
+                  <Input
+                    id="field-3"
+                    placeholder="例如: 192.168.1.100"
+                    value={form.serverIpV4}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        serverIpV4: e.target.value,
+                      }))
+                    }
+                  />
+                  {errors.serverIpV4 ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.serverIpV4}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="field-4">IPv6 地址</Label>
+                  <Input
+                    id="field-4"
+                    placeholder="例如: 2001:db8::10"
+                    value={form.serverIpV6}
+                    onChange={(e) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        serverIpV6: e.target.value,
+                      }))
+                    }
+                  />
+                  {errors.serverIpV6 ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.serverIpV6}
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="node-port">可用端口</Label>
+                  <Input
+                    aria-invalid={!!errors.port || undefined}
+                    className="font-mono"
+                    id="node-port"
+                    placeholder="例如: 80,443,10000-65535"
+                    value={form.port}
+                    onChange={(e) =>
+                      setForm((prev) => ({ ...prev, port: e.target.value }))
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    单个端口(80)、多个(80,443)或范围(10000-65535)
+                  </p>
+                  {errors.port ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.port}
+                    </p>
+                  ) : null}
+                </div>
 
                 <SelectField
                   label="转发模式"
@@ -255,52 +298,76 @@ export function NodeFormModal({
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input
-                          errorMessage={errors.sshHost}
-                          isInvalid={!!errors.sshHost}
-                          label="SSH 主机"
-                          placeholder="例如: 192.0.2.10"
-                          value={form.sshHost}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              sshHost: e.target.value,
-                            }))
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-5">SSH 主机</Label>
+                          <Input
+                            id="field-5"
+                            placeholder="例如: 192.0.2.10"
+                            value={form.sshHost}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                sshHost: e.target.value,
+                              }))
+                            }
+                          />
+                          {errors.sshHost ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.sshHost}
+                            </p>
+                          ) : null}
+                        </div>
 
-                        <Input
-                          errorMessage={errors.sshPort}
-                          isInvalid={!!errors.sshPort}
-                          label="SSH 端口"
-                          placeholder="22"
-                          value={form.sshPort}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              sshPort: e.target.value,
-                            }))
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-6">SSH 端口</Label>
+                          <Input
+                            id="field-6"
+                            placeholder="22"
+                            value={form.sshPort}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                sshPort: e.target.value,
+                              }))
+                            }
+                          />
+                          {errors.sshPort ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.sshPort}
+                            </p>
+                          ) : null}
+                        </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input
-                          errorMessage={errors.sshUsername}
-                          isInvalid={!!errors.sshUsername}
-                          label="SSH 用户名"
-                          placeholder="例如: root"
-                          value={form.sshUsername}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              sshUsername: e.target.value,
-                            }))
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-7">SSH 用户名</Label>
+                          <Input
+                            id="field-7"
+                            placeholder="例如: root"
+                            value={form.sshUsername}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                sshUsername: e.target.value,
+                              }))
+                            }
+                          />
+                          {errors.sshUsername ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.sshUsername}
+                            </p>
+                          ) : null}
+                        </div>
 
                         <SelectField
                           label="SSH 认证方式"
@@ -321,52 +388,71 @@ export function NodeFormModal({
                       </div>
 
                       {form.sshAuthType === "password" ? (
-                        <Input
-                          errorMessage={errors.sshPassword}
-                          isInvalid={!!errors.sshPassword}
-                          label="SSH 密码"
-                          placeholder="请输入 SSH 密码"
-                          type="password"
-                          value={form.sshPassword}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              sshPassword: e.target.value,
-                            }))
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-8">SSH 密码</Label>
+                          <Input
+                            id="field-8"
+                            placeholder="请输入 SSH 密码"
+                            type="password"
+                            value={form.sshPassword}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                sshPassword: e.target.value,
+                              }))
+                            }
+                          />
+                          {errors.sshPassword ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.sshPassword}
+                            </p>
+                          ) : null}
+                        </div>
                       ) : (
-                        <Textarea
-                          errorMessage={errors.sshPrivateKey}
-                          isInvalid={!!errors.sshPrivateKey}
-                          label="SSH 私钥"
-                          minRows={6}
-                          placeholder="粘贴 PEM 格式私钥内容"
-                          value={form.sshPrivateKey}
-                          variant="bordered"
-                          onChange={(e) =>
-                            setForm((prev) => ({
-                              ...prev,
-                              sshPrivateKey: e.target.value,
-                            }))
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="node-ssh-private-key">SSH 私钥</Label>
+                          <Textarea
+                            aria-invalid={!!errors.sshPrivateKey || undefined}
+                            className="min-h-40 font-mono"
+                            id="node-ssh-private-key"
+                            placeholder="粘贴 PEM 格式私钥内容"
+                            value={form.sshPrivateKey}
+                            onChange={(e) =>
+                              setForm((prev) => ({
+                                ...prev,
+                                sshPrivateKey: e.target.value,
+                              }))
+                            }
+                          />
+                          {errors.sshPrivateKey ? (
+                            <p
+                              className="text-xs text-destructive"
+                              role="alert"
+                            >
+                              {errors.sshPrivateKey}
+                            </p>
+                          ) : null}
+                        </div>
                       )}
 
-                      <Input
-                        label="SSH 私钥密码短语"
-                        placeholder="可选"
-                        type="password"
-                        value={form.sshPassphrase}
-                        variant="bordered"
-                        onChange={(e) =>
-                          setForm((prev) => ({
-                            ...prev,
-                            sshPassphrase: e.target.value,
-                          }))
-                        }
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-9">SSH 私钥密码短语</Label>
+                        <Input
+                          id="field-9"
+                          placeholder="可选"
+                          type="password"
+                          value={form.sshPassphrase}
+                          onChange={(e) =>
+                            setForm((prev) => ({
+                              ...prev,
+                              sshPassphrase: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
 
                       <SelectField
                         label="sudo 提权方式"
@@ -396,80 +482,101 @@ export function NodeFormModal({
                     </Alert>
                   )}
 
-                  <Input
-                    description="用于多IP服务器指定使用那个IP请求远程地址，不懂的默认为空就行"
-                    errorMessage={errors.interfaceName}
-                    isInvalid={!!errors.interfaceName}
-                    label="出口网卡名或IP"
-                    placeholder="请输入出口网卡名或IP"
-                    value={form.interfaceName}
-                    variant="bordered"
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        interfaceName: e.target.value,
-                      }))
-                    }
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-10">出口网卡名或IP</Label>
+                    <Input
+                      id="field-10"
+                      placeholder="请输入出口网卡名或IP"
+                      value={form.interfaceName}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          interfaceName: e.target.value,
+                        }))
+                      }
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      用于多IP服务器指定使用那个IP请求远程地址，不懂的默认为空就行
+                    </p>
+                    {errors.interfaceName ? (
+                      <p className="text-xs text-destructive" role="alert">
+                        {errors.interfaceName}
+                      </p>
+                    ) : null}
+                  </div>
 
-                  <Input
-                    description="多IP服务器可填写额外IP地址，逗号分隔"
-                    label="额外IP地址"
-                    placeholder="例如: 192.168.1.100, 10.0.0.5"
-                    value={form.extraIPs}
-                    variant="bordered"
-                    onChange={(e) =>
-                      setForm((prev) => ({
-                        ...prev,
-                        extraIPs: e.target.value,
-                      }))
-                    }
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-11">额外IP地址</Label>
+                    <Input
+                      id="field-11"
+                      placeholder="例如: 192.168.1.100, 10.0.0.5"
+                      value={form.extraIPs}
+                      onChange={(e) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          extraIPs: e.target.value,
+                        }))
+                      }
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      多IP服务器可填写额外IP地址，逗号分隔
+                    </p>
+                  </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                      errorMessage={errors.tcpListenAddr}
-                      isInvalid={!!errors.tcpListenAddr}
-                      label="TCP监听地址"
-                      placeholder="请输入TCP监听地址"
-                      startContent={
-                        <div className="pointer-events-none flex items-center">
-                          <span className="text-muted-foreground text-small">
-                            TCP
-                          </span>
-                        </div>
-                      }
-                      value={form.tcpListenAddr}
-                      variant="bordered"
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          tcpListenAddr: e.target.value,
-                        }))
-                      }
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="node-tcp-listen">TCP监听地址</Label>
+                      <div className="relative">
+                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                          TCP
+                        </span>
+                        <Input
+                          aria-invalid={!!errors.tcpListenAddr || undefined}
+                          className="pl-12"
+                          id="node-tcp-listen"
+                          placeholder="请输入TCP监听地址"
+                          value={form.tcpListenAddr}
+                          onChange={(e) =>
+                            setForm((prev) => ({
+                              ...prev,
+                              tcpListenAddr: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      {errors.tcpListenAddr ? (
+                        <p className="text-xs text-destructive" role="alert">
+                          {errors.tcpListenAddr}
+                        </p>
+                      ) : null}
+                    </div>
 
-                    <Input
-                      errorMessage={errors.udpListenAddr}
-                      isInvalid={!!errors.udpListenAddr}
-                      label="UDP监听地址"
-                      placeholder="请输入UDP监听地址"
-                      startContent={
-                        <div className="pointer-events-none flex items-center">
-                          <span className="text-muted-foreground text-small">
-                            UDP
-                          </span>
-                        </div>
-                      }
-                      value={form.udpListenAddr}
-                      variant="bordered"
-                      onChange={(e) =>
-                        setForm((prev) => ({
-                          ...prev,
-                          udpListenAddr: e.target.value,
-                        }))
-                      }
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="node-udp-listen">UDP监听地址</Label>
+                      <div className="relative">
+                        <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                          UDP
+                        </span>
+                        <Input
+                          aria-invalid={!!errors.udpListenAddr || undefined}
+                          className="pl-12"
+                          id="node-udp-listen"
+                          placeholder="请输入UDP监听地址"
+                          value={form.udpListenAddr}
+                          onChange={(e) =>
+                            setForm((prev) => ({
+                              ...prev,
+                              udpListenAddr: e.target.value,
+                            }))
+                          }
+                        />
+                      </div>
+                      {errors.udpListenAddr ? (
+                        <p className="text-xs text-destructive" role="alert">
+                          {errors.udpListenAddr}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
                   {/* 屏蔽协议 */}
                   <div>
