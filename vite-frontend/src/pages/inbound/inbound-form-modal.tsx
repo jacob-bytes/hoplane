@@ -43,7 +43,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { Switch } from "@/components/ui/switch";
 
 interface Props {
@@ -386,40 +386,27 @@ export function InboundFormModal({
             <ModalBody>
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Select
+                  <SelectField
                     isDisabled={isEdit}
                     label="服务器"
+                    options={nodeOptions.map((n) => ({
+                      value: String(n.id),
+                      label: n.status === 1 ? n.name : `${n.name}（离线）`,
+                    }))}
                     placeholder="选择服务器"
-                    selectedKeys={form.nodeId ? [form.nodeId] : []}
-                    onSelectionChange={(keys) =>
-                      set("nodeId", String(Array.from(keys)[0] ?? ""))
-                    }
-                  >
-                    {nodeOptions.map((n) => (
-                      <SelectItem
-                        key={String(n.id)}
-                        textValue={
-                          n.status === 1 ? n.name : `${n.name}（离线）`
-                        }
-                      >
-                        {n.status === 1 ? n.name : `${n.name}（离线）`}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <Select
+                    value={form.nodeId}
+                    onValueChange={(value) => set("nodeId", value)}
+                  />
+                  <SelectField
                     isDisabled={isEdit}
                     label="内核"
-                    selectedKeys={[form.kernelType]}
-                    onSelectionChange={(keys) =>
-                      changeKernel(String(Array.from(keys)[0] ?? "xray"))
-                    }
-                  >
-                    {implementedKernels.map((k) => (
-                      <SelectItem key={k.type} textValue={k.name}>
-                        {k.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    options={implementedKernels.map((k) => ({
+                      value: k.type,
+                      label: k.name,
+                    }))}
+                    value={form.kernelType}
+                    onValueChange={(value) => changeKernel(value)}
+                  />
                 </div>
 
                 {form.nodeId && !installedKernel && (
@@ -492,53 +479,35 @@ export function InboundFormModal({
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <Select
+                  <SelectField
                     label="协议"
-                    selectedKeys={[form.protocol]}
-                    onSelectionChange={(keys) =>
-                      changeProtocol(String(Array.from(keys)[0] ?? "vless"))
-                    }
-                  >
-                    {(kernelInfo?.protocols ?? []).map((p) => (
-                      <SelectItem
-                        key={p.protocol}
-                        textValue={PROTOCOL_LABELS[p.protocol] ?? p.protocol}
-                      >
-                        {PROTOCOL_LABELS[p.protocol] ?? p.protocol}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <Select
+                    options={(kernelInfo?.protocols ?? []).map((p) => ({
+                      value: p.protocol,
+                      label: PROTOCOL_LABELS[p.protocol] ?? p.protocol,
+                    }))}
+                    value={form.protocol}
+                    onValueChange={(value) => changeProtocol(value)}
+                  />
+                  <SelectField
                     isDisabled={transports.length <= 1}
                     label="传输"
-                    selectedKeys={[form.transportType]}
-                    onSelectionChange={(keys) =>
-                      changeTransport(String(Array.from(keys)[0] ?? "tcp"))
-                    }
-                  >
-                    {transports.map((t) => (
-                      <SelectItem
-                        key={t.type}
-                        textValue={TRANSPORT_LABELS[t.type] ?? t.type}
-                      >
-                        {TRANSPORT_LABELS[t.type] ?? t.type}
-                      </SelectItem>
-                    ))}
-                  </Select>
-                  <Select
+                    options={transports.map((t) => ({
+                      value: t.type,
+                      label: TRANSPORT_LABELS[t.type] ?? t.type,
+                    }))}
+                    value={form.transportType}
+                    onValueChange={(value) => changeTransport(value)}
+                  />
+                  <SelectField
                     isDisabled={securities.length <= 1}
                     label="安全"
-                    selectedKeys={[form.securityType]}
-                    onSelectionChange={(keys) =>
-                      changeSecurity(String(Array.from(keys)[0] ?? "none"))
-                    }
-                  >
-                    {securities.map((s) => (
-                      <SelectItem key={s} textValue={SECURITY_LABELS[s] ?? s}>
-                        {SECURITY_LABELS[s] ?? s}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    options={securities.map((value) => ({
+                      value,
+                      label: SECURITY_LABELS[value] ?? value,
+                    }))}
+                    value={form.securityType}
+                    onValueChange={(value) => changeSecurity(value)}
+                  />
                 </div>
 
                 {uuidProtocols.includes(form.protocol) && (
@@ -576,23 +545,21 @@ export function InboundFormModal({
                   </div>
                 )}
                 {form.protocol === "shadowsocks" && (
-                  <Select
+                  <SelectField
                     label="加密方式"
-                    selectedKeys={[form.method]}
-                    onSelectionChange={(keys) =>
+                    options={(caps?.ssMethods ?? []).map((m) => ({
+                      value: m,
+                      label: m,
+                    }))}
+                    value={form.method}
+                    onValueChange={(value) =>
                       setForm((prev) => ({
                         ...prev,
-                        method: String(Array.from(keys)[0] ?? prev.method),
+                        method: value,
                         password: "",
                       }))
                     }
-                  >
-                    {(caps?.ssMethods ?? []).map((m) => (
-                      <SelectItem key={m} textValue={m}>
-                        {m}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                  />
                 )}
                 {usernameProtocols.includes(form.protocol) && (
                   <Input
@@ -620,43 +587,34 @@ export function InboundFormModal({
                 )}
 
                 {form.protocol === "snell" && (
-                  <Select
+                  <SelectField
                     description={
                       form.kernelType === "singbox"
                         ? "客户端使用的协议版本；sing-box 内置 Snell 需要 1.14 及以上，v6 的 PSK 至少 12 位"
                         : "客户端使用的协议版本，要和服务器上的 Snell 一致：v4 / v5 用 5.x（也可 4.x 跑 v4），v6 用 6.0.0（只接受 v6 客户端）"
                     }
                     label="Snell 版本"
-                    selectedKeys={[form.snellVersion || defaultSnellVersion]}
-                    onSelectionChange={(keys) =>
-                      set("snellVersion", String(Array.from(keys)[0] ?? "5"))
-                    }
-                  >
-                    {["6", "5", "4"].map((v) => (
-                      <SelectItem key={v} textValue={`v${v}`}>
-                        {`v${v}`}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    options={["6", "5", "4"].map((v) => ({
+                      value: v,
+                      label: `v${v}`,
+                    }))}
+                    value={form.snellVersion || defaultSnellVersion}
+                    onValueChange={(value) => set("snellVersion", value)}
+                  />
                 )}
                 {form.protocol === "snell" && form.snellVersion === "6" && (
-                  <Select
+                  <SelectField
                     description="客户端要选同样的模式；unshaped 不做流量整形，更快但更容易被识别"
                     label="流量整形"
-                    selectedKeys={[form.snellMode || "default"]}
-                    onSelectionChange={(keys) => {
-                      const v = String(Array.from(keys)[0] ?? "default");
-
-                      set("snellMode", v === "default" ? "" : v);
-                    }}
-                  >
-                    <SelectItem key="default" textValue="默认">
-                      默认
-                    </SelectItem>
-                    <SelectItem key="unshaped" textValue="unshaped">
-                      unshaped
-                    </SelectItem>
-                  </Select>
+                    options={[
+                      { value: "default", label: "默认" },
+                      { value: "unshaped", label: "unshaped" },
+                    ]}
+                    value={form.snellMode || "default"}
+                    onValueChange={(v) =>
+                      set("snellMode", v === "default" ? "" : v)
+                    }
+                  />
                 )}
                 {(form.protocol === "socks" || form.protocol === "http") && (
                   <p className="text-xs text-warning">
@@ -728,19 +686,15 @@ export function InboundFormModal({
                   </div>
                 )}
                 {form.transportType === "xhttp" && (
-                  <Select
+                  <SelectField
                     label="XHTTP 模式"
-                    selectedKeys={[form.xhttpMode]}
-                    onSelectionChange={(keys) =>
-                      set("xhttpMode", String(Array.from(keys)[0] ?? "auto"))
-                    }
-                  >
-                    {XHTTP_MODES.map((m) => (
-                      <SelectItem key={m} textValue={m}>
-                        {m}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    options={XHTTP_MODES.map((m) => ({
+                      value: m,
+                      label: m,
+                    }))}
+                    value={form.xhttpMode}
+                    onValueChange={(value) => set("xhttpMode", value)}
+                  />
                 )}
                 {form.transportType === "grpc" && (
                   <Input
@@ -845,25 +799,15 @@ export function InboundFormModal({
                         variant="bordered"
                         onChange={(e) => set("sni", e.target.value)}
                       />
-                      <Select
+                      <SelectField
                         label="证书"
-                        selectedKeys={[certMode]}
-                        onSelectionChange={(keys) =>
-                          set(
-                            "certMode",
-                            String(Array.from(keys)[0] ?? certMode),
-                          )
-                        }
-                      >
-                        {certModes.map((m) => (
-                          <SelectItem
-                            key={m}
-                            textValue={CERT_MODE_LABELS[m] ?? m}
-                          >
-                            {CERT_MODE_LABELS[m] ?? m}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                        options={certModes.map((m) => ({
+                          value: m,
+                          label: CERT_MODE_LABELS[m] ?? m,
+                        }))}
+                        value={certMode}
+                        onValueChange={(value) => set("certMode", value)}
+                      />
                     </div>
                     {certMode === "acme" && (
                       <div className="space-y-3">
@@ -881,29 +825,25 @@ export function InboundFormModal({
                             variant="bordered"
                             onChange={(e) => set("acmeEmail", e.target.value)}
                           />
-                          <Select
+                          <SelectField
                             label="验证方式"
-                            selectedKeys={[form.acmeDns || "http"]}
-                            onSelectionChange={(keys) => {
-                              const v = String(Array.from(keys)[0] ?? "http");
-
+                            options={Object.entries(ACME_DNS_LABELS).map(
+                              ([k, label]) => ({
+                                value: k || "http",
+                                label,
+                              }),
+                            )}
+                            value={form.acmeDns || "http"}
+                            onValueChange={(v) =>
                               setForm((prev) => ({
                                 ...prev,
                                 acmeDns: v === "http" ? "" : v,
                                 acmeDnsKey: "",
                                 acmeDnsSecret: "",
                                 acmeDnsSet: false,
-                              }));
-                            }}
-                          >
-                            {Object.entries(ACME_DNS_LABELS).map(
-                              ([k, label]) => (
-                                <SelectItem key={k || "http"} textValue={label}>
-                                  {label}
-                                </SelectItem>
-                              ),
-                            )}
-                          </Select>
+                              }))
+                            }
+                          />
                         </div>
                         {form.acmeDns && (
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -994,46 +934,29 @@ export function InboundFormModal({
                         onChange={(e) => set("listen", e.target.value)}
                       />
                       <div className="space-y-2">
-                        <Select
-                          disabledKeys={[
-                            ...(shareV4 ? [] : ["ipv4"]),
-                            ...(shareV6 ? [] : ["ipv6"]),
-                          ]}
+                        <SelectField
                           label="分享地址"
-                          selectedKeys={[form.shareAddressMode]}
-                          onSelectionChange={(keys) =>
+                          options={[
+                            { value: "auto", label: "自动（服务器默认地址）" },
+                            {
+                              value: "ipv4",
+                              label: `服务器 IPv4${shareV4 ? ` · ${shareV4}` : "（未设置）"}`,
+                              disabled: !shareV4,
+                            },
+                            {
+                              value: "ipv6",
+                              label: `服务器 IPv6${shareV6 ? ` · ${shareV6}` : "（未设置）"}`,
+                              disabled: !shareV6,
+                            },
+                          ]}
+                          value={form.shareAddressMode}
+                          onValueChange={(value) =>
                             set(
                               "shareAddressMode",
-                              String(
-                                Array.from(keys)[0] ?? "auto",
-                              ) as InboundForm["shareAddressMode"],
+                              value as InboundForm["shareAddressMode"],
                             )
                           }
-                        >
-                          <SelectItem
-                            key="auto"
-                            textValue="自动（服务器默认地址）"
-                          >
-                            自动（服务器默认地址）
-                          </SelectItem>
-                          <SelectItem
-                            key="ipv4"
-                            textValue={`服务器 IPv4${shareV4 ? ` · ${shareV4}` : "（未设置）"}`}
-                          >
-                            服务器 IPv4
-                            {shareV4 ? ` · ${shareV4}` : "（未设置）"}
-                          </SelectItem>
-                          <SelectItem
-                            key="ipv6"
-                            textValue={`服务器 IPv6${shareV6 ? ` · ${shareV6}` : "（未设置）"}`}
-                          >
-                            服务器 IPv6
-                            {shareV6 ? ` · ${shareV6}` : "（未设置）"}
-                          </SelectItem>
-                          <SelectItem key="custom" textValue="自定义域名 / IP">
-                            自定义域名 / IP
-                          </SelectItem>
-                        </Select>
+                        />
                         {form.shareAddressMode === "custom" && (
                           <Input
                             aria-label="自定义分享地址"
