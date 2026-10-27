@@ -9,7 +9,8 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/components/modal";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   beginPasskeyRegistration,
   deletePasskey,
@@ -151,20 +152,24 @@ export function PasskeyModal({
               ))}
             </div>
           )}
-          <Input
-            autoComplete="current-password"
-            label="当前密码"
-            type="password"
-            value={password}
-            variant="bordered"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Input
-            label="新密钥名称（可选）"
-            value={name}
-            variant="bordered"
-            onChange={(e) => setName(e.target.value)}
-          />
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="passkey-current-password">当前密码</Label>
+            <Input
+              autoComplete="current-password"
+              id="passkey-current-password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="passkey-new-name">新密钥名称（可选）</Label>
+            <Input
+              id="passkey-new-name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button disabled={busy} onClick={() => void register()}>

@@ -3,7 +3,8 @@ import { toast } from "sonner";
 import { Github } from "lucide-react";
 
 import { Button, buttonVariant } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalBody,
@@ -100,18 +101,20 @@ export function GithubBindingModal({
               </div>
             </div>
           </div>
-          <Input
-            autoComplete="current-password"
-            label="当前密码"
-            placeholder={bound ? "输入当前密码以解绑" : "输入当前密码以绑定"}
-            type="password"
-            value={password}
-            variant="bordered"
-            onChange={(e) => setPassword(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") void submit();
-            }}
-          />
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="github-current-password">当前密码</Label>
+            <Input
+              autoComplete="current-password"
+              id="github-current-password"
+              placeholder={bound ? "输入当前密码以解绑" : "输入当前密码以绑定"}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") void submit();
+              }}
+            />
+          </div>
         </ModalBody>
         <ModalFooter>
           <Button variant="ghost" onClick={onClose}>

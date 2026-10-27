@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
 import { SearchIcon } from "@/components/icons";
 
 interface SearchBarProps {
@@ -53,12 +53,7 @@ export function SearchBar({
             transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <Input
-              classNames={{
-                base: "bg-muted",
-                input:
-                  "bg-transparent text-sm focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none",
-                inputWrapper: "bg-muted border-0 shadow-none h-8 min-h-8",
-              }}
+              className="h-8 border-0 bg-muted text-sm shadow-none focus-visible:ring-0 focus-visible:ring-offset-0"
               placeholder={placeholder}
               value={value}
               onChange={(e) => onChange(e.target.value)}

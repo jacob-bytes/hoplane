@@ -25,7 +25,8 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@/components/modal";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { isWebViewFunc } from "@/utils/panel";
 import { siteConfig } from "@/config/site";
 import { VersionFooter } from "@/components/version-footer";
@@ -590,57 +591,65 @@ export default function ProfilePage() {
               </ModalHeader>
               <ModalBody>
                 <div className="space-y-4">
-                  <Input
-                    label="新用户名"
-                    placeholder="请输入新用户名（至少3位）"
-                    value={passwordForm.newUsername}
-                    variant="bordered"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setPasswordForm((prev) => ({
-                        ...prev,
-                        newUsername: e.target.value,
-                      }))
-                    }
-                  />
-                  <Input
-                    label="当前密码"
-                    placeholder="请输入当前密码"
-                    type="password"
-                    value={passwordForm.currentPassword}
-                    variant="bordered"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setPasswordForm((prev) => ({
-                        ...prev,
-                        currentPassword: e.target.value,
-                      }))
-                    }
-                  />
-                  <Input
-                    label="新密码"
-                    placeholder="请输入新密码（至少6位）"
-                    type="password"
-                    value={passwordForm.newPassword}
-                    variant="bordered"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setPasswordForm((prev) => ({
-                        ...prev,
-                        newPassword: e.target.value,
-                      }))
-                    }
-                  />
-                  <Input
-                    label="确认密码"
-                    placeholder="请再次输入新密码"
-                    type="password"
-                    value={passwordForm.confirmPassword}
-                    variant="bordered"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      setPasswordForm((prev) => ({
-                        ...prev,
-                        confirmPassword: e.target.value,
-                      }))
-                    }
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-new-username">新用户名</Label>
+                    <Input
+                      id="profile-new-username"
+                      placeholder="请输入新用户名（至少3位）"
+                      value={passwordForm.newUsername}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPasswordForm((prev) => ({
+                          ...prev,
+                          newUsername: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-current-password">当前密码</Label>
+                    <Input
+                      id="profile-current-password"
+                      placeholder="请输入当前密码"
+                      type="password"
+                      value={passwordForm.currentPassword}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPasswordForm((prev) => ({
+                          ...prev,
+                          currentPassword: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-new-password">新密码</Label>
+                    <Input
+                      id="profile-new-password"
+                      placeholder="请输入新密码（至少6位）"
+                      type="password"
+                      value={passwordForm.newPassword}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPasswordForm((prev) => ({
+                          ...prev,
+                          newPassword: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="profile-confirm-password">确认密码</Label>
+                    <Input
+                      id="profile-confirm-password"
+                      placeholder="请再次输入新密码"
+                      type="password"
+                      value={passwordForm.confirmPassword}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setPasswordForm((prev) => ({
+                          ...prev,
+                          confirmPassword: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
                 </div>
               </ModalBody>
               <ModalFooter>
