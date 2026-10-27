@@ -28,7 +28,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
 import {
   assignGroupPermission,
@@ -952,21 +952,19 @@ export default function GroupPage({
             <ModalContent>
               <ModalHeader>分配隧道 - {assignTunnelGroup?.name}</ModalHeader>
               <ModalBody className="min-w-0">
-                <Select
+                <MultiSelectField
                   className="min-w-0"
-                  classNames={{ trigger: "max-w-full" }}
-                  items={tunnels}
                   label="选择隧道"
-                  selectedKeys={selectedTunnelKeys}
-                  selectionMode="multiple"
-                  onSelectionChange={(keys) => {
-                    setSelectedTunnelKeys(
-                      new Set(Array.from(keys as Set<React.Key>).map(String)),
-                    );
-                  }}
-                >
-                  {(item) => <SelectItem key={item.id}>{item.name}</SelectItem>}
-                </Select>
+                  options={tunnels.map((tunnel) => ({
+                    value: String(tunnel.id),
+                    label: tunnel.name,
+                  }))}
+                  placeholder="选择隧道"
+                  values={Array.from(selectedTunnelKeys)}
+                  onValuesChange={(next) =>
+                    setSelectedTunnelKeys(new Set(next))
+                  }
+                />
                 <p
                   className="w-full min-w-0 max-w-full text-xs text-muted-foreground truncate"
                   title={`当前已选：${selectedTunnelSummary}`}
@@ -999,21 +997,17 @@ export default function GroupPage({
             <ModalContent>
               <ModalHeader>分配用户 - {assignUserGroup?.name}</ModalHeader>
               <ModalBody className="min-w-0">
-                <Select
+                <MultiSelectField
                   className="min-w-0"
-                  classNames={{ trigger: "max-w-full" }}
-                  items={users}
                   label="选择用户"
-                  selectedKeys={selectedUserKeys}
-                  selectionMode="multiple"
-                  onSelectionChange={(keys) => {
-                    setSelectedUserKeys(
-                      new Set(Array.from(keys as Set<React.Key>).map(String)),
-                    );
-                  }}
-                >
-                  {(item) => <SelectItem key={item.id}>{item.user}</SelectItem>}
-                </Select>
+                  options={users.map((user) => ({
+                    value: String(user.id),
+                    label: user.user,
+                  }))}
+                  placeholder="选择用户"
+                  values={Array.from(selectedUserKeys)}
+                  onValuesChange={(next) => setSelectedUserKeys(new Set(next))}
+                />
                 <p
                   className="w-full min-w-0 max-w-full text-xs text-muted-foreground truncate"
                   title={`当前已选：${selectedUserSummary}`}

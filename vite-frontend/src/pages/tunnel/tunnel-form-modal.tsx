@@ -5,7 +5,7 @@ import {
   TextField as Input,
   TextAreaField as Textarea,
 } from "@/components/field-input";
-import { Select, SelectItem } from "@/components/select-field";
+import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
 import {
   Modal,
@@ -65,7 +65,6 @@ export function TunnelFormModal({
   setModalOpen,
   submitLoading,
   syncChainGroupNodes,
-  toSelectedNodeIds,
   updateChainConnectIp,
   updateChainProtocol,
   updateChainStrategy,
@@ -161,34 +160,49 @@ export function TunnelFormModal({
                 <h3 className="text-lg font-semibold">入口配置</h3>
 
                 <div className="space-y-2">
-                  <Select
-                    disabledKeys={[
-                      ...nodes
-                        .filter(
-                          (node) =>
-                            node.status !== 1 &&
-                            !(
-                              isEdit &&
-                              form.inNodeId.some((ct) => ct.nodeId === node.id)
-                            ),
-                        )
-                        .map((node) => node.id.toString()),
-                      ...(form.outNodeId || []).map((ct) =>
-                        ct.nodeId.toString(),
-                      ),
-                      ...getSelectedChainNodeIds().map((id) => id.toString()),
-                    ]}
+                  <MultiSelectField
                     errorMessage={errors.inNodeId}
                     isInvalid={!!errors.inNodeId}
                     label="入口服务器"
+                    options={nodes.map((node) => ({
+                      value: String(node.id),
+                      label: (
+                        <div className="flex items-center justify-between gap-2">
+                          <span>{node.name}</span>
+                          <span className="flex items-center gap-1">
+                            <Badge
+                              variant={badgeTone(
+                                node.status === 1 ? "success" : "default",
+                              )}
+                            >
+                              {node.status === 1 ? "在线" : "离线"}
+                            </Badge>
+                            {(form.outNodeId || []).some(
+                              (ct) => ct.nodeId === node.id,
+                            ) && (
+                              <Badge variant="destructive">已选为出口</Badge>
+                            )}
+                            {getSelectedChainNodeIds().includes(node.id) && (
+                              <Badge variant="default">已选为转发链</Badge>
+                            )}
+                          </span>
+                        </div>
+                      ),
+                      disabled:
+                        (node.status !== 1 &&
+                          !(
+                            isEdit &&
+                            form.inNodeId.some((ct) => ct.nodeId === node.id)
+                          )) ||
+                        (form.outNodeId || []).some(
+                          (ct) => ct.nodeId === node.id,
+                        ) ||
+                        getSelectedChainNodeIds().includes(node.id),
+                    }))}
                     placeholder="请选择入口服务器（可多选）"
-                    selectedKeys={form.inNodeId.map((ct) =>
-                      ct.nodeId.toString(),
-                    )}
-                    selectionMode="multiple"
-                    variant="bordered"
-                    onSelectionChange={(keys) => {
-                      const selectedIds = toSelectedNodeIds(keys);
+                    values={form.inNodeId.map((ct) => ct.nodeId.toString())}
+                    onValuesChange={(next) => {
+                      const selectedIds = next.map(Number);
 
                       setForm((prev) => ({
                         ...prev,
@@ -199,33 +213,7 @@ export function TunnelFormModal({
                         ),
                       }));
                     }}
-                  >
-                    {nodes.map((node) => (
-                      <SelectItem key={node.id} textValue={`${node.name}`}>
-                        <div className="flex items-center justify-between">
-                          <span>{node.name}</span>
-                          <div className="flex items-center gap-2">
-                            <Badge
-                              variant={badgeTone(
-                                node.status === 1 ? "success" : "default",
-                              )}
-                            >
-                              {node.status === 1 ? "在线" : "离线"}
-                            </Badge>
-                            {form.outNodeId &&
-                              form.outNodeId.some(
-                                (ct) => ct.nodeId === node.id,
-                              ) && (
-                                <Badge variant="destructive">已选为出口</Badge>
-                              )}
-                            {getSelectedChainNodeIds().includes(node.id) && (
-                              <Badge variant="default">已选为转发链</Badge>
-                            )}
-                          </div>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </Select>
+                  />
                 </div>
 
                 {/* 隧道转发时显示转发链配置 */}
@@ -319,113 +307,54 @@ export function TunnelFormModal({
                               <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
                                 {/* 节点选择 - 移动端100%，桌面端50% */}
                                 <div className="col-span-1 md:col-span-2">
-                                  <Select
-                                    classNames={{
-                                      label: "text-xs",
-                                      value: "text-sm",
-                                    }}
-                                    disabledKeys={[
-                                      ...nodes
-                                        .filter(
-                                          (node) =>
-                                            node.status !== 1 &&
-                                            !(
-                                              isEdit &&
-                                              groupNodes.some(
-                                                (ct) =>
-                                                  ct.nodeId === node.id &&
-                                                  ct.nodeId !== -1,
-                                              )
-                                            ),
-                                        )
-                                        .map((node) => node.id.toString()),
-                                      ...form.inNodeId.map((ct) =>
-                                        ct.nodeId.toString(),
-                                      ),
-                                      ...(form.outNodeId || []).map((ct) =>
-                                        ct.nodeId.toString(),
-                                      ),
-                                      // 排除其他跳数已选的节点
-                                      ...(form.chainNodes || [])
-                                        .flatMap((group, idx) =>
-                                          idx !== groupIndex
-                                            ? group.map((ct) => ct.nodeId)
-                                            : [],
-                                        )
-                                        .filter((id) => id !== -1)
-                                        .map((id) => id.toString()),
-                                    ]}
-                                    dropdownPlacement="top"
+                                  <MultiSelectField
                                     label="服务器"
+                                    labelClassName="text-xs"
+                                    options={nodes.map((node) => ({
+                                      value: String(node.id),
+                                      label:
+                                        node.status === 1
+                                          ? node.name
+                                          : `${node.name}（离线）`,
+                                      disabled:
+                                        (node.status !== 1 &&
+                                          !(
+                                            isEdit &&
+                                            groupNodes.some(
+                                              (ct) =>
+                                                ct.nodeId === node.id &&
+                                                ct.nodeId !== -1,
+                                            )
+                                          )) ||
+                                        form.inNodeId.some(
+                                          (ct) => ct.nodeId === node.id,
+                                        ) ||
+                                        (form.outNodeId || []).some(
+                                          (ct) => ct.nodeId === node.id,
+                                        ) ||
+                                        (form.chainNodes || []).some(
+                                          (group, idx) =>
+                                            idx !== groupIndex &&
+                                            group.some(
+                                              (ct) =>
+                                                ct.nodeId === node.id &&
+                                                ct.nodeId !== -1,
+                                            ),
+                                        ),
+                                    }))}
                                     placeholder="选择服务器（可多选）"
-                                    selectedKeys={groupNodes
+                                    side="top"
+                                    size="sm"
+                                    values={groupNodes
                                       .filter((ct) => ct.nodeId !== -1)
                                       .map((ct) => ct.nodeId.toString())}
-                                    selectionMode="multiple"
-                                    size="sm"
-                                    variant="bordered"
-                                    onSelectionChange={(keys) => {
+                                    onValuesChange={(next) =>
                                       syncChainGroupNodes(
                                         groupIndex,
-                                        toSelectedNodeIds(keys),
-                                      );
-                                    }}
-                                  >
-                                    {nodes.map((node) => (
-                                      <SelectItem
-                                        key={node.id}
-                                        textValue={`${node.name}`}
-                                      >
-                                        <div className="flex items-center justify-between">
-                                          <span className="text-sm">
-                                            {node.name}
-                                          </span>
-                                          <div className="flex items-center gap-2">
-                                            <Badge
-                                              variant={badgeTone(
-                                                node.status === 1
-                                                  ? "success"
-                                                  : "default",
-                                              )}
-                                            >
-                                              {node.status === 1
-                                                ? "在线"
-                                                : "离线"}
-                                            </Badge>
-                                            {form.inNodeId.some(
-                                              (ct) => ct.nodeId === node.id,
-                                            ) && (
-                                              <Badge variant="warning">
-                                                已选为入口
-                                              </Badge>
-                                            )}
-                                            {form.outNodeId &&
-                                              form.outNodeId.some(
-                                                (ct) => ct.nodeId === node.id,
-                                              ) && (
-                                                <Badge variant="destructive">
-                                                  已选为出口
-                                                </Badge>
-                                              )}
-                                            {/* 显示是否在其他跳数中被选择 */}
-                                            {(form.chainNodes || []).some(
-                                              (group, idx) =>
-                                                idx !== groupIndex &&
-                                                group.some(
-                                                  (ct) =>
-                                                    ct.nodeId === node.id &&
-                                                    ct.nodeId !== -1,
-                                                ),
-                                            ) && (
-                                              <Badge variant="default">
-                                                已选为其他跳
-                                              </Badge>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </SelectItem>
-                                    ))}
-                                  </Select>
+                                        next.map(Number),
+                                      )
+                                    }
+                                  />
                                 </div>
 
                                 {/* 协议选择 - 25% */}
@@ -543,49 +472,43 @@ export function TunnelFormModal({
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
                             {/* 节点选择 - 移动端100%，桌面端50% */}
                             <div className="col-span-1 md:col-span-2">
-                              <Select
-                                classNames={{
-                                  label: "text-xs",
-                                  value: "text-sm",
-                                }}
-                                disabledKeys={[
-                                  ...nodes
-                                    .filter(
-                                      (node) =>
-                                        node.status !== 1 &&
-                                        !(
-                                          isEdit &&
-                                          (form.outNodeId || []).some(
-                                            (ct) =>
-                                              ct.nodeId === node.id &&
-                                              ct.nodeId !== -1,
-                                          )
-                                        ),
-                                    )
-                                    .map((node) => node.id.toString()),
-                                  ...form.inNodeId.map((ct) =>
-                                    ct.nodeId.toString(),
-                                  ),
-                                  ...getSelectedChainNodeIds().map((id) =>
-                                    id.toString(),
-                                  ),
-                                ]}
-                                dropdownPlacement="top"
+                              <MultiSelectField
                                 errorMessage={errors.outNodeId}
                                 isInvalid={!!errors.outNodeId}
                                 label="服务器"
+                                labelClassName="text-xs"
+                                options={nodes.map((node) => ({
+                                  value: String(node.id),
+                                  label:
+                                    node.status === 1
+                                      ? node.name
+                                      : `${node.name}（离线）`,
+                                  disabled:
+                                    (node.status !== 1 &&
+                                      !(
+                                        isEdit &&
+                                        (form.outNodeId || []).some(
+                                          (ct) =>
+                                            ct.nodeId === node.id &&
+                                            ct.nodeId !== -1,
+                                        )
+                                      )) ||
+                                    form.inNodeId.some(
+                                      (ct) => ct.nodeId === node.id,
+                                    ) ||
+                                    getSelectedChainNodeIds().includes(node.id),
+                                }))}
                                 placeholder="请选择出口服务器（可多选）"
-                                selectedKeys={
+                                side="top"
+                                values={
                                   form.outNodeId
                                     ? form.outNodeId
                                         .filter((ct) => ct.nodeId !== -1)
                                         .map((ct) => ct.nodeId.toString())
                                     : []
                                 }
-                                selectionMode="multiple"
-                                variant="bordered"
-                                onSelectionChange={(keys) => {
-                                  const selectedIds = toSelectedNodeIds(keys);
+                                onValuesChange={(next) => {
+                                  const selectedIds = next.map(Number);
 
                                   setForm((prev) => {
                                     const currentOutNodes =
@@ -613,43 +536,7 @@ export function TunnelFormModal({
                                     };
                                   });
                                 }}
-                              >
-                                {nodes.map((node) => (
-                                  <SelectItem
-                                    key={node.id}
-                                    textValue={`${node.name}`}
-                                  >
-                                    <div className="flex items-center justify-between">
-                                      <span>{node.name}</span>
-                                      <div className="flex items-center gap-2">
-                                        <Badge
-                                          variant={badgeTone(
-                                            node.status === 1
-                                              ? "success"
-                                              : "default",
-                                          )}
-                                        >
-                                          {node.status === 1 ? "在线" : "离线"}
-                                        </Badge>
-                                        {form.inNodeId.some(
-                                          (ct) => ct.nodeId === node.id,
-                                        ) && (
-                                          <Badge variant="warning">
-                                            已选为入口
-                                          </Badge>
-                                        )}
-                                        {getSelectedChainNodeIds().includes(
-                                          node.id,
-                                        ) && (
-                                          <Badge variant="default">
-                                            已选为转发链
-                                          </Badge>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </SelectItem>
-                                ))}
-                              </Select>
+                              />
                             </div>
 
                             {/* 协议选择 - 25% */}

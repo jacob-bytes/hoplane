@@ -29,7 +29,7 @@ import {
   useDisclosure,
 } from "@/components/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Select, SelectItem } from "@/components/select-field";
+import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
 import {
   RadioGroupField as RadioGroup,
@@ -241,25 +241,16 @@ function SubscriptionPicker({
 
   return (
     <div className="space-y-1">
-      <Select
-        dropdownPlacement="top"
+      <MultiSelectField
         label="订阅（可选）"
+        options={subscriptions.map((s) => ({
+          value: s.id.toString(),
+          label: s.name,
+        }))}
         placeholder="选择分配给该用户的订阅"
-        selectedKeys={new Set(selected.map(String))}
-        selectionMode="multiple"
-        onSelectionChange={(keys) =>
-          onChange(Array.from(keys as Set<string>).map(Number))
-        }
-      >
-        {subscriptions.map((s) => (
-          <SelectItem
-            key={s.id.toString()}
-            textValue={owner(s) ? `${s.name}（当前属于 ${owner(s)}）` : s.name}
-          >
-            {s.name}
-          </SelectItem>
-        ))}
-      </Select>
+        values={selected.map(String)}
+        onValuesChange={(next) => onChange(next.map(Number))}
+      />
       {moved.length > 0 ? (
         <p className="text-xs text-warning">
           {moved.map((s) => `「${s.name}」`).join("、")}
@@ -1656,23 +1647,21 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             </RadioGroup>
 
             {userGroups.length > 0 && (
-              <Select
+              <MultiSelectField
                 label="用户分组（可选）"
+                options={userGroups.map((g) => ({
+                  value: g.id.toString(),
+                  label: g.name,
+                }))}
                 placeholder="选择要加入的分组"
-                selectedKeys={new Set((userForm.groupIds ?? []).map(String))}
-                selectionMode="multiple"
-                onSelectionChange={(keys) => {
-                  const selected = Array.from(keys as Set<string>).map(Number);
-
-                  setUserForm((prev) => ({ ...prev, groupIds: selected }));
-                }}
-              >
-                {userGroups.map((g) => (
-                  <SelectItem key={g.id.toString()} textValue={g.name}>
-                    {g.name}
-                  </SelectItem>
-                ))}
-              </Select>
+                values={(userForm.groupIds ?? []).map(String)}
+                onValuesChange={(next) =>
+                  setUserForm((prev) => ({
+                    ...prev,
+                    groupIds: next.map(Number),
+                  }))
+                }
+              />
             )}
 
             <SubscriptionPicker
