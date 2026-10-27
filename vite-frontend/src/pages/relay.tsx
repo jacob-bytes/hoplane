@@ -30,7 +30,7 @@ import { RelayModal } from "@/pages/inbound/relay-modal";
 import TunnelPage from "@/pages/tunnel";
 import { TunnelMonitorView } from "@/components/lazy-charts";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 
 type RelayTab = "lines" | "tunnels" | "rules" | "quality";
 
@@ -115,11 +115,7 @@ function RelayLines({
                 {l.forwardName || l.tunnelName}
               </span>
             )}
-            <Badge
-              className="hidden shrink-0 md:inline-flex"
-              size="sm"
-              variant="outline"
-            >
+            <Badge className="hidden shrink-0 md:inline-flex" variant="outline">
               {l.mode === "tunnel" ? "隧道" : "端口"}
             </Badge>
             <span className="shrink-0 text-xs">
@@ -365,11 +361,7 @@ function LinesView() {
                       : undefined
                   }
                   badges={
-                    i.relayOnly && (
-                      <Badge size="sm" variant="outline">
-                        仅中转
-                      </Badge>
-                    )
+                    i.relayOnly && <Badge variant="outline">仅中转</Badge>
                   }
                   headerRight={
                     lines.length > 0 && (
@@ -416,7 +408,7 @@ function LinesView() {
                 key={i.id}
                 badges={
                   i.relayOnly && (
-                    <Badge className="shrink-0" size="sm" variant="outline">
+                    <Badge className="shrink-0" variant="outline">
                       仅中转
                     </Badge>
                   )
@@ -432,11 +424,7 @@ function LinesView() {
                           {i.name}
                         </span>
                         {i.relayOnly && (
-                          <Badge
-                            className="shrink-0"
-                            size="sm"
-                            variant="outline"
-                          >
+                          <Badge className="shrink-0" variant="outline">
                             仅中转
                           </Badge>
                         )}
@@ -450,9 +438,7 @@ function LinesView() {
                     {lineList || (
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex min-w-0 items-center gap-2">
-                          <Badge size="sm" variant="outline">
-                            未配置
-                          </Badge>
+                          <Badge variant="outline">未配置</Badge>
                           <span className="truncate text-xs text-muted-foreground">
                             点击这一行添加中转
                           </span>

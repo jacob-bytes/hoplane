@@ -16,7 +16,7 @@ import { EmptyHint } from "@/components/page-kit";
 import { PROTOCOL_LABELS } from "@/pages/inbound/presets";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
 import {
   ModalBody,
@@ -176,9 +176,7 @@ export function NodeGroupList({
             <div className="flex items-center gap-1.5">
               <span className="truncate font-medium">{g.name}</span>
               {g.subscriptions.length === 0 && (
-                <Badge size="sm" variant="outline">
-                  未使用
-                </Badge>
+                <Badge variant="outline">未使用</Badge>
               )}
             </div>
             <div className="truncate text-xs text-muted-foreground">

@@ -17,7 +17,7 @@ import {
 } from "@/api";
 import { RelayLatencyCell } from "@/components/relay-latency";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import {
   Modal,
@@ -336,7 +336,6 @@ export function RelayModal({
                               </span>
                               <Badge
                                 className="shrink-0 whitespace-nowrap"
-                                size="sm"
                                 variant="outline"
                               >
                                 {rel.mode === "tunnel"
@@ -346,7 +345,6 @@ export function RelayModal({
                               {!rel.forwardExists ? (
                                 <Badge
                                   className="shrink-0 whitespace-nowrap"
-                                  size="sm"
                                   variant="destructive"
                                 >
                                   转发已删除
@@ -354,7 +352,6 @@ export function RelayModal({
                               ) : rel.forwardStatus !== 1 ? (
                                 <Badge
                                   className="shrink-0 whitespace-nowrap"
-                                  size="sm"
                                   variant="warning"
                                 >
                                   转发已暂停

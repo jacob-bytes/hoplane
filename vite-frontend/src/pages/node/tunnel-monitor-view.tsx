@@ -46,7 +46,7 @@ import {
 } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
   EmptyHint,
@@ -677,7 +677,6 @@ function TopologyNodeChip({
   return (
     <Badge
       className={`shrink-0 font-mono shadow-sm ${borderColor}`}
-      size="sm"
       variant="outline"
     >
       <span className="flex items-center gap-1.5">
@@ -1194,9 +1193,9 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
             />
             <h3 className="text-lg font-semibold">{detailTunnel.name}</h3>
             <Badge
-              color={detailTunnel.status === 1 ? "success" : "danger"}
-              size="sm"
-              variant="outline"
+              variant={badgeTone(
+                detailTunnel.status === 1 ? "success" : "danger",
+              )}
             >
               {detailTunnel.status === 1 ? "启用" : "禁用"}
             </Badge>
@@ -1518,7 +1517,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                 key={tunnel.id}
                 badges={
                   !isEnabled && (
-                    <Badge className="shrink-0" size="sm" variant="outline">
+                    <Badge className="shrink-0" variant="outline">
                       禁用
                     </Badge>
                   )

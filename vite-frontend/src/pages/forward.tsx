@@ -34,7 +34,7 @@ import {
 import { formatTraffic } from "@/utils/traffic";
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
@@ -2781,20 +2781,20 @@ export default function ForwardPage({
                 {forward.status !== 1 && (
                   <Badge
                     className="shrink-0"
-                    color={forward.status === -1 ? "danger" : "default"}
-                    size="sm"
-                    variant="outline"
+                    variant={badgeTone(
+                      forward.status === -1 ? "danger" : "default",
+                    )}
                   >
                     {statusDisplay.text}
                   </Badge>
                 )}
                 {hasMultipleAddresses(forward.remoteAddr) && (
-                  <Badge className="shrink-0" size="sm" variant="outline">
+                  <Badge className="shrink-0" variant="outline">
                     {getStrategyDisplay(forward.strategy).text}
                   </Badge>
                 )}
                 {showTunnel && ratio !== 1 && (
-                  <Badge className="shrink-0" size="sm" variant="outline">
+                  <Badge className="shrink-0" variant="outline">
                     {formatTunnelTrafficRatio(ratio)}
                   </Badge>
                 )}
@@ -2809,9 +2809,7 @@ export default function ForwardPage({
                           {forward.name}
                         </span>
                         {forward.status !== 1 && (
-                          <Badge size="sm" variant="outline">
-                            {statusDisplay.text}
-                          </Badge>
+                          <Badge variant="outline">{statusDisplay.text}</Badge>
                         )}
                       </div>
                       <div className="truncate text-xs text-muted-foreground">
@@ -3009,11 +3007,7 @@ export default function ForwardPage({
                     <span className="text-sm font-semibold">
                       {group.userName}
                     </span>
-                    {isSelfGroup && (
-                      <Badge size="sm" variant="outline">
-                        我的
-                      </Badge>
-                    )}
+                    {isSelfGroup && <Badge variant="outline">我的</Badge>}
                     <span className="text-xs text-muted-foreground">
                       {groupForwardCount} 条规则
                     </span>

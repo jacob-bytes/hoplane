@@ -2,7 +2,7 @@ import type { BatchOperationFailure } from "@/api/types";
 
 import { copyWithToast } from "@/utils/clipboard";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import {
   Modal,
   ModalBody,
@@ -107,9 +107,7 @@ export function BatchActionResultModal({
                           点击展开查看失败原因
                         </p>
                       </div>
-                      <Badge size="sm" variant="destructive">
-                        失败
-                      </Badge>
+                      <Badge variant="destructive">失败</Badge>
                     </summary>
                     <div className="mt-3 rounded-lg bg-background/70 p-3 text-sm leading-6 text-foreground/90">
                       {getFailureReason(failure)}

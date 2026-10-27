@@ -33,7 +33,7 @@ import { formatTraffic } from "@/utils/traffic";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody, CardHeader } from "@/shadcn-bridge/heroui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
@@ -1913,10 +1913,10 @@ export default function NodePage({
                                             <div className="flex flex-wrap gap-1.5">
                                               <Badge
                                                 className="text-[11px] h-5 px-1 flex-shrink-0"
-                                                color={expiryMeta.tone}
-                                                size="sm"
                                                 title={`${formatNodeRenewalTime(expiryMeta.nextDueTime)} (${getNodeRenewalCycleLabel(node.renewalCycle)})`}
-                                                variant="outline"
+                                                variant={badgeTone(
+                                                  expiryMeta.tone,
+                                                )}
                                               >
                                                 {expiryMeta.label}
                                               </Badge>
@@ -2108,7 +2108,6 @@ export default function NodePage({
                                                 <Badge
                                                   key={`${node.id}-port-${port}`}
                                                   className="font-mono shrink-0 whitespace-nowrap"
-                                                  size="sm"
                                                   variant="outline"
                                                 >
                                                   {port}
@@ -2245,20 +2244,14 @@ export default function NodePage({
                         badges={
                           <>
                             {isRemoteNode && (
-                              <Badge
-                                className="shrink-0"
-                                size="sm"
-                                variant="outline"
-                              >
+                              <Badge className="shrink-0" variant="outline">
                                 远程
                               </Badge>
                             )}
                             {showExpiry && (
                               <Badge
                                 className="shrink-0"
-                                color={expiryMeta.tone}
-                                size="sm"
-                                variant="outline"
+                                variant={badgeTone(expiryMeta.tone)}
                               >
                                 {expiryMeta.label}
                               </Badge>
@@ -2289,9 +2282,7 @@ export default function NodePage({
                                       {!isRemoteNode && showExpiry && (
                                         <Badge
                                           className="shrink-0"
-                                          color={expiryMeta.tone}
-                                          size="sm"
-                                          variant="outline"
+                                          variant={badgeTone(expiryMeta.tone)}
                                         >
                                           {expiryMeta.label}
                                         </Badge>
@@ -2299,7 +2290,6 @@ export default function NodePage({
                                       {isRemoteNode && (
                                         <Badge
                                           className="shrink-0"
-                                          size="sm"
                                           variant="outline"
                                         >
                                           远程

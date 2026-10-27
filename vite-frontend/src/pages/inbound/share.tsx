@@ -9,7 +9,7 @@ import { Copy, QrCode } from "lucide-react";
 import { copyWithToast } from "@/utils/clipboard";
 import { getInboundShare } from "@/api";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Modal,
   ModalBody,
@@ -89,9 +89,9 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
       <div className="min-w-0">
         <div className="flex items-center gap-2 min-w-0">
           <Badge
-            color={entry.kind === "relay" ? "secondary" : "primary"}
-            size="sm"
-            variant="outline"
+            variant={badgeTone(
+              entry.kind === "relay" ? "secondary" : "primary",
+            )}
           >
             {entry.kind === "relay" ? "中转" : "直连"}
           </Badge>

@@ -27,7 +27,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@/shadcn-bridge/heroui/modal";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { RadioGroup, Radio } from "@/shadcn-bridge/heroui/radio";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
@@ -1253,30 +1253,20 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   badges={
                     <>
                       {user.status !== 1 && (
-                        <Badge
-                          className="shrink-0"
-                          size="sm"
-                          variant="secondary"
-                        >
+                        <Badge className="shrink-0" variant="secondary">
                           已禁用
                         </Badge>
                       )}
                       {expStatus && expStatus.color !== "success" && (
                         <Badge
                           className="shrink-0"
-                          color={expStatus.color}
-                          size="sm"
-                          variant="outline"
+                          variant={badgeTone(expStatus.color)}
                         >
                           {expStatus.text}
                         </Badge>
                       )}
                       {user.disabledByQuota ? (
-                        <Badge
-                          className="shrink-0"
-                          size="sm"
-                          variant="destructive"
-                        >
+                        <Badge className="shrink-0" variant="destructive">
                           配额超额
                         </Badge>
                       ) : null}
@@ -1289,20 +1279,12 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                           {user.name || user.user}
                         </span>
                         {user.status !== 1 && (
-                          <Badge
-                            className="shrink-0"
-                            size="sm"
-                            variant="outline"
-                          >
+                          <Badge className="shrink-0" variant="outline">
                             已禁用
                           </Badge>
                         )}
                         {user.disabledByQuota ? (
-                          <Badge
-                            className="shrink-0"
-                            size="sm"
-                            variant="destructive"
-                          >
+                          <Badge className="shrink-0" variant="destructive">
                             配额超额
                           </Badge>
                         ) : null}
@@ -1610,13 +1592,9 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       </p>
                     </div>
                     {editingUser.disabledByQuota ? (
-                      <Badge size="sm" variant="destructive">
-                        配额已触发禁用
-                      </Badge>
+                      <Badge variant="destructive">配额已触发禁用</Badge>
                     ) : (
-                      <Badge size="sm" variant="success">
-                        配额正常
-                      </Badge>
+                      <Badge variant="success">配额正常</Badge>
                     )}
                   </div>
 
@@ -1843,11 +1821,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                                 {tunnel.name}
                               </span>
                               {isAssigned && (
-                                <Badge
-                                  className="shrink-0"
-                                  size="sm"
-                                  variant="outline"
-                                >
+                                <Badge className="shrink-0" variant="outline">
                                   已分配
                                 </Badge>
                               )}
@@ -1918,7 +1892,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       分配权限
                     </Button>
                     {batchTunnelSelections.size > 0 && (
-                      <Badge size="sm" variant="default">
+                      <Badge variant="default">
                         已选 {batchTunnelSelections.size} 个隧道
                       </Badge>
                     )}
@@ -1955,20 +1929,12 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                             {userTunnel.tunnelName}
                           </span>
                           {userTunnel.status !== 1 && (
-                            <Badge
-                              className="shrink-0"
-                              size="sm"
-                              variant="secondary"
-                            >
+                            <Badge className="shrink-0" variant="secondary">
                               已禁用
                             </Badge>
                           )}
                           {userTunnel.speedLimitName && (
-                            <Badge
-                              className="shrink-0"
-                              size="sm"
-                              variant="secondary"
-                            >
+                            <Badge className="shrink-0" variant="secondary">
                               {userTunnel.speedLimitName}
                             </Badge>
                           )}

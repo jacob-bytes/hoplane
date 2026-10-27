@@ -3,7 +3,7 @@ import { toast } from "sonner";
 
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import {
   Modal,
@@ -141,13 +141,9 @@ export function NodeTuneModal({
                                 {g.name}
                               </span>
                               {g.applied ? (
-                                <Badge size="sm" variant="success">
-                                  已生效
-                                </Badge>
+                                <Badge variant="success">已生效</Badge>
                               ) : !supported ? (
-                                <Badge size="sm" variant="outline">
-                                  系统不支持
-                                </Badge>
+                                <Badge variant="outline">系统不支持</Badge>
                               ) : null}
                               <button
                                 className="ml-auto text-xs text-primary"

@@ -8,7 +8,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import {
@@ -79,7 +79,7 @@ export function DiagnosisModal({
                   <span className="text-small text-muted-foreground truncate flex-1 min-w-0">
                     {currentDiagnosisForward.name}
                   </span>
-                  <Badge className="flex-shrink-0" size="sm" variant="default">
+                  <Badge className="flex-shrink-0" variant="default">
                     规则服务
                   </Badge>
                 </div>
@@ -99,9 +99,7 @@ export function DiagnosisModal({
                             : "?"}
                         </span>
                       </div>
-                      <Badge size="sm" variant="default">
-                        流式更新中
-                      </Badge>
+                      <Badge variant="default">流式更新中</Badge>
                     </div>
                   )}
 
@@ -266,15 +264,13 @@ export function DiagnosisModal({
                                       </td>
                                       <td className="px-3 py-2 text-center">
                                         <Badge
-                                          color={
+                                          variant={badgeTone(
                                             isDiagnosing
                                               ? "warning"
                                               : isSuccess
                                                 ? "success"
-                                                : "danger"
-                                          }
-                                          size="sm"
-                                          variant="outline"
+                                                : "danger",
+                                          )}
                                         >
                                           {isDiagnosing
                                             ? "诊断中"
@@ -315,9 +311,9 @@ export function DiagnosisModal({
                                         {isSuccess && quality ? (
                                           <Badge
                                             className="text-xs whitespace-nowrap"
-                                            color={quality.color as any}
-                                            size="sm"
-                                            variant="outline"
+                                            variant={badgeTone(
+                                              quality.color as any,
+                                            )}
                                           >
                                             {quality.text}
                                           </Badge>
@@ -448,15 +444,13 @@ export function DiagnosisModal({
                                     </div>
                                     <Badge
                                       className="flex-shrink-0"
-                                      color={
+                                      variant={badgeTone(
                                         isDiagnosing
                                           ? "warning"
                                           : isSuccess
                                             ? "success"
-                                            : "danger"
-                                      }
-                                      size="sm"
-                                      variant="outline"
+                                            : "danger",
+                                      )}
                                     >
                                       {isDiagnosing
                                         ? "诊断中"
@@ -495,9 +489,9 @@ export function DiagnosisModal({
                                           <>
                                             <Badge
                                               className="text-xs whitespace-nowrap"
-                                              color={quality.color as any}
-                                              size="sm"
-                                              variant="outline"
+                                              variant={badgeTone(
+                                                quality.color as any,
+                                              )}
                                             >
                                               {quality.text}
                                             </Badge>

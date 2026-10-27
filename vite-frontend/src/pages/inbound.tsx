@@ -74,7 +74,7 @@ import {
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Card, CardBody } from "@/shadcn-bridge/heroui/card";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Modal,
   ModalBody,
@@ -735,11 +735,7 @@ export default function InboundPage() {
     const badges = (
       <>
         {item.outboundIpStrategy && item.outboundIpStrategy !== "auto" && (
-          <Badge
-            className="shrink-0 whitespace-nowrap"
-            size="sm"
-            variant="outline"
-          >
+          <Badge className="shrink-0 whitespace-nowrap" variant="outline">
             {
               {
                 ipv4_only: "IPv4 出站",
@@ -751,49 +747,35 @@ export default function InboundPage() {
           </Badge>
         )}
         {item.relayCount > 0 && (
-          <Badge
-            className="shrink-0 whitespace-nowrap"
-            size="sm"
-            variant="outline"
-          >
+          <Badge className="shrink-0 whitespace-nowrap" variant="outline">
             {item.relayCount} 中转
           </Badge>
         )}
         {item.outboundId > 0 && (
           <Badge
             className="shrink-0 whitespace-nowrap"
-            color={item.outboundMissing ? "danger" : "warning"}
-            size="sm"
             title={
               item.outboundMissing
                 ? "出站节点已删除"
                 : `经 ${item.outboundName} 出站`
             }
-            variant="outline"
+            variant={badgeTone(item.outboundMissing ? "danger" : "warning")}
           >
             {item.outboundMissing ? "出站已删除" : "链式"}
           </Badge>
         )}
         {item.splitRules?.length > 0 && (
-          <Badge
-            className="shrink-0 whitespace-nowrap"
-            size="sm"
-            variant="outline"
-          >
+          <Badge className="shrink-0 whitespace-nowrap" variant="outline">
             分流
           </Badge>
         )}
         {item.relayOnly && (
-          <Badge
-            className="shrink-0 whitespace-nowrap"
-            size="sm"
-            variant="outline"
-          >
+          <Badge className="shrink-0 whitespace-nowrap" variant="outline">
             仅中转
           </Badge>
         )}
         {kernelBad && (
-          <Badge size="sm" variant="warning">
+          <Badge variant="warning">
             内核{KERNEL_STATUS[item.kernelStatus]?.label ?? "异常"}
           </Badge>
         )}
@@ -1201,9 +1183,7 @@ export default function InboundPage() {
                       count={g.items.length}
                       extra={
                         off > 0 ? (
-                          <Badge size="sm" variant="outline">
-                            {off} 个已停用
-                          </Badge>
+                          <Badge variant="outline">{off} 个已停用</Badge>
                         ) : undefined
                       }
                       title={g.title}
@@ -1329,29 +1309,19 @@ export default function InboundPage() {
         {sheetItem && (
           <div className="space-y-2">
             <div className="flex flex-wrap gap-1.5">
-              <Badge size="sm" variant="default">
-                {describeInbound(sheetItem)}
-              </Badge>
-              <Badge size="sm" variant="outline">
+              <Badge variant="default">{describeInbound(sheetItem)}</Badge>
+              <Badge variant="outline">
                 {sheetItem.external
                   ? "导入"
                   : (KERNEL_LABELS[sheetItem.kernelType] ??
                     sheetItem.kernelType)}
               </Badge>
-              {sheetItem.relayOnly && (
-                <Badge size="sm" variant="outline">
-                  仅中转
-                </Badge>
-              )}
+              {sheetItem.relayOnly && <Badge variant="outline">仅中转</Badge>}
               {sheetItem.acceptProxyProtocol && (
-                <Badge size="sm" variant="outline">
-                  真实 IP
-                </Badge>
+                <Badge variant="outline">真实 IP</Badge>
               )}
               {sheetItem.relayWhitelist && (
-                <Badge size="sm" variant="warning">
-                  白名单
-                </Badge>
+                <Badge variant="warning">白名单</Badge>
               )}
             </div>
             <div className="flex justify-between text-sm">

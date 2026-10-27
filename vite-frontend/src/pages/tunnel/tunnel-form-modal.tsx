@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Divider } from "@/shadcn-bridge/heroui/divider";
 import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
 import { getTunnelForwardMode } from "@/pages/tunnel/helpers";
@@ -213,9 +213,9 @@ export function TunnelFormModal({
                           <span>{node.name}</span>
                           <div className="flex items-center gap-2">
                             <Badge
-                              color={node.status === 1 ? "success" : "default"}
-                              size="sm"
-                              variant="outline"
+                              variant={badgeTone(
+                                node.status === 1 ? "success" : "default",
+                              )}
                             >
                               {node.status === 1 ? "在线" : "离线"}
                             </Badge>
@@ -223,14 +223,10 @@ export function TunnelFormModal({
                               form.outNodeId.some(
                                 (ct) => ct.nodeId === node.id,
                               ) && (
-                                <Badge size="sm" variant="destructive">
-                                  已选为出口
-                                </Badge>
+                                <Badge variant="destructive">已选为出口</Badge>
                               )}
                             {getSelectedChainNodeIds().includes(node.id) && (
-                              <Badge size="sm" variant="default">
-                                已选为转发链
-                              </Badge>
+                              <Badge variant="default">已选为转发链</Badge>
                             )}
                           </div>
                         </div>
@@ -395,13 +391,11 @@ export function TunnelFormModal({
                                           </span>
                                           <div className="flex items-center gap-2">
                                             <Badge
-                                              color={
+                                              variant={badgeTone(
                                                 node.status === 1
                                                   ? "success"
-                                                  : "default"
-                                              }
-                                              size="sm"
-                                              variant="outline"
+                                                  : "default",
+                                              )}
                                             >
                                               {node.status === 1
                                                 ? "在线"
@@ -410,10 +404,7 @@ export function TunnelFormModal({
                                             {form.inNodeId.some(
                                               (ct) => ct.nodeId === node.id,
                                             ) && (
-                                              <Badge
-                                                size="sm"
-                                                variant="warning"
-                                              >
+                                              <Badge variant="warning">
                                                 已选为入口
                                               </Badge>
                                             )}
@@ -421,10 +412,7 @@ export function TunnelFormModal({
                                               form.outNodeId.some(
                                                 (ct) => ct.nodeId === node.id,
                                               ) && (
-                                                <Badge
-                                                  size="sm"
-                                                  variant="destructive"
-                                                >
+                                                <Badge variant="destructive">
                                                   已选为出口
                                                 </Badge>
                                               )}
@@ -438,10 +426,7 @@ export function TunnelFormModal({
                                                     ct.nodeId !== -1,
                                                 ),
                                             ) && (
-                                              <Badge
-                                                size="sm"
-                                                variant="default"
-                                              >
+                                              <Badge variant="default">
                                                 已选为其他跳
                                               </Badge>
                                             )}
@@ -681,27 +666,25 @@ export function TunnelFormModal({
                                       <span>{node.name}</span>
                                       <div className="flex items-center gap-2">
                                         <Badge
-                                          color={
+                                          variant={badgeTone(
                                             node.status === 1
                                               ? "success"
-                                              : "default"
-                                          }
-                                          size="sm"
-                                          variant="outline"
+                                              : "default",
+                                          )}
                                         >
                                           {node.status === 1 ? "在线" : "离线"}
                                         </Badge>
                                         {form.inNodeId.some(
                                           (ct) => ct.nodeId === node.id,
                                         ) && (
-                                          <Badge size="sm" variant="warning">
+                                          <Badge variant="warning">
                                             已选为入口
                                           </Badge>
                                         )}
                                         {getSelectedChainNodeIds().includes(
                                           node.id,
                                         ) && (
-                                          <Badge size="sm" variant="default">
+                                          <Badge variant="default">
                                             已选为转发链
                                           </Badge>
                                         )}

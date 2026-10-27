@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Radio, RadioGroup } from "@/shadcn-bridge/heroui/radio";
@@ -331,9 +331,7 @@ export function BatchDeleteTunnelsModal({
                               {item.forwardCount} 条规则依赖
                             </p>
                           </div>
-                          <Badge size="sm" variant="warning">
-                            有关联
-                          </Badge>
+                          <Badge variant="warning">有关联</Badge>
                         </div>
 
                         {item.sampleForwards.length > 0 ? (

@@ -51,7 +51,7 @@ import {
 import { copyText, panelOrigin } from "@/pages/inbound/share";
 import { Button } from "@/shadcn-bridge/heroui/button";
 import { Checkbox } from "@/shadcn-bridge/heroui/checkbox";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { SubTrafficStats } from "@/components/lazy-charts";
 import {
@@ -1357,12 +1357,10 @@ export default function SubscriptionPage() {
       .join("、") || "未选节点组";
   const stateChip = (s: SubscriptionItem) =>
     !s.enabled ? (
-      <Badge size="sm" variant="outline">
-        已停用
-      </Badge>
+      <Badge variant="outline">已停用</Badge>
     ) : (
       !s.active && (
-        <Badge size="sm" variant="destructive">
+        <Badge variant="destructive">
           {s.overQuota ? "流量用完" : "已过期"}
         </Badge>
       )
@@ -1404,13 +1402,7 @@ export default function SubscriptionPage() {
           onPress: () => setDetail(s),
         },
       ]}
-      badges={
-        s.options.rules && (
-          <Badge size="sm" variant="default">
-            分流
-          </Badge>
-        )
-      }
+      badges={s.options.rules && <Badge variant="default">分流</Badge>}
       headerRight={
         <Switch
           aria-label={`${s.enabled ? "停用" : "启用"} ${s.name}`}

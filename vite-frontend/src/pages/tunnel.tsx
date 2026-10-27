@@ -26,7 +26,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 
 import { BatchActionResultModal } from "@/components/batch-action-result-modal";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert } from "@/shadcn-bridge/heroui/alert";
 import { Progress } from "@/shadcn-bridge/heroui/progress";
 import {
@@ -1573,24 +1573,18 @@ export default function TunnelPage({
                               {getTunnelTypeDisplay(tunnel.type).text}
                             </Badge>
                             {tunnel.engine === "realm" && (
-                              <Badge
-                                className="shrink-0"
-                                size="sm"
-                                variant="default"
-                              >
+                              <Badge className="shrink-0" variant="default">
                                 realm
                               </Badge>
                             )}
                             {bestExit && (
                               <Badge
                                 className="shrink-0"
-                                color={
+                                variant={badgeTone(
                                   bestExit.status === "waiting"
                                     ? "warning"
-                                    : "success"
-                                }
-                                size="sm"
-                                variant="outline"
+                                    : "success",
+                                )}
                               >
                                 最优出口
                               </Badge>
@@ -1617,9 +1611,7 @@ export default function TunnelPage({
                                   {getTunnelTypeDisplay(tunnel.type).text}
                                 </Badge>
                                 {tunnel.engine === "realm" && (
-                                  <Badge size="sm" variant="outline">
-                                    realm
-                                  </Badge>
+                                  <Badge variant="outline">realm</Badge>
                                 )}
                               </div>
                               <div className="truncate text-xs text-muted-foreground">

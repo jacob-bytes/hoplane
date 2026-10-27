@@ -5,7 +5,7 @@ import { toast } from "sonner";
 
 import { copyWithToast } from "@/utils/clipboard";
 import { Button } from "@/shadcn-bridge/heroui/button";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import { AnimatedPage } from "@/components/animated-page";
 import { ActionsDialog } from "@/components/action-dialog";
 import { PageLoadingState } from "@/components/page-state";
@@ -520,9 +520,9 @@ export default function PanelSharingPage() {
                     status !== "ok" && (
                       <Badge
                         className="shrink-0"
-                        color={status === "bad" ? "danger" : "default"}
-                        size="sm"
-                        variant="outline"
+                        variant={badgeTone(
+                          status === "bad" ? "danger" : "default",
+                        )}
                       >
                         {statusTitle}
                       </Badge>
@@ -650,7 +650,7 @@ export default function PanelSharingPage() {
               sheetShare.usedPortDetails.length > 0 && (
                 <div className="flex flex-wrap gap-1.5">
                   {sheetShare.usedPortDetails.map((item) => (
-                    <Badge key={item.runtimeId} size="sm" variant="outline">
+                    <Badge key={item.runtimeId} variant="outline">
                       {item.port} / {item.role || "预留"}
                     </Badge>
                   ))}

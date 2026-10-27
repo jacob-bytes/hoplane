@@ -39,4 +39,16 @@ function Badge({
   );
 }
 
+/** Map legacy HeroUI tones (incl. primary/danger) to a badge variant. */
+export function badgeTone(tone: string) {
+  if (tone === "danger" || tone === "destructive")
+    return "destructive" as const;
+  if (tone === "primary" || tone === "default") return "default" as const;
+  if (tone === "success" || tone === "warning" || tone === "secondary") {
+    return tone;
+  }
+
+  return "outline" as const;
+}
+
 export { Badge, badgeVariants };

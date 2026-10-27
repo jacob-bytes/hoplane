@@ -55,7 +55,7 @@ import {
 import { Input } from "@/shadcn-bridge/heroui/input";
 import { Switch } from "@/shadcn-bridge/heroui/switch";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge, badgeTone } from "@/components/ui/badge";
 import {
   Dropdown,
   DropdownTrigger,
@@ -1525,13 +1525,11 @@ export function MonitorView({
                 {detailNode?.name || `服务器 #${detailNodeId}`}
               </h3>
               <Badge
-                color={
+                variant={badgeTone(
                   detailNode?.connectionStatus === "online"
                     ? "success"
-                    : "danger"
-                }
-                size="sm"
-                variant="outline"
+                    : "danger",
+                )}
               >
                 {detailNode?.connectionStatus === "online" ? "在线" : "离线"}
               </Badge>
@@ -1751,7 +1749,7 @@ export function MonitorView({
                       {resolvedActiveMonitor && (
                         <div className="flex items-center justify-between gap-3 rounded-xl border border-divider bg-muted px-3 py-2">
                           <div className="flex items-center gap-3 min-w-0 flex-wrap">
-                            <Badge size="sm" variant="default">
+                            <Badge variant="default">
                               {resolvedActiveMonitor.type.toUpperCase()}
                             </Badge>
                             <span className="font-mono text-xs text-muted-foreground">
@@ -1767,14 +1765,10 @@ export function MonitorView({
                               </span>
                             ) : null}
                             {activeStale ? (
-                              <Badge size="sm" variant="warning">
-                                陈旧
-                              </Badge>
+                              <Badge variant="warning">陈旧</Badge>
                             ) : null}
                             {resolvedActiveMonitor.enabled !== 1 ? (
-                              <Badge size="sm" variant="outline">
-                                已禁用
-                              </Badge>
+                              <Badge variant="outline">已禁用</Badge>
                             ) : null}
                           </div>
                           <Dropdown>

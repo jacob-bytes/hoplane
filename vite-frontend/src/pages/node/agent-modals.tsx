@@ -11,7 +11,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Badge } from "@/shadcn-bridge/heroui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Spinner } from "@/shadcn-bridge/heroui/spinner";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { Tab, Tabs } from "@/shadcn-bridge/heroui/tabs";
@@ -225,7 +225,6 @@ export function UpgradeNodeModal({
                             {r.channel === "dev" && (
                               <Badge
                                 className="ml-1 shrink-0 whitespace-nowrap"
-                                size="sm"
                                 variant="warning"
                               >
                                 测试
