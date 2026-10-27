@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 export type SelectOption = {
   value: string;
   label: React.ReactNode;
+  description?: React.ReactNode;
   disabled?: boolean;
 };
 
@@ -81,7 +82,14 @@ export function SelectField({
               disabled={option.disabled}
               value={option.value}
             >
-              {option.label}
+              <div className="flex flex-col gap-0.5">
+                <span>{option.label}</span>
+                {option.description ? (
+                  <span className="text-[11px] text-muted-foreground">
+                    {option.description}
+                  </span>
+                ) : null}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

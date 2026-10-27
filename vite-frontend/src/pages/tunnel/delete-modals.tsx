@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   Modal,
   ModalContent,
@@ -179,29 +179,24 @@ export function DeleteTunnelModal({
 
                   {deleteAction === "replace" && !deleteReplaceUnavailable ? (
                     <div className="space-y-2">
-                      <Select
+                      <SelectField
                         label="目标隧道"
+                        options={deleteReplacementTunnels.map((tunnel) => ({
+                          value: String(tunnel.id),
+                          label: tunnel.name,
+                        }))}
                         placeholder="请选择目标隧道"
-                        selectedKeys={
+                        value={
                           deleteTargetTunnelId
-                            ? [String(deleteTargetTunnelId)]
-                            : []
+                            ? String(deleteTargetTunnelId)
+                            : ""
                         }
-                        variant="bordered"
-                        onSelectionChange={(keys) => {
-                          const selected = Array.from(keys)[0];
-
+                        onValueChange={(selected) =>
                           setDeleteTargetTunnelId(
                             selected ? Number(selected) : null,
-                          );
-                        }}
-                      >
-                        {deleteReplacementTunnels.map((tunnel) => (
-                          <SelectItem key={String(tunnel.id)}>
-                            {tunnel.name}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                          )
+                        }
+                      />
                       <p className="text-xs text-muted-foreground">
                         关联规则会迁移到这里，当前要删除的隧道不会出现在可选项里。
                       </p>
@@ -404,29 +399,26 @@ export function BatchDeleteTunnelsModal({
                   {batchDeleteAction === "replace" &&
                   !batchDeleteReplaceUnavailable ? (
                     <div className="space-y-2">
-                      <Select
+                      <SelectField
                         label="目标隧道"
+                        options={batchDeleteReplacementTunnels.map(
+                          (tunnel) => ({
+                            value: String(tunnel.id),
+                            label: tunnel.name,
+                          }),
+                        )}
                         placeholder="请选择目标隧道"
-                        selectedKeys={
+                        value={
                           batchDeleteTargetTunnelId
-                            ? [String(batchDeleteTargetTunnelId)]
-                            : []
+                            ? String(batchDeleteTargetTunnelId)
+                            : ""
                         }
-                        variant="bordered"
-                        onSelectionChange={(keys) => {
-                          const selected = Array.from(keys)[0];
-
+                        onValueChange={(selected) =>
                           setBatchDeleteTargetTunnelId(
                             selected ? Number(selected) : null,
-                          );
-                        }}
-                      >
-                        {batchDeleteReplacementTunnels.map((tunnel) => (
-                          <SelectItem key={String(tunnel.id)}>
-                            {tunnel.name}
-                          </SelectItem>
-                        ))}
-                      </Select>
+                          )
+                        }
+                      />
                       <p className="text-xs text-muted-foreground">
                         所有关联规则都会迁移到这里，删除列表中的隧道不会出现在可选项里。
                       </p>

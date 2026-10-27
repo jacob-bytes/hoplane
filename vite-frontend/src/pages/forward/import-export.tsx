@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
 import { TextAreaField as Textarea } from "@/components/field-input";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   Modal,
   ModalContent,
@@ -65,33 +65,25 @@ export function ExportModal({
           <div className="space-y-4">
             {/* 隧道选择 */}
             <div>
-              <Select
+              <SelectField
                 isRequired
                 label="选择导出隧道"
+                options={tunnels.map((tunnel) => ({
+                  value: tunnel.id.toString(),
+                  label: tunnel.name,
+                }))}
                 placeholder="请选择要导出的隧道"
-                selectedKeys={
+                value={
                   selectedTunnelForExport
-                    ? [selectedTunnelForExport.toString()]
-                    : []
+                    ? selectedTunnelForExport.toString()
+                    : ""
                 }
-                variant="bordered"
-                onSelectionChange={(keys) => {
-                  const selectedKey = Array.from(keys)[0] as string;
-
+                onValueChange={(selectedKey) =>
                   setSelectedTunnelForExport(
                     selectedKey ? parseInt(selectedKey) : null,
-                  );
-                }}
-              >
-                {tunnels.map((tunnel) => (
-                  <SelectItem
-                    key={tunnel.id.toString()}
-                    textValue={tunnel.name}
-                  >
-                    {tunnel.name}
-                  </SelectItem>
-                ))}
-              </Select>
+                  )
+                }
+              />
             </div>
 
             {/* 导出按钮和数据 */}
@@ -270,56 +262,43 @@ export function ImportModal({
         <ModalBody className="pb-6">
           <div className="space-y-4">
             {/* 格式选择 */}
-            <Select
+            <SelectField
               isRequired
               label="导入格式"
+              options={[
+                { value: "hoplane", label: "Hoplane 格式（管道分隔）" },
+                { value: "ny", label: "ny格式（JSON）" },
+              ]}
               placeholder="请选择导入格式"
-              selectedKeys={[importFormat]}
-              variant="bordered"
-              onSelectionChange={(keys) => {
-                const selectedKey = Array.from(keys)[0] as ImportFormat;
-
-                if (selectedKey) {
-                  setImportFormat(selectedKey);
-                  setSelectedTunnelForImport(null);
-                  setImportData("");
-                  setImportResults([]);
-                }
+              value={importFormat}
+              onValueChange={(selectedKey) => {
+                setImportFormat(selectedKey as ImportFormat);
+                setSelectedTunnelForImport(null);
+                setImportData("");
+                setImportResults([]);
               }}
-            >
-              <SelectItem key="hoplane" textValue="Hoplane 格式">
-                Hoplane 格式（管道分隔）
-              </SelectItem>
-              <SelectItem key="ny" textValue="ny格式">
-                ny格式（JSON）
-              </SelectItem>
-            </Select>
+            />
 
             {/* 隧道选择 - 两种格式都需要 */}
-            <Select
+            <SelectField
               isRequired
               label="选择导入隧道"
+              options={tunnels.map((tunnel) => ({
+                value: tunnel.id.toString(),
+                label: tunnel.name,
+              }))}
               placeholder="请选择要导入的隧道"
-              selectedKeys={
+              value={
                 selectedTunnelForImport
-                  ? [selectedTunnelForImport.toString()]
-                  : []
+                  ? selectedTunnelForImport.toString()
+                  : ""
               }
-              variant="bordered"
-              onSelectionChange={(keys) => {
-                const selectedKey = Array.from(keys)[0] as string;
-
+              onValueChange={(selectedKey) =>
                 setSelectedTunnelForImport(
                   selectedKey ? parseInt(selectedKey) : null,
-                );
-              }}
-            >
-              {tunnels.map((tunnel) => (
-                <SelectItem key={tunnel.id.toString()} textValue={tunnel.name}>
-                  {tunnel.name}
-                </SelectItem>
-              ))}
-            </Select>
+                )
+              }
+            />
 
             {/* 输入区域 */}
             <Textarea

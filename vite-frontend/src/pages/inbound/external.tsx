@@ -27,7 +27,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { Switch } from "@/components/ui/switch";
 
 const modalBase =
@@ -415,19 +415,15 @@ export function ExternalEditModal({
               </div>
               {legacy ? (
                 <>
-                  <Select
+                  <SelectField
                     label="加密方式"
-                    selectedKeys={form.method ? [form.method] : []}
-                    onSelectionChange={(keys) =>
-                      set({ method: String(Array.from(keys)[0] ?? "") })
-                    }
-                  >
-                    {methods.map((m) => (
-                      <SelectItem key={m} textValue={m}>
-                        {m}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                    options={methods.map((method) => ({
+                      value: method,
+                      label: method,
+                    }))}
+                    value={form.method}
+                    onValueChange={(method) => set({ method })}
+                  />
                   <Input
                     label="密码"
                     value={form.password}

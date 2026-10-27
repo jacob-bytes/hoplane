@@ -13,7 +13,7 @@ import { Button, buttonVariant } from "@/components/ui/button";
 import { TextField as Input } from "@/components/field-input";
 import { TextAreaField as Textarea } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Modal,
@@ -1233,31 +1233,21 @@ export default function ConfigPage() {
 
       case "select":
         return (
-          <Select
+          <SelectField
             aria-label={item.label}
-            classNames={{
-              trigger: isChanged
-                ? "border-warning-300 data-[hover=true]:border-warning-400"
-                : "",
-            }}
+            className={isChanged ? "border-warning-300" : undefined}
+            options={(item.options ?? []).map((option) => ({
+              value: option.value,
+              label: option.label,
+              description: option.description,
+            }))}
             placeholder="请选择验证码类型"
-            selectedKeys={configs[item.key] ? [configs[item.key]] : []}
             size="sm"
-            variant="bordered"
-            onSelectionChange={(keys) => {
-              const selectedKey = Array.from(keys)[0] as string;
-
-              if (selectedKey) {
-                handleConfigChange(item.key, selectedKey);
-              }
+            value={configs[item.key] ?? ""}
+            onValueChange={(selectedKey) => {
+              if (selectedKey) handleConfigChange(item.key, selectedKey);
             }}
-          >
-            {item.options?.map((option) => (
-              <SelectItem key={option.value} description={option.description}>
-                {option.label}
-              </SelectItem>
-            )) || []}
-          </Select>
+          />
         );
 
       default:
@@ -1862,46 +1852,31 @@ export default function ConfigPage() {
                   )}
 
                   <Field help="留空则升级到当前通道的最新版本" label="目标版本">
-                    <Select
+                    <SelectField
                       aria-label="目标版本"
                       isDisabled={
                         !systemUpgradeReleasesMatchChannel ||
                         systemUpgradeReleases.length === 0 ||
                         systemUpgradeExecuting
                       }
+                      options={(systemUpgradeReleasesMatchChannel
+                        ? systemUpgradeReleases
+                        : []
+                      ).map((release) => ({
+                        value: release.version,
+                        label: release.name || release.version,
+                        description: release.publishedAt || "暂无发布时间",
+                      }))}
                       placeholder={
                         systemUpgradeReleasesMatchChannel &&
                         systemUpgradeReleases.length > 0
                           ? "留空时自动选择最新版本"
                           : "请先检查当前通道更新"
                       }
-                      selectedKeys={
-                        systemUpgradeSelectedVersion
-                          ? [systemUpgradeSelectedVersion]
-                          : []
-                      }
                       size="sm"
-                      variant="bordered"
-                      onSelectionChange={(keys) => {
-                        const selected = Array.from(keys)[0] as
-                          | string
-                          | undefined;
-
-                        setSystemUpgradeSelectedVersion(selected || "");
-                      }}
-                    >
-                      {(systemUpgradeReleasesMatchChannel
-                        ? systemUpgradeReleases
-                        : []
-                      ).map((release) => (
-                        <SelectItem
-                          key={release.version}
-                          description={release.publishedAt || "暂无发布时间"}
-                        >
-                          {release.name || release.version}
-                        </SelectItem>
-                      ))}
-                    </Select>
+                      value={systemUpgradeSelectedVersion}
+                      onValueChange={setSystemUpgradeSelectedVersion}
+                    />
                   </Field>
                 </>
               )}
