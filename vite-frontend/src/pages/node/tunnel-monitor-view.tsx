@@ -274,7 +274,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
         <div className="flex items-center gap-2">
           <TimeRangeSelect value={rangeMs} onChange={onRangeChange} />
           <Button
-            disabled={loading}
+            loading={loading}
             size="sm"
             variant="secondary"
             onClick={() => onRefresh(tunnelId)}
@@ -400,7 +400,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
         <div className="flex items-center gap-2">
           <TimeRangeSelect value={rangeMs} onChange={onRangeChange} />
           <Button
-            disabled={loading}
+            loading={loading}
             size="sm"
             variant="secondary"
             onClick={() => onRefresh(tunnelId)}

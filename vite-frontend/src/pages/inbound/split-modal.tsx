@@ -215,7 +215,7 @@ function SplitForm({
         <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
-        <Button disabled={saving} onClick={submit}>
+        <Button loading={saving} onClick={submit}>
           保存并下发
         </Button>
       </ModalFooter>

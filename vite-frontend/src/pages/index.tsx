@@ -297,8 +297,8 @@ export default function IndexPage() {
                 </div>
 
                 <Button
-                  className="mt-2 h-10 rounded-md bg-primary text-sm font-medium text-white shadow-none"
-                  disabled={loading || loading}
+                  className="mt-2 h-10 rounded-md bg-primary text-sm font-medium shadow-none"
+                  loading={loading}
                   onClick={handleLogin}
                 >
                   {loading ? (showCaptcha ? "验证中…" : "登录中…") : "登录"}

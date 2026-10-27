@@ -913,7 +913,7 @@ export function TunnelFormModal({
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
-              <Button disabled={submitLoading} onClick={handleSubmit}>
+              <Button loading={submitLoading} onClick={handleSubmit}>
                 {submitLoading
                   ? isEdit
                     ? "更新中..."

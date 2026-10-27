@@ -1919,7 +1919,7 @@ export default function ConfigPage() {
           </span>
           <Button
             className="shrink-0"
-            disabled={saving}
+            loading={saving}
             size="sm"
             onClick={handleSave}
           >

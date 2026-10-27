@@ -63,7 +63,7 @@ export function DeleteForwardModal({
                 取消
               </Button>
               <Button
-                disabled={deleteLoading}
+                loading={deleteLoading}
                 variant="destructive"
                 onClick={confirmDelete}
               >
@@ -125,14 +125,14 @@ export function ResetFlowModal({
             </ModalBody>
             <ModalFooter>
               <Button
-                disabled={resetFlowLoading}
+                loading={resetFlowLoading}
                 variant="ghost"
                 onClick={onClose}
               >
                 取消
               </Button>
               <Button
-                disabled={resetFlowLoading}
+                loading={resetFlowLoading}
                 variant="secondary"
                 onClick={confirmResetFlow}
               >

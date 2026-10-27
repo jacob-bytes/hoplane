@@ -491,7 +491,7 @@ export function ExternalEditModal({
           <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
-          <Button disabled={saving} onClick={submit}>
+          <Button loading={saving} onClick={submit}>
             保存
           </Button>
         </ModalFooter>

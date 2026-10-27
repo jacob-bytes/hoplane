@@ -1156,7 +1156,7 @@ export function InboundFormModal({
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
-              <Button disabled={saving} onClick={submit}>
+              <Button loading={saving} onClick={submit}>
                 {isEdit ? "保存并下发" : "创建并下发"}
               </Button>
             </ModalFooter>

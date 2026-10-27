@@ -564,7 +564,7 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
             }}
           />
           <Button
-            disabled={loading}
+            loading={loading}
             size="sm"
             variant="secondary"
             onClick={() => nodeId && onRefresh(nodeId)}
@@ -2162,7 +2162,7 @@ export function MonitorView({
             <Button variant="ghost" onClick={() => setEditModalOpen(false)}>
               取消
             </Button>
-            <Button disabled={submitLoading} onClick={handleSubmitMonitor}>
+            <Button loading={submitLoading} onClick={handleSubmitMonitor}>
               {editingMonitor ? "更新" : "创建"}
             </Button>
           </ModalFooter>

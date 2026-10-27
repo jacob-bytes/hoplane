@@ -1113,7 +1113,7 @@ function Editor({
         <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
-        <Button disabled={saving} onClick={onSave}>
+        <Button loading={saving} onClick={onSave}>
           保存
         </Button>
       </ModalFooter>
@@ -1866,7 +1866,7 @@ export default function SubscriptionPage() {
                   取消
                 </Button>
                 <Button
-                  disabled={saving}
+                  loading={saving}
                   variant={buttonVariant(
                     confirm === "delete" ? "danger" : "warning",
                   )}

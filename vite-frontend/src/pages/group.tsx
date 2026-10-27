@@ -700,7 +700,7 @@ export default function GroupPage({
                   />
                   <Button
                     className="whitespace-nowrap px-4"
-                    disabled={savingPermission}
+                    loading={savingPermission}
                     size="sm"
                     onClick={handleAssignPermission}
                   >
@@ -899,7 +899,7 @@ export default function GroupPage({
                 <Button variant="ghost" onClick={onTunnelGroupModalClose}>
                   取消
                 </Button>
-                <Button disabled={savingGroup} onClick={saveTunnelGroup}>
+                <Button loading={savingGroup} onClick={saveTunnelGroup}>
                   保存
                 </Button>
               </ModalFooter>
@@ -941,7 +941,7 @@ export default function GroupPage({
                 <Button variant="ghost" onClick={onUserGroupModalClose}>
                   取消
                 </Button>
-                <Button disabled={savingGroup} onClick={saveUserGroup}>
+                <Button loading={savingGroup} onClick={saveUserGroup}>
                   保存
                 </Button>
               </ModalFooter>
@@ -986,7 +986,7 @@ export default function GroupPage({
                 <Button variant="ghost" onClick={onTunnelAssignModalClose}>
                   取消
                 </Button>
-                <Button disabled={savingAssign} onClick={saveAssignTunnels}>
+                <Button loading={savingAssign} onClick={saveAssignTunnels}>
                   保存
                 </Button>
               </ModalFooter>
@@ -1029,7 +1029,7 @@ export default function GroupPage({
                 <Button variant="ghost" onClick={onUserAssignModalClose}>
                   取消
                 </Button>
-                <Button disabled={savingAssign} onClick={saveAssignUsers}>
+                <Button loading={savingAssign} onClick={saveAssignUsers}>
                   保存
                 </Button>
               </ModalFooter>

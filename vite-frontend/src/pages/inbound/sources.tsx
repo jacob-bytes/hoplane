@@ -568,7 +568,7 @@ export function RemoteSourcesSection({
                       <Button variant="ghost" onClick={onClose}>
                         取消
                       </Button>
-                      <Button disabled={saving} onClick={save}>
+                      <Button loading={saving} onClick={save}>
                         {draft.id
                           ? "保存"
                           : draft.kind === "file"

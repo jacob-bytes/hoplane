@@ -115,7 +115,7 @@ export function DeleteNodeModal({
                 取消
               </Button>
               <Button
-                disabled={deleteLoading}
+                loading={deleteLoading}
                 variant="destructive"
                 onClick={confirmDelete}
               >

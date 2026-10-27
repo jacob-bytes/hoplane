@@ -1629,7 +1629,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
 
                   <div className="flex flex-wrap gap-2">
                     <Button
-                      disabled={quotaResetLoading}
+                      loading={quotaResetLoading}
                       size="sm"
                       variant="secondary"
                       onClick={() => handleQuotaReset("daily")}
@@ -1637,7 +1637,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       重置每日配额
                     </Button>
                     <Button
-                      disabled={quotaResetLoading}
+                      loading={quotaResetLoading}
                       size="sm"
                       variant="secondary"
                       onClick={() => handleQuotaReset("monthly")}
@@ -1645,7 +1645,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                       重置每月配额
                     </Button>
                     <Button
-                      disabled={quotaResetLoading}
+                      loading={quotaResetLoading}
                       size="sm"
                       variant="secondary"
                       onClick={() => handleQuotaReset("all")}
@@ -1699,7 +1699,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             <Button variant="ghost" onClick={onUserModalClose}>
               取消
             </Button>
-            <Button disabled={userFormLoading} onClick={handleSubmitUser}>
+            <Button loading={userFormLoading} onClick={handleSubmitUser}>
               {isEdit ? "保存" : "创建"}
             </Button>
           </ModalFooter>
@@ -2122,7 +2122,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             <Button variant="ghost" onClick={onEditTunnelModalClose}>
               取消
             </Button>
-            <Button disabled={editTunnelLoading} onClick={handleUpdateTunnel}>
+            <Button loading={editTunnelLoading} onClick={handleUpdateTunnel}>
               保存
             </Button>
           </ModalFooter>
@@ -2305,7 +2305,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               取消
             </Button>
             <Button
-              disabled={resetFlowLoading}
+              loading={resetFlowLoading}
               variant="warning"
               onClick={handleConfirmResetFlow}
             >
@@ -2399,7 +2399,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               取消
             </Button>
             <Button
-              disabled={resetTunnelFlowLoading}
+              loading={resetTunnelFlowLoading}
               variant="warning"
               onClick={handleConfirmResetTunnelFlow}
             >

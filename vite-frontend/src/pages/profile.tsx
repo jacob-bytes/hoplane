@@ -657,7 +657,7 @@ export default function ProfilePage() {
                   取消
                 </Button>
                 <Button
-                  disabled={passwordLoading}
+                  loading={passwordLoading}
                   onClick={handlePasswordSubmit}
                 >
                   修改密码

@@ -319,7 +319,7 @@ export function RelayModal({
                               取消
                             </Button>
                             <Button
-                              disabled={saving}
+                              loading={saving}
                               size="sm"
                               variant="secondary"
                               onClick={saveEdit}
