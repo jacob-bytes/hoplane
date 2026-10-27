@@ -54,7 +54,7 @@ export function TunnelDiagnosisModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden [&>div]:bg-raised [&>div]:dark:bg-raised",
       }}
-      isOpen={diagnosisModalOpen}
+      open={diagnosisModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="4xl"

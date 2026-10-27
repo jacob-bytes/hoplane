@@ -117,7 +117,7 @@ export interface ModalProps {
   className?: string;
   classNames?: Record<string, string>;
   isDismissable?: boolean;
-  isOpen?: boolean;
+  open?: boolean;
   onClose?: () => void;
   onOpenChange?: (open: boolean) => void;
   placement?: "center" | "top" | "bottom";
@@ -128,7 +128,7 @@ export interface ModalProps {
 export function Modal({
   children,
   classNames,
-  isOpen = false,
+  open = false,
   onClose,
   onOpenChange,
   scrollBehavior,
@@ -144,16 +144,16 @@ export function Modal({
   // settles so opening a modal never changes the page position.
   React.useLayoutEffect(() => {
     return () => {
-      if (!isOpen) {
+      if (!open) {
         previousScrollPositionsRef.current = captureScrollPositions();
       }
     };
-  }, [isOpen]);
+  }, [open]);
 
   React.useLayoutEffect(() => {
     const positions = previousScrollPositionsRef.current;
 
-    if (!isOpen || !positions) {
+    if (!open || !positions) {
       return;
     }
 
@@ -172,7 +172,7 @@ export function Modal({
       window.cancelAnimationFrame(frame);
       window.cancelAnimationFrame(nestedFrame);
     };
-  }, [isOpen]);
+  }, [open]);
 
   const handleOpenChange = (open: boolean) => {
     onOpenChange?.(open);
@@ -191,7 +191,7 @@ export function Modal({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <ModalContext.Provider value={contextValue}>
         {children}
       </ModalContext.Provider>

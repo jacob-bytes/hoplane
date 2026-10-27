@@ -44,7 +44,7 @@ export function ExportModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={exportModalOpen}
+      open={exportModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="2xl"
@@ -238,7 +238,7 @@ export function ImportModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={importModalOpen}
+      open={importModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="2xl"

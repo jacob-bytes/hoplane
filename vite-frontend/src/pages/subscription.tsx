@@ -1631,7 +1631,7 @@ export default function SubscriptionPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(detail) && !confirm}
+        open={Boolean(detail) && !confirm}
         placement="center"
         scrollBehavior="inside"
         size="lg"
@@ -1775,7 +1775,7 @@ export default function SubscriptionPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(draft)}
+        open={Boolean(draft)}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -1803,7 +1803,7 @@ export default function SubscriptionPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(groupDraft)}
+        open={Boolean(groupDraft)}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -1836,7 +1836,7 @@ export default function SubscriptionPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(confirm)}
+        open={Boolean(confirm)}
         placement="center"
         onOpenChange={(open) => !open && setConfirm(null)}
       >

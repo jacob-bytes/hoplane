@@ -76,7 +76,7 @@ export function BatchActionResultModal({
 
   return (
     <Modal
-      isOpen={isOpen}
+      open={isOpen}
       scrollBehavior="inside"
       size="2xl"
       onOpenChange={onOpenChange}

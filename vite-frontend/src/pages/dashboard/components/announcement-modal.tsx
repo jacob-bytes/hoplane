@@ -26,11 +26,7 @@ export const AnnouncementModal = ({
   onDontShowAgain,
 }: AnnouncementModalProps) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      size="2xl"
-      onOpenChange={(open) => !open && onClose()}
-    >
+    <Modal open={isOpen} size="2xl" onOpenChange={(open) => !open && onClose()}>
       <ModalContent>
         <ModalHeader closable className="flex flex-col gap-1">
           平台公告

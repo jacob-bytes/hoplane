@@ -1371,7 +1371,7 @@ export default function InboundPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(details)}
+        open={Boolean(details)}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -1422,7 +1422,7 @@ export default function InboundPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(confirm)}
+        open={Boolean(confirm)}
         placement="center"
         onOpenChange={(open) => !open && setConfirm(null)}
       >
@@ -1473,7 +1473,7 @@ export default function InboundPage() {
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={batchDeleteOpen}
+        open={batchDeleteOpen}
         placement="center"
         onOpenChange={(open) => !open && setBatchDeleteOpen(false)}
       >

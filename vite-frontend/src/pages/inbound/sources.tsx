@@ -389,7 +389,7 @@ export function RemoteSourcesSection({
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(draft)}
+        open={Boolean(draft)}
         placement="center"
         scrollBehavior="inside"
         onOpenChange={(open) => !open && setDraft(null)}

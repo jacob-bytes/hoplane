@@ -1883,7 +1883,7 @@ export function MonitorView({
       )}
 
       <Modal
-        isOpen={resultsModalOpen}
+        open={resultsModalOpen}
         scrollBehavior="inside"
         size="xl"
         onClose={() => {
@@ -2006,7 +2006,7 @@ export function MonitorView({
         </ModalContent>
       </Modal>
 
-      <Modal isOpen={editModalOpen} onClose={() => setEditModalOpen(false)}>
+      <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
         <ModalContent>
           <ModalHeader>{editingMonitor ? "编辑监控" : "添加监控"}</ModalHeader>
           <ModalBody className="space-y-4">

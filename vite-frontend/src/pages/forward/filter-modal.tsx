@@ -53,7 +53,7 @@ export function ForwardFilterModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={isSearchModalOpen}
+      open={isSearchModalOpen}
       placement="center"
       size="md"
       onOpenChange={setIsSearchModalOpen}

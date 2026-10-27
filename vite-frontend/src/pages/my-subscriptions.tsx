@@ -320,7 +320,7 @@ export default function MySubscriptionsPage() {
       )}
 
       <Modal
-        isOpen={Boolean(qr)}
+        open={Boolean(qr)}
         placement="center"
         size="sm"
         onOpenChange={(v) => !v && setQr(null)}
@@ -341,7 +341,7 @@ export default function MySubscriptionsPage() {
       </Modal>
 
       <Modal
-        isOpen={Boolean(resetting)}
+        open={Boolean(resetting)}
         placement="center"
         size="sm"
         onOpenChange={(v) => !v && setResetting(null)}

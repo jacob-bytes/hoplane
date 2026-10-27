@@ -38,7 +38,7 @@ export function NodeFilterModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={isFilterModalOpen}
+      open={isFilterModalOpen}
       placement="center"
       size="md"
       onOpenChange={setIsFilterModalOpen}

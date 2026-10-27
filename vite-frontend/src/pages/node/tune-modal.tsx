@@ -91,7 +91,7 @@ export function NodeTuneModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={Boolean(node)}
+      open={Boolean(node)}
       placement="center"
       scrollBehavior="inside"
       size="2xl"

@@ -75,7 +75,7 @@ export function TunnelFormModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={modalOpen}
+      open={modalOpen}
       placement="center"
       scrollBehavior="inside"
       size="xl"

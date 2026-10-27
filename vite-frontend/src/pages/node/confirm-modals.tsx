@@ -30,7 +30,7 @@ export function RollbackNodeModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={rollbackModalOpen}
+      open={rollbackModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="sm"
@@ -89,7 +89,7 @@ export function DeleteNodeModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={deleteModalOpen}
+      open={deleteModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="sm"
@@ -151,7 +151,7 @@ export function BatchDeleteNodesModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={batchDeleteModalOpen}
+      open={batchDeleteModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="md"

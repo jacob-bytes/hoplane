@@ -875,7 +875,7 @@ export default function GroupPage({
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
-            isOpen={tunnelGroupModalOpen}
+            open={tunnelGroupModalOpen}
             onOpenChange={onTunnelGroupModalChange}
           >
             <ModalContent>
@@ -919,7 +919,7 @@ export default function GroupPage({
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
-            isOpen={userGroupModalOpen}
+            open={userGroupModalOpen}
             onOpenChange={onUserGroupModalChange}
           >
             <ModalContent>
@@ -963,7 +963,7 @@ export default function GroupPage({
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
-            isOpen={tunnelAssignModalOpen}
+            open={tunnelAssignModalOpen}
             onOpenChange={onTunnelAssignModalChange}
           >
             <ModalContent>
@@ -1010,7 +1010,7 @@ export default function GroupPage({
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
             }}
-            isOpen={userAssignModalOpen}
+            open={userAssignModalOpen}
             onOpenChange={onUserAssignModalChange}
           >
             <ModalContent>

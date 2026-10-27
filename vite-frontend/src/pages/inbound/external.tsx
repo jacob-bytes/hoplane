@@ -164,7 +164,7 @@ export function ImportModal({
     <Modal
       backdrop="blur"
       classNames={{ base: modalBase }}
-      isOpen={isOpen}
+      open={isOpen}
       placement="center"
       scrollBehavior="inside"
       size="lg"
@@ -374,7 +374,7 @@ export function ExternalEditModal({
     <Modal
       backdrop="blur"
       classNames={{ base: modalBase }}
-      isOpen={Boolean(item)}
+      open={Boolean(item)}
       placement="center"
       scrollBehavior="inside"
       size="lg"

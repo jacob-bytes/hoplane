@@ -1455,7 +1455,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
         }}
-        isOpen={isUserModalOpen}
+        open={isUserModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="xl"
@@ -1710,7 +1710,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           base: "max-w-[95vw] sm:max-w-4xl",
         }}
         isDismissable={false}
-        isOpen={isTunnelModalOpen}
+        open={isTunnelModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -1992,7 +1992,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
         }}
         isDismissable={false}
-        isOpen={isEditTunnelModalOpen}
+        open={isEditTunnelModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -2163,7 +2163,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
         }}
-        isOpen={isDeleteModalOpen}
+        open={isDeleteModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -2209,7 +2209,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
         }}
-        isOpen={isDeleteTunnelModalOpen}
+        open={isDeleteTunnelModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -2257,7 +2257,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
         }}
-        isOpen={isResetFlowModalOpen}
+        open={isResetFlowModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -2349,7 +2349,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
         }}
-        isOpen={isResetTunnelFlowModalOpen}
+        open={isResetTunnelFlowModalOpen}
         placement="center"
         scrollBehavior="inside"
         size="2xl"

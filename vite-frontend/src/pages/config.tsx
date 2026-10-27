@@ -1954,7 +1954,7 @@ export default function ConfigPage() {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
-        isOpen={exportSelectorOpen}
+        open={exportSelectorOpen}
         onOpenChange={setExportSelectorOpen}
       >
         <ModalContent>
@@ -1982,7 +1982,7 @@ export default function ConfigPage() {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
-        isOpen={importSelectorOpen}
+        open={importSelectorOpen}
         onOpenChange={setImportSelectorOpen}
       >
         <ModalContent>
@@ -2013,7 +2013,7 @@ export default function ConfigPage() {
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
         }}
-        isOpen={systemUpgradeModalOpen}
+        open={systemUpgradeModalOpen}
         onOpenChange={(open) => {
           if (!systemUpgradeExecuting) {
             setSystemUpgradeModalOpen(open);

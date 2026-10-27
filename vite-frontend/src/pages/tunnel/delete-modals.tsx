@@ -67,7 +67,7 @@ export function DeleteTunnelModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={deleteModalOpen}
+      open={deleteModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="2xl"
@@ -288,7 +288,7 @@ export function BatchDeleteTunnelsModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={batchDeleteModalOpen}
+      open={batchDeleteModalOpen}
       onOpenChange={handleBatchDeleteModalOpenChange}
     >
       <ModalContent>

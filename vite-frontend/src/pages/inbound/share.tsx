@@ -202,7 +202,7 @@ export function ShareModal({
     <Modal
       backdrop="blur"
       classNames={{ base: modalBase }}
-      isOpen={Boolean(item)}
+      open={Boolean(item)}
       placement="center"
       scrollBehavior="inside"
       size="lg"

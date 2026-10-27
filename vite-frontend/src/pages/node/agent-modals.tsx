@@ -77,7 +77,7 @@ export function InstallCommandModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={installCommandModal}
+      open={installCommandModal}
       placement="center"
       scrollBehavior="inside"
       size="2xl"
@@ -180,7 +180,7 @@ export function UpgradeNodeModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={upgradeModalOpen}
+      open={upgradeModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="md"

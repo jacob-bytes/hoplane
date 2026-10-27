@@ -250,7 +250,7 @@ export function RelayModal({
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(item)}
+        open={Boolean(item)}
         placement="center"
         scrollBehavior="inside"
         size="2xl"
@@ -491,7 +491,7 @@ export function RelayModal({
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(removing)}
+        open={Boolean(removing)}
         placement="center"
         onOpenChange={(open) => !open && setRemoving(null)}
       >

@@ -366,7 +366,7 @@ export function InboundFormModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={isOpen}
+      open={isOpen}
       placement="center"
       scrollBehavior="inside"
       size="2xl"

@@ -34,7 +34,7 @@ export function DeleteForwardModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={deleteModalOpen}
+      open={deleteModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="2xl"
@@ -99,7 +99,7 @@ export function ResetFlowModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={resetFlowModalOpen}
+      open={resetFlowModalOpen}
       placement="center"
       scrollBehavior="inside"
       size="lg"
@@ -169,7 +169,7 @@ export function AddressListModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={addressModalOpen}
+      open={addressModalOpen}
       scrollBehavior="inside"
       size="lg"
       onClose={() => setAddressModalOpen(false)}
@@ -230,7 +230,7 @@ export function BatchDeleteModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={batchDeleteModalOpen}
+      open={batchDeleteModalOpen}
       onOpenChange={setBatchDeleteModalOpen}
     >
       <ModalContent>
@@ -288,7 +288,7 @@ export function BatchChangeTunnelModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={batchChangeTunnelModalOpen}
+      open={batchChangeTunnelModalOpen}
       onOpenChange={setBatchChangeTunnelModalOpen}
     >
       <ModalContent>

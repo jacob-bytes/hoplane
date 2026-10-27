@@ -447,7 +447,7 @@ export function KernelPanel({
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={installOpen}
+        open={installOpen}
         placement="center"
         onOpenChange={setInstallOpen}
       >
@@ -635,7 +635,7 @@ export function KernelPanel({
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(logsFor)}
+        open={Boolean(logsFor)}
         placement="center"
         scrollBehavior="inside"
         size="4xl"
@@ -681,7 +681,7 @@ export function KernelPanel({
       <Modal
         backdrop="blur"
         classNames={{ base: modalBase }}
-        isOpen={Boolean(removeTarget)}
+        open={Boolean(removeTarget)}
         placement="center"
         onOpenChange={(open) => !open && setRemoveTarget(null)}
       >

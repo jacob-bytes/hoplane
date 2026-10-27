@@ -49,7 +49,7 @@ export function NodeFormModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={dialogVisible}
+      open={dialogVisible}
       placement="center"
       scrollBehavior="inside"
       size="lg"

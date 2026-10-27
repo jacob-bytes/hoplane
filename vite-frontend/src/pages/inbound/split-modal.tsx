@@ -40,7 +40,7 @@ export function SplitModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={Boolean(item)}
+      open={Boolean(item)}
       placement="center"
       scrollBehavior="inside"
       size="2xl"

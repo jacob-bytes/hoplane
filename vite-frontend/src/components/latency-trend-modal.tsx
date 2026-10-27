@@ -130,7 +130,7 @@ export function LatencyTrendModal({
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
-      isOpen={nodeId !== null}
+      open={nodeId !== null}
       placement="center"
       scrollBehavior="inside"
       size="2xl"
