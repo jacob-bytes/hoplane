@@ -15,7 +15,7 @@ import {
 } from "@/components/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
+import { Accordion, AccordionItem } from "@/components/accordion-field";
 import { getTunnelForwardMode } from "@/pages/tunnel/helpers";
 import { ChainTunnel, Node, TunnelForm } from "@/pages/tunnel/types";
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/modal";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/components/select-field";
-import { Tab, Tabs } from "@/shadcn-bridge/heroui/tabs";
+import { Tab, Tabs } from "@/components/tabs-field";
 import { type ReleaseChannel } from "@/api";
 
 export interface InstallCommands {

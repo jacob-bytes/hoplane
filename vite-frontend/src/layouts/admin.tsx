@@ -29,7 +29,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@/shadcn-bridge/heroui/dropdown";
+} from "@/components/dropdown";
 import { getMonitorAccess } from "@/api";
 import { safeLogout } from "@/utils/logout";
 import { siteConfig } from "@/config/site";

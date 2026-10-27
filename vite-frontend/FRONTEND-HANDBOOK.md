@@ -23,7 +23,7 @@ src/
   layouts/        壳：admin / h5 / h5-simple
   hooks/          可复用状态与实时逻辑
   styles/         globals.css + tailwind-theme.pcss（唯一 token 源）
-  shadcn-bridge/  HeroUI 兼容层（迁移期保留，禁止新增引用）
+  components/*    业务 kit：field-input、modal、select-field、dropdown 等
 ```
 
 规则：
@@ -226,10 +226,10 @@ const reduce = useReducedMotion();
 ## 13. 迁移与弃用
 
 - 迁移一页一提交，提交信息：`refactor(ui): migrate <page> to shadcn`。
-- 迁移完成的页面禁止再 import `shadcn-bridge/heroui/*`。
-- 新组件只加到 `components/ui` 或 `components/kit`，不新增 bridge 文件。
-- 全部路由迁完后：删除 `src/shadcn-bridge/heroui/`、同步根 `AGENTS.md` 与本手册。
-- 删除 bridge 前必须 `grep -rn "shadcn-bridge" src` 为 0，且 CI 绿。
+- 所有页面只使用 `components/ui/*` 与 `components/*` kit，禁止再引入 HeroUI。
+- 新组件只加到 `components/ui` 或 `components/*` kit。
+- bridge 已删除；如发现遗留引用按回归处理。
+- 校验：`grep -rn "shadcn-bridge" src` 必须为 0。
 
 ## 14. 完成定义（DoD）
 

@@ -11,7 +11,7 @@ upstream sync. See `REBRAND.md` for what the fork renamed and what it kept.
 | `go-backend/` | Admin API (GORM + SQLite/PG, net/http) | `cmd/paneld/main.go` |
 | `go-gost/` | Forwarding agent (forked GOST) | `main.go` |
 | `go-gost/x/` | Protocol handlers/dialers/listeners (own module) | — |
-| `vite-frontend/` | React dashboard (shadcn bridge + Tailwind v4) | `src/App.tsx` |
+| `vite-frontend/` | React dashboard (shadcn/ui + Tailwind v4) | `src/App.tsx` |
 | `doc/` | User docs (VitePress, deployed to GitHub Pages) | `.vitepress/config.mts` |
 
 `go-gost/go.mod` uses `replace github.com/go-gost/x => ./x`.
@@ -41,7 +41,7 @@ upstream sync. See `REBRAND.md` for what the fork renamed and what it kept.
 
 - **Auth**: raw JWT in `Authorization` header — **no `Bearer` prefix** (both frontend and backend).
 - **API envelope**: all responses `{code, msg, data, ts}` (code 0 = success).
-- **Frontend UI**: import from `src/shadcn-bridge/heroui/*`, never `@heroui/*` or `@nextui-org/*`.
+- **Frontend UI**: import from `src/components/ui/*` (primitives) or the `src/components/*` kit; never `@heroui/*` or `@nextui-org/*`.
 - **Tailwind theme**: `globals.css` must import `tailwind-theme.pcss` or semantic classes break.
 - **Backend DB**: handlers use Repository methods, never `repo.DB()` directly.
 - **GORM models**: always define `TableName()` (GORM pluralizes by default).

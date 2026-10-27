@@ -10,7 +10,6 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 | `src/main.tsx` | Entry: ReactDOM + BrowserRouter |
 | `src/api/` | Axios wrapper, sends raw JWT in `Authorization` |
 | `src/pages/` | Route views (forward, node, tunnel, settings, ...) |
-| `src/shadcn-bridge/heroui/` | HeroUI-compatible facade — used by not-yet-migrated pages |
 | `src/components/ui/` | shadcn/radix primitives |
 | `src/styles/globals.css` | Base styles — **must import `tailwind-theme.pcss`** |
 | `src/styles/tailwind-theme.pcss` | Tailwind v4 `@theme inline` semantic tokens |
@@ -20,7 +19,7 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 
 - **Auth**: raw JWT in `Authorization` header — no `Bearer` prefix.
 - **API envelope**: `{code, msg, data, ts}`, code 0 = success.
-- **UI imports**: `src/shadcn-bridge/heroui/*` only, never `@heroui/*` or `@nextui-org/*`.
+- **UI imports**: `src/components/ui/*` primitives plus the `src/components/*` kit (field-input, modal, select-field, dropdown, …); never `@heroui/*` or `@nextui-org/*`.
 - **Theme**: don't remove `tailwind-theme.pcss` import from `globals.css` — breaks semantic classes (`bg-primary`, `text-foreground`, `border-input`).
 
 ## Anti-patterns
@@ -34,10 +33,8 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 
 - `DESIGN.md` — 视觉方向 v3「白底深蓝」：tokens、字号、间距、组件语言、动效。改 UI 前必读。
 - `FRONTEND-HANDBOOK.md` — 怎么写、怎么评审、怎么合并（目录、组件、表单、动效、DoD）。
-- `MIGRATION.md` — 旧迁移盘点（v3 决定整体重写，阶段仅作工作量参考）。
+- `MIGRATION.md` — 迁移记录；HeroUI bridge 已删除。
 - `prototype/design-v3.html` — 方向样张（静态 HTML，不参与构建）。
-- Until a page is listed as migrated there, keep importing from
-  `src/shadcn-bridge/heroui/*`; migrated pages compose `src/components/ui/*` directly.
 
 ## Commands
 

@@ -12,7 +12,7 @@ import {
 } from "@/components/modal";
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
+import { Accordion, AccordionItem } from "@/components/accordion-field";
 import { Select, SelectItem } from "@/components/select-field";
 import { type NodeRenewalCycle } from "@/pages/node/renewal";
 import { NodeForm } from "@/pages/node/types";

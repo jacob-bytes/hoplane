@@ -7,7 +7,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@/shadcn-bridge/heroui/dropdown";
+} from "@/components/dropdown";
 import { RouteTag } from "@/components/route-modal";
 
 /** Latency below GOOD shows green, below FAIR orange, anything else red. */

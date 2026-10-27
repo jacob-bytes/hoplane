@@ -11,7 +11,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-} from "@/shadcn-bridge/heroui/dropdown";
+} from "@/components/dropdown";
 import {
   Modal,
   ModalContent,

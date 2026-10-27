@@ -12,7 +12,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/components/modal";
-import { Accordion, AccordionItem } from "@/shadcn-bridge/heroui/accordion";
+import { Accordion, AccordionItem } from "@/components/accordion-field";
 import { Tunnel, ForwardForm } from "@/pages/forward/types";
 
 export interface ForwardFormModalProps {

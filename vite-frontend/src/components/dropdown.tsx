@@ -81,7 +81,7 @@ export function DropdownItem({
   return (
     <BaseDropdownMenuItem
       className={cn(
-        color === "danger" ? "text-danger focus:text-danger" : "",
+        color === "danger" ? "text-destructive focus:text-destructive" : "",
         className,
       )}
       disabled={isDisabled}

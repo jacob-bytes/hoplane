@@ -7,7 +7,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@/shadcn-bridge/heroui/dropdown";
+} from "@/components/dropdown";
 import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
 import {

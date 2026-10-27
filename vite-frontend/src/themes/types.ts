@@ -134,13 +134,13 @@ export interface ThemeTokens {
 
 /**
  * All overridable component keys.  These exactly correspond to the exports
- * from `src/shadcn-bridge/heroui/*` and `src/components/*`.
+ * from `src/components/ui/*` and `src/components/*`.
  *
  * A theme only needs to override the components it wants to change.
  * Every other component falls through to the default implementation.
  */
 export type ComponentKey =
-  // shadcn-bridge/heroui primitives
+  // shadcn/ui primitives and the app kit
   | "Button"
   | "Card"
   | "CardHeader"
@@ -292,7 +292,7 @@ export interface ThemePackage {
   /**
    * Map of component overrides.  The replacement component MUST accept the
    * same props interface as the original.  Import types from
-   * `@/shadcn-bridge/heroui/*` for reference.
+   * `@/components/ui/*` for reference.
    */
   components?: Partial<Record<ComponentKey, ComponentType<any>>>;
 

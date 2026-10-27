@@ -184,6 +184,13 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 | 转发（行内流量、居中操作弹窗） | 已完成 | 本轮 |
 | 全部动作弹窗（用户/分组/限额/隧道/共享/入站） | 已完成 | 本轮 |
 
+## 9.3 HeroUI bridge 删除（2026-10-27）
+
+- 所有页面改用 `components/ui/*` 与本地 kit（field-input / modal / select-field / dropdown / accordion-field / tabs-field / date-picker-field / progress-bar）
+- `src/shadcn-bridge/` 整个目录删除，`@react-aria/i18n` 依赖移除
+- `grep -rn "shadcn-bridge" src` 为 0；`tsc` / `eslint` / `vite build` 通过
+- 弹窗、下拉、折叠、Tabs、日期选择器、种子页导航均做过截图回归
+
 ## 9.2 v3 落地验收（2026-10-27）
 
 **范围**：白底深蓝设计系统 + 壳 + 全部路由的视觉层。业务逻辑与 API 未改。
@@ -200,7 +207,7 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 
 | 项 | 现状 |
 |---|---|
-| HeroUI bridge 退场 | 仍有 71 个文件引用 `shadcn-bridge/heroui/*`；组件已包在 `ui/*` 上，删除需逐页换 API |
+| HeroUI bridge 退场 | ✅ 已完成：`src/shadcn-bridge` 已删除，`@react-aria/i18n` 依赖已移除 |
 | `space-y-*` 清理 | 约 220 处，视觉无影响，属代码规范清理 |
 | 裸色值/渐变残留 | 约 31 处（多为图表与历史状态色） |
 | 320px 设置/分组 Tab | 横向滚动，未做折叠菜单 |

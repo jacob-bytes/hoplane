@@ -61,7 +61,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-} from "@/shadcn-bridge/heroui/dropdown";
+} from "@/components/dropdown";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ProgressBar as Progress } from "@/components/progress-bar";
 import {

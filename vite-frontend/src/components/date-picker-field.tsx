@@ -1,9 +1,44 @@
 import * as React from "react";
 
-import { FieldContainer, type FieldMetaProps } from "./shared";
-
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+
+interface FieldMetaProps {
+  label?: React.ReactNode;
+  description?: React.ReactNode;
+  errorMessage?: React.ReactNode;
+  isInvalid?: boolean;
+  isRequired?: boolean;
+}
+
+function FieldContainer({
+  children,
+  description,
+  errorMessage,
+  id,
+  isInvalid,
+  isRequired,
+  label,
+}: FieldMetaProps & { children: React.ReactNode; id?: string }) {
+  return (
+    <div className="flex w-full flex-col gap-1.5">
+      {label ? (
+        <Label htmlFor={id}>
+          {label}
+          {isRequired ? <span className="ml-1 text-destructive">*</span> : null}
+        </Label>
+      ) : null}
+      {children}
+      {description ? (
+        <p className="text-xs text-muted-foreground">{description}</p>
+      ) : null}
+      {isInvalid && errorMessage ? (
+        <p className="text-xs text-destructive">{errorMessage}</p>
+      ) : null}
+    </div>
+  );
+}
 
 interface CalendarDateLike {
   day: number;
