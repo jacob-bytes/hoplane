@@ -26,7 +26,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 
 const modalBase =
   "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
@@ -409,32 +409,19 @@ export function RelayModal({
                         没有可用的隧道：请先在“隧道”页创建以中转机为入口的端口转发或隧道转发。
                       </p>
                     )}
-                    <Select
-                      disabledKeys={options
-                        .filter((o) => o.blocker)
-                        .map((o) => String(o.tunnel.id))}
+                    <SelectField
                       label="隧道"
+                      options={options.map(({ tunnel, blocker, route }) => ({
+                        value: String(tunnel.id),
+                        label: `${tunnel.name}（${route}）${blocker ? ` - ${blocker}` : ""}`,
+                        disabled: Boolean(blocker),
+                      }))}
                       placeholder="选择中转隧道"
-                      selectedKeys={form.tunnelId ? [form.tunnelId] : []}
-                      onSelectionChange={(keys) =>
-                        setForm((p) => ({
-                          ...p,
-                          tunnelId: String(Array.from(keys)[0] ?? ""),
-                        }))
+                      value={form.tunnelId}
+                      onValueChange={(tunnelId) =>
+                        setForm((p) => ({ ...p, tunnelId }))
                       }
-                    >
-                      {options.map(({ tunnel, blocker, route }) => {
-                        const text = `${tunnel.name}（${route}）${
-                          blocker ? ` - ${blocker}` : ""
-                        }`;
-
-                        return (
-                          <SelectItem key={String(tunnel.id)} textValue={text}>
-                            {text}
-                          </SelectItem>
-                        );
-                      })}
-                    </Select>
+                    />
                     {selectedRoute === "隧道经出口服务器转发到公网地址" && (
                       <p className="text-xs text-muted-foreground">
                         流量经隧道到出口服务器（如

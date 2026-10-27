@@ -47,7 +47,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge, badgeTone } from "@/components/ui/badge";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   EmptyHint,
   ListGroup,
@@ -227,19 +227,20 @@ function TimeRangeSelect({
   onChange: (v: number) => void;
 }) {
   return (
-    <Select
+    <SelectField
+      aria-label="时间范围"
       className="w-28"
-      selectedKeys={[String(value)]}
-      onSelectionChange={(keys) => {
-        const v = Number(Array.from(keys)[0]);
+      options={TIME_RANGE_OPTIONS.map((opt) => ({
+        value: String(opt.key),
+        label: opt.label,
+      }))}
+      value={String(value)}
+      onValueChange={(next) => {
+        const v = Number(next);
 
         if (v > 0) onChange(v);
       }}
-    >
-      {TIME_RANGE_OPTIONS.map((opt) => (
-        <SelectItem key={opt.key}>{opt.label}</SelectItem>
-      ))}
-    </Select>
+    />
   );
 }
 

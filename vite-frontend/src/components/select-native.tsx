@@ -39,7 +39,7 @@ export function SelectField({
   isDisabled?: boolean;
   isRequired?: boolean;
   placeholder?: string;
-  value: string;
+  value?: string;
   onValueChange: (value: string) => void;
   options: SelectOption[];
   className?: string;
@@ -63,7 +63,7 @@ export function SelectField({
       <Select
         disabled={isDisabled}
         required={isRequired}
-        value={value}
+        value={value || undefined}
         onValueChange={onValueChange}
       >
         <SelectTrigger

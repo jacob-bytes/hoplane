@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   Modal,
   ModalContent,
@@ -299,22 +299,18 @@ export function BatchChangeTunnelModal({
               <p className="mb-4">
                 将选中的 {selectedIds.size} 项规则迁移到新隧道：
               </p>
-              <Select
+              <SelectField
                 label="目标隧道"
+                options={tunnels.map((tunnel) => ({
+                  value: String(tunnel.id),
+                  label: tunnel.name,
+                }))}
                 placeholder="请选择目标隧道"
-                selectedKeys={
-                  batchTargetTunnelId ? [String(batchTargetTunnelId)] : []
+                value={batchTargetTunnelId ? String(batchTargetTunnelId) : ""}
+                onValueChange={(selected) =>
+                  setBatchTargetTunnelId(selected ? Number(selected) : null)
                 }
-                onSelectionChange={(keys) => {
-                  const selected = Array.from(keys)[0];
-
-                  setBatchTargetTunnelId(selected ? Number(selected) : null);
-                }}
-              >
-                {tunnels.map((tunnel) => (
-                  <SelectItem key={String(tunnel.id)}>{tunnel.name}</SelectItem>
-                ))}
-              </Select>
+              />
             </ModalBody>
             <ModalFooter>
               <Button variant="ghost" onClick={onClose}>

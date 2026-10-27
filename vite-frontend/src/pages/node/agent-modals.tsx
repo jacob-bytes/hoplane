@@ -13,7 +13,7 @@ import {
   ModalFooter,
 } from "@/components/modal";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import { Tab, Tabs } from "@/components/tabs-field";
 import { type ReleaseChannel } from "@/api";
 
@@ -203,19 +203,12 @@ export function UpgradeNodeModal({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <Select
+                  <SelectField
                     label="选择版本"
-                    placeholder="留空则使用最新版本"
-                    selectedKeys={selectedVersion ? [selectedVersion] : []}
-                    onSelectionChange={(keys) => {
-                      const selected = Array.from(keys)[0] as string;
-
-                      setSelectedVersion(selected || "");
-                    }}
-                  >
-                    {releases.map((r) => (
-                      <SelectItem key={r.version} textValue={r.version}>
-                        <div className="flex justify-between items-center">
+                    options={releases.map((r) => ({
+                      value: r.version,
+                      label: (
+                        <div className="flex items-center justify-between gap-3">
                           <span>{r.version}</span>
                           <span className="text-xs text-muted-foreground">
                             {r.publishedAt
@@ -231,9 +224,12 @@ export function UpgradeNodeModal({
                             )}
                           </span>
                         </div>
-                      </SelectItem>
-                    ))}
-                  </Select>
+                      ),
+                    }))}
+                    placeholder="留空则使用最新版本"
+                    value={selectedVersion}
+                    onValueChange={setSelectedVersion}
+                  />
                   <p className="text-sm text-muted-foreground">
                     {selectedVersion
                       ? `将升级到版本 ${selectedVersion}`

@@ -34,7 +34,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/components/modal";
-import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   getNodeList,
   createPeerShare,
@@ -753,20 +753,16 @@ export default function PanelSharingPage() {
                 setShareForm({ ...shareForm, name: e.target.value })
               }
             />
-            <Select
+            <SelectField
               label="选择服务器"
+              options={nodes.map((node) => ({
+                value: String(node.id),
+                label: node.name,
+              }))}
               placeholder="选择要分享的本地服务器"
-              selectedKeys={shareForm.nodeId ? [shareForm.nodeId] : []}
-              onChange={(e) =>
-                setShareForm({ ...shareForm, nodeId: e.target.value })
-              }
-            >
-              {nodes.map((node) => (
-                <SelectItem key={node.id} textValue={node.name}>
-                  {node.name}
-                </SelectItem>
-              ))}
-            </Select>
+              value={shareForm.nodeId}
+              onValueChange={(nodeId) => setShareForm({ ...shareForm, nodeId })}
+            />
             <div className="flex gap-4">
               <Input
                 label="起始端口"
