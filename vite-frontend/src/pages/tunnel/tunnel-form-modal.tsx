@@ -1,7 +1,10 @@
 import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
+import {
+  TextField as Input,
+  TextAreaField as Textarea,
+} from "@/components/field-input";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import {
   Modal,

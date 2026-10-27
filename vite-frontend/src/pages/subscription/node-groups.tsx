@@ -17,7 +17,10 @@ import { PROTOCOL_LABELS } from "@/pages/inbound/presets";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
+import {
+  TextField as Input,
+  TextAreaField as Textarea,
+} from "@/components/field-input";
 import {
   ModalBody,
   ModalFooter,

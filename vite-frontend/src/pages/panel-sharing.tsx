@@ -17,7 +17,7 @@ import {
   PageTabs,
   formatDate,
 } from "@/components/page-kit";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { TrafficLimitField } from "@/components/traffic-limit-field";
 import {
   formatTraffic,

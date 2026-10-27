@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { Github } from "lucide-react";
 
 import { Button, buttonVariant } from "@/components/ui/button";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import {
   Modal,
   ModalBody,

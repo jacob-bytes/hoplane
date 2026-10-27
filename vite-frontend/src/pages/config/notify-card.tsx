@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { testNotify } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
 import { Field, SubHeading } from "@/pages/config/section";
 

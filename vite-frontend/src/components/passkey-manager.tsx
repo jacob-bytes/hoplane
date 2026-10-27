@@ -9,7 +9,7 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@/shadcn-bridge/heroui/modal";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import {
   beginPasskeyRegistration,
   deletePasskey,

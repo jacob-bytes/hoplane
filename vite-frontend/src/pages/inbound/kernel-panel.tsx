@@ -32,7 +32,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import {
   Modal,
   ModalBody,

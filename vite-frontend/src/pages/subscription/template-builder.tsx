@@ -18,7 +18,7 @@ import {
 
 import { getSubTemplateCatalog } from "@/api";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 
 const MAIN = "节点选择";
 

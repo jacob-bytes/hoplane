@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { SearchIcon } from "@/components/icons";
 
 interface SearchBarProps {

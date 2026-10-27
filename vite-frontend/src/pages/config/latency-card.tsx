@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@/shadcn-bridge/heroui/dropdown";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
 import {
   LATENCY_TARGETS_KEY,

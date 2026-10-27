@@ -52,7 +52,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/shadcn-bridge/heroui/modal";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
 import { Badge, badgeTone } from "@/components/ui/badge";

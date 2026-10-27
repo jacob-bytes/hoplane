@@ -28,7 +28,10 @@ import {
 } from "@/pages/subscription/template-builder";
 import { Segmented } from "@/pages/subscription/controls";
 import { Button } from "@/components/ui/button";
-import { Input, Textarea } from "@/shadcn-bridge/heroui/input";
+import {
+  TextField as Input,
+  TextAreaField as Textarea,
+} from "@/components/field-input";
 import {
   Modal,
   ModalBody,

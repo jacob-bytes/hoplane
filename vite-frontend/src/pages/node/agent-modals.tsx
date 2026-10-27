@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/shadcn-bridge/heroui/input";
+import { TextAreaField as Textarea } from "@/components/field-input";
 import {
   Modal,
   ModalContent,

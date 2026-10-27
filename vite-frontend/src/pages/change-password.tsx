@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { updatePassword } from "@/api";
 import DefaultLayout from "@/layouts/default";

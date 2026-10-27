@@ -6,7 +6,7 @@ import { ArrowDown, ArrowUp, ChevronDown, Plus, Trash2 } from "lucide-react";
 import { TargetButton } from "./target-picker";
 
 import { Button } from "@/components/ui/button";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 
 /** A 分流 rule as edited: domains and IPs are free text. */
 export interface SplitRuleForm {

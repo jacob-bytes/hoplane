@@ -11,7 +11,7 @@ import {
   PageToolbar,
 } from "@/components/page-kit";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import {
   Modal,
   ModalContent,

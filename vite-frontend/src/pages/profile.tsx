@@ -25,7 +25,7 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@/shadcn-bridge/heroui/modal";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { isWebViewFunc } from "@/utils/panel";
 import { siteConfig } from "@/config/site";
 import { VersionFooter } from "@/components/version-footer";

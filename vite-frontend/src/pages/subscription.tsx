@@ -52,7 +52,7 @@ import { copyText, panelOrigin } from "@/pages/inbound/share";
 import { Button, buttonVariant } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { SubTrafficStats } from "@/components/lazy-charts";
 import {
   Modal,

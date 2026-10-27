@@ -5,7 +5,7 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { motion } from "framer-motion";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Input } from "@/shadcn-bridge/heroui/input";
+import { TextField as Input } from "@/components/field-input";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { VersionFooter } from "@/components/version-footer";
