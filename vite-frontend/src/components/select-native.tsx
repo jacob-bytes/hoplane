@@ -30,6 +30,7 @@ export function SelectField({
   onValueChange,
   options,
   className,
+  labelClassName,
   size,
   onClick,
   "aria-label": ariaLabel,
@@ -45,6 +46,7 @@ export function SelectField({
   onValueChange: (value: string) => void;
   options: SelectOption[];
   className?: string;
+  labelClassName?: string;
   size?: "sm" | "md" | "lg";
   "aria-label"?: string;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -58,7 +60,7 @@ export function SelectField({
   return (
     <div className="flex w-full flex-col gap-1.5">
       {label ? (
-        <Label htmlFor={id}>
+        <Label className={labelClassName} htmlFor={id}>
           {label}
           {isRequired ? <span className="ml-1 text-destructive">*</span> : null}
         </Label>

@@ -6,6 +6,7 @@ import {
   TextAreaField as Textarea,
 } from "@/components/field-input";
 import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   Modal,
   ModalContent,
@@ -108,26 +109,22 @@ export function TunnelFormModal({
                   }
                 />
 
-                <Select
+                <SelectField
                   description={isEdit ? "编辑时无法修改隧道类型" : undefined}
                   errorMessage={errors.type}
                   isDisabled={isEdit}
                   isInvalid={!!errors.type}
                   label="隧道类型"
+                  options={[
+                    { value: "1", label: "端口转发" },
+                    { value: "2", label: "隧道转发" },
+                  ]}
                   placeholder="请选择隧道类型"
-                  selectedKeys={[form.type.toString()]}
-                  variant="bordered"
-                  onSelectionChange={(keys) => {
-                    const selectedKey = Array.from(keys)[0] as string;
-
-                    if (selectedKey) {
-                      handleTypeChange(parseInt(selectedKey));
-                    }
+                  value={form.type.toString()}
+                  onValueChange={(selectedKey) => {
+                    if (selectedKey) handleTypeChange(parseInt(selectedKey));
                   }}
-                >
-                  <SelectItem key="1">端口转发</SelectItem>
-                  <SelectItem key="2">隧道转发</SelectItem>
-                </Select>
+                />
 
                 {form.type === 1 &&
                   (getTunnelForwardMode(form.inNodeId, nodes) === "nftables" ? (
@@ -136,35 +133,28 @@ export function TunnelFormModal({
                       转发（在服务器的转发模式里设置）
                     </p>
                   ) : (
-                    <Select
+                    <SelectField
                       description={
                         form.engine === "realm"
                           ? "入口服务器自动安装 realm 运行这条隧道的转发；不支持限速和连接数限制，服务器 agent 需 3.3.26 及以上"
                           : "服务器 agent 直接转发，支持限速和连接数限制"
                       }
                       label="转发引擎"
-                      selectedKeys={[
-                        form.engine === "realm" ? "realm" : "agent",
+                      options={[
+                        { value: "agent", label: "面板转发（默认，功能最全）" },
+                        {
+                          value: "realm",
+                          label: "realm（占用低，不支持限速）",
+                        },
                       ]}
-                      variant="bordered"
-                      onSelectionChange={(keys) => {
-                        const selectedKey = Array.from(keys)[0] as string;
-
-                        if (selectedKey) {
-                          setForm((prev) => ({
-                            ...prev,
-                            engine: selectedKey === "realm" ? "realm" : "",
-                          }));
-                        }
-                      }}
-                    >
-                      <SelectItem key="agent">
-                        面板转发（默认，功能最全）
-                      </SelectItem>
-                      <SelectItem key="realm">
-                        realm（占用低，不支持限速）
-                      </SelectItem>
-                    </Select>
+                      value={form.engine === "realm" ? "realm" : "agent"}
+                      onValueChange={(selectedKey) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          engine: selectedKey === "realm" ? "realm" : "",
+                        }))
+                      }
+                    />
                   ))}
 
                 <Separator />
@@ -439,74 +429,46 @@ export function TunnelFormModal({
                                 </div>
 
                                 {/* 协议选择 - 25% */}
-                                <Select
-                                  classNames={{
-                                    label: "text-xs",
-                                    value: "text-sm",
-                                  }}
+                                <SelectField
                                   label="协议"
+                                  labelClassName="text-xs"
+                                  options={[
+                                    { value: "tls", label: "TLS" },
+                                    { value: "wss", label: "WSS" },
+                                    { value: "tcp", label: "TCP" },
+                                    { value: "mtls", label: "MTLS" },
+                                    { value: "mwss", label: "MWSS" },
+                                    { value: "mtcp", label: "MTCP" },
+                                    { value: "kcp", label: "KCP" },
+                                  ]}
                                   placeholder="选择协议"
-                                  selectedKeys={[protocol]}
                                   size="sm"
-                                  variant="bordered"
-                                  onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(
-                                      keys,
-                                    )[0] as string;
-
-                                    if (selectedKey) {
-                                      updateChainProtocol(
-                                        groupIndex,
-                                        selectedKey,
-                                      );
-                                    }
-                                  }}
-                                >
-                                  <SelectItem key="tls">TLS</SelectItem>
-                                  <SelectItem key="wss">WSS</SelectItem>
-                                  <SelectItem key="tcp">TCP</SelectItem>
-                                  <SelectItem key="mtls">MTLS</SelectItem>
-                                  <SelectItem key="mwss">MWSS</SelectItem>
-                                  <SelectItem key="mtcp">MTCP</SelectItem>
-                                  <SelectItem key="kcp">KCP</SelectItem>
-                                </Select>
+                                  value={protocol}
+                                  onValueChange={(selectedKey) =>
+                                    updateChainProtocol(groupIndex, selectedKey)
+                                  }
+                                />
 
                                 {/* 负载策略 - 25% */}
-                                <Select
-                                  classNames={{
-                                    label: "text-xs",
-                                    value: "text-sm",
-                                  }}
+                                <SelectField
                                   label="负载策略"
+                                  labelClassName="text-xs"
+                                  options={[
+                                    { value: "fifo", label: "主备" },
+                                    { value: "round", label: "轮询" },
+                                    { value: "rand", label: "随机" },
+                                  ]}
                                   placeholder="选择策略"
-                                  selectedKeys={[strategy]}
                                   size="sm"
-                                  variant="bordered"
-                                  onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(
-                                      keys,
-                                    )[0] as string;
-
-                                    if (selectedKey) {
-                                      updateChainStrategy(
-                                        groupIndex,
-                                        selectedKey,
-                                      );
-                                    }
-                                  }}
-                                >
-                                  <SelectItem key="fifo">主备</SelectItem>
-                                  <SelectItem key="round">轮询</SelectItem>
-                                  <SelectItem key="rand">随机</SelectItem>
-                                </Select>
+                                  value={strategy}
+                                  onValueChange={(selectedKey) =>
+                                    updateChainStrategy(groupIndex, selectedKey)
+                                  }
+                                />
                               </div>
 
                               {/* 连接IP - 转发链节点 */}
-                              <Select
-                                classNames={{
-                                  label: "text-xs",
-                                  value: "text-sm",
-                                }}
+                              <SelectField
                                 description={
                                   isMultiNodeGroup
                                     ? "多服务器跳不支持设置自定义连接IP，使用各服务器默认IP"
@@ -518,6 +480,14 @@ export function TunnelFormModal({
                                   isMultiNodeGroup
                                 }
                                 label="连接IP"
+                                labelClassName="text-xs"
+                                options={[
+                                  { value: "__default__", label: "默认连接IP" },
+                                  ...groupIpOptions.map((ip) => ({
+                                    value: ip,
+                                    label: ip,
+                                  })),
+                                ]}
                                 placeholder={
                                   isMultiNodeGroup
                                     ? "多服务器跳使用服务器默认IP"
@@ -527,31 +497,17 @@ export function TunnelFormModal({
                                         ? "选择连接IP"
                                         : "所选服务器无共同可选IP"
                                 }
-                                selectedKeys={[
-                                  selectedGroupConnectIp || "__default__",
-                                ]}
                                 size="sm"
-                                variant="bordered"
-                                onSelectionChange={(keys) => {
-                                  const selectedKey = Array.from(
-                                    keys,
-                                  )[0] as string;
-
+                                value={selectedGroupConnectIp || "__default__"}
+                                onValueChange={(selectedKey) =>
                                   updateChainConnectIp(
                                     groupIndex,
                                     selectedKey === "__default__"
                                       ? ""
                                       : selectedKey,
-                                  );
-                                }}
-                              >
-                                <SelectItem key="__default__">
-                                  默认连接IP
-                                </SelectItem>
-                                {groupIpOptions.map((ip) => (
-                                  <SelectItem key={ip}>{ip}</SelectItem>
-                                ))}
-                              </Select>
+                                  )
+                                }
+                              />
                             </div>
                           );
                         })}
@@ -697,149 +653,121 @@ export function TunnelFormModal({
                             </div>
 
                             {/* 协议选择 - 25% */}
-                            <Select
-                              classNames={{
-                                label: "text-xs",
-                                value: "text-sm",
-                              }}
+                            <SelectField
                               errorMessage={errors.protocol}
                               isInvalid={!!errors.protocol}
                               label="协议"
-                              placeholder="选择协议"
-                              selectedKeys={[
-                                (() => {
-                                  if (
-                                    !form.outNodeId ||
-                                    form.outNodeId.length === 0
-                                  )
-                                    return "tls";
-
-                                  return form.outNodeId[0].protocol || "tls";
-                                })(),
+                              labelClassName="text-xs"
+                              options={[
+                                { value: "tls", label: "TLS" },
+                                { value: "wss", label: "WSS" },
+                                { value: "tcp", label: "TCP" },
+                                { value: "mtls", label: "MTLS" },
+                                { value: "mwss", label: "MWSS" },
+                                { value: "mtcp", label: "MTCP" },
+                                { value: "kcp", label: "KCP" },
                               ]}
-                              variant="bordered"
-                              onSelectionChange={(keys) => {
-                                const selectedKey = Array.from(
-                                  keys,
-                                )[0] as string;
+                              placeholder="选择协议"
+                              value={(() => {
+                                if (
+                                  !form.outNodeId ||
+                                  form.outNodeId.length === 0
+                                )
+                                  return "tls";
 
-                                if (selectedKey) {
-                                  setForm((prev) => {
-                                    const currentOutNodes =
-                                      prev.outNodeId || [];
-                                    const currentStrategy =
-                                      currentOutNodes.length > 0
-                                        ? currentOutNodes[0].strategy || "round"
-                                        : "round";
+                                return form.outNodeId[0].protocol || "tls";
+                              })()}
+                              onValueChange={(selectedKey) => {
+                                if (!selectedKey) return;
+                                setForm((prev) => {
+                                  const currentOutNodes = prev.outNodeId || [];
+                                  const currentStrategy =
+                                    currentOutNodes.length > 0
+                                      ? currentOutNodes[0].strategy || "round"
+                                      : "round";
 
-                                    if (currentOutNodes.length === 0) {
-                                      // 如果还没有出口节点，创建一个占位节点保存设置
-                                      return {
-                                        ...prev,
-                                        outNodeId: [
-                                          {
-                                            nodeId: -1,
-                                            chainType: 3,
-                                            protocol: selectedKey,
-                                            strategy: currentStrategy,
-                                          },
-                                        ],
-                                      };
-                                    }
-
-                                    // 更新所有出口节点的协议
+                                  if (currentOutNodes.length === 0) {
                                     return {
                                       ...prev,
-                                      outNodeId: currentOutNodes.map((ct) => ({
-                                        ...ct,
-                                        protocol: selectedKey,
-                                      })),
+                                      outNodeId: [
+                                        {
+                                          nodeId: -1,
+                                          chainType: 3,
+                                          protocol: selectedKey,
+                                          strategy: currentStrategy,
+                                        },
+                                      ],
                                     };
-                                  });
-                                }
+                                  }
+
+                                  return {
+                                    ...prev,
+                                    outNodeId: currentOutNodes.map((ct) => ({
+                                      ...ct,
+                                      protocol: selectedKey,
+                                    })),
+                                  };
+                                });
                               }}
-                            >
-                              <SelectItem key="tls">TLS</SelectItem>
-                              <SelectItem key="wss">WSS</SelectItem>
-                              <SelectItem key="tcp">TCP</SelectItem>
-                              <SelectItem key="mtls">MTLS</SelectItem>
-                              <SelectItem key="mwss">MWSS</SelectItem>
-                              <SelectItem key="mtcp">MTCP</SelectItem>
-                              <SelectItem key="kcp">KCP</SelectItem>
-                            </Select>
+                            />
 
                             {/* 负载策略 - 25% */}
-                            <Select
-                              classNames={{
-                                label: "text-xs",
-                                value: "text-sm",
-                              }}
+                            <SelectField
                               label="负载策略"
-                              placeholder="选择策略"
-                              selectedKeys={[
-                                (() => {
-                                  if (
-                                    !form.outNodeId ||
-                                    form.outNodeId.length === 0
-                                  )
-                                    return "round";
-
-                                  return form.outNodeId[0].strategy || "round";
-                                })(),
+                              labelClassName="text-xs"
+                              options={[
+                                { value: "fifo", label: "主备" },
+                                { value: "round", label: "轮询" },
+                                { value: "rand", label: "随机" },
+                                { value: "best", label: "最优" },
                               ]}
-                              variant="bordered"
-                              onSelectionChange={(keys) => {
-                                const selectedKey = Array.from(
-                                  keys,
-                                )[0] as string;
+                              placeholder="选择策略"
+                              value={(() => {
+                                if (
+                                  !form.outNodeId ||
+                                  form.outNodeId.length === 0
+                                )
+                                  return "round";
 
-                                if (selectedKey) {
-                                  setForm((prev) => {
-                                    const currentOutNodes =
-                                      prev.outNodeId || [];
-                                    const currentProtocol =
-                                      currentOutNodes.length > 0
-                                        ? currentOutNodes[0].protocol || "tls"
-                                        : "tls";
+                                return form.outNodeId[0].strategy || "round";
+                              })()}
+                              onValueChange={(selectedKey) => {
+                                if (!selectedKey) return;
+                                setForm((prev) => {
+                                  const currentOutNodes = prev.outNodeId || [];
+                                  const currentProtocol =
+                                    currentOutNodes.length > 0
+                                      ? currentOutNodes[0].protocol || "tls"
+                                      : "tls";
 
-                                    if (currentOutNodes.length === 0) {
-                                      return {
-                                        ...prev,
-                                        outNodeId: [
-                                          {
-                                            nodeId: -1,
-                                            chainType: 3,
-                                            protocol: currentProtocol,
-                                            strategy: selectedKey,
-                                          },
-                                        ],
-                                      };
-                                    }
-
+                                  if (currentOutNodes.length === 0) {
                                     return {
                                       ...prev,
-                                      outNodeId: currentOutNodes.map((ct) => ({
-                                        ...ct,
-                                        strategy: selectedKey,
-                                      })),
+                                      outNodeId: [
+                                        {
+                                          nodeId: -1,
+                                          chainType: 3,
+                                          protocol: currentProtocol,
+                                          strategy: selectedKey,
+                                        },
+                                      ],
                                     };
-                                  });
-                                }
+                                  }
+
+                                  return {
+                                    ...prev,
+                                    outNodeId: currentOutNodes.map((ct) => ({
+                                      ...ct,
+                                      strategy: selectedKey,
+                                    })),
+                                  };
+                                });
                               }}
-                            >
-                              <SelectItem key="fifo">主备</SelectItem>
-                              <SelectItem key="round">轮询</SelectItem>
-                              <SelectItem key="rand">随机</SelectItem>
-                              <SelectItem key="best">最优</SelectItem>
-                            </Select>
+                            />
                           </div>
 
                           {/* 连接IP - 出口节点 */}
-                          <Select
-                            classNames={{
-                              label: "text-xs",
-                              value: "text-sm",
-                            }}
+                          <SelectField
                             description={
                               isMultiExit
                                 ? "多出口隧道不支持设置自定义连接IP，使用各服务器默认IP"
@@ -851,6 +779,13 @@ export function TunnelFormModal({
                               isMultiExit
                             }
                             label="连接IP"
+                            options={[
+                              { value: "__default__", label: "默认连接IP" },
+                              ...commonOutIpOptions.map((ip) => ({
+                                value: ip,
+                                label: ip,
+                              })),
+                            ]}
                             placeholder={
                               isMultiExit
                                 ? "多出口隧道使用服务器默认IP"
@@ -860,15 +795,13 @@ export function TunnelFormModal({
                                     ? "选择连接IP"
                                     : "所选服务器无共同可选IP"
                             }
-                            selectedKeys={[
+                            size="sm"
+                            value={
                               form.outNodeId && form.outNodeId.length > 0
                                 ? form.outNodeId[0].connectIp || "__default__"
-                                : "__default__",
-                            ]}
-                            size="sm"
-                            variant="bordered"
-                            onSelectionChange={(keys) => {
-                              const selectedKey = Array.from(keys)[0] as string;
+                                : "__default__"
+                            }
+                            onValueChange={(selectedKey) => {
                               const value =
                                 selectedKey === "__default__"
                                   ? ""
@@ -901,14 +834,7 @@ export function TunnelFormModal({
                                 };
                               });
                             }}
-                          >
-                            <SelectItem key="__default__">
-                              默认连接IP
-                            </SelectItem>
-                            {commonOutIpOptions.map((ip) => (
-                              <SelectItem key={ip}>{ip}</SelectItem>
-                            ))}
-                          </Select>
+                          />
                         </>
                       );
                     })()}
@@ -928,27 +854,24 @@ export function TunnelFormModal({
                   >
                     <div className="space-y-4 pb-2">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Select
+                        <SelectField
                           errorMessage={errors.flow}
                           isInvalid={!!errors.flow}
                           label="流量计算"
+                          options={[
+                            { value: "1", label: "单向计算（仅上传）" },
+                            { value: "2", label: "双向计算（上传+下载）" },
+                          ]}
                           placeholder="请选择流量计算方式"
-                          selectedKeys={[form.flow.toString()]}
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selectedKey = Array.from(keys)[0] as string;
-
-                            if (selectedKey) {
-                              setForm((prev) => ({
-                                ...prev,
-                                flow: parseInt(selectedKey),
-                              }));
-                            }
+                          value={form.flow.toString()}
+                          onValueChange={(selectedKey) => {
+                            if (!selectedKey) return;
+                            setForm((prev) => ({
+                              ...prev,
+                              flow: parseInt(selectedKey),
+                            }));
                           }}
-                        >
-                          <SelectItem key="1">单向计算（仅上传）</SelectItem>
-                          <SelectItem key="2">双向计算（上传+下载）</SelectItem>
-                        </Select>
+                        />
 
                         <Input
                           errorMessage={errors.trafficRatio}
@@ -989,24 +912,22 @@ export function TunnelFormModal({
                       />
 
                       {form.type === 2 && (
-                        <Select
+                        <SelectField
                           description="当服务器同时拥有IPv4和IPv6地址时，选择隧道连接使用的地址类型"
                           label="隧道连接地址偏好"
+                          options={[
+                            { value: "v4", label: "优先IPv4" },
+                            { value: "v6", label: "优先IPv6" },
+                          ]}
                           placeholder="自动选择"
-                          selectedKeys={[form.ipPreference || ""]}
-                          variant="bordered"
-                          onSelectionChange={(keys) => {
-                            const selectedKey = Array.from(keys)[0] as string;
-
+                          value={form.ipPreference || ""}
+                          onValueChange={(selectedKey) =>
                             setForm((prev) => ({
                               ...prev,
-                              ipPreference: selectedKey || "",
-                            }));
-                          }}
-                        >
-                          <SelectItem key="v4">优先IPv4</SelectItem>
-                          <SelectItem key="v6">优先IPv6</SelectItem>
-                        </Select>
+                              ipPreference: selectedKey,
+                            }))
+                          }
+                        />
                       )}
 
                       <div>
