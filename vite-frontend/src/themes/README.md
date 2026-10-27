@@ -161,26 +161,26 @@ const theme: ThemePackage = {
 
 | 组件键名 | 原始位置 | 说明 |
 |----------|----------|------|
-| `Button` | `shadcn-bridge/heroui/button` | 按钮 |
-| `Card`, `CardHeader`, `CardBody`, `CardFooter` | `shadcn-bridge/heroui/card` | 卡片 |
-| `Input` | `shadcn-bridge/heroui/input` | 输入框 |
-| `Select`, `SelectItem` | `shadcn-bridge/heroui/select` | 下拉选择 |
-| `Switch` | `shadcn-bridge/heroui/switch` | 开关 |
-| `Checkbox` | `shadcn-bridge/heroui/checkbox` | 复选框 |
-| `Chip` | `shadcn-bridge/heroui/chip` | 标签/芯片 |
-| `Modal`, `ModalContent`, `ModalHeader`, `ModalBody`, `ModalFooter` | `shadcn-bridge/heroui/modal` | 模态框 |
-| `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableCell`, `TableColumn` | `shadcn-bridge/heroui/table` | 表格 |
-| `Tabs`, `Tab` | `shadcn-bridge/heroui/tabs` | 标签页 |
-| `Progress` | `shadcn-bridge/heroui/progress` | 进度条 |
-| `Spinner` | `shadcn-bridge/heroui/spinner` | 加载指示器 |
-| `Divider` | `shadcn-bridge/heroui/divider` | 分割线 |
-| `Link` | `shadcn-bridge/heroui/link` | 链接 |
-| `Dropdown`, `DropdownTrigger`, `DropdownMenu`, `DropdownItem` | `shadcn-bridge/heroui/dropdown` | 下拉菜单 |
-| `Navbar`, `NavbarContent`, `NavbarItem` | `shadcn-bridge/heroui/navbar` | 导航栏 |
-| `Radio`, `RadioGroup` | `shadcn-bridge/heroui/radio` | 单选框 |
-| `Accordion`, `AccordionItem` | `shadcn-bridge/heroui/accordion` | 手风琴 |
-| `DatePicker` | `shadcn-bridge/heroui/date-picker` | 日期选择器 |
-| `Alert` | `shadcn-bridge/heroui/alert` | 警告提示 |
+| `Button` | `components/ui/button` | 按钮 |
+| `Card`, `CardHeader`, `CardBody`, `CardFooter` | `components/ui/card` | 卡片 |
+| `Input` | `components/field-input` | 输入框 |
+| `Select`, `SelectItem` | `components/select-field` | 下拉选择 |
+| `Switch` | `components/ui/switch` | 开关 |
+| `Checkbox` | `components/ui/checkbox` | 复选框 |
+| `Chip` | `components/ui/badge` | 标签/芯片 |
+| `Modal`, `ModalContent`, `ModalHeader`, `ModalBody`, `ModalFooter` | `components/modal` | 模态框 |
+| `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableCell`, `TableColumn` | `components/ui/table` | 表格 |
+| `Tabs`, `Tab` | `components/tabs-field` | 标签页 |
+| `Progress` | `components/progress-bar` | 进度条 |
+| `Spinner` | `lucide-react Loader2` | 加载指示器 |
+| `Divider` | `components/ui/separator` | 分割线 |
+| `Link` | `react-router-dom Link` | 链接 |
+| `Dropdown`, `DropdownTrigger`, `DropdownMenu`, `DropdownItem` | `components/dropdown` | 下拉菜单 |
+| `Navbar`, `NavbarContent`, `NavbarItem` | `components/navbar` | 导航栏 |
+| `Radio`, `RadioGroup` | `components/radio-group-field` | 单选框 |
+| `Accordion`, `AccordionItem` | `components/accordion-field` | 手风琴 |
+| `DatePicker` | `components/date-picker-field` | 日期选择器 |
+| `Alert` | `components/ui/alert` | 警告提示 |
 | `SearchBar` | `components/search-bar` | 搜索栏 |
 | `BrandLogo` | `components/brand-logo` | 品牌 Logo |
 | `VersionFooter` | `components/version-footer` | 版本页脚 |
@@ -192,8 +192,8 @@ const theme: ThemePackage = {
 ```typescript
 // src/themes/my-theme/components/button.tsx
 import React from "react";
-import type { ButtonProps } from "@/shadcn-bridge/heroui/button";
-import { Button as OriginalButton } from "@/shadcn-bridge/heroui/button";
+import type { ButtonProps } from "@/components/ui/button";
+import { Button as OriginalButton } from "@/components/ui/button";
 
 export const MyButton: React.FC<ButtonProps> = (props) => {
   return (
@@ -214,16 +214,13 @@ export const MyButton: React.FC<ButtonProps> = (props) => {
 ```typescript
 // src/themes/my-theme/components/button.tsx
 import React from "react";
-import type { ButtonProps } from "@/shadcn-bridge/heroui/button";
+import type { ButtonProps } from "@/components/ui/button";
 
 export const MyButton: React.FC<ButtonProps> = ({
   children,
-  color = "default",
-  variant = "solid",
-  size = "md",
-  isLoading,
-  isDisabled,
-  onPress,
+  variant = "default",
+  size = "default",
+  disabled,
   className,
   ...rest
 }) => {
