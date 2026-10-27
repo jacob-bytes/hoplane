@@ -3,11 +3,11 @@ import type { InboundProbe, InboundProbePoint } from "@/api/types";
 import { ChartLine, ListChecks, Loader2, RefreshCw, Route } from "lucide-react";
 
 import {
-  Dropdown,
-  DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-} from "@/components/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { RouteTag } from "@/components/route-modal";
 
 /** Latency below GOOD shows green, below FAIR orange, anything else red. */
@@ -336,8 +336,8 @@ export function LatencyCell({
   }
 
   return (
-    <Dropdown placement="bottom-end">
-      <DropdownTrigger>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         {variant === "card" ? (
           <button
             className="w-full rounded-lg text-left transition-opacity hover:opacity-80"
@@ -384,8 +384,9 @@ export function LatencyCell({
             )}
           </button>
         )}
-      </DropdownTrigger>
-      <DropdownMenu
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        align="end"
         aria-label="延迟详情"
         className="w-80 max-w-[calc(100vw-32px)]"
       >
@@ -427,52 +428,50 @@ export function LatencyCell({
           </div>
           {footer}
           <div className="grid auto-cols-fr grid-flow-col border-t border-hairline">
-            <DropdownItem
+            <DropdownMenuItem
               className="justify-center whitespace-nowrap px-1 text-xs text-primary"
-              startContent={
-                probing ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <RefreshCw className="h-3.5 w-3.5" />
-                )
-              }
-              onPress={onProbe}
+              onSelect={(event) => {
+                event.preventDefault();
+                onProbe();
+              }}
             >
+              {probing ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <RefreshCw className="h-3.5 w-3.5" />
+              )}
               {probing ? "检测中" : "重测"}
-            </DropdownItem>
+            </DropdownMenuItem>
             {onShowTrend && (
-              <DropdownItem
-                closeOnSelect
+              <DropdownMenuItem
                 className="justify-center whitespace-nowrap px-1 text-xs text-primary"
-                startContent={<ChartLine className="h-3.5 w-3.5" />}
-                onPress={() => setTimeout(onShowTrend, 0)}
+                onSelect={() => setTimeout(onShowTrend, 0)}
               >
+                <ChartLine className="h-3.5 w-3.5" />
                 趋势
-              </DropdownItem>
+              </DropdownMenuItem>
             )}
             {onShowRoute && (
-              <DropdownItem
-                closeOnSelect
+              <DropdownMenuItem
                 className="justify-center whitespace-nowrap px-1 text-xs text-primary"
-                startContent={<Route className="h-3.5 w-3.5" />}
-                onPress={() => setTimeout(onShowRoute, 0)}
+                onSelect={() => setTimeout(onShowRoute, 0)}
               >
+                <Route className="h-3.5 w-3.5" />
                 回程
-              </DropdownItem>
+              </DropdownMenuItem>
             )}
             {onEditTargets && (
-              <DropdownItem
-                closeOnSelect
+              <DropdownMenuItem
                 className="justify-center whitespace-nowrap px-1 text-xs text-primary"
-                startContent={<ListChecks className="h-3.5 w-3.5" />}
-                onPress={() => setTimeout(onEditTargets, 0)}
+                onSelect={() => setTimeout(onEditTargets, 0)}
               >
+                <ListChecks className="h-3.5 w-3.5" />
                 测试点
-              </DropdownItem>
+              </DropdownMenuItem>
             )}
           </div>
         </div>
-      </DropdownMenu>
-    </Dropdown>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

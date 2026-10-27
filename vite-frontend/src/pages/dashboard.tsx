@@ -7,11 +7,11 @@ import { AnimatedPage } from "@/components/animated-page";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Dropdown,
-  DropdownTrigger,
   DropdownMenu,
-  DropdownItem,
-} from "@/components/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Modal,
   ModalContent,
@@ -640,8 +640,8 @@ function UserDashboard() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <Button
                 className="h-9 w-9 min-w-0 rounded-full bg-primary text-sm font-semibold text-primary-foreground"
                 size="icon"
@@ -649,52 +649,43 @@ function UserDashboard() {
               >
                 {username.slice(0, 2).toUpperCase()}
               </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="用户菜单" className="min-w-48">
-              <DropdownItem
-                key="profile"
-                startContent={
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                    />
-                  </svg>
-                }
-                onPress={() => navigate("/profile")}
-              >
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-48">
+              <DropdownMenuItem onSelect={() => navigate("/profile")}>
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                  />
+                </svg>
                 个人资料
-              </DropdownItem>
-              <DropdownItem
-                key="logout"
+              </DropdownMenuItem>
+              <DropdownMenuItem
                 className="text-destructive"
-                color="danger"
-                startContent={
-                  <svg
-                    className="w-4 h-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
-                }
-                onPress={handleLogout}
+                onSelect={handleLogout}
               >
+                <svg
+                  className="h-4 w-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                    fillRule="evenodd"
+                  />
+                </svg>
                 退出登录
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       {announcement && <AnnouncementBanner announcement={announcement} />}

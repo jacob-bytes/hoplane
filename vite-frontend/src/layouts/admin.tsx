@@ -25,11 +25,11 @@ import { VersionFooter } from "@/components/version-footer";
 import { CommandPalette } from "@/components/command-palette";
 import { Avatar } from "@/components/ui/avatar";
 import {
-  Dropdown,
-  DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-} from "@/components/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { getMonitorAccess } from "@/api";
 import { safeLogout } from "@/utils/logout";
 import { siteConfig } from "@/config/site";
@@ -525,8 +525,8 @@ export default function AdminLayout({
 
           <CommandPalette />
 
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
               <button
                 aria-label="账户菜单"
                 className="flex shrink-0 items-center gap-2 rounded-lg py-1 pl-1 pr-2 text-sm transition-colors hover:bg-accent"
@@ -537,25 +537,21 @@ export default function AdminLayout({
                   {sessionName}
                 </span>
               </button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="账户">
-              <DropdownItem
-                key="profile"
-                startContent={<UserRound className="h-4 w-4" />}
-                onPress={() => navigate("/profile")}
-              >
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onSelect={() => navigate("/profile")}>
+                <UserRound className="h-4 w-4" />
                 账户与登录
-              </DropdownItem>
-              <DropdownItem
-                key="logout"
+              </DropdownMenuItem>
+              <DropdownMenuItem
                 className="text-destructive"
-                startContent={<LogOut className="h-4 w-4" />}
-                onPress={handleLogout}
+                onSelect={handleLogout}
               >
+                <LogOut className="h-4 w-4" />
                 退出登录
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </header>
 
         {/* 主内容 */}

@@ -57,11 +57,11 @@ import { Switch } from "@/components/ui/switch";
 import { SelectField } from "@/components/select-native";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
-  Dropdown,
-  DropdownTrigger,
   DropdownMenu,
-  DropdownItem,
-} from "@/components/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ProgressBar as Progress } from "@/components/progress-bar";
 import {
@@ -1770,58 +1770,57 @@ export function MonitorView({
                               <Badge variant="outline">已禁用</Badge>
                             ) : null}
                           </div>
-                          <Dropdown>
-                            <DropdownTrigger>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
                               <Button
                                 className="shrink-0"
                                 size="sm"
                                 variant="secondary"
                               >
-                                {<MoreHorizontal className="h-4 w-4" />}
+                                <MoreHorizontal className="h-4 w-4" />
                                 操作
                               </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                              <DropdownItem
-                                startContent={<Play className="w-4 h-4" />}
-                                onPress={() =>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="start">
+                              <DropdownMenuItem
+                                onSelect={() =>
                                   resolvedActiveMonitorId != null &&
                                   handleRunMonitor(resolvedActiveMonitorId)
                                 }
                               >
+                                <Play className="h-4 w-4" />
                                 立即检查
-                              </DropdownItem>
-                              <DropdownItem
-                                startContent={<Activity className="w-4 h-4" />}
-                                onPress={() =>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onSelect={() =>
                                   resolvedActiveMonitorId != null &&
                                   openResultsModal(resolvedActiveMonitorId)
                                 }
                               >
+                                <Activity className="h-4 w-4" />
                                 查看记录
-                              </DropdownItem>
-                              <DropdownItem
-                                startContent={<Edit className="w-4 h-4" />}
-                                onPress={() =>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onSelect={() =>
                                   resolvedActiveMonitor &&
                                   handleOpenEditModal(resolvedActiveMonitor)
                                 }
                               >
+                                <Edit className="h-4 w-4" />
                                 编辑
-                              </DropdownItem>
-                              <DropdownItem
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
                                 className="text-destructive"
-                                color="danger"
-                                startContent={<Trash2 className="w-4 h-4" />}
-                                onPress={() =>
+                                onSelect={() =>
                                   resolvedActiveMonitorId != null &&
                                   handleDeleteMonitor(resolvedActiveMonitorId)
                                 }
                               >
+                                <Trash2 className="h-4 w-4" />
                                 删除
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </Dropdown>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         </div>
                       )}
 

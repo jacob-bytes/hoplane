@@ -3,11 +3,11 @@ import { ArrowDown, ArrowUp, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import {
-  Dropdown,
-  DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-} from "@/components/dropdown";
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { TextField as Input } from "@/components/field-input";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -215,25 +215,25 @@ export function LatencySettings({
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Dropdown>
-          <DropdownTrigger>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <Button disabled={full} size="sm" variant="secondary">
               添加预设
             </Button>
-          </DropdownTrigger>
-          <DropdownMenu aria-label="预设测试点" className="max-h-72 w-44">
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="max-h-72 w-44">
             {PRESETS.map((p) => (
-              <DropdownItem
+              <DropdownMenuItem
                 key={p.name}
                 className={names.has(p.name) ? "opacity-40" : ""}
-                onPress={() => add([p])}
+                onSelect={() => add([p])}
               >
                 {p.name}
                 {names.has(p.name) ? "（已添加）" : ""}
-              </DropdownItem>
+              </DropdownMenuItem>
             ))}
-          </DropdownMenu>
-        </Dropdown>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Button
           disabled={full}
           size="sm"
