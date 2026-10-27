@@ -14,7 +14,10 @@ import {
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Radio, RadioGroup } from "@/shadcn-bridge/heroui/radio";
+import {
+  RadioGroupField as RadioGroup,
+  RadioOption as Radio,
+} from "@/components/radio-group-field";
 import { Tunnel, TunnelDeleteAction } from "@/pages/tunnel/types";
 
 export interface DeleteTunnelModalProps {

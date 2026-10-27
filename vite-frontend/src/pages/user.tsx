@@ -30,7 +30,10 @@ import {
 } from "@/shadcn-bridge/heroui/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/shadcn-bridge/heroui/select";
-import { RadioGroup, Radio } from "@/shadcn-bridge/heroui/radio";
+import {
+  RadioGroupField as RadioGroup,
+  RadioOption as Radio,
+} from "@/components/radio-group-field";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { DatePicker } from "@/shadcn-bridge/heroui/date-picker";
