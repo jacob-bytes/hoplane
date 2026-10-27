@@ -32,10 +32,9 @@ import { OutboundIPSelect } from "./outbound-ip-select";
 
 import { createInbound, updateInbound } from "@/api";
 import { Button } from "@/components/ui/button";
-import {
-  TextField as Input,
-  TextAreaField as Textarea,
-} from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Modal,
   ModalBody,
@@ -461,21 +460,25 @@ export function InboundFormModal({
                 )}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <Input
-                    label="名称"
-                    placeholder="例如：东京-Reality"
-                    value={form.name}
-                    variant="bordered"
-                    onChange={(e) => set("name", e.target.value)}
-                  />
-                  <Input
-                    label="端口"
-                    placeholder="留空随机"
-                    type="number"
-                    value={form.port}
-                    variant="bordered"
-                    onChange={(e) => set("port", e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-0">名称</Label>
+                    <Input
+                      id="field-0"
+                      placeholder="例如：东京-Reality"
+                      value={form.name}
+                      onChange={(e) => set("name", e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-1">端口</Label>
+                    <Input
+                      id="field-1"
+                      placeholder="留空随机"
+                      type="number"
+                      value={form.port}
+                      onChange={(e) => set("port", e.target.value)}
+                    />
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -511,13 +514,15 @@ export function InboundFormModal({
                 </div>
 
                 {uuidProtocols.includes(form.protocol) && (
-                  <Input
-                    label="UUID"
-                    placeholder="留空自动生成"
-                    value={form.uuid}
-                    variant="bordered"
-                    onChange={(e) => set("uuid", e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-2">UUID</Label>
+                    <Input
+                      id="field-2"
+                      placeholder="留空自动生成"
+                      value={form.uuid}
+                      onChange={(e) => set("uuid", e.target.value)}
+                    />
+                  </div>
                 )}
                 {vlessEncAllowed(form) && (
                   <div className="flex items-start gap-2">
@@ -562,28 +567,34 @@ export function InboundFormModal({
                   />
                 )}
                 {usernameProtocols.includes(form.protocol) && (
-                  <Input
-                    label="用户名"
-                    placeholder="留空自动生成"
-                    value={form.username}
-                    variant="bordered"
-                    onChange={(e) => set("username", e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-3">用户名</Label>
+                    <Input
+                      id="field-3"
+                      placeholder="留空自动生成"
+                      value={form.username}
+                      onChange={(e) => set("username", e.target.value)}
+                    />
+                  </div>
                 )}
                 {passwordProtocols.includes(form.protocol) && (
-                  <Input
-                    description={
-                      form.protocol === "shadowsocks" &&
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-4">
+                      {form.protocol === "snell" ? "PSK" : "密码"}
+                    </Label>
+                    <Input
+                      id="field-4"
+                      placeholder="留空自动生成"
+                      value={form.password}
+                      onChange={(e) => set("password", e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {form.protocol === "shadowsocks" &&
                       form.method.startsWith("2022-")
                         ? "SS2022 需要 base64 密钥，建议留空自动生成"
-                        : undefined
-                    }
-                    label={form.protocol === "snell" ? "PSK" : "密码"}
-                    placeholder="留空自动生成"
-                    value={form.password}
-                    variant="bordered"
-                    onChange={(e) => set("password", e.target.value)}
-                  />
+                        : undefined}
+                    </p>
+                  </div>
                 )}
 
                 {form.protocol === "snell" && (
@@ -625,21 +636,27 @@ export function InboundFormModal({
                 {form.protocol === "wireguard" && (
                   <div className="space-y-2">
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      <Input
-                        description="服务端用同一网段的 .1"
-                        label="客户端地址"
-                        placeholder="10.66.66.2"
-                        value={form.wgPeerAddress}
-                        variant="bordered"
-                        onChange={(e) => set("wgPeerAddress", e.target.value)}
-                      />
-                      <Input
-                        label="MTU"
-                        placeholder="1420"
-                        value={form.wgMtu}
-                        variant="bordered"
-                        onChange={(e) => set("wgMtu", e.target.value)}
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-5">客户端地址</Label>
+                        <Input
+                          id="field-5"
+                          placeholder="10.66.66.2"
+                          value={form.wgPeerAddress}
+                          onChange={(e) => set("wgPeerAddress", e.target.value)}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          服务端用同一网段的 .1
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-6">MTU</Label>
+                        <Input
+                          id="field-6"
+                          placeholder="1420"
+                          value={form.wgMtu}
+                          onChange={(e) => set("wgMtu", e.target.value)}
+                        />
+                      </div>
                     </div>
                     <p className="text-xs text-muted-foreground">
                       密钥自动生成，所有人共用一份客户端配置（在“分享”里）；需要更换时用“换密钥”
@@ -647,42 +664,56 @@ export function InboundFormModal({
                   </div>
                 )}
                 {form.protocol === "hysteria2" && (
-                  <Input
-                    description="非客户端访问时返回此网站内容，留空不伪装"
-                    label="伪装网站（可选）"
-                    placeholder="https://www.bing.com"
-                    value={form.masquerade}
-                    variant="bordered"
-                    onChange={(e) => set("masquerade", e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-7">伪装网站（可选）</Label>
+                    <Input
+                      id="field-7"
+                      placeholder="https://www.bing.com"
+                      value={form.masquerade}
+                      onChange={(e) => set("masquerade", e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      非客户端访问时返回此网站内容，留空不伪装
+                    </p>
+                  </div>
                 )}
                 {form.protocol === "hysteria2" && (
-                  <Input
-                    description="客户端在这段 UDP 端口间随机切换，缓解运营商对单端口 UDP 的限速；服务器上由 nftables 转到入站端口。经中转连接时不跳跃"
-                    label="端口跳跃（可选）"
-                    placeholder="例如 20000-30000"
-                    value={form.portHopping}
-                    variant="bordered"
-                    onChange={(e) => set("portHopping", e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-8">端口跳跃（可选）</Label>
+                    <Input
+                      id="field-8"
+                      placeholder="例如 20000-30000"
+                      value={form.portHopping}
+                      onChange={(e) => set("portHopping", e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      客户端在这段 UDP 端口间随机切换，缓解运营商对单端口 UDP
+                      的限速；服务器上由 nftables
+                      转到入站端口。经中转连接时不跳跃
+                    </p>
+                  </div>
                 )}
 
                 {(form.transportType === "ws" ||
                   form.transportType === "xhttp") && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <Input
-                      label="路径"
-                      placeholder="留空随机"
-                      value={form.path}
-                      variant="bordered"
-                      onChange={(e) => set("path", e.target.value)}
-                    />
-                    <Input
-                      label="Host（可选）"
-                      value={form.host}
-                      variant="bordered"
-                      onChange={(e) => set("host", e.target.value)}
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="field-9">路径</Label>
+                      <Input
+                        id="field-9"
+                        placeholder="留空随机"
+                        value={form.path}
+                        onChange={(e) => set("path", e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="field-10">Host（可选）</Label>
+                      <Input
+                        id="field-10"
+                        value={form.host}
+                        onChange={(e) => set("host", e.target.value)}
+                      />
+                    </div>
                   </div>
                 )}
                 {form.transportType === "xhttp" && (
@@ -697,64 +728,86 @@ export function InboundFormModal({
                   />
                 )}
                 {form.transportType === "grpc" && (
-                  <Input
-                    label="gRPC serviceName"
-                    placeholder="grpc"
-                    value={form.serviceName}
-                    variant="bordered"
-                    onChange={(e) => set("serviceName", e.target.value)}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="field-11">gRPC serviceName</Label>
+                    <Input
+                      id="field-11"
+                      placeholder="grpc"
+                      value={form.serviceName}
+                      onChange={(e) => set("serviceName", e.target.value)}
+                    />
+                  </div>
                 )}
 
                 {form.securityType === "reality" && (
                   <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">Reality</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Input
-                        description="客户端使用的 SNI，需是支持 TLS1.3 的大站"
-                        label="伪装域名"
-                        value={form.sni}
-                        variant="bordered"
-                        onChange={(e) => set("sni", e.target.value)}
-                      />
-                      <Input
-                        description="留空则为 伪装域名:443"
-                        label="目标地址 (dest)"
-                        placeholder="www.example.com:443"
-                        value={form.realityDest}
-                        variant="bordered"
-                        onChange={(e) => set("realityDest", e.target.value)}
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-12">伪装域名</Label>
+                        <Input
+                          id="field-12"
+                          value={form.sni}
+                          onChange={(e) => set("sni", e.target.value)}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          客户端使用的 SNI，需是支持 TLS1.3 的大站
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-13">目标地址 (dest)</Label>
+                        <Input
+                          id="field-13"
+                          placeholder="www.example.com:443"
+                          value={form.realityDest}
+                          onChange={(e) => set("realityDest", e.target.value)}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          留空则为 伪装域名:443
+                        </p>
+                      </div>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Input
-                        label="私钥"
-                        placeholder="留空自动生成"
-                        value={form.realityPrivateKey}
-                        variant="bordered"
-                        onChange={(e) =>
-                          set("realityPrivateKey", e.target.value)
-                        }
-                      />
-                      <Input
-                        label="shortId"
-                        placeholder="留空自动生成，多个用逗号分隔"
-                        value={form.realityShortIds}
-                        variant="bordered"
-                        onChange={(e) => set("realityShortIds", e.target.value)}
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-14">私钥</Label>
+                        <Input
+                          id="field-14"
+                          placeholder="留空自动生成"
+                          value={form.realityPrivateKey}
+                          onChange={(e) =>
+                            set("realityPrivateKey", e.target.value)
+                          }
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-15">shortId</Label>
+                        <Input
+                          id="field-15"
+                          placeholder="留空自动生成，多个用逗号分隔"
+                          value={form.realityShortIds}
+                          onChange={(e) =>
+                            set("realityShortIds", e.target.value)
+                          }
+                        />
+                      </div>
                     </div>
                     {form.kernelType === "xray" && (
-                      <Input
-                        description="低于此版本的客户端会被拒绝。Xray 新版默认 26.3.27，会导致 Clash / Mihomo 等客户端连不上，保持 1.0.0 即可兼容所有客户端"
-                        label="最低客户端版本"
-                        placeholder="1.0.0"
-                        value={form.realityMinClientVer}
-                        variant="bordered"
-                        onChange={(e) =>
-                          set("realityMinClientVer", e.target.value)
-                        }
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-16">最低客户端版本</Label>
+                        <Input
+                          id="field-16"
+                          placeholder="1.0.0"
+                          value={form.realityMinClientVer}
+                          onChange={(e) =>
+                            set("realityMinClientVer", e.target.value)
+                          }
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          低于此版本的客户端会被拒绝。Xray 新版默认
+                          26.3.27，会导致 Clash / Mihomo 等客户端连不上，保持
+                          1.0.0 即可兼容所有客户端
+                        </p>
+                      </div>
                     )}
                   </div>
                 )}
@@ -763,22 +816,28 @@ export function InboundFormModal({
                   <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">ShadowTLS v3</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Input
-                        description="握手转发到该网站的 443 端口，需支持 TLS1.3"
-                        label="伪装网站"
-                        value={form.sni}
-                        variant="bordered"
-                        onChange={(e) => set("sni", e.target.value)}
-                      />
-                      <Input
-                        label="ShadowTLS 密码"
-                        placeholder="留空自动生成"
-                        value={form.shadowTlsPassword}
-                        variant="bordered"
-                        onChange={(e) =>
-                          set("shadowTlsPassword", e.target.value)
-                        }
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-17">伪装网站</Label>
+                        <Input
+                          id="field-17"
+                          value={form.sni}
+                          onChange={(e) => set("sni", e.target.value)}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          握手转发到该网站的 443 端口，需支持 TLS1.3
+                        </p>
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-18">ShadowTLS 密码</Label>
+                        <Input
+                          id="field-18"
+                          placeholder="留空自动生成"
+                          value={form.shadowTlsPassword}
+                          onChange={(e) =>
+                            set("shadowTlsPassword", e.target.value)
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
                 )}
@@ -787,18 +846,20 @@ export function InboundFormModal({
                   <div className="space-y-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">TLS</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Input
-                        label="域名 (SNI)"
-                        placeholder={
-                          sniOptionalProtocols.includes(form.protocol) &&
-                          certMode === "self"
-                            ? "留空使用 www.bing.com（自签）"
-                            : "node.example.com"
-                        }
-                        value={form.sni}
-                        variant="bordered"
-                        onChange={(e) => set("sni", e.target.value)}
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-19">域名 (SNI)</Label>
+                        <Input
+                          id="field-19"
+                          placeholder={
+                            sniOptionalProtocols.includes(form.protocol) &&
+                            certMode === "self"
+                              ? "留空使用 www.bing.com（自签）"
+                              : "node.example.com"
+                          }
+                          value={form.sni}
+                          onChange={(e) => set("sni", e.target.value)}
+                        />
+                      </div>
                       <SelectField
                         label="证书"
                         options={certModes.map((m) => ({
@@ -818,13 +879,15 @@ export function InboundFormModal({
                           验证则不需要。
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          <Input
-                            label="邮箱（可选）"
-                            placeholder="用于证书到期提醒"
-                            value={form.acmeEmail}
-                            variant="bordered"
-                            onChange={(e) => set("acmeEmail", e.target.value)}
-                          />
+                          <div className="flex flex-col gap-1.5">
+                            <Label htmlFor="field-20">邮箱（可选）</Label>
+                            <Input
+                              id="field-20"
+                              placeholder="用于证书到期提醒"
+                              value={form.acmeEmail}
+                              onChange={(e) => set("acmeEmail", e.target.value)}
+                            />
+                          </div>
                           <SelectField
                             label="验证方式"
                             options={Object.entries(ACME_DNS_LABELS).map(
@@ -847,39 +910,45 @@ export function InboundFormModal({
                         </div>
                         {form.acmeDns && (
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <Input
-                              label={
-                                form.acmeDns === "cloudflare"
+                            <div className="flex flex-col gap-1.5">
+                              <Label htmlFor="field-21">
+                                {form.acmeDns === "cloudflare"
                                   ? "API Token"
-                                  : "AccessKey ID"
-                              }
-                              placeholder={
-                                form.acmeDnsSet
-                                  ? "已保存，留空不修改"
-                                  : undefined
-                              }
-                              type="password"
-                              value={form.acmeDnsKey}
-                              variant="bordered"
-                              onChange={(e) =>
-                                set("acmeDnsKey", e.target.value)
-                              }
-                            />
-                            {form.acmeDns === "alidns" && (
+                                  : "AccessKey ID"}
+                              </Label>
                               <Input
-                                label="AccessKey Secret"
+                                id="field-21"
                                 placeholder={
                                   form.acmeDnsSet
                                     ? "已保存，留空不修改"
                                     : undefined
                                 }
                                 type="password"
-                                value={form.acmeDnsSecret}
-                                variant="bordered"
+                                value={form.acmeDnsKey}
                                 onChange={(e) =>
-                                  set("acmeDnsSecret", e.target.value)
+                                  set("acmeDnsKey", e.target.value)
                                 }
                               />
+                            </div>
+                            {form.acmeDns === "alidns" && (
+                              <div className="flex flex-col gap-1.5">
+                                <Label htmlFor="field-22">
+                                  AccessKey Secret
+                                </Label>
+                                <Input
+                                  id="field-22"
+                                  placeholder={
+                                    form.acmeDnsSet
+                                      ? "已保存，留空不修改"
+                                      : undefined
+                                  }
+                                  type="password"
+                                  value={form.acmeDnsSecret}
+                                  onChange={(e) =>
+                                    set("acmeDnsSecret", e.target.value)
+                                  }
+                                />
+                              </div>
                             )}
                           </div>
                         )}
@@ -887,31 +956,37 @@ export function InboundFormModal({
                     )}
                     {certMode === "file" && (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <Input
-                          label="证书路径"
-                          placeholder="/etc/ssl/fullchain.pem"
-                          value={form.certFile}
-                          variant="bordered"
-                          onChange={(e) => set("certFile", e.target.value)}
-                        />
-                        <Input
-                          label="私钥路径"
-                          placeholder="/etc/ssl/privkey.pem"
-                          value={form.keyFile}
-                          variant="bordered"
-                          onChange={(e) => set("keyFile", e.target.value)}
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-23">证书路径</Label>
+                          <Input
+                            id="field-23"
+                            placeholder="/etc/ssl/fullchain.pem"
+                            value={form.certFile}
+                            onChange={(e) => set("certFile", e.target.value)}
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-24">私钥路径</Label>
+                          <Input
+                            id="field-24"
+                            placeholder="/etc/ssl/privkey.pem"
+                            value={form.keyFile}
+                            onChange={(e) => set("keyFile", e.target.value)}
+                          />
+                        </div>
                       </div>
                     )}
                     {form.protocol !== "hysteria2" &&
                       form.protocol !== "tuic" && (
-                        <Input
-                          label="ALPN（可选）"
-                          placeholder="h2,http/1.1"
-                          value={form.alpn}
-                          variant="bordered"
-                          onChange={(e) => set("alpn", e.target.value)}
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-25">ALPN（可选）</Label>
+                          <Input
+                            id="field-25"
+                            placeholder="h2,http/1.1"
+                            value={form.alpn}
+                            onChange={(e) => set("alpn", e.target.value)}
+                          />
+                        </div>
                       )}
                   </div>
                 )}
@@ -926,13 +1001,17 @@ export function InboundFormModal({
                 {showAdvanced && (
                   <div className="space-y-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <Input
-                        description="默认 :: 监听所有地址；127.0.0.1 仅本机（配合隧道中转）"
-                        label="监听地址"
-                        value={form.listen}
-                        variant="bordered"
-                        onChange={(e) => set("listen", e.target.value)}
-                      />
+                      <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="field-26">监听地址</Label>
+                        <Input
+                          id="field-26"
+                          value={form.listen}
+                          onChange={(e) => set("listen", e.target.value)}
+                        />
+                        <p className="text-xs text-muted-foreground">
+                          默认 :: 监听所有地址；127.0.0.1 仅本机（配合隧道中转）
+                        </p>
+                      </div>
                       <div className="space-y-2">
                         <SelectField
                           label="分享地址"
@@ -962,7 +1041,6 @@ export function InboundFormModal({
                             aria-label="自定义分享地址"
                             placeholder="域名或 IP，不含端口"
                             value={form.shareHost}
-                            variant="bordered"
                             onChange={(e) => set("shareHost", e.target.value)}
                           />
                         )}
@@ -1029,33 +1107,47 @@ export function InboundFormModal({
                         </div>
                       </div>
                       {form.relayWhitelist && (
-                        <Input
-                          description="中转机出口 IP 与服务器地址不同时，在此补充；支持 IP 和网段，逗号分隔"
-                          label="额外放行"
-                          placeholder="203.0.113.9, 10.0.0.0/8"
-                          value={form.whitelistExtra}
-                          variant="bordered"
-                          onChange={(e) =>
-                            set("whitelistExtra", e.target.value)
-                          }
-                        />
+                        <div className="flex flex-col gap-1.5">
+                          <Label htmlFor="field-27">额外放行</Label>
+                          <Input
+                            id="field-27"
+                            placeholder="203.0.113.9, 10.0.0.0/8"
+                            value={form.whitelistExtra}
+                            onChange={(e) =>
+                              set("whitelistExtra", e.target.value)
+                            }
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            中转机出口 IP 与服务器地址不同时，在此补充；支持 IP
+                            和网段，逗号分隔
+                          </p>
+                        </div>
                       )}
                     </div>
-                    <Input
-                      label="备注"
-                      value={form.remark}
-                      variant="bordered"
-                      onChange={(e) => set("remark", e.target.value)}
-                    />
-                    <Textarea
-                      description="内核原生字段，深度合并到该入站配置中（例如 sniffing、sockopt）"
-                      label="高级配置 (JSON)"
-                      minRows={3}
-                      placeholder='{"streamSettings":{"sockopt":{"tcpFastOpen":true}}}'
-                      value={form.extra}
-                      variant="bordered"
-                      onChange={(e) => set("extra", e.target.value)}
-                    />
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="field-28">备注</Label>
+                      <Input
+                        id="field-28"
+                        value={form.remark}
+                        onChange={(e) => set("remark", e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <Label htmlFor="inbound-extra-json">
+                        高级配置 (JSON)
+                      </Label>
+                      <Textarea
+                        className="min-h-24 font-mono text-xs"
+                        id="inbound-extra-json"
+                        placeholder='{"streamSettings":{"sockopt":{"tcpFastOpen":true}}}'
+                        value={form.extra}
+                        onChange={(e) => set("extra", e.target.value)}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        内核原生字段，深度合并到该入站配置中（例如
+                        sniffing、sockopt）
+                      </p>
+                    </div>
                   </div>
                 )}
               </div>
