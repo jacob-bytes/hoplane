@@ -10,8 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { Button, buttonVariant } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
-import { TextAreaField as Textarea } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { SelectField } from "@/components/select-native";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -1187,35 +1187,40 @@ export default function ConfigPage() {
             : null;
 
         return (
-          <Input
-            aria-label={item.label}
-            classNames={{
-              input: "text-sm",
-              inputWrapper: isChanged
-                ? "border-warning-300 data-[hover=true]:border-warning-400"
-                : "",
-            }}
-            endContent={isTunnelQualityInterval ? "秒" : undefined}
-            errorMessage={intervalError || undefined}
-            isInvalid={Boolean(intervalError)}
-            max={
-              isTunnelQualityInterval
-                ? MAX_TUNNEL_QUALITY_INTERVAL_SEC
-                : undefined
-            }
-            min={
-              isTunnelQualityInterval
-                ? MIN_TUNNEL_QUALITY_INTERVAL_SEC
-                : undefined
-            }
-            placeholder={item.placeholder}
-            size="sm"
-            step={isTunnelQualityInterval ? 1 : undefined}
-            type={isTunnelQualityInterval ? "number" : "text"}
-            value={intervalValue}
-            variant="bordered"
-            onChange={(e) => handleConfigChange(item.key, e.target.value)}
-          />
+          <div className="flex flex-col gap-1.5">
+            <div className="relative">
+              <Input
+                aria-invalid={Boolean(intervalError) || undefined}
+                aria-label={item.label}
+                className={`h-8 text-sm ${isChanged ? "border-warning-300" : ""} ${isTunnelQualityInterval ? "pr-8" : ""}`}
+                max={
+                  isTunnelQualityInterval
+                    ? MAX_TUNNEL_QUALITY_INTERVAL_SEC
+                    : undefined
+                }
+                min={
+                  isTunnelQualityInterval
+                    ? MIN_TUNNEL_QUALITY_INTERVAL_SEC
+                    : undefined
+                }
+                placeholder={item.placeholder}
+                step={isTunnelQualityInterval ? 1 : undefined}
+                type={isTunnelQualityInterval ? "number" : "text"}
+                value={intervalValue}
+                onChange={(e) => handleConfigChange(item.key, e.target.value)}
+              />
+              {isTunnelQualityInterval ? (
+                <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                  秒
+                </span>
+              ) : null}
+            </div>
+            {intervalError ? (
+              <p className="text-xs text-destructive" role="alert">
+                {intervalError}
+              </p>
+            ) : null}
+          </div>
         );
       }
 

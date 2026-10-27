@@ -5,7 +5,8 @@ import { Turnstile } from "@marsidev/react-turnstile";
 import { motion } from "framer-motion";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { VersionFooter } from "@/components/version-footer";
@@ -252,43 +253,48 @@ export default function IndexPage() {
             </CardHeader>
             <CardContent className="px-6 py-6 mt-2">
               <div className="flex flex-col gap-5">
-                <Input
-                  classNames={{
-                    inputWrapper:
-                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-destructive",
-                    input: "text-[14px]",
-                  }}
-                  errorMessage={errors.username}
-                  isDisabled={loading}
-                  isInvalid={!!errors.username}
-                  label="用户名"
-                  placeholder="admin"
-                  value={form.username}
-                  variant="bordered"
-                  onChange={(e) =>
-                    handleInputChange("username", e.target.value)
-                  }
-                  onKeyDown={handleKeyPress}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="login-username">用户名</Label>
+                  <Input
+                    aria-invalid={!!errors.username || undefined}
+                    className="h-10 rounded-md text-sm"
+                    disabled={loading}
+                    id="login-username"
+                    placeholder="admin"
+                    value={form.username}
+                    onChange={(e) =>
+                      handleInputChange("username", e.target.value)
+                    }
+                    onKeyDown={handleKeyPress}
+                  />
+                  {errors.username ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.username}
+                    </p>
+                  ) : null}
+                </div>
 
-                <Input
-                  classNames={{
-                    inputWrapper:
-                      "h-10 rounded-md border border-hairline bg-raised shadow-none data-[invalid=true]:border-destructive",
-                    input: "text-[14px] tracking-wider",
-                  }}
-                  isDisabled={loading}
-                  isInvalid={!!errors.password}
-                  label="密码"
-                  placeholder="••••••••"
-                  type="password"
-                  value={form.password}
-                  variant="bordered"
-                  onChange={(e) =>
-                    handleInputChange("password", e.target.value)
-                  }
-                  onKeyDown={handleKeyPress}
-                />
+                <div className="flex flex-col gap-1.5">
+                  <Label htmlFor="login-password">密码</Label>
+                  <Input
+                    aria-invalid={!!errors.password || undefined}
+                    className="h-10 rounded-md text-sm tracking-wider"
+                    disabled={loading}
+                    id="login-password"
+                    placeholder="••••••••"
+                    type="password"
+                    value={form.password}
+                    onChange={(e) =>
+                      handleInputChange("password", e.target.value)
+                    }
+                    onKeyDown={handleKeyPress}
+                  />
+                  {errors.password ? (
+                    <p className="text-xs text-destructive" role="alert">
+                      {errors.password}
+                    </p>
+                  ) : null}
+                </div>
 
                 <Button
                   className="mt-2 h-10 rounded-md bg-primary text-sm font-medium text-white shadow-none"

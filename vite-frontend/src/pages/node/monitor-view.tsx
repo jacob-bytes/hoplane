@@ -52,7 +52,8 @@ import {
   ModalBody,
   ModalFooter,
 } from "@/components/modal";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { SelectField } from "@/components/select-native";
 import { Badge, badgeTone } from "@/components/ui/badge";
@@ -2005,14 +2006,17 @@ export function MonitorView({
         <ModalContent>
           <ModalHeader>{editingMonitor ? "编辑监控" : "添加监控"}</ModalHeader>
           <ModalBody className="space-y-4">
-            <Input
-              label="名称"
-              placeholder="例如: Google DNS"
-              value={monitorForm.name}
-              onChange={(e) =>
-                setMonitorForm((f) => ({ ...f, name: e.target.value }))
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="monitor-name">名称</Label>
+              <Input
+                id="monitor-name"
+                placeholder="例如: Google DNS"
+                value={monitorForm.name}
+                onChange={(e) =>
+                  setMonitorForm((f) => ({ ...f, name: e.target.value }))
+                }
+              />
+            </div>
             <SelectField
               label="类型"
               options={[
@@ -2036,71 +2040,91 @@ export function MonitorView({
                 })
               }
             />
-            <Input
-              label="目标"
-              placeholder={
-                monitorForm.type === "icmp"
-                  ? "例如: 8.8.8.8 或 1.1.1.1"
-                  : "例如: 8.8.8.8:53"
-              }
-              value={monitorForm.target}
-              onChange={(e) =>
-                setMonitorForm((f) => ({ ...f, target: e.target.value }))
-              }
-            />
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="monitor-target">目标</Label>
+              <Input
+                id="monitor-target"
+                placeholder={
+                  monitorForm.type === "icmp"
+                    ? "例如: 8.8.8.8 或 1.1.1.1"
+                    : "例如: 8.8.8.8:53"
+                }
+                value={monitorForm.target}
+                onChange={(e) =>
+                  setMonitorForm((f) => ({ ...f, target: e.target.value }))
+                }
+              />
+            </div>
             <div className="grid grid-cols-2 gap-4">
-              <Input
-                description={`最小 ${resolvedServiceMonitorLimits.minIntervalSec}s（扫描周期 ${resolvedServiceMonitorLimits.checkerScanIntervalSec}s）`}
-                errorMessage={
-                  monitorForm.intervalSec <
-                  resolvedServiceMonitorLimits.minIntervalSec
-                    ? `不能小于 ${resolvedServiceMonitorLimits.minIntervalSec}s`
-                    : undefined
-                }
-                isInvalid={
-                  monitorForm.intervalSec <
-                  resolvedServiceMonitorLimits.minIntervalSec
-                }
-                label="检查间隔(秒)"
-                type="number"
-                value={String(monitorForm.intervalSec)}
-                onChange={(e) =>
-                  setMonitorForm((f) => ({
-                    ...f,
-                    intervalSec:
-                      Number(e.target.value) ||
-                      resolvedServiceMonitorLimits.defaultIntervalSec,
-                  }))
-                }
-              />
-              <Input
-                description={`范围 ${resolvedServiceMonitorLimits.minTimeoutSec}-${resolvedServiceMonitorLimits.maxTimeoutSec}s`}
-                errorMessage={
-                  monitorForm.timeoutSec <
-                    resolvedServiceMonitorLimits.minTimeoutSec ||
-                  monitorForm.timeoutSec >
-                    resolvedServiceMonitorLimits.maxTimeoutSec
-                    ? `需在 ${resolvedServiceMonitorLimits.minTimeoutSec}-${resolvedServiceMonitorLimits.maxTimeoutSec}s 范围内`
-                    : undefined
-                }
-                isInvalid={
-                  monitorForm.timeoutSec <
-                    resolvedServiceMonitorLimits.minTimeoutSec ||
-                  monitorForm.timeoutSec >
-                    resolvedServiceMonitorLimits.maxTimeoutSec
-                }
-                label="超时时间(秒)"
-                type="number"
-                value={String(monitorForm.timeoutSec)}
-                onChange={(e) =>
-                  setMonitorForm((f) => ({
-                    ...f,
-                    timeoutSec:
-                      Number(e.target.value) ||
-                      resolvedServiceMonitorLimits.defaultTimeoutSec,
-                  }))
-                }
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="monitor-interval">检查间隔(秒)</Label>
+                <Input
+                  aria-invalid={
+                    monitorForm.intervalSec <
+                      resolvedServiceMonitorLimits.minIntervalSec || undefined
+                  }
+                  id="monitor-interval"
+                  type="number"
+                  value={String(monitorForm.intervalSec)}
+                  onChange={(e) =>
+                    setMonitorForm((f) => ({
+                      ...f,
+                      intervalSec:
+                        Number(e.target.value) ||
+                        resolvedServiceMonitorLimits.defaultIntervalSec,
+                    }))
+                  }
+                />
+                {monitorForm.intervalSec <
+                resolvedServiceMonitorLimits.minIntervalSec ? (
+                  <p className="text-xs text-destructive" role="alert">
+                    不能小于 {resolvedServiceMonitorLimits.minIntervalSec}s
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    最小 {resolvedServiceMonitorLimits.minIntervalSec}
+                    s（扫描周期{" "}
+                    {resolvedServiceMonitorLimits.checkerScanIntervalSec}s）
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="monitor-timeout">超时时间(秒)</Label>
+                <Input
+                  aria-invalid={
+                    monitorForm.timeoutSec <
+                      resolvedServiceMonitorLimits.minTimeoutSec ||
+                    monitorForm.timeoutSec >
+                      resolvedServiceMonitorLimits.maxTimeoutSec ||
+                    undefined
+                  }
+                  id="monitor-timeout"
+                  type="number"
+                  value={String(monitorForm.timeoutSec)}
+                  onChange={(e) =>
+                    setMonitorForm((f) => ({
+                      ...f,
+                      timeoutSec:
+                        Number(e.target.value) ||
+                        resolvedServiceMonitorLimits.defaultTimeoutSec,
+                    }))
+                  }
+                />
+                {monitorForm.timeoutSec <
+                  resolvedServiceMonitorLimits.minTimeoutSec ||
+                monitorForm.timeoutSec >
+                  resolvedServiceMonitorLimits.maxTimeoutSec ? (
+                  <p className="text-xs text-destructive" role="alert">
+                    需在 {resolvedServiceMonitorLimits.minTimeoutSec}-
+                    {resolvedServiceMonitorLimits.maxTimeoutSec}s 范围内
+                  </p>
+                ) : (
+                  <p className="text-xs text-muted-foreground">
+                    范围 {resolvedServiceMonitorLimits.minTimeoutSec}-
+                    {resolvedServiceMonitorLimits.maxTimeoutSec}s
+                  </p>
+                )}
+              </div>
             </div>
             <SelectField
               label="执行服务器"

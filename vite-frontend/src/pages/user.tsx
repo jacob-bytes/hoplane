@@ -19,7 +19,8 @@ import {
   type RowStatus,
 } from "@/components/page-kit";
 import { Button } from "@/components/ui/button";
-import { TextField as Input } from "@/components/field-input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Modal,
   ModalContent,
@@ -1457,24 +1458,37 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
           <ModalHeader>{isEdit ? "编辑用户" : "新建用户"}</ModalHeader>
           <ModalBody>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                isRequired
-                label="用户名"
-                value={userForm.user}
-                onChange={(e) =>
-                  setUserForm((prev) => ({ ...prev, user: e.target.value }))
-                }
-              />
-              <Input
-                isRequired={!isEdit}
-                label="密码"
-                placeholder={isEdit ? "留空则不修改密码" : "请输入密码"}
-                type="password"
-                value={userForm.pwd}
-                onChange={(e) =>
-                  setUserForm((prev) => ({ ...prev, pwd: e.target.value }))
-                }
-              />
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="user-name">
+                  用户名<span className="ml-1 text-destructive">*</span>
+                </Label>
+                <Input
+                  required
+                  id="user-name"
+                  value={userForm.user}
+                  onChange={(e) =>
+                    setUserForm((prev) => ({ ...prev, user: e.target.value }))
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="user-password">
+                  密码
+                  {!isEdit ? (
+                    <span className="ml-1 text-destructive">*</span>
+                  ) : null}
+                </Label>
+                <Input
+                  id="user-password"
+                  placeholder={isEdit ? "留空则不修改密码" : "请输入密码"}
+                  required={!isEdit}
+                  type="password"
+                  value={userForm.pwd}
+                  onChange={(e) =>
+                    setUserForm((prev) => ({ ...prev, pwd: e.target.value }))
+                  }
+                />
+              </div>
               <TrafficLimitField
                 isRequired
                 label="流量限制"
@@ -1485,36 +1499,44 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   setUserFlowUnit(unit);
                 }}
               />
-              <Input
-                label="最大连接数"
-                min="0"
-                placeholder="0 或空表示不限制"
-                type="number"
-                value={
-                  userForm.maxConn === 0 ? "" : String(userForm.maxConn || "")
-                }
-                onChange={(e) => {
-                  const value = Math.max(Number(e.target.value) || 0, 0);
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="user-max-conn">最大连接数</Label>
+                <Input
+                  id="user-max-conn"
+                  min="0"
+                  placeholder="0 或空表示不限制"
+                  type="number"
+                  value={
+                    userForm.maxConn === 0 ? "" : String(userForm.maxConn || "")
+                  }
+                  onChange={(e) => {
+                    const value = Math.max(Number(e.target.value) || 0, 0);
 
-                  setUserForm((prev) => ({ ...prev, maxConn: value }));
-                }}
-              />
-              <Input
-                isRequired
-                label="规则数量"
-                max="99999"
-                min="1"
-                type="number"
-                value={userForm.num.toString()}
-                onChange={(e) => {
-                  const value = Math.min(
-                    Math.max(Number(e.target.value) || 0, 1),
-                    99999,
-                  );
+                    setUserForm((prev) => ({ ...prev, maxConn: value }));
+                  }}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="user-rule-count">
+                  规则数量<span className="ml-1 text-destructive">*</span>
+                </Label>
+                <Input
+                  required
+                  id="user-rule-count"
+                  max="99999"
+                  min="1"
+                  type="number"
+                  value={userForm.num.toString()}
+                  onChange={(e) => {
+                    const value = Math.min(
+                      Math.max(Number(e.target.value) || 0, 1),
+                      99999,
+                    );
 
-                  setUserForm((prev) => ({ ...prev, num: value }));
-                }}
-              />
+                    setUserForm((prev) => ({ ...prev, num: value }));
+                  }}
+                />
+              </div>
               <SelectField
                 label="流量重置日期"
                 options={[
@@ -1982,23 +2004,26 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                     }}
                   />
 
-                  <Input
-                    label="规则数量"
-                    max="99999"
-                    min="1"
-                    type="number"
-                    value={editTunnelForm.num.toString()}
-                    onChange={(e) => {
-                      const value = Math.min(
-                        Math.max(Number(e.target.value) || 0, 1),
-                        99999,
-                      );
+                  <div className="flex flex-col gap-1.5">
+                    <Label htmlFor="edit-tunnel-rule-count">规则数量</Label>
+                    <Input
+                      id="edit-tunnel-rule-count"
+                      max="99999"
+                      min="1"
+                      type="number"
+                      value={editTunnelForm.num.toString()}
+                      onChange={(e) => {
+                        const value = Math.min(
+                          Math.max(Number(e.target.value) || 0, 1),
+                          99999,
+                        );
 
-                      setEditTunnelForm((prev) =>
-                        prev ? { ...prev, num: value } : null,
-                      );
-                    }}
-                  />
+                        setEditTunnelForm((prev) =>
+                          prev ? { ...prev, num: value } : null,
+                        );
+                      }}
+                    />
+                  </div>
 
                   <SelectField
                     label="限速规则"
