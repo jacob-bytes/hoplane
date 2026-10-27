@@ -31,6 +31,7 @@ export function SelectField({
   options,
   className,
   size,
+  onClick,
   "aria-label": ariaLabel,
 }: {
   label?: React.ReactNode;
@@ -46,6 +47,7 @@ export function SelectField({
   className?: string;
   size?: "sm" | "md" | "lg";
   "aria-label"?: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }) {
   const autoId = useId();
   const id = autoId;
@@ -72,6 +74,7 @@ export function SelectField({
           aria-label={ariaLabel}
           className={cn(sizeClass, className)}
           id={id}
+          onClick={onClick}
         >
           <SelectValue placeholder={placeholder ?? "请选择"} />
         </SelectTrigger>

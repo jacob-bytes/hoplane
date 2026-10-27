@@ -30,6 +30,7 @@ import {
 } from "@/components/modal";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   RadioGroupField as RadioGroup,
   RadioOption as Radio,
@@ -1523,32 +1524,23 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   setUserForm((prev) => ({ ...prev, num: value }));
                 }}
               />
-              <Select
+              <SelectField
                 label="流量重置日期"
-                selectedKeys={[userForm.flowResetTime.toString()]}
-                onSelectionChange={(keys) => {
-                  const value = Array.from(keys)[0] as string;
-
+                options={[
+                  { value: "0", label: "不重置" },
+                  ...Array.from({ length: 31 }, (_, i) => ({
+                    value: String(i + 1),
+                    label: `每月${i + 1}号（0点重置）`,
+                  })),
+                ]}
+                value={userForm.flowResetTime.toString()}
+                onValueChange={(value) =>
                   setUserForm((prev) => ({
                     ...prev,
                     flowResetTime: Number(value),
-                  }));
-                }}
-              >
-                <>
-                  <SelectItem key="0" textValue="不重置">
-                    不重置
-                  </SelectItem>
-                  {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-                    <SelectItem
-                      key={day.toString()}
-                      textValue={`每月${day}号（0点重置）`}
-                    >
-                      每月{day}号（0点重置）
-                    </SelectItem>
-                  ))}
-                </>
-              </Select>
+                  }))
+                }
+              />
               <DatePicker
                 isRequired
                 showMonthAndYearPickers
@@ -1829,46 +1821,32 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
 
                             {isSelected && !isAssigned && (
                               <div>
-                                <Select
-                                  className="w-36"
-                                  classNames={{
-                                    trigger: "min-h-10 h-10",
-                                  }}
+                                <SelectField
+                                  className="w-36 min-h-10 h-10"
+                                  options={tunnelSpeedLimits.map((sl) => ({
+                                    value: sl.id.toString(),
+                                    label: sl.name,
+                                  }))}
                                   placeholder="不限速"
-                                  selectedKeys={
+                                  size="sm"
+                                  value={
                                     batchTunnelSelections.get(tunnel.id) !==
                                       null &&
                                     batchTunnelSelections.get(tunnel.id) !==
                                       undefined
-                                      ? [
-                                          batchTunnelSelections
-                                            .get(tunnel.id)!
-                                            .toString(),
-                                        ]
-                                      : []
+                                      ? String(
+                                          batchTunnelSelections.get(tunnel.id),
+                                        )
+                                      : ""
                                   }
-                                  size="sm"
                                   onClick={(e) => e.stopPropagation()}
-                                  onSelectionChange={(keys) => {
-                                    const selectedKey = Array.from(keys)[0] as
-                                      | string
-                                      | undefined;
-
+                                  onValueChange={(selectedKey) =>
                                     updateTunnelSpeedLimit(
                                       tunnel.id,
                                       selectedKey ? Number(selectedKey) : null,
-                                    );
-                                  }}
-                                >
-                                  {tunnelSpeedLimits.map((sl) => (
-                                    <SelectItem
-                                      key={sl.id.toString()}
-                                      textValue={sl.name}
-                                    >
-                                      {sl.name}
-                                    </SelectItem>
-                                  ))}
-                                </Select>
+                                    )
+                                  }
+                                />
                               </div>
                             )}
                           </div>
@@ -2033,19 +2011,19 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                     }}
                   />
 
-                  <Select
+                  <SelectField
                     label="限速规则"
+                    options={editAvailableSpeedLimits.map((speedLimit) => ({
+                      value: speedLimit.id.toString(),
+                      label: speedLimit.name,
+                    }))}
                     placeholder="不限速"
-                    selectedKeys={
+                    value={
                       editTunnelSelectedSpeedId !== null
-                        ? [editTunnelSelectedSpeedId.toString()]
-                        : []
+                        ? editTunnelSelectedSpeedId.toString()
+                        : ""
                     }
-                    onSelectionChange={(keys) => {
-                      const selectedKey = Array.from(keys)[0] as
-                        | string
-                        | undefined;
-
+                    onValueChange={(selectedKey) =>
                       setEditTunnelForm((prev) =>
                         prev
                           ? {
@@ -2053,46 +2031,26 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                               speedId: selectedKey ? Number(selectedKey) : null,
                             }
                           : null,
-                      );
-                    }}
-                  >
-                    {editAvailableSpeedLimits.map((speedLimit) => (
-                      <SelectItem
-                        key={speedLimit.id.toString()}
-                        textValue={speedLimit.name}
-                      >
-                        {speedLimit.name}
-                      </SelectItem>
-                    ))}
-                  </Select>
+                      )
+                    }
+                  />
 
-                  <Select
+                  <SelectField
                     label="流量重置日期"
-                    selectedKeys={[editTunnelForm.flowResetTime.toString()]}
-                    onSelectionChange={(keys) => {
-                      const value = Array.from(keys)[0] as string;
-
+                    options={[
+                      { value: "0", label: "不重置" },
+                      ...Array.from({ length: 31 }, (_, i) => ({
+                        value: String(i + 1),
+                        label: `每月${i + 1}号（0点重置）`,
+                      })),
+                    ]}
+                    value={editTunnelForm.flowResetTime.toString()}
+                    onValueChange={(value) =>
                       setEditTunnelForm((prev) =>
                         prev ? { ...prev, flowResetTime: Number(value) } : null,
-                      );
-                    }}
-                  >
-                    <>
-                      <SelectItem key="0" textValue="不重置">
-                        不重置
-                      </SelectItem>
-                      {Array.from({ length: 31 }, (_, i) => i + 1).map(
-                        (day) => (
-                          <SelectItem
-                            key={day.toString()}
-                            textValue={`每月${day}号（0点重置）`}
-                          >
-                            每月{day}号（0点重置）
-                          </SelectItem>
-                        ),
-                      )}
-                    </>
-                  </Select>
+                      )
+                    }
+                  />
 
                   <DatePicker
                     isRequired

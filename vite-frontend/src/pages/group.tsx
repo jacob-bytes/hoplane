@@ -29,6 +29,7 @@ import {
   useDisclosure,
 } from "@/components/modal";
 import { Select, SelectItem } from "@/components/select-field";
+import { SelectField } from "@/components/select-native";
 import {
   assignGroupPermission,
   assignTunnelsToGroup,
@@ -666,44 +667,36 @@ export default function GroupPage({
                   让用户分组里的用户可以使用隧道分组里的隧道
                 </p>
                 <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
-                  <Select
+                  <SelectField
                     aria-label="用户分组"
-                    items={userGroups}
+                    options={userGroups.map((g) => ({
+                      value: String(g.id),
+                      label: g.name,
+                    }))}
                     placeholder="选择用户分组"
-                    selectedKeys={
-                      selectedUserGroupId ? [String(selectedUserGroupId)] : []
-                    }
                     size="sm"
-                    onSelectionChange={(keys) => {
-                      const key = Array.from(keys as Set<React.Key>)[0];
-
-                      setSelectedUserGroupId(key ? Number(key) : null);
-                    }}
-                  >
-                    {(item) => (
-                      <SelectItem key={item.id}>{item.name}</SelectItem>
-                    )}
-                  </Select>
-                  <Select
+                    value={
+                      selectedUserGroupId ? String(selectedUserGroupId) : ""
+                    }
+                    onValueChange={(key) =>
+                      setSelectedUserGroupId(key ? Number(key) : null)
+                    }
+                  />
+                  <SelectField
                     aria-label="隧道分组"
-                    items={tunnelGroups}
+                    options={tunnelGroups.map((g) => ({
+                      value: String(g.id),
+                      label: g.name,
+                    }))}
                     placeholder="选择隧道分组"
-                    selectedKeys={
-                      selectedTunnelGroupId
-                        ? [String(selectedTunnelGroupId)]
-                        : []
-                    }
                     size="sm"
-                    onSelectionChange={(keys) => {
-                      const key = Array.from(keys as Set<React.Key>)[0];
-
-                      setSelectedTunnelGroupId(key ? Number(key) : null);
-                    }}
-                  >
-                    {(item) => (
-                      <SelectItem key={item.id}>{item.name}</SelectItem>
-                    )}
-                  </Select>
+                    value={
+                      selectedTunnelGroupId ? String(selectedTunnelGroupId) : ""
+                    }
+                    onValueChange={(key) =>
+                      setSelectedTunnelGroupId(key ? Number(key) : null)
+                    }
+                  />
                   <Button
                     className="whitespace-nowrap px-4"
                     disabled={savingPermission}
@@ -888,20 +881,15 @@ export default function GroupPage({
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
                 />
-                <Select
+                <SelectField
                   label="状态"
-                  selectedKeys={[groupStatus]}
-                  onSelectionChange={(keys) => {
-                    const key = Array.from(keys as Set<React.Key>)[0];
-
-                    if (key) {
-                      setGroupStatus(String(key));
-                    }
-                  }}
-                >
-                  <SelectItem key="1">启用</SelectItem>
-                  <SelectItem key="0">停用</SelectItem>
-                </Select>
+                  options={[
+                    { value: "1", label: "启用" },
+                    { value: "0", label: "停用" },
+                  ]}
+                  value={groupStatus}
+                  onValueChange={setGroupStatus}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button variant="ghost" onClick={onTunnelGroupModalClose}>
@@ -932,20 +920,15 @@ export default function GroupPage({
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
                 />
-                <Select
+                <SelectField
                   label="状态"
-                  selectedKeys={[groupStatus]}
-                  onSelectionChange={(keys) => {
-                    const key = Array.from(keys as Set<React.Key>)[0];
-
-                    if (key) {
-                      setGroupStatus(String(key));
-                    }
-                  }}
-                >
-                  <SelectItem key="1">启用</SelectItem>
-                  <SelectItem key="0">停用</SelectItem>
-                </Select>
+                  options={[
+                    { value: "1", label: "启用" },
+                    { value: "0", label: "停用" },
+                  ]}
+                  value={groupStatus}
+                  onValueChange={setGroupStatus}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button variant="ghost" onClick={onUserGroupModalClose}>
