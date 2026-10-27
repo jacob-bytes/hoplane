@@ -505,7 +505,7 @@ export default function AdminLayout({
               type="button"
               onClick={() => navigate("/dashboard")}
             >
-              后台
+              {isAdmin ? "后台" : "首页"}
             </button>
             {currentSection && (
               <>
