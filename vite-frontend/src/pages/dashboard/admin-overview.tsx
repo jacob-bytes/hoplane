@@ -179,6 +179,12 @@ function useKpiHistory(values: Record<KpiKey, number>, ready: boolean) {
   return history;
 }
 
+function kpiDelta(values: number[]) {
+  if (values.length < 2) return 0;
+
+  return values[values.length - 1] - values[values.length - 2];
+}
+
 function Sparkline({ values }: { values: number[] }) {
   if (values.length < 3) return null;
 
@@ -221,11 +227,13 @@ function Metric({
   footRight,
   onClick,
   spark,
+  delta,
 }: {
   label: string;
   icon: typeof Server;
   value: number;
   spark?: number[];
+  delta?: number;
   /** Shown as "value / total" with a bar, when set. */
   total?: number;
   foot: string;
@@ -258,6 +266,13 @@ function Metric({
               / {total}
             </span>
           )}
+          {delta ? (
+            <span
+              className={`ml-1.5 font-sans text-[11px] font-normal ${delta > 0 ? "text-success-600" : "text-destructive"}`}
+            >
+              {delta > 0 ? `+${delta}` : delta}
+            </span>
+          ) : null}
         </div>
         {spark ? <Sparkline values={spark} /> : null}
       </div>
@@ -596,6 +611,7 @@ export function AdminOverview() {
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <Metric
+          delta={kpiDelta(kpiHistory.online)}
           foot={
             nodes.length === 0
               ? "还没有服务器"
@@ -623,6 +639,7 @@ export function AdminOverview() {
           onClick={() => navigate("/node")}
         />
         <Metric
+          delta={kpiDelta(kpiHistory.running)}
           foot={
             enabledInbounds.length === 0
               ? inbounds.length === 0
@@ -654,6 +671,7 @@ export function AdminOverview() {
           onClick={() => navigate("/inbound")}
         />
         <Metric
+          delta={kpiDelta(kpiHistory.forwards)}
           foot={
             forwards.length === 0
               ? "还没有转发规则"
@@ -678,6 +696,7 @@ export function AdminOverview() {
           onClick={() => navigate("/forward")}
         />
         <Metric
+          delta={kpiDelta(kpiHistory.subs)}
           foot={
             subs.length === 0
               ? "还没有订阅"
