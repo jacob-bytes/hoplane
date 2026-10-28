@@ -283,10 +283,10 @@ export function LatencyDialog({
                 </Empty>
               )
             ) : (
-              <div className="overflow-hidden rounded-lg border border-border">
+              <div className="overflow-hidden rounded-lg border border-hairline">
                 <Table>
                   <TableHeader>
-                    <TableRow className="hover:bg-transparent">
+                    <TableRow className="sticky top-0 z-10 bg-surface hover:bg-surface">
                       <TableHead className="h-8">测试点</TableHead>
                       <TableHead className="h-8">线路</TableHead>
                       <TableHead className="h-8 text-right">延迟</TableHead>
@@ -308,6 +308,7 @@ export function LatencyDialog({
                         <TableRow
                           key={p.name}
                           aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : p.error || "连不上"}，丢包 ${loss}%`}
+                          className={bad ? "bg-destructive/[0.03]" : undefined}
                         >
                           <TableCell className="py-1.5">
                             <span className="flex items-center gap-2">
@@ -331,7 +332,7 @@ export function LatencyDialog({
                             <span className="flex items-center justify-end gap-2">
                               <span
                                 aria-hidden
-                                className="h-1.5 w-20 overflow-hidden rounded-full bg-muted"
+                                className="relative h-1.5 w-20 overflow-hidden rounded-full bg-muted"
                               >
                                 <span
                                   className={cn(
@@ -342,6 +343,12 @@ export function LatencyDialog({
                                     width: `${p.ok ? Math.min(100, Math.max(3, p.latencyMs ?? 0)) : 100}%`,
                                   }}
                                 />
+                                {avg !== undefined && (
+                                  <span
+                                    className="absolute inset-y-0 w-px bg-foreground/20"
+                                    style={{ left: `${Math.min(100, avg ?? 0)}%` }}
+                                  />
+                                )}
                               </span>
                               <span className="w-14 text-right font-mono text-xs tabular-nums">
                                 {p.ok
