@@ -1,5 +1,6 @@
 import type { NodeSystemInfo } from "@/pages/node/system-info";
 
+import * as React from "react";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 function bytes(v: number): string {
@@ -84,7 +85,7 @@ function ResourceMetric({
     </div>
   );
 }
-export function NodeLiveStats({
+export const NodeLiveStats = React.memo(function NodeLiveStats({
   info,
   month,
   variant,
@@ -233,7 +234,7 @@ export function NodeLiveStats({
       </div>
     </div>
   );
-}
+});
 
 /** CPU / memory / disk meters, as one row. */
 export function NodeMeters({ info }: { info: NodeSystemInfo | null }) {

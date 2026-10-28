@@ -7,7 +7,7 @@ import {
   Server,
   UserRound,
 } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -39,6 +39,52 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   );
 
   useScrollTopOnPathChange();
+
+  const [pull, setPull] = useState(0);
+  const pullRef = useRef(0);
+  const touchStart = useRef<number | null>(null);
+
+  useEffect(() => {
+    const onTouchStart = (event: TouchEvent) => {
+      if (window.scrollY <= 0 && event.touches.length === 1) {
+        touchStart.current = event.touches[0].clientY;
+      }
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      if (touchStart.current === null) return;
+
+      const delta = event.touches[0].clientY - touchStart.current;
+
+      if (delta > 0 && window.scrollY <= 0) {
+        if (delta > 20) event.preventDefault();
+        const next = Math.min(80, delta * 0.5);
+
+        pullRef.current = next;
+        setPull(next);
+      }
+    };
+
+    const onTouchEnd = () => {
+      if (pullRef.current >= 60) {
+        window.location.reload();
+      }
+
+      pullRef.current = 0;
+      setPull(0);
+      touchStart.current = null;
+    };
+
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    window.addEventListener("touchend", onTouchEnd);
+
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
+    };
+  }, []);
 
   // Tabbar配置
   // Admins work along the landing → relay → subscription flow; the forward
@@ -206,8 +252,26 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
         <div className="flex items-center gap-2" />
       </header>
 
+      {pull > 0 && (
+        <div
+          aria-live="polite"
+          className="pointer-events-none fixed left-1/2 top-14 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-hairline bg-raised px-3 py-1 text-[11px] text-muted-foreground shadow-sm"
+          style={{ transform: `translate(-50%, ${Math.max(0, pull - 16)}px)` }}
+        >
+          <span
+            className={`h-3 w-3 rounded-full border-2 border-primary border-t-transparent ${pull >= 60 ? "" : "animate-spin"}`}
+          />
+          {pull >= 60 ? "松开刷新" : "下拉刷新"}
+        </div>
+      )}
+
       {/* 主内容区域 */}
-      <main className="flex-1">{children}</main>
+      <main
+        key={location.pathname}
+        className="flex-1 animate-in fade-in-0 duration-200 motion-reduce:animate-none"
+      >
+        {children}
+      </main>
 
       {/* 用于给固定 Tabbar 腾出空间的占位元素 */}
       <div aria-hidden className="h-[calc(4rem+var(--safe-area-bottom))]" />
@@ -252,7 +316,13 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
               `}
               onClick={() => handleTabClick(item.path)}
             >
-              <div className="flex-shrink-0 mb-1">{item.icon}</div>
+              <div
+                className={`mb-1 flex h-7 w-12 flex-shrink-0 items-center justify-center rounded-full transition-colors duration-200 ${
+                  isActive ? "bg-primary/10" : ""
+                }`}
+              >
+                {item.icon}
+              </div>
               <span className="text-xs font-medium">
                 {(isAdmin && item.adminLabel) || item.label}
               </span>

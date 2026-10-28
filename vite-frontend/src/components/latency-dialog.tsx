@@ -346,7 +346,9 @@ export function LatencyDialog({
                                 {avg !== undefined && (
                                   <span
                                     className="absolute inset-y-0 w-px bg-foreground/20"
-                                    style={{ left: `${Math.min(100, avg ?? 0)}%` }}
+                                    style={{
+                                      left: `${Math.min(100, avg ?? 0)}%`,
+                                    }}
                                   />
                                 )}
                               </span>
