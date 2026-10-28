@@ -2321,7 +2321,10 @@ export default function NodePage({
                                     month={monthTraffic[String(node.id)]}
                                   />
                                 ),
-                                <div key="latency" className="flex justify-end">
+                                <div
+                                  key="latency"
+                                  className="relative z-10 flex justify-end"
+                                >
                                   {renderLatency(node, "list")}
                                 </div>,
                                 !isDisplayFiltered && (
