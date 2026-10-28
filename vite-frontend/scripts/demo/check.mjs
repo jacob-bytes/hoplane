@@ -109,9 +109,30 @@ await page("Page.navigate", { url: `${origin}${BASE}` });
 await sleep(SETTLE_MS);
 for (const r of ADMIN_PAGES) await visit("admin", r);
 // The demo note starts collapsed; open it, then switch to the demo user.
-await evaluate(`[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === "演示站")?.click()`);
-await sleep(300);
-await evaluate(`[...document.querySelectorAll("button")].find((b) => b.textContent.includes("普通用户视角"))?.click()`);
+// Both are rendered on the next frame, so poll instead of relying on a fixed wait.
+const clickButton = async (predicate) => {
+  for (let i = 0; i < 30; i += 1) {
+    const clicked = await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find(${predicate}); if (!b) return false; b.click(); return true; })()`,
+    );
+
+    if (clicked) return true;
+    await sleep(100);
+  }
+
+  return false;
+};
+
+await clickButton(`(b) => b.textContent.trim() === "演示站"`);
+await clickButton(`(b) => b.textContent.includes("普通用户视角")`);
+for (let i = 0; i < 40; i += 1) {
+  const switched = await evaluate(
+    `[...document.querySelectorAll("button")].some((b) => b.textContent.includes("回到管理员视角"))`,
+  );
+
+  if (switched) break;
+  await sleep(100);
+}
 await sleep(SETTLE_MS);
 for (const r of USER_PAGES) await visit("user", r);
 
