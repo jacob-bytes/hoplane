@@ -108,7 +108,9 @@ current = "admin (first load)";
 await page("Page.navigate", { url: `${origin}${BASE}` });
 await sleep(SETTLE_MS);
 for (const r of ADMIN_PAGES) await visit("admin", r);
-// The demo note's switch signs in as the demo user and reloads.
+// The demo note starts collapsed; open it, then switch to the demo user.
+await evaluate(`[...document.querySelectorAll("button")].find((b) => b.textContent.trim() === "演示站")?.click()`);
+await sleep(300);
 await evaluate(`[...document.querySelectorAll("button")].find((b) => b.textContent.includes("普通用户视角"))?.click()`);
 await sleep(SETTLE_MS);
 for (const r of USER_PAGES) await visit("user", r);
