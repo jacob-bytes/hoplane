@@ -227,6 +227,87 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
       (item.path !== "/my-subscriptions" || hasMySubs),
   );
 
+  const tabsRef = useRef(filteredTabItems);
+  const pathRef = useRef(location.pathname);
+  const monitorRef = useRef(monitorAllowed);
+
+  tabsRef.current = filteredTabItems;
+  pathRef.current = location.pathname;
+  monitorRef.current = monitorAllowed;
+
+  useEffect(() => {
+    let start: { x: number; y: number } | null = null;
+
+    const onStart = (event: TouchEvent) => {
+      if (event.touches.length !== 1) return;
+
+      start = {
+        x: event.touches[0].clientX,
+        y: event.touches[0].clientY,
+      };
+    };
+
+    const onEnd = (event: TouchEvent) => {
+      if (!start) return;
+
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - start.x;
+      const dy = touch.clientY - start.y;
+
+      start = null;
+
+      if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+
+      const target = event.target as HTMLElement | null;
+
+      if (
+        target?.closest(
+          '[role="dialog"], [role="tablist"], .overflow-x-auto, input, select, textarea, [data-slot="select-trigger"]',
+        )
+      ) {
+        return;
+      }
+
+      const path = pathRef.current;
+      const isActive = (itemPath: string) =>
+        itemPath === path ||
+        (itemPath === "/relay" &&
+          isAdmin &&
+          ["/tunnel", "/forward"].includes(path)) ||
+        (itemPath === "/profile" &&
+          isAdmin &&
+          [
+            "/node",
+            "/monitor",
+            "/user",
+            "/group",
+            "/limit",
+            "/config",
+            "/panel-sharing",
+            "/relay",
+          ].includes(path));
+      const tabs = tabsRef.current;
+      const index = tabs.findIndex((item) => isActive(item.path));
+
+      if (index < 0) return;
+
+      const next = tabs[index + (dx < 0 ? 1 : -1)];
+
+      if (!next) return;
+      if (next.path === "/monitor" && monitorRef.current !== true) return;
+
+      navigate(next.path);
+    };
+
+    window.addEventListener("touchstart", onStart, { passive: true });
+    window.addEventListener("touchend", onEnd);
+
+    return () => {
+      window.removeEventListener("touchstart", onStart);
+      window.removeEventListener("touchend", onEnd);
+    };
+  }, [isAdmin, navigate]);
+
   return (
     <div className="flex flex-col min-h-screen bg-mesh-gradient">
       {/* 顶部导航栏 */}
