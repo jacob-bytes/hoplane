@@ -8,7 +8,7 @@ import type {
   TunnelApiItem,
 } from "@/api/types";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowRightLeft,
@@ -115,6 +115,102 @@ const KINDS: Record<
 };
 
 /** A headline figure, in the upstream metric card style. */
+
+type KpiKey = "online" | "running" | "forwards" | "subs";
+type KpiHistory = Record<KpiKey, number[]>;
+
+const KPI_HISTORY_KEY = "hoplane:dashboard:kpi-history";
+const KPI_KEYS: KpiKey[] = ["online", "running", "forwards", "subs"];
+
+function readKpiHistory(): KpiHistory {
+  try {
+    const parsed = JSON.parse(
+      window.localStorage.getItem(KPI_HISTORY_KEY) || "{}",
+    ) as Partial<KpiHistory>;
+
+    return Object.fromEntries(
+      KPI_KEYS.map((key) => [
+        key,
+        Array.isArray(parsed[key])
+          ? parsed[key]!.filter((value) => Number.isFinite(value)).slice(-12)
+          : [],
+      ]),
+    ) as KpiHistory;
+  } catch {
+    return { online: [], running: [], forwards: [], subs: [] };
+  }
+}
+
+/** Keeps a short client-side history so KPI cards can show a sparkline. */
+function useKpiHistory(values: Record<KpiKey, number>, ready: boolean) {
+  const [history, setHistory] = useState(readKpiHistory);
+  const latest = useRef(values);
+
+  latest.current = values;
+
+  useEffect(() => {
+    if (!ready) return;
+
+    const append = () => {
+      setHistory((prev) => {
+        const next = Object.fromEntries(
+          KPI_KEYS.map((key) => [
+            key,
+            [...prev[key], latest.current[key]].slice(-12),
+          ]),
+        ) as KpiHistory;
+
+        try {
+          window.localStorage.setItem(KPI_HISTORY_KEY, JSON.stringify(next));
+        } catch {
+          // Private mode: keep the in-memory history.
+        }
+
+        return next;
+      });
+    };
+
+    append();
+    const timer = window.setInterval(append, 30000);
+
+    return () => window.clearInterval(timer);
+  }, [ready]);
+
+  return history;
+}
+
+function Sparkline({ values }: { values: number[] }) {
+  if (values.length < 3) return null;
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const span = max - min || 1;
+  const points = values
+    .map((value, index) => {
+      const x = (index / (values.length - 1)) * 60;
+
+      return `${x.toFixed(1)},${(18 - ((value - min) / span) * 16).toFixed(1)}`;
+    })
+    .join(" ");
+
+  return (
+    <svg
+      aria-hidden
+      className="h-5 w-14 shrink-0 text-primary/60"
+      viewBox="0 0 60 20"
+    >
+      <polyline
+        fill="none"
+        points={points}
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
 function Metric({
   label,
   icon: Icon,
@@ -124,10 +220,12 @@ function Metric({
   footTone,
   footRight,
   onClick,
+  spark,
 }: {
   label: string;
   icon: typeof Server;
   value: number;
+  spark?: number[];
   /** Shown as "value / total" with a bar, when set. */
   total?: number;
   foot: string;
@@ -152,13 +250,16 @@ function Metric({
           className="h-4 w-4 flex-shrink-0 text-muted-foreground"
         />
       </div>
-      <div className="mt-1.5 font-mono text-2xl font-medium tabular-nums tracking-tight">
-        {value}
-        {total !== undefined && (
-          <span className="ml-1 font-sans text-xs font-normal text-muted-foreground">
-            / {total}
-          </span>
-        )}
+      <div className="mt-1.5 flex items-end justify-between gap-2">
+        <div className="font-mono text-2xl font-medium tabular-nums tracking-tight">
+          {value}
+          {total !== undefined && (
+            <span className="ml-1 font-sans text-xs font-normal text-muted-foreground">
+              / {total}
+            </span>
+          )}
+        </div>
+        {spark ? <Sparkline values={spark} /> : null}
       </div>
       <div className="mt-3 h-1 overflow-hidden rounded-full bg-muted">
         {total !== undefined && total > 0 && (
@@ -286,8 +387,6 @@ export function AdminOverview() {
 
     return () => window.clearInterval(timer);
   }, [load]);
-
-  if (loading) return <PageLoadingState message="正在加载..." />;
 
   const now = Date.now();
   const online = nodes.filter((n) => n.status === 1).length;
@@ -469,6 +568,17 @@ export function AdminOverview() {
   ];
 
   const shownNodes = [...nodes].sort((a, b) => a.status - b.status).slice(0, 6);
+  const kpiHistory = useKpiHistory(
+    {
+      online,
+      running: runningInbounds.length,
+      forwards: forwardsUp.length,
+      subs: activeSubs.length,
+    },
+    !loading,
+  );
+
+  if (loading) return <PageLoadingState message="正在加载..." />;
 
   return (
     <AnimatedPage className="mx-auto w-full max-w-[1440px] flex flex-col gap-4 px-6 py-6">
@@ -507,6 +617,7 @@ export function AdminOverview() {
           }
           icon={Server}
           label="服务器在线"
+          spark={kpiHistory.online}
           total={nodes.length}
           value={online}
           onClick={() => navigate("/node")}
@@ -537,6 +648,7 @@ export function AdminOverview() {
           }
           icon={Globe}
           label="节点运行"
+          spark={kpiHistory.running}
           total={enabledInbounds.length}
           value={runningInbounds.length}
           onClick={() => navigate("/inbound")}
@@ -560,6 +672,7 @@ export function AdminOverview() {
           }
           icon={ArrowRightLeft}
           label="转发运行"
+          spark={kpiHistory.forwards}
           total={forwards.length || undefined}
           value={forwardsUp.length}
           onClick={() => navigate("/forward")}
@@ -582,6 +695,7 @@ export function AdminOverview() {
           }
           icon={Rss}
           label="有效订阅"
+          spark={kpiHistory.subs}
           total={subs.length}
           value={activeSubs.length}
           onClick={() => navigate("/subscription")}

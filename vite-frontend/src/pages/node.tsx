@@ -1812,7 +1812,7 @@ export default function NodePage({
                       {(listeners) => (
                         <Card
                           key={node.id}
-                          className={`group relative overflow-visible h-full flex flex-col ${node.expiryReminderDismissed ? "" : expiryMeta.accentClassName}`}
+                          className={`group relative overflow-visible h-full flex flex-col [content-visibility:auto] [contain-intrinsic-size:auto_420px] ${node.expiryReminderDismissed ? "" : expiryMeta.accentClassName}`}
                           data-node-card="true"
                         >
                           <CardHeader className="pb-3 md:pb-3">
