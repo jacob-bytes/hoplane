@@ -96,12 +96,13 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   ];
 
   const pageSections: Record<string, string> = {
-    "/node": "线路",
-    "/inbound": "线路",
-    "/relay": "线路",
-    "/tunnel": "线路",
-    "/forward": "线路",
-    "/monitor": "线路",
+    "/dashboard": "资源",
+    "/node": "资源",
+    "/inbound": "资源",
+    "/relay": "资源",
+    "/tunnel": "资源",
+    "/forward": "资源",
+    "/monitor": "资源",
     "/subscription": "分发",
     "/user": "分发",
     "/group": "分发",

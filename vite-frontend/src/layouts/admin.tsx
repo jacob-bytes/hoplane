@@ -69,10 +69,11 @@ export default function AdminLayout({
   const sessionName = getSessionName() ?? "账户";
   const isMobile = useMobileBreakpoint();
 
-  // 菜单项配置：管理员按 线路 / 分发 / 系统 分组（用户页含分组和限速），普通用户保持原样
+  // 菜单项配置：管理员按 资源 / 分发 / 系统 分组（用户页含分组和限速），普通用户保持原样
   const menuItems: MenuItem[] = [
     {
       path: "/dashboard",
+      section: "资源",
       label: "仪表",
       adminLabel: "概览",
       icon: <LayoutDashboard className="h-5 w-5" />,
@@ -92,7 +93,6 @@ export default function AdminLayout({
     },
     {
       path: "/node",
-      section: "线路",
       label: "服务器",
       icon: <Server className="h-5 w-5" />,
       adminOnly: true,
@@ -264,13 +264,13 @@ export default function AdminLayout({
   // Breadcrumb names: the nav item gives the group, the route gives the page
   // (a sub-page such as 转发规则 sits under 中转 but is not the 中转 page).
   const breadcrumbTitles: Record<string, [section: string, page: string]> = {
-    "/dashboard": ["", "概览"],
-    "/node": ["线路", "服务器"],
-    "/inbound": ["线路", "节点"],
-    "/relay": ["线路", "中转"],
-    "/tunnel": ["线路", "隧道"],
-    "/forward": ["线路", "转发规则"],
-    "/monitor": ["线路", "监控"],
+    "/dashboard": ["资源", "概览"],
+    "/node": ["资源", "服务器"],
+    "/inbound": ["资源", "节点"],
+    "/relay": ["资源", "中转"],
+    "/tunnel": ["资源", "隧道"],
+    "/forward": ["资源", "转发规则"],
+    "/monitor": ["资源", "监控"],
     "/subscription": ["分发", "订阅"],
     "/user": ["分发", "用户"],
     "/group": ["分发", "分组"],
