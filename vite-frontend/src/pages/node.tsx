@@ -91,6 +91,7 @@ import {
   useCachedState,
 } from "@/hooks/use-cached-state";
 import { useVisiblePolling } from "@/hooks/use-visible-polling";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { latestProbe } from "@/utils/latest-probe";
 import { useLocalStorageState } from "@/hooks/use-local-storage-state";
 import { loadStoredOrder, saveOrder } from "@/utils/order-storage";
@@ -1470,6 +1471,9 @@ export default function NodePage({
     return sortedByDb;
   }, [nodeList, nodeOrder]);
 
+  const debouncedLocalSearch = useDebouncedValue(localSearchKeyword, 150);
+  const debouncedRemoteSearch = useDebouncedValue(remoteSearchKeyword, 150);
+
   const filterNodesByKeyword = useCallback((nodes: Node[], keyword: string) => {
     const normalizedKeyword = keyword.trim().toLowerCase();
 
@@ -1504,7 +1508,7 @@ export default function NodePage({
   const filteredLocalNodes = useMemo(() => {
     const keywordFiltered = filterNodesByKeyword(
       localNodes,
-      localSearchKeyword,
+      debouncedLocalSearch,
     );
 
     if (nodeFilterMode === "all") {
@@ -1525,11 +1529,11 @@ export default function NodePage({
           return true;
       }
     });
-  }, [filterNodesByKeyword, localNodes, localSearchKeyword, nodeFilterMode]);
+  }, [filterNodesByKeyword, localNodes, debouncedLocalSearch, nodeFilterMode]);
 
   const filteredRemoteNodes = useMemo(
-    () => filterNodesByKeyword(remoteNodes, remoteSearchKeyword),
-    [filterNodesByKeyword, remoteNodes, remoteSearchKeyword],
+    () => filterNodesByKeyword(remoteNodes, debouncedRemoteSearch),
+    [filterNodesByKeyword, remoteNodes, debouncedRemoteSearch],
   );
 
   const currentSearchKeyword =
