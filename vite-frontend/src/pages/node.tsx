@@ -127,6 +127,43 @@ import {
   NodeSpeed,
 } from "@/pages/node/node-live-stats";
 
+function withMetric(node: Node, metric: Record<string, unknown>): Node {
+  const incomingUptime = Number(metric.uptime ?? 0);
+
+  return {
+    ...node,
+    connectionStatus: "online",
+    systemInfo: {
+      cpuUsage: Number(metric.cpuUsage ?? metric.cpu_usage ?? 0),
+      cpuCores: Number(metric.cpuCores ?? metric.cpu_cores ?? 0) || undefined,
+      memoryUsage: Number(metric.memoryUsage ?? metric.memory_usage ?? 0),
+      memoryTotal: Number(metric.memoryTotal ?? metric.memory_total ?? 0),
+      memoryUsed: Number(metric.memoryUsed ?? metric.memory_used ?? 0),
+      uploadTraffic: Number(
+        metric.netOutBytes ?? metric.bytes_transmitted ?? 0,
+      ),
+      downloadTraffic: Number(metric.netInBytes ?? metric.bytes_received ?? 0),
+      uploadSpeed: Number(metric.netOutSpeed ?? metric.net_out_speed ?? 0),
+      downloadSpeed: Number(metric.netInSpeed ?? metric.net_in_speed ?? 0),
+      uptime: incomingUptime || node.systemInfo?.uptime || 0,
+      diskUsage: Number(metric.diskUsage ?? metric.disk_usage ?? 0),
+      diskTotal: Number(metric.diskTotal ?? metric.disk_total ?? 0),
+      diskUsed: Number(metric.diskUsed ?? metric.disk_used ?? 0),
+      osName: String(metric.osName ?? metric.os_name ?? ""),
+      osVersion: String(metric.osVersion ?? metric.os_version ?? ""),
+      arch: String(metric.arch ?? ""),
+      virt: String(metric.virt ?? ""),
+      load1: Number(metric.load1 ?? 0),
+      load5: Number(metric.load5 ?? 0),
+      load15: Number(metric.load15 ?? 0),
+      tcpConns: Number(metric.tcpConns ?? metric.tcp_conns ?? 0),
+      udpConns: Number(metric.udpConns ?? metric.udp_conns ?? 0),
+      netInSpeed: Number(metric.netInSpeed ?? metric.net_in_speed ?? 0),
+      netOutSpeed: Number(metric.netOutSpeed ?? metric.net_out_speed ?? 0),
+    },
+  };
+}
+
 const PAGE = "node";
 
 export default function NodePage({
@@ -271,6 +308,10 @@ export default function NodePage({
   const [sheetNodeId, setSheetNodeId] = useState<number | null>(null);
   const [probingIds, setProbingIds] = useState<Set<number>>(new Set());
   const [latencyNode, setLatencyNode] = useState<Node | null>(null);
+  const pendingMetricsRef = useRef<Map<number, Record<string, unknown>>>(
+    new Map(),
+  );
+  const metricTimerRef = useRef<number | null>(null);
   const [targetNodes, setTargetNodes] = useState<Node[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [batchDeleteModalOpen, setBatchDeleteModalOpen] = useState(false);
@@ -521,58 +562,43 @@ export default function NodePage({
       }
     } else if (type === "metric") {
       clearOfflineTimer(nodeId);
-      setNodeList((prev) =>
-        prev.map((node) => {
-          if (node.id !== nodeId) return node;
 
-          const metric =
-            typeof messageData === "string"
-              ? JSON.parse(messageData)
-              : messageData;
+      const metric =
+        typeof messageData === "string" ? JSON.parse(messageData) : messageData;
 
-          if (!metric || typeof metric !== "object") return node;
+      if (!metric || typeof metric !== "object") return;
 
-          const incomingUptime = metric.uptime ?? 0;
+      pendingMetricsRef.current.set(nodeId, metric as Record<string, unknown>);
 
-          return {
-            ...node,
-            connectionStatus: "online",
-            systemInfo: {
-              cpuUsage: metric.cpuUsage ?? metric.cpu_usage ?? 0,
-              cpuCores: metric.cpuCores ?? metric.cpu_cores,
-              memoryUsage: metric.memoryUsage ?? metric.memory_usage ?? 0,
-              memoryTotal: metric.memoryTotal ?? metric.memory_total,
-              memoryUsed: metric.memoryUsed ?? metric.memory_used,
-              uploadTraffic:
-                metric.netOutBytes ?? metric.bytes_transmitted ?? 0,
-              downloadTraffic: metric.netInBytes ?? metric.bytes_received ?? 0,
-              uploadSpeed: metric.netOutSpeed ?? metric.net_out_speed ?? 0,
-              downloadSpeed: metric.netInSpeed ?? metric.net_in_speed ?? 0,
-              uptime: incomingUptime || node.systemInfo?.uptime || 0,
-              diskUsage: metric.diskUsage ?? metric.disk_usage,
-              diskTotal: metric.diskTotal ?? metric.disk_total,
-              diskUsed: metric.diskUsed ?? metric.disk_used,
-              osName: metric.osName ?? metric.os_name,
-              osVersion: metric.osVersion ?? metric.os_version,
-              arch: metric.arch,
-              virt: metric.virt,
-              load1: metric.load1,
-              load5: metric.load5,
-              load15: metric.load15,
-              tcpConns: metric.tcpConns ?? metric.tcp_conns,
-              udpConns: metric.udpConns ?? metric.udp_conns,
-              netInSpeed: metric.netInSpeed ?? metric.net_in_speed,
-              netOutSpeed: metric.netOutSpeed ?? metric.net_out_speed,
-            },
-          };
-        }),
-      );
+      if (metricTimerRef.current === null) {
+        metricTimerRef.current = window.setTimeout(() => {
+          const pending = pendingMetricsRef.current;
+
+          pendingMetricsRef.current = new Map();
+          metricTimerRef.current = null;
+          setNodeList((prev) =>
+            prev.map((node) => {
+              const next = pending.get(node.id);
+
+              return next ? withMetric(node, next) : node;
+            }),
+          );
+        }, 400);
+      }
     }
   };
 
   const { wsConnected, wsConnecting, usingPollingFallback } = useNodeRealtime({
     onMessage: handleWebSocketMessage,
   });
+
+  useEffect(() => {
+    return () => {
+      if (metricTimerRef.current !== null) {
+        window.clearTimeout(metricTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // With cached data on screen, reload without the loading state.
