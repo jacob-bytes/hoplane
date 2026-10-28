@@ -333,7 +333,7 @@ export default function AdminLayout({
         {/* 菜单导航 */}
         <nav className="flex-1 px-2 overflow-y-auto overflow-x-hidden scrollbar-hide">
           <ul className="space-y-1">
-            {filteredMenuItems.map((item) => {
+            {filteredMenuItems.map((item, index) => {
               const isActive =
                 location.pathname === item.path ||
                 (item.path === "/relay" &&
@@ -349,7 +349,9 @@ export default function AdminLayout({
                   {isAdmin &&
                     item.section &&
                     (isCollapsed ? (
-                      <div className="mx-2 my-2 border-t border-border" />
+                      index > 0 ? (
+                        <div className="mx-2 my-2 border-t border-border" />
+                      ) : null
                     ) : (
                       <div className="px-2.5 pb-1.5 pt-4 text-[11px] font-medium tracking-wide text-muted-foreground/80 [@media(max-height:760px)]:pt-3">
                         {item.section}
