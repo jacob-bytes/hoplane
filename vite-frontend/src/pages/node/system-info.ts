@@ -1,12 +1,21 @@
 export interface NodeSystemInfo {
   cpuUsage: number;
+  cpuCores?: number;
   memoryUsage: number;
+  memoryTotal?: number;
+  memoryUsed?: number;
+  diskUsage?: number;
+  diskTotal?: number;
+  diskUsed?: number;
+  osName?: string;
+  osVersion?: string;
+  arch?: string;
+  virt?: string;
   uploadTraffic: number;
   downloadTraffic: number;
   uploadSpeed: number;
   downloadSpeed: number;
   uptime: number;
-  diskUsage?: number;
   load1?: number;
   load5?: number;
   load15?: number;
@@ -120,7 +129,16 @@ export const buildNodeSystemInfo = (
 
   return {
     cpuUsage: toFloat(raw.cpu_usage),
+    cpuCores: toInteger(raw.cpu_cores),
     memoryUsage: toFloat(raw.memory_usage),
+    memoryTotal: toInteger(raw.memory_total),
+    memoryUsed: toInteger(raw.memory_used),
+    diskTotal: toInteger(raw.disk_total),
+    diskUsed: toInteger(raw.disk_used),
+    osName: String(raw.os_name ?? ""),
+    osVersion: String(raw.os_version ?? ""),
+    arch: String(raw.arch ?? ""),
+    virt: String(raw.virt ?? ""),
     uploadTraffic,
     downloadTraffic,
     uploadSpeed,

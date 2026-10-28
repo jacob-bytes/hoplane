@@ -119,12 +119,35 @@ export function NodeLiveStats({
       <div className="flex flex-col gap-3">
         <div className="grid grid-cols-2 gap-x-4 gap-y-3">
           <ResourceMetric
-            detail={load ? `负载 ${load}` : undefined}
+            detail={
+              [
+                info?.cpuCores ? `${info.cpuCores} 核` : "",
+                load ? `负载 ${load}` : "",
+              ]
+                .filter(Boolean)
+                .join(" · ") || undefined
+            }
             label="CPU"
             value={info?.cpuUsage}
           />
-          <ResourceMetric label="内存" value={info?.memoryUsage} />
-          <ResourceMetric label="磁盘" value={info?.diskUsage} />
+          <ResourceMetric
+            detail={
+              info?.memoryTotal
+                ? `${bytes(info.memoryUsed ?? 0)} / ${bytes(info.memoryTotal)}`
+                : undefined
+            }
+            label="内存"
+            value={info?.memoryUsage}
+          />
+          <ResourceMetric
+            detail={
+              info?.diskTotal
+                ? `${bytes(info.diskUsed ?? 0)} / ${bytes(info.diskTotal)}`
+                : undefined
+            }
+            label="磁盘"
+            value={info?.diskUsage}
+          />
           <div className="flex min-w-0 flex-col gap-1">
             <div className="flex items-baseline justify-between gap-2">
               <span className="text-[11px] text-muted-foreground">

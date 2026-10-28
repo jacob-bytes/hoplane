@@ -106,8 +106,17 @@ type SystemInfo struct {
 	BytesReceived    uint64  `json:"bytes_received"`
 	BytesTransmitted uint64  `json:"bytes_transmitted"`
 	CPUUsage         float64 `json:"cpu_usage"`
+	CPUCores         int     `json:"cpu_cores"`
 	MemoryUsage      float64 `json:"memory_usage"`
+	MemoryTotal      uint64  `json:"memory_total"`
+	MemoryUsed       uint64  `json:"memory_used"`
 	DiskUsage        float64 `json:"disk_usage"`
+	DiskTotal        uint64  `json:"disk_total"`
+	DiskUsed         uint64  `json:"disk_used"`
+	OSName           string  `json:"os_name"`
+	OSVersion        string  `json:"os_version"`
+	Arch             string  `json:"arch"`
+	Virt             string  `json:"virt"`
 	Load1            float64 `json:"load1"`
 	Load5            float64 `json:"load5"`
 	Load15           float64 `json:"load15"`

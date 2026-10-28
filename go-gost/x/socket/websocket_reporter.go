@@ -43,8 +43,17 @@ type SystemInfo struct {
 	BytesReceived    uint64  `json:"bytes_received"`
 	BytesTransmitted uint64  `json:"bytes_transmitted"`
 	CPUUsage         float64 `json:"cpu_usage"`
+	CPUCores         int     `json:"cpu_cores"`
 	MemoryUsage      float64 `json:"memory_usage"`
+	MemoryTotal      uint64  `json:"memory_total"`
+	MemoryUsed       uint64  `json:"memory_used"`
 	DiskUsage        float64 `json:"disk_usage"`
+	DiskTotal        uint64  `json:"disk_total"`
+	DiskUsed         uint64  `json:"disk_used"`
+	OSName           string  `json:"os_name"`
+	OSVersion        string  `json:"os_version"`
+	Arch             string  `json:"arch"`
+	Virt             string  `json:"virt"`
 	Load1            float64 `json:"load1"`
 	Load5            float64 `json:"load5"`
 	Load15           float64 `json:"load15"`
@@ -65,16 +74,21 @@ type NetworkStats struct {
 // CPUInfo CPU信息
 type CPUInfo struct {
 	Usage float64 `json:"usage"`
+	Cores int     `json:"cores"`
 }
 
 // MemoryInfo 内存信息
 type MemoryInfo struct {
 	Usage float64 `json:"usage"`
+	Total uint64  `json:"total"`
+	Used  uint64  `json:"used"`
 }
 
 // DiskInfo 磁盘信息
 type DiskInfo struct {
 	Usage float64 `json:"usage"`
+	Total uint64  `json:"total"`
+	Used  uint64  `json:"used"`
 }
 
 // LoadInfo 负载信息
@@ -587,6 +601,7 @@ func (w *WebSocketReporter) collectSystemInfo() SystemInfo {
 	diskInfo := getDiskInfo()
 	loadInfo := getLoadInfo()
 	connInfo := getConnectionInfo()
+	osName, osVersion, arch, virt := getOSInfo()
 
 	now := time.Now().UnixMilli()
 	var netInSpeed, netOutSpeed int64
@@ -606,8 +621,17 @@ func (w *WebSocketReporter) collectSystemInfo() SystemInfo {
 		BytesReceived:    networkStats.BytesReceived,
 		BytesTransmitted: networkStats.BytesTransmitted,
 		CPUUsage:         cpuInfo.Usage,
+		CPUCores:         cpuInfo.Cores,
 		MemoryUsage:      memoryInfo.Usage,
+		MemoryTotal:      memoryInfo.Total,
+		MemoryUsed:       memoryInfo.Used,
 		DiskUsage:        diskInfo.Usage,
+		DiskTotal:        diskInfo.Total,
+		DiskUsed:         diskInfo.Used,
+		OSName:           osName,
+		OSVersion:        osVersion,
+		Arch:             arch,
+		Virt:             virt,
 		Load1:            loadInfo.Load1,
 		Load5:            loadInfo.Load5,
 		Load15:           loadInfo.Load15,
@@ -1733,6 +1757,8 @@ func getNetworkStats() NetworkStats {
 func getCPUInfo() CPUInfo {
 	var cpuInfo CPUInfo
 
+	cpuInfo.Cores = runtime.NumCPU()
+
 	// 获取CPU使用率 (non-blocking)
 	percentages, err := cpu.Percent(0, false)
 	if err == nil && len(percentages) > 0 {
@@ -1752,6 +1778,8 @@ func getMemoryInfo() MemoryInfo {
 	}
 
 	memInfo.Usage = vmStat.UsedPercent
+	memInfo.Total = vmStat.Total
+	memInfo.Used = vmStat.Used
 
 	return memInfo
 }
@@ -1766,8 +1794,20 @@ func getDiskInfo() DiskInfo {
 	}
 
 	diskInfo.Usage = usage.UsedPercent
+	diskInfo.Total = usage.Total
+	diskInfo.Used = usage.Used
 
 	return diskInfo
+}
+
+// getOSInfo 获取操作系统信息
+func getOSInfo() (name, version, arch, virt string) {
+	info, err := host.Info()
+	if err != nil {
+		return "", "", "", ""
+	}
+
+	return info.Platform, info.PlatformVersion, info.KernelArch, info.VirtualizationSystem
 }
 
 // getLoadInfo 获取负载信息

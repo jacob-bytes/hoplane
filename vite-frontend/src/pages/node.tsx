@@ -538,7 +538,10 @@ export default function NodePage({
             connectionStatus: "online",
             systemInfo: {
               cpuUsage: metric.cpuUsage ?? metric.cpu_usage ?? 0,
+              cpuCores: metric.cpuCores ?? metric.cpu_cores,
               memoryUsage: metric.memoryUsage ?? metric.memory_usage ?? 0,
+              memoryTotal: metric.memoryTotal ?? metric.memory_total,
+              memoryUsed: metric.memoryUsed ?? metric.memory_used,
               uploadTraffic:
                 metric.netOutBytes ?? metric.bytes_transmitted ?? 0,
               downloadTraffic: metric.netInBytes ?? metric.bytes_received ?? 0,
@@ -546,6 +549,12 @@ export default function NodePage({
               downloadSpeed: metric.netInSpeed ?? metric.net_in_speed ?? 0,
               uptime: incomingUptime || node.systemInfo?.uptime || 0,
               diskUsage: metric.diskUsage ?? metric.disk_usage,
+              diskTotal: metric.diskTotal ?? metric.disk_total,
+              diskUsed: metric.diskUsed ?? metric.disk_used,
+              osName: metric.osName ?? metric.os_name,
+              osVersion: metric.osVersion ?? metric.os_version,
+              arch: metric.arch,
+              virt: metric.virt,
               load1: metric.load1,
               load5: metric.load5,
               load15: metric.load15,
@@ -1779,6 +1788,10 @@ export default function NodePage({
                   const connectionStatusMeta = getConnectionStatusMeta(
                     node.connectionStatus,
                   );
+                  const statusText =
+                    node.connectionStatus === "online" && node.systemInfo
+                      ? `${connectionStatusMeta.text} · ${formatUptime(node.systemInfo.uptime)}`
+                      : connectionStatusMeta.text;
                   const hasRemark = Boolean(node.remark?.trim());
                   const hasExpiryInfo = Boolean(
                     node.expiryTime &&
@@ -1834,12 +1847,12 @@ export default function NodePage({
                                       className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0
                                       ${connectionStatusMeta.color === "success" ? "bg-success/10 text-success-700 dark:text-success-400" : "bg-destructive/10 text-destructive"}
                                     `}
-                                      title={connectionStatusMeta.text}
+                                      title={statusText}
                                     >
                                       <span
                                         className={`h-1.5 w-1.5 rounded-full ${connectionStatusMeta.color === "success" ? "bg-success" : "bg-destructive"}`}
                                       />
-                                      {connectionStatusMeta.text}
+                                      {statusText}
                                     </div>
                                   </div>
                                 </div>
@@ -2001,14 +2014,26 @@ export default function NodePage({
                                       node.serverIpV6?.trim() ||
                                       node.serverIp.trim(),
                                     node.version || "未连接过",
-                                    node.connectionStatus === "online" &&
-                                    node.systemInfo
-                                      ? `已运行 ${formatUptime(node.systemInfo.uptime)}`
-                                      : "",
                                   ]
                                     .filter(Boolean)
                                     .join(" · ")}
                                 </p>
+                                {node.systemInfo?.osName ? (
+                                  <p className="truncate text-[11px] text-muted-foreground">
+                                    {[
+                                      [
+                                        node.systemInfo.osName,
+                                        node.systemInfo.osVersion,
+                                      ]
+                                        .filter(Boolean)
+                                        .join(" "),
+                                      node.systemInfo.virt,
+                                      node.systemInfo.arch,
+                                    ]
+                                      .filter(Boolean)
+                                      .join(" · ")}
+                                  </p>
+                                ) : null}
                                 {upgradeProgress[node.id] &&
                                   upgradeProgress[node.id].percent < 100 && (
                                     <Progress
