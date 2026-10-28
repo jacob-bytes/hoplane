@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import {
   Activity,
   ArrowLeftRight,
+  ChevronRight,
   Globe,
   LayoutDashboard,
   Link2,
@@ -509,17 +510,19 @@ export default function AdminLayout({
             </button>
             {currentSection && (
               <>
-                <span aria-hidden className="shrink-0 text-hairline-strong">
-                  /
-                </span>
+                <ChevronRight
+                  aria-hidden
+                  className="h-3.5 w-3.5 shrink-0 text-hairline-strong"
+                />
                 <span className="truncate text-muted-foreground">
                   {currentSection}
                 </span>
               </>
             )}
-            <span aria-hidden className="shrink-0 text-hairline-strong">
-              /
-            </span>
+            <ChevronRight
+              aria-hidden
+              className="h-3.5 w-3.5 shrink-0 text-hairline-strong"
+            />
             <span className="truncate font-medium text-foreground">
               {currentLabel}
             </span>

@@ -50,6 +50,40 @@ function Meter({ label, value }: { label: string; value?: number }) {
  * and this month's traffic. "row" sits at the end of a wide row, "footer"
  * under the name on narrow screens, "card" in a node card at any width.
  */
+
+function ResourceMetric({
+  label,
+  value,
+  detail,
+}: {
+  label: string;
+  value?: number;
+  detail?: string;
+}) {
+  return (
+    <div className="flex min-w-0 flex-col gap-1">
+      <div className="flex items-baseline justify-between gap-2">
+        <span className="text-[11px] text-muted-foreground">{label}</span>
+        <span className="font-mono text-sm font-semibold tabular-nums">
+          {value === undefined ? "—" : `${Math.round(value)}%`}
+        </span>
+      </div>
+      <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+        {value !== undefined && (
+          <div
+            className={`h-full rounded-full transition-[width] duration-500 ${tone(value)}`}
+            style={{ width: `${Math.min(100, Math.max(2, value))}%` }}
+          />
+        )}
+      </div>
+      {detail ? (
+        <div className="truncate text-[11px] tabular-nums text-muted-foreground">
+          {detail}
+        </div>
+      ) : null}
+    </div>
+  );
+}
 export function NodeLiveStats({
   info,
   month,
@@ -69,6 +103,65 @@ export function NodeLiveStats({
   );
   const total = month ? bytes(month[0] + month[1]) : "—";
   const split = month ? `↑${bytes(month[1])} ↓${bytes(month[0])}` : "";
+
+  if (variant === "card") {
+    const load =
+      info &&
+      [info.load1, info.load5, info.load15].every(
+        (value) => value !== undefined,
+      )
+        ? [info.load1!, info.load5!, info.load15!]
+            .map((value) => value.toFixed(2))
+            .join(" ")
+        : undefined;
+
+    return (
+      <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+          <ResourceMetric
+            detail={load ? `负载 ${load}` : undefined}
+            label="CPU"
+            value={info?.cpuUsage}
+          />
+          <ResourceMetric label="内存" value={info?.memoryUsage} />
+          <ResourceMetric label="磁盘" value={info?.diskUsage} />
+          <div className="flex min-w-0 flex-col gap-1">
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="text-[11px] text-muted-foreground">
+                本月流量
+              </span>
+              <span className="font-mono text-sm font-semibold tabular-nums">
+                {total}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-[11px] tabular-nums text-muted-foreground">
+              <span className="flex items-center gap-0.5">
+                <ArrowUp className="h-3 w-3" />
+                {month ? bytes(month[1]) : "—"}
+              </span>
+              <span className="flex items-center gap-0.5">
+                <ArrowDown className="h-3 w-3" />
+                {month ? bytes(month[0]) : "—"}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center justify-between border-t border-hairline pt-2 text-[11px] tabular-nums text-muted-foreground">
+          <span>实时网速</span>
+          <span className="flex items-center gap-3">
+            <span className="flex items-center gap-1">
+              <ArrowDown className="h-3 w-3" />
+              {rate(down)}
+            </span>
+            <span className="flex items-center gap-1">
+              <ArrowUp className="h-3 w-3" />
+              {rate(up)}
+            </span>
+          </span>
+        </div>
+      </div>
+    );
+  }
 
   if (variant !== "row") {
     return (
