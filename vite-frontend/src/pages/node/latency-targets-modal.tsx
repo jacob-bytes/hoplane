@@ -28,11 +28,11 @@ import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { DialogFooter } from "@/components/ui/dialog";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+} from "@/components/dialog";
 import {
   LATENCY_TARGETS_KEY,
   type LatencyTarget,
@@ -59,7 +59,7 @@ export function LatencyTargetsModal({
   const batch = nodes.length > 1;
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -70,24 +70,24 @@ export function LatencyTargetsModal({
       size="lg"
       onOpenChange={(v) => !v && onClose()}
     >
-      <ModalContent>
-        <ModalHeader className="flex flex-col gap-0.5">
+      <DialogContent>
+        <DialogHeader className="flex flex-col gap-0.5">
           <h2 className="text-lg font-bold">
             {batch ? `为 ${nodes.length} 个服务器设置测试点` : "测试点"}
           </h2>
           <p className="truncate text-xs font-normal text-muted-foreground">
             {nodes.map((n) => n.name).join("、")}
           </p>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <DialogBody>
           <LatencyTargetsPanel
             nodes={nodes}
             onClose={onClose}
             onSaved={onSaved}
           />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 

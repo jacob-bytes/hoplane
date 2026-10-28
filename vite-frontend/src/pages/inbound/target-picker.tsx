@@ -11,11 +11,11 @@ import {
 } from "lucide-react";
 
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+} from "@/components/dialog";
 
 /** Where traffic goes: "direct", "block" or an inbound id. */
 export type TargetKey = string;
@@ -141,7 +141,7 @@ export function TargetPicker({
   );
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -152,10 +152,10 @@ export function TargetPicker({
       size="md"
       onOpenChange={(open) => !open && close()}
     >
-      <ModalContent>
+      <DialogContent>
         {/* The list can outgrow a phone screen: keep a way back and the
             search box above it, not inside the scrolled body. */}
-        <ModalHeader className="flex items-center gap-2">
+        <DialogHeader className="flex items-center gap-2">
           <button
             aria-label="返回"
             className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
@@ -165,7 +165,7 @@ export function TargetPicker({
             <ChevronLeft className="h-5 w-5" />
           </button>
           <h2 className="text-lg font-bold">{title}</h2>
-        </ModalHeader>
+        </DialogHeader>
         {targets.length >= SEARCH_FROM && (
           <label className="flex shrink-0 items-center gap-2 rounded-xl border border-hairline bg-raised px-3 py-2">
             <Search className="h-4 w-4 text-muted-foreground" />
@@ -177,7 +177,7 @@ export function TargetPicker({
             />
           </label>
         )}
-        <ModalBody className="space-y-1 pb-4">
+        <DialogBody className="flex flex-col gap-1 pb-4">
           {!q && (
             <div className="rounded-xl bg-raised">
               {row("direct", "直连", "从本服务器出去")}
@@ -199,8 +199,8 @@ export function TargetPicker({
               没有匹配的节点
             </p>
           )}
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }

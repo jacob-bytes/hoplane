@@ -76,12 +76,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { Switch } from "@/components/ui/switch";
 import { formatTraffic } from "@/utils/traffic";
 import { latestProbe } from "@/utils/latest-probe";
@@ -816,6 +816,7 @@ export default function InboundPage() {
           badges={badges}
           headerRight={
             <Switch
+              aria-label={`${item.enabled ? "停用" : "启用"} ${item.name}`}
               checked={item.enabled}
               disabled={toggling === item.id}
               onCheckedChange={() => handleToggle(item)}
@@ -947,6 +948,7 @@ export default function InboundPage() {
           onClick={(e) => e.stopPropagation()}
         >
           <Switch
+            aria-label={`${item.enabled ? "停用" : "启用"} ${item.name}`}
             checked={item.enabled}
             disabled={toggling === item.id}
             onCheckedChange={() => handleToggle(item)}
@@ -1152,7 +1154,7 @@ export default function InboundPage() {
               ))}
             </StaggerList>
           ) : (
-            <div className="space-y-1">
+            <div className="flex flex-col gap-1">
               {inboundGroups.map((g) => {
                 const id = `inbound:node:${g.key}`;
                 const folded = isCollapsed(id);
@@ -1289,7 +1291,7 @@ export default function InboundPage() {
         onClose={() => setSheetFor(null)}
       >
         {sheetItem && (
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <div className="flex flex-wrap gap-1.5">
               <Badge variant="default">{describeInbound(sheetItem)}</Badge>
               <Badge variant="outline">
@@ -1368,7 +1370,7 @@ export default function InboundPage() {
         onSaved={() => loadData(false)}
       />
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(details)}
@@ -1377,16 +1379,16 @@ export default function InboundPage() {
         size="2xl"
         onOpenChange={(open) => !open && setDetails(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {() => (
             <>
-              <ModalHeader closable className="flex flex-col gap-1">
+              <DialogHeader closable className="flex flex-col gap-1">
                 <h2 className="text-lg font-bold">{details?.name}</h2>
                 <p className="text-small text-muted-foreground">
                   手动配置客户端时使用；一般直接用“分享”或订阅导入即可
                 </p>
-              </ModalHeader>
-              <ModalBody>
+              </DialogHeader>
+              <DialogBody>
                 <div className="divide-y divide-divider">
                   {details &&
                     detailRows(details).map(([k, v]) => (
@@ -1413,24 +1415,24 @@ export default function InboundPage() {
                       </div>
                     ))}
                 </div>
-              </ModalBody>
+              </DialogBody>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(confirm)}
         placement="center"
         onOpenChange={(open) => !open && setConfirm(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) =>
             confirm && (
               <>
-                <ModalHeader>
+                <DialogHeader>
                   <h2
                     className={`text-lg font-bold ${
                       confirm.action === "delete" ? "text-destructive" : ""
@@ -1438,8 +1440,8 @@ export default function InboundPage() {
                   >
                     {CONFIRM_TEXT[confirm.action].title}
                   </h2>
-                </ModalHeader>
-                <ModalBody>
+                </DialogHeader>
+                <DialogBody>
                   <p className="text-muted-foreground">
                     入站{" "}
                     <span className="font-semibold text-foreground">
@@ -1451,8 +1453,8 @@ export default function InboundPage() {
                       ? "只删除面板里的记录和相关中转，原服务器上的节点不受影响。"
                       : CONFIRM_TEXT[confirm.action].body}
                   </p>
-                </ModalBody>
-                <ModalFooter>
+                </DialogBody>
+                <DialogFooter>
                   <Button variant="ghost" onClick={onClose}>
                     取消
                   </Button>
@@ -1463,33 +1465,33 @@ export default function InboundPage() {
                   >
                     {CONFIRM_TEXT[confirm.action].button}
                   </Button>
-                </ModalFooter>
+                </DialogFooter>
               </>
             )
           }
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={batchDeleteOpen}
         placement="center"
         onOpenChange={(open) => !open && setBatchDeleteOpen(false)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => {
             const chosen = inbounds.filter((i) => selectedIds.has(i.id));
             const panelOnly = chosen.every((i) => i.external);
 
             return (
               <>
-                <ModalHeader>
+                <DialogHeader>
                   <h2 className="text-lg font-bold text-destructive">
                     删除 {chosen.length} 个入站
                   </h2>
-                </ModalHeader>
-                <ModalBody>
+                </DialogHeader>
+                <DialogBody>
                   <p className="max-h-40 overflow-y-auto text-small text-muted-foreground break-all">
                     {chosen.map((i) => i.name).join("、")}
                   </p>
@@ -1498,8 +1500,8 @@ export default function InboundPage() {
                       ? "只删除面板里的记录和相关中转，原服务器上的节点不受影响。"
                       : "相关中转会一并删除；面板创建的入站会在服务器上立即停止，且无法恢复。"}
                   </p>
-                </ModalBody>
-                <ModalFooter>
+                </DialogBody>
+                <DialogFooter>
                   <Button variant="ghost" onClick={onClose}>
                     取消
                   </Button>
@@ -1510,12 +1512,12 @@ export default function InboundPage() {
                   >
                     删除
                   </Button>
-                </ModalFooter>
+                </DialogFooter>
               </>
             );
           }}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
       <RouteModal
         nodeId={routeNode?.id ?? null}
         nodeName={routeNode?.name}

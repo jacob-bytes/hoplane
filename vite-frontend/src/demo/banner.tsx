@@ -6,18 +6,35 @@ import { demoRole, switchDemoRole } from "@/demo";
 const DOCS = "https://jacob-bytes.github.io/hoplane/guide/install";
 
 /** The demo's floating note: sample data, switch views, how to install. */
+const STORAGE_KEY = "hoplane:demo-banner";
+
 export function DemoBanner() {
-  const [open, setOpen] = useState(
-    () => typeof window === "undefined" || window.innerWidth >= 768,
-  );
+  const [open, setOpen] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    try {
+      return window.localStorage.getItem(STORAGE_KEY) === "open";
+    } catch {
+      return false;
+    }
+  });
   const role = demoRole();
+
+  const setBannerOpen = (next: boolean) => {
+    setOpen(next);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, next ? "open" : "closed");
+    } catch {
+      // Private mode: keep the in-memory state only.
+    }
+  };
 
   if (!open) {
     return (
       <button
         className="fixed bottom-[84px] right-3 z-30 rounded-full bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground shadow-lg lg:bottom-4"
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => setBannerOpen(true)}
       >
         演示站
       </button>
@@ -32,7 +49,7 @@ export function DemoBanner() {
           aria-label="收起"
           className="rounded p-1 text-muted-foreground hover:bg-muted"
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={() => setBannerOpen(false)}
         >
           <X className="h-3.5 w-3.5" />
         </button>

@@ -80,12 +80,12 @@ export function RenameRules({
     "h-9 w-full min-w-0 rounded-lg border bg-background px-2 font-mono text-xs";
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2">
       {rows.map((row, i) => {
         const err = patternError(row.pattern);
 
         return (
-          <div key={i} className="space-y-1">
+          <div key={i} className="flex flex-col gap-1">
             <div className="flex items-center gap-1.5">
               <input
                 aria-label={`第 ${i + 1} 条：正则表达式`}

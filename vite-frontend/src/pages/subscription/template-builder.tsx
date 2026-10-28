@@ -360,8 +360,8 @@ export function TemplateBuilder({
   const pickingSlot = iconSlots.find((s) => s.key === picking);
 
   return (
-    <div className="space-y-4">
-      <div className="space-y-2">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
         <label className="text-sm font-medium" htmlFor="template-rule-preset">
           规则选择
         </label>
@@ -468,7 +468,7 @@ export function TemplateBuilder({
           从上往下匹配，第一条命中后生效。可把具体规则放在
           Google、微软、国内服务等大类前面。启用独立策略组时，类别的去向为组内默认选择。
         </p>
-        <div className="space-y-2">
+        <div className="flex flex-col gap-2">
           {value.rules.map((r, i) => (
             <div
               key={`${r.type}-${i}`}
@@ -625,9 +625,12 @@ export function TemplateBuilder({
             </Button>
           ))}
         </div>
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {value.groups.map((g, i) => (
-            <div key={i} className="space-y-2 rounded-lg bg-muted p-2">
+            <div
+              key={i}
+              className="flex flex-col gap-2 rounded-lg bg-muted p-2"
+            >
               <div className="flex items-center gap-2">
                 <GroupNameInput
                   label={`策略组 ${i + 1} 名称`}

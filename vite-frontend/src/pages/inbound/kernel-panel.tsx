@@ -35,12 +35,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { SelectField } from "@/components/select-native";
 
 const modalBase =
@@ -325,7 +325,7 @@ export function KernelPanel({
                 </div>
                 <div className="px-2 pb-2">{g.items.map(renderKernel)}</div>
                 {g.items.some((k) => k.lastError) && (
-                  <div className="space-y-1 px-4 pb-3">
+                  <div className="flex flex-col gap-1 px-4 pb-3">
                     {g.items
                       .filter((k) => k.lastError)
                       .map((k) => (
@@ -445,25 +445,25 @@ export function KernelPanel({
         )}
       </ActionsDialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={installOpen}
         placement="center"
         onOpenChange={setInstallOpen}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <DialogHeader className="flex flex-col gap-1">
                 <h2 className="text-xl font-bold">安装内核</h2>
                 <p className="text-small text-muted-foreground">
                   服务器会从官方 Release 下载并校验
                   SHA256，首次安装可能需要一两分钟
                 </p>
-              </ModalHeader>
-              <ModalBody>
-                <div className="space-y-3">
+              </DialogHeader>
+              <DialogBody>
+                <div className="flex flex-col gap-3">
                   <SelectField
                     label="服务器"
                     options={installNodeOptions.map((n) => ({
@@ -580,21 +580,21 @@ export function KernelPanel({
                     </>
                   )}
                 </div>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button disabled={installing} onClick={doInstall}>
                   安装
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(logsFor)}
@@ -603,10 +603,10 @@ export function KernelPanel({
         size="4xl"
         onOpenChange={(open) => !open && setLogsFor(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {() => (
             <>
-              <ModalHeader closable className="flex flex-col gap-1">
+              <DialogHeader closable className="flex flex-col gap-1">
                 <h2 className="text-lg font-bold">
                   {logsFor?.nodeName} · {kernelName(logsFor?.kernelType ?? "")}{" "}
                   日志
@@ -619,41 +619,41 @@ export function KernelPanel({
                       : ""}
                   </p>
                 )}
-              </ModalHeader>
-              <ModalBody>
+              </DialogHeader>
+              <DialogBody>
                 <pre className="text-xs whitespace-pre-wrap break-all bg-muted rounded-xl p-3 max-h-[60vh] overflow-auto">
                   {logsLoading
                     ? "加载中..."
                     : (logs?.logs ?? []).join("\n") || "暂无日志"}
                 </pre>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button
                   variant="secondary"
                   onClick={() => logsFor && openLogs(logsFor)}
                 >
                   刷新
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(removeTarget)}
         placement="center"
         onOpenChange={(open) => !open && setRemoveTarget(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader>
+              <DialogHeader>
                 <h2 className="text-lg font-bold text-destructive">卸载内核</h2>
-              </ModalHeader>
-              <ModalBody>
+              </DialogHeader>
+              <DialogBody>
                 <p className="text-muted-foreground">
                   确定从{" "}
                   <span className="font-semibold text-foreground">
@@ -670,8 +670,8 @@ export function KernelPanel({
                     服务器卸载失败（可能离线）。可以强制删除面板记录，服务器上线后会自动清理。
                   </p>
                 )}
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
@@ -691,11 +691,11 @@ export function KernelPanel({
                 >
                   卸载
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

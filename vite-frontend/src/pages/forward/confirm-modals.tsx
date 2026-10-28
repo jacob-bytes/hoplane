@@ -3,12 +3,12 @@ import type { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/select-native";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { type ForwardAddressItem } from "@/pages/forward/address";
 import { Forward, Tunnel } from "@/pages/forward/types";
 
@@ -29,7 +29,7 @@ export function DeleteForwardModal({
   setDeleteModalOpen,
 }: DeleteForwardModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -40,13 +40,13 @@ export function DeleteForwardModal({
       size="2xl"
       onOpenChange={setDeleteModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-lg font-bold text-destructive">确认删除</h2>
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               <p className="text-muted-foreground">
                 确定要删除规则{" "}
                 <span className="font-semibold text-foreground">
@@ -57,8 +57,8 @@ export function DeleteForwardModal({
               <p className="text-small text-muted-foreground mt-2">
                 此操作无法撤销，删除后该规则将永久消失。
               </p>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -69,11 +69,11 @@ export function DeleteForwardModal({
               >
                 删除
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -94,7 +94,7 @@ export function ResetFlowModal({
   resetFlowModalOpen,
 }: ResetFlowModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -105,13 +105,13 @@ export function ResetFlowModal({
       size="lg"
       onOpenChange={handleResetFlowModalOpenChange}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-lg font-bold text-secondary">确认流量清零</h2>
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               <p className="text-muted-foreground">
                 确定要清零规则{" "}
                 <span className="font-semibold text-foreground">
@@ -122,8 +122,8 @@ export function ResetFlowModal({
               <p className="text-small text-muted-foreground mt-2">
                 此操作不可撤销，但不会影响用户总流量、用户隧道配额和历史统计。
               </p>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button
                 loading={resetFlowLoading}
                 variant="ghost"
@@ -138,11 +138,11 @@ export function ResetFlowModal({
               >
                 清零
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -165,7 +165,7 @@ export function AddressListModal({
   setAddressModalOpen,
 }: AddressListModalProps) {
   return (
-    <Modal
+    <Dialog
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
@@ -174,16 +174,16 @@ export function AddressListModal({
       size="lg"
       onClose={() => setAddressModalOpen(false)}
     >
-      <ModalContent>
-        <ModalHeader className="text-base">{addressModalTitle}</ModalHeader>
-        <ModalBody className="pb-6">
+      <DialogContent>
+        <DialogHeader className="text-base">{addressModalTitle}</DialogHeader>
+        <DialogBody className="pb-6">
           <div className="mb-4 text-right">
             <Button size="sm" onClick={copyAllAddresses}>
               复制
             </Button>
           </div>
 
-          <div className="space-y-2 max-h-60 overflow-y-auto scrollbar-hide">
+          <div className="flex flex-col gap-2 max-h-60 overflow-y-auto scrollbar-hide">
             {addressList.map((item) => (
               <div
                 key={item.id}
@@ -203,9 +203,9 @@ export function AddressListModal({
               </div>
             ))}
           </div>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -226,23 +226,23 @@ export function BatchDeleteModal({
   setBatchDeleteModalOpen,
 }: BatchDeleteModalProps) {
   return (
-    <Modal
+    <Dialog
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       open={batchDeleteModalOpen}
       onOpenChange={setBatchDeleteModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader>确认删除</ModalHeader>
-            <ModalBody>
+            <DialogHeader>确认删除</DialogHeader>
+            <DialogBody>
               <p>
                 确定要删除选中的 {selectedIds.size} 项规则吗？此操作不可撤销。
               </p>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -253,11 +253,11 @@ export function BatchDeleteModal({
               >
                 删除
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -284,18 +284,18 @@ export function BatchChangeTunnelModal({
   tunnels,
 }: BatchChangeTunnelModalProps) {
   return (
-    <Modal
+    <Dialog
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
       open={batchChangeTunnelModalOpen}
       onOpenChange={setBatchChangeTunnelModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader>隧道</ModalHeader>
-            <ModalBody>
+            <DialogHeader>隧道</DialogHeader>
+            <DialogBody>
               <p className="mb-4">
                 将选中的 {selectedIds.size} 项规则迁移到新隧道：
               </p>
@@ -311,8 +311,8 @@ export function BatchChangeTunnelModal({
                   setBatchTargetTunnelId(selected ? Number(selected) : null)
                 }
               />
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -322,10 +322,10 @@ export function BatchChangeTunnelModal({
               >
                 换隧道
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

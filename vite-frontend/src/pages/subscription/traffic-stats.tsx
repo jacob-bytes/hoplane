@@ -126,7 +126,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
   const sinceDate = shown ? new Date(shown.since).toLocaleDateString() : "";
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-3">
       <Segmented
         options={RANGES}
         value={range}
@@ -288,7 +288,7 @@ export function SubTrafficStats({ id, mine }: { id: number; mine?: boolean }) {
                 className="grid grid-cols-[4.75rem_minmax(0,1fr)_4.5rem] items-center gap-2 border-t border-hairline px-3 py-2"
               >
                 <span className="truncate text-xs">{p.row}</span>
-                <div className="min-w-0 space-y-1">
+                <div className="min-w-0 flex flex-col gap-1">
                   <div
                     aria-hidden="true"
                     className="flex h-1.5 overflow-hidden rounded-full bg-muted"

@@ -46,12 +46,12 @@ import {
 } from "@/api";
 import { Button, buttonVariant } from "@/components/ui/button";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -179,7 +179,7 @@ const BAR_TONE: Record<string, string> = {
 /** A labelled usage bar for a list row (CPU, 内存). */
 function UsageMini({ label, value }: { label: string; value: number }) {
   return (
-    <div className="min-w-0 space-y-1">
+    <div className="min-w-0 flex flex-col gap-1">
       <div className="flex items-baseline justify-between gap-2 text-[11px]">
         <span className="text-muted-foreground">{label}</span>
         <span className="font-mono font-medium">{value.toFixed(1)}%</span>
@@ -321,7 +321,7 @@ function ServerCard({
 
       <CardContent className="py-3 px-5 flex-1 flex flex-col justify-end gap-4 z-10 w-full overflow-hidden">
         <div className="grid grid-cols-2 gap-5 w-full">
-          <div className="space-y-1.5 min-w-0">
+          <div className="flex flex-col gap-1.5 min-w-0">
             <div className="flex justify-between items-center text-xs">
               <span className="text-muted-foreground">CPU</span>
               <span className="font-mono font-medium">
@@ -334,7 +334,7 @@ function ServerCard({
               value={isOnline && metric ? metric.cpuUsage : 0}
             />
           </div>
-          <div className="space-y-1.5 min-w-0">
+          <div className="flex flex-col gap-1.5 min-w-0">
             <div className="flex justify-between items-center text-xs">
               <span className="text-muted-foreground">内存</span>
               <span className="font-mono font-medium">
@@ -574,7 +574,7 @@ const NodeMetricsChartCard = React.memo(function NodeMetricsChartCard({
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
           {METRIC_TYPE_BUTTONS.map((item) => (
             <Button
@@ -1393,7 +1393,7 @@ export function MonitorView({
       : serviceMonitors;
 
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       {accessDenied && (
         <Card>
           <CardHeader className="flex flex-row items-center gap-2">
@@ -1690,7 +1690,7 @@ export function MonitorView({
                     </Button>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="flex flex-col gap-4">
                   {monitorsLoading ? (
                     <div className="flex justify-center py-8">
                       <RefreshCw className="w-6 h-6 animate-spin" />
@@ -1880,7 +1880,7 @@ export function MonitorView({
         </>
       )}
 
-      <Modal
+      <Dialog
         open={resultsModalOpen}
         scrollBehavior="inside"
         size="xl"
@@ -1889,8 +1889,8 @@ export function MonitorView({
           setResultsMonitorId(null);
         }}
       >
-        <ModalContent>
-          <ModalHeader
+        <DialogContent>
+          <DialogHeader
             closable
             className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
           >
@@ -1956,8 +1956,8 @@ export function MonitorView({
                 </Button>
               </div>
             ) : null}
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             {resultsLoading ? (
               <div className="flex justify-center py-10">
                 <RefreshCw className="w-6 h-6 animate-spin" />
@@ -1998,14 +1998,16 @@ export function MonitorView({
                 暂无监控记录
               </div>
             )}
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
 
-      <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
-        <ModalContent>
-          <ModalHeader>{editingMonitor ? "编辑监控" : "添加监控"}</ModalHeader>
-          <ModalBody className="space-y-4">
+      <Dialog open={editModalOpen} onClose={() => setEditModalOpen(false)}>
+        <DialogContent>
+          <DialogHeader>
+            {editingMonitor ? "编辑监控" : "添加监控"}
+          </DialogHeader>
+          <DialogBody className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="monitor-name">名称</Label>
               <Input
@@ -2157,17 +2159,17 @@ export function MonitorView({
               />
               <span className="text-sm">启用</span>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={() => setEditModalOpen(false)}>
               取消
             </Button>
             <Button loading={submitLoading} onClick={handleSubmitMonitor}>
               {editingMonitor ? "更新" : "创建"}
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

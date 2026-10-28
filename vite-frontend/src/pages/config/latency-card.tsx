@@ -90,7 +90,7 @@ export function LatencySettings({
   const full = targets.length >= MAX_TARGETS;
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-3">
       <p className="text-xs text-muted-foreground">
         服务器定时用 TCP
         连接测到这些地址的延迟和丢包，代表该地区运营商用户到服务器的延迟。
@@ -120,11 +120,11 @@ export function LatencySettings({
         </div>
       )}
 
-      <div className="space-y-2">
+      <div className="flex flex-col gap-2">
         {targets.map((t, i) => (
           <div
             key={i}
-            className="space-y-2 rounded-lg border border-hairline p-2.5"
+            className="flex flex-col gap-2 rounded-lg border border-hairline p-2.5"
           >
             <div className="grid grid-cols-[1fr_5rem] gap-2 sm:grid-cols-[8rem_1fr_5rem]">
               <Input

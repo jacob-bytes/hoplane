@@ -4,12 +4,12 @@ import { copyWithToast } from "@/utils/clipboard";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 interface BatchActionResultModalProps {
@@ -75,22 +75,22 @@ export function BatchActionResultModal({
   };
 
   return (
-    <Modal
+    <Dialog
       open={isOpen}
       scrollBehavior="inside"
       size="2xl"
       onOpenChange={onOpenChange}
     >
-      <ModalContent>
+      <DialogContent>
         {() => (
           <>
-            <ModalHeader closable>{title}</ModalHeader>
-            <ModalBody className="space-y-4">
+            <DialogHeader closable>{title}</DialogHeader>
+            <DialogBody className="flex flex-col gap-4">
               <Alert variant="warning">
                 <AlertTitle>{`共 ${failures.length} 项需要处理`}</AlertTitle>
                 <AlertDescription>{summary}</AlertDescription>
               </Alert>
-              <div className="space-y-3">
+              <div className="flex flex-col gap-3">
                 {failures.map((failure, index) => (
                   <details
                     key={`${failure.id ?? "unknown"}-${index}`}
@@ -113,15 +113,15 @@ export function BatchActionResultModal({
                   </details>
                 ))}
               </div>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={handleCopy}>
                 复制失败原因
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

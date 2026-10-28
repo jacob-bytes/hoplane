@@ -13,11 +13,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+} from "@/components/dialog";
 import { PageEmptyState, PageLoadingState } from "@/components/page-state";
 import { AnnouncementBanner } from "@/pages/dashboard/components/announcement-banner";
 import { AnnouncementModal } from "@/pages/dashboard/components/announcement-modal";
@@ -908,7 +908,7 @@ function UserDashboard() {
             {userTunnels.length === 0 ? (
               <PageEmptyState className="h-48" message="暂无隧道权限" />
             ) : (
-              <div className="space-y-3">
+              <div className="flex flex-col gap-3">
                 {userTunnels.map((tunnel) => {
                   const tunnelExpStatus = getExpStatus(tunnel.expTime);
 
@@ -1046,7 +1046,7 @@ function UserDashboard() {
               <p className="text-muted-foreground">暂无规则配置</p>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="flex flex-col gap-4">
               {groupedForwards().map((group) => (
                 <div
                   key={group.tunnelName}
@@ -1067,12 +1067,12 @@ function UserDashboard() {
                         key={forward.id}
                         className="bg-white/10 dark:bg-black/10  border border-white/20 dark:border-white/10 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300"
                       >
-                        <div className="space-y-3">
+                        <div className="flex flex-col gap-3">
                           <div>
                             <h4 className="font-medium text-foreground text-sm mb-2 truncate">
                               {forward.name}
                             </h4>
-                            <div className="space-y-1">
+                            <div className="flex flex-col gap-1">
                               <button
                                 className={`block px-2 py-1 bg-white/20 dark:bg-black/20  rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleIps(forward.inIp) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
                                 disabled={!hasMultipleIps(forward.inIp)}
@@ -1157,7 +1157,7 @@ function UserDashboard() {
       </Card>
 
       {/* 地址列表弹窗 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         open={addressModalOpen}
         placement="center"
@@ -1165,16 +1165,16 @@ function UserDashboard() {
         size="2xl"
         onClose={() => setAddressModalOpen(false)}
       >
-        <ModalContent>
-          <ModalHeader className="text-base">{addressModalTitle}</ModalHeader>
-          <ModalBody className="pb-6">
+        <DialogContent>
+          <DialogHeader className="text-base">{addressModalTitle}</DialogHeader>
+          <DialogBody className="pb-6">
             <div className="mb-4 text-right">
               <Button size="sm" onClick={copyAllAddresses}>
                 复制全部
               </Button>
             </div>
 
-            <div className="space-y-2 max-h-60 overflow-y-auto scrollbar-hide">
+            <div className="flex flex-col gap-2 max-h-60 overflow-y-auto scrollbar-hide">
               {addressList.map((item) => (
                 <div
                   key={item.id}
@@ -1194,9 +1194,9 @@ function UserDashboard() {
                 </div>
               ))}
             </div>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
     </AnimatedPage>
   );
 }

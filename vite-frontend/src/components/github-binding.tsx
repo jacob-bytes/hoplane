@@ -6,12 +6,12 @@ import { Button, buttonVariant } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { beginGithubBind, unbindGithub, type GithubInfo } from "@/api";
 import { githubCallbackUrl, goToGithub } from "@/utils/github-login";
 
@@ -75,7 +75,7 @@ export function GithubBindingModal({
   };
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -85,9 +85,9 @@ export function GithubBindingModal({
       size="md"
       onClose={onClose}
     >
-      <ModalContent>
-        <ModalHeader>GitHub 登录</ModalHeader>
-        <ModalBody>
+      <DialogContent>
+        <DialogHeader>GitHub 登录</DialogHeader>
+        <DialogBody>
           <div className="flex items-center gap-3 rounded-xl bg-muted px-3 py-3">
             <Github className="h-5 w-5 shrink-0 text-muted-foreground" />
             <div className="min-w-0 flex-1">
@@ -115,8 +115,8 @@ export function GithubBindingModal({
               }}
             />
           </div>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
@@ -127,8 +127,8 @@ export function GithubBindingModal({
           >
             {bound ? "解绑" : "去 GitHub 授权"}
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

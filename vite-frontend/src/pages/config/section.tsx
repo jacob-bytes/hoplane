@@ -44,7 +44,7 @@ export function ConfigSection({
           )}
         </div>
       </AccordionTrigger>
-      <AccordionContent className="space-y-4 border-t border-border px-4 pt-4">
+      <AccordionContent className="flex flex-col gap-4 border-t border-border px-4 pt-4">
         {children}
       </AccordionContent>
     </AccordionItem>
@@ -76,7 +76,7 @@ export function Field({
   }
 
   return (
-    <div className="space-y-1.5">
+    <div className="flex flex-col gap-1.5">
       <p className="text-sm font-medium">{label}</p>
       {children}
       {help && <p className="text-xs text-muted-foreground">{help}</p>}

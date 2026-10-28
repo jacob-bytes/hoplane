@@ -11,11 +11,11 @@ import { getInboundShare } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+} from "@/components/dialog";
 
 const modalBase =
   "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden";
@@ -85,7 +85,7 @@ function ShareEntryCard({ entry }: { entry: InboundShareEntry }) {
   const text = (asConf && entry.conf) || entry.uri || entry.surge;
 
   return (
-    <div className="rounded-xl border border-hairline p-4 space-y-3">
+    <div className="rounded-xl border border-hairline p-4 flex flex-col gap-3">
       <div className="min-w-0">
         <div className="flex items-center gap-2 min-w-0">
           <Badge
@@ -199,7 +199,7 @@ export function ShareModal({
   }, [item]);
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{ base: modalBase }}
       open={Boolean(item)}
@@ -208,17 +208,17 @@ export function ShareModal({
       size="lg"
       onOpenChange={(open) => !open && onClose()}
     >
-      <ModalContent>
+      <DialogContent>
         {() => (
           <>
-            <ModalHeader closable className="flex flex-col gap-1">
+            <DialogHeader closable className="flex flex-col gap-1">
               <h2 className="text-lg font-bold">分享 · {item?.name}</h2>
               <p className="text-small text-muted-foreground">
                 复制链接或扫码导入 v2rayN、Shadowrocket、NekoBox 等客户端；Surge
                 请使用订阅
               </p>
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               {loading && (
                 <p className="text-sm text-muted-foreground">加载中...</p>
               )}
@@ -227,7 +227,7 @@ export function ShareModal({
                   没有可分享的地址：入站仅监听本机或设置了仅中转，但还没有对接中转。
                 </p>
               )}
-              <div className="space-y-3">
+              <div className="flex flex-col gap-3">
                 {entries.map((e) => (
                   <ShareEntryCard
                     key={`${e.kind}-${e.host}-${e.port}`}
@@ -235,10 +235,10 @@ export function ShareModal({
                   />
                 ))}
               </div>
-            </ModalBody>
+            </DialogBody>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

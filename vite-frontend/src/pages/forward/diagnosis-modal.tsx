@@ -4,12 +4,12 @@ import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -49,7 +49,7 @@ export function DiagnosisModal({
   setDiagnosisModalOpen,
 }: DiagnosisModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden [&>div]:bg-raised [&>div]:dark:bg-raised",
@@ -67,10 +67,10 @@ export function DiagnosisModal({
         }
       }}
     >
-      <ModalContent>
+      <DialogContent>
         {() => (
           <>
-            <ModalHeader
+            <DialogHeader
               closable
               className="flex flex-col gap-1 border-b border-hairline"
             >
@@ -85,10 +85,10 @@ export function DiagnosisModal({
                   </Badge>
                 </div>
               )}
-            </ModalHeader>
-            <ModalBody className="bg-transparent">
+            </DialogHeader>
+            <DialogBody className="bg-transparent">
               {diagnosisResult ? (
-                <div className="space-y-4">
+                <div className="flex flex-col gap-4">
                   {diagnosisLoading && (
                     <div className="flex items-center justify-between rounded-lg border border-primary/20 bg-primary/5 px-3 py-2">
                       <div className="flex items-center gap-2 text-sm text-primary">
@@ -152,7 +152,7 @@ export function DiagnosisModal({
                   </div>
 
                   {/* 桌面端表格展示 */}
-                  <div className="hidden md:block space-y-3">
+                  <div className="hidden flex-col gap-3 md:flex">
                     {(() => {
                       // 使用后端返回的 chainType 和 inx 字段进行分组
                       const groupedResults = {
@@ -363,7 +363,7 @@ export function DiagnosisModal({
                   </div>
 
                   {/* 移动端卡片展示 */}
-                  <div className="md:hidden space-y-3">
+                  <div className="md:hidden flex flex-col gap-3">
                     {(() => {
                       // 使用后端返回的 chainType 和 inx 字段进行分组
                       const groupedResults = {
@@ -396,7 +396,7 @@ export function DiagnosisModal({
                         if (results.length === 0) return null;
 
                         return (
-                          <div key={title} className="space-y-2">
+                          <div key={title} className="flex flex-col gap-2">
                             <div className="px-2 py-1.5 bg-primary/10 dark:bg-primary/20 rounded-lg border border-primary/30">
                               <h3 className="text-sm font-semibold text-primary">
                                 {title}
@@ -558,11 +558,11 @@ export function DiagnosisModal({
                   {diagnosisResult.results.some(
                     (r) => r.success === false && !r.diagnosing,
                   ) && (
-                    <div className="space-y-2 hidden md:block">
+                    <div className="hidden flex-col gap-2 md:flex">
                       <h4 className="text-sm font-semibold text-destructive">
                         失败详情
                       </h4>
-                      <div className="space-y-2">
+                      <div className="flex flex-col gap-2">
                         {diagnosisResult.results
                           .filter((r) => r.success === false && !r.diagnosing)
                           .map((result, index) => (
@@ -604,8 +604,8 @@ export function DiagnosisModal({
                   </h3>
                 </div>
               )}
-            </ModalBody>
-            <ModalFooter className="border-t border-hairline">
+            </DialogBody>
+            <DialogFooter className="border-t border-hairline">
               {currentDiagnosisForward && (
                 <Button
                   disabled={diagnosisLoading}
@@ -614,10 +614,10 @@ export function DiagnosisModal({
                   重新诊断
                 </Button>
               )}
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

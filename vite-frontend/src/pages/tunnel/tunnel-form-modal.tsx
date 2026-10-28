@@ -7,12 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionItem } from "@/components/accordion-field";
@@ -69,7 +69,7 @@ export function TunnelFormModal({
   updateChainStrategy,
 }: TunnelFormModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -80,10 +80,10 @@ export function TunnelFormModal({
       size="xl"
       onOpenChange={setModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">
                 {isEdit ? "编辑隧道" : "新增隧道"}
               </h2>
@@ -92,9 +92,9 @@ export function TunnelFormModal({
                   ? "修改服务器配置会中断现有连接，隧道类型不可修改"
                   : "创建新的隧道配置"}
               </p>
-            </ModalHeader>
-            <ModalBody>
-              <div className="space-y-4">
+            </DialogHeader>
+            <DialogBody>
+              <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="tunnel-name">隧道名称</Label>
                   <Input
@@ -164,7 +164,7 @@ export function TunnelFormModal({
                 <Separator />
                 <h3 className="text-lg font-semibold">入口配置</h3>
 
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   <MultiSelectField
                     errorMessage={errors.inNodeId}
                     isInvalid={!!errors.inNodeId}
@@ -269,7 +269,7 @@ export function TunnelFormModal({
                     </div>
 
                     {getChainGroups().length > 0 && (
-                      <div className="space-y-3">
+                      <div className="flex flex-col gap-3">
                         {getChainGroups().map((groupNodes, groupIndex) => {
                           const protocol =
                             groupNodes.length > 0
@@ -744,7 +744,7 @@ export function TunnelFormModal({
                       </span>
                     }
                   >
-                    <div className="space-y-4 pb-2">
+                    <div className="flex flex-col gap-4 pb-2">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <SelectField
                           errorMessage={errors.flow}
@@ -908,8 +908,8 @@ export function TunnelFormModal({
                   </AccordionItem>
                 </Accordion>
               </div>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -922,10 +922,10 @@ export function TunnelFormModal({
                     ? "更新"
                     : "创建"}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

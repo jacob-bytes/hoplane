@@ -36,12 +36,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { SelectField } from "@/components/select-native";
 import { Switch } from "@/components/ui/switch";
 
@@ -360,7 +360,7 @@ export function InboundFormModal({
   const nodeOptions = eligibleNodes(nodes);
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -371,19 +371,19 @@ export function InboundFormModal({
       size="2xl"
       onOpenChange={onOpenChange}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">
                 {isEdit ? "编辑入站" : "新建入站"}
               </h2>
               <p className="text-small text-muted-foreground">
                 留空的 UUID、密码、密钥会自动生成，端口留空则随机分配
               </p>
-            </ModalHeader>
-            <ModalBody>
-              <div className="space-y-4">
+            </DialogHeader>
+            <DialogBody>
+              <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <SelectField
                     isDisabled={isEdit}
@@ -634,7 +634,7 @@ export function InboundFormModal({
                   </p>
                 )}
                 {form.protocol === "wireguard" && (
-                  <div className="space-y-2">
+                  <div className="flex flex-col gap-2">
                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                       <div className="flex flex-col gap-1.5">
                         <Label htmlFor="field-5">客户端地址</Label>
@@ -740,7 +740,7 @@ export function InboundFormModal({
                 )}
 
                 {form.securityType === "reality" && (
-                  <div className="space-y-3 rounded-xl border border-hairline p-3">
+                  <div className="flex flex-col gap-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">Reality</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="flex flex-col gap-1.5">
@@ -813,7 +813,7 @@ export function InboundFormModal({
                 )}
 
                 {form.securityType === "shadowtls" && (
-                  <div className="space-y-3 rounded-xl border border-hairline p-3">
+                  <div className="flex flex-col gap-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">ShadowTLS v3</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="flex flex-col gap-1.5">
@@ -843,7 +843,7 @@ export function InboundFormModal({
                 )}
 
                 {form.securityType === "tls" && (
-                  <div className="space-y-3 rounded-xl border border-hairline p-3">
+                  <div className="flex flex-col gap-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">TLS</p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="flex flex-col gap-1.5">
@@ -871,7 +871,7 @@ export function InboundFormModal({
                       />
                     </div>
                     {certMode === "acme" && (
-                      <div className="space-y-3">
+                      <div className="flex flex-col gap-3">
                         <p className="text-xs text-muted-foreground">
                           由 sing-box 向 Let&apos;s Encrypt
                           申请并自动续期，域名需要解析到该服务器。 HTTP
@@ -999,7 +999,7 @@ export function InboundFormModal({
                   {showAdvanced ? "收起高级选项" : "展开高级选项"}
                 </button>
                 {showAdvanced && (
-                  <div className="space-y-3">
+                  <div className="flex flex-col gap-3">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <div className="flex flex-col gap-1.5">
                         <Label htmlFor="field-26">监听地址</Label>
@@ -1012,7 +1012,7 @@ export function InboundFormModal({
                           默认 :: 监听所有地址；127.0.0.1 仅本机（配合隧道中转）
                         </p>
                       </div>
-                      <div className="space-y-2">
+                      <div className="flex flex-col gap-2">
                         <SelectField
                           label="分享地址"
                           options={[
@@ -1055,7 +1055,7 @@ export function InboundFormModal({
                       value={form.outboundIpStrategy}
                       onChange={(value) => set("outboundIpStrategy", value)}
                     />
-                    <div className="space-y-3 rounded-xl border border-hairline p-3">
+                    <div className="flex flex-col gap-3 rounded-xl border border-hairline p-3">
                       <p className="text-sm font-medium">中转相关</p>
                       <div className="flex items-start gap-2">
                         <Switch
@@ -1151,18 +1151,18 @@ export function InboundFormModal({
                   </div>
                 )}
               </div>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button loading={saving} onClick={submit}>
                 {isEdit ? "保存并下发" : "创建并下发"}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

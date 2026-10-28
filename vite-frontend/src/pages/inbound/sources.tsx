@@ -18,12 +18,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { formatTraffic } from "@/utils/traffic";
 
 const modalBase =
@@ -248,7 +248,7 @@ export function RemoteSourcesSection({
   const editing = sources.find((s) => s.id === draft?.id);
 
   return (
-    <section className="space-y-2">
+    <section className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-muted-foreground">订阅源</h2>
         <Button
@@ -387,7 +387,7 @@ export function RemoteSourcesSection({
         }}
       />
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(draft)}
@@ -395,16 +395,16 @@ export function RemoteSourcesSection({
         scrollBehavior="inside"
         onOpenChange={(open) => !open && setDraft(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) =>
             draft && (
               <>
-                <ModalHeader>
+                <DialogHeader>
                   <h2 className="text-lg font-bold">
                     {draft.id ? "编辑订阅源" : "添加订阅源"}
                   </h2>
-                </ModalHeader>
-                <ModalBody className="space-y-4">
+                </DialogHeader>
+                <DialogBody className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="source-name">名称</Label>
                     <Input
@@ -462,7 +462,7 @@ export function RemoteSourcesSection({
                     />
                   )}
                   {draft.kind === "url" && (
-                    <div className="space-y-1.5">
+                    <div className="flex flex-col gap-1.5">
                       <p className="text-sm font-medium">自动更新</p>
                       <Segmented
                         options={INTERVALS}
@@ -498,7 +498,7 @@ export function RemoteSourcesSection({
                     {draft.kind === "url" ? "更新" : "重新上传"}
                     时按名称对上已有节点：改了地址就跟着改（中转也跟着改），没了就移除；挂着中转的会保留
                   </p>
-                  <div className="space-y-1.5">
+                  <div className="flex flex-col gap-1.5">
                     <p className="text-sm font-medium">用途</p>
                     <Segmented
                       options={SOURCE_ROLES}
@@ -526,8 +526,8 @@ export function RemoteSourcesSection({
                       当前 {editing.nodeCount} 个节点 · {ago(editing.lastFetch)}
                     </p>
                   )}
-                </ModalBody>
-                <ModalFooter className="flex-wrap">
+                </DialogBody>
+                <DialogFooter className="flex-wrap">
                   {confirmDelete ? (
                     <>
                       <p className="w-full text-sm text-destructive">
@@ -577,12 +577,12 @@ export function RemoteSourcesSection({
                       </Button>
                     </>
                   )}
-                </ModalFooter>
+                </DialogFooter>
               </>
             )
           }
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
@@ -600,7 +600,7 @@ export function FilePick({
   const input = useRef<HTMLInputElement>(null);
 
   return (
-    <div className="space-y-1">
+    <div className="flex flex-col gap-1">
       <button
         className="flex w-full items-center gap-2 rounded-xl border border-dashed border-hairline px-3 py-3 text-left text-sm hover:bg-muted"
         type="button"

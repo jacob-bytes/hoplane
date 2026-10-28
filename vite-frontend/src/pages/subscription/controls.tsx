@@ -237,7 +237,7 @@ export function Section({
   const shown = !collapsible || open;
 
   return (
-    <section className="space-y-3 border-t border-hairline pt-4 first:border-t-0 first:pt-0">
+    <section className="flex flex-col gap-3 border-t border-hairline pt-4 first:border-t-0 first:pt-0">
       {collapsible ? (
         <button
           aria-expanded={open}

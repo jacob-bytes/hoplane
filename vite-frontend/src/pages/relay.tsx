@@ -137,7 +137,7 @@ function QualityView() {
   const [viewMode, setViewMode] = useViewMode("monitor");
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-3">
       <PageToolbar view={{ value: viewMode, onChange: setViewMode }} />
       <TunnelMonitorView card={viewMode === "card"} />
     </div>
@@ -281,7 +281,7 @@ function LinesView() {
   );
 
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-3">
       <PageToolbar
         placeholder="搜索节点名称"
         search={query}
@@ -393,7 +393,7 @@ function LinesView() {
                   }
                   onClick={() => setEditing(i)}
                 >
-                  <div className="space-y-2">
+                  <div className="flex flex-col gap-2">
                     <p className="truncate text-xs text-muted-foreground">
                       节点：{landing}
                     </p>

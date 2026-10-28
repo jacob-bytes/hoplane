@@ -29,11 +29,11 @@ import {
 } from "@/components/ui/table";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+} from "@/components/dialog";
 
 const RANGES = [
   { hours: 24, label: "24 小时" },
@@ -125,7 +125,7 @@ export function LatencyTrendModal({
   onClose: () => void;
 }) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -136,19 +136,19 @@ export function LatencyTrendModal({
       size="2xl"
       onOpenChange={(v) => !v && onClose()}
     >
-      <ModalContent>
-        <ModalHeader closable className="flex flex-col gap-0.5">
+      <DialogContent>
+        <DialogHeader closable className="flex flex-col gap-0.5">
           <h2 className="text-lg font-bold">延迟趋势</h2>
           <p className="text-xs font-normal text-muted-foreground">
             {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
             ，每 3 分钟一次
           </p>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <DialogBody>
           <LatencyTrendContent nodeId={nodeId} />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 

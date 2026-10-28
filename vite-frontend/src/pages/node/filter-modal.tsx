@@ -2,12 +2,12 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { SelectField } from "@/components/select-native";
 import { NodeFilterMode } from "@/pages/node/types";
 
@@ -34,7 +34,7 @@ export function NodeFilterModal({
   setNodeFilterMode,
 }: NodeFilterModalProps) {
   return (
-    <Modal
+    <Dialog
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
@@ -43,13 +43,13 @@ export function NodeFilterModal({
       size="md"
       onOpenChange={setIsFilterModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {() => (
           <>
-            <ModalHeader closable className="flex flex-col gap-1">
+            <DialogHeader closable className="flex flex-col gap-1">
               筛选条件
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               <div className="flex flex-col gap-4 py-2">
                 <div className="flex flex-col gap-2">
                   <p className="text-sm font-medium">按到期状态筛选</p>
@@ -78,15 +78,15 @@ export function NodeFilterModal({
                   />
                 </div>
               </div>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="secondary" onClick={resetNodeFilterMode}>
                 重置
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

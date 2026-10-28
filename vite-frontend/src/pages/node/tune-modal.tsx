@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { nodeTune, type NodeTuneStatus } from "@/api";
 
 /**
@@ -86,7 +86,7 @@ export function NodeTuneModal({
     });
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -97,18 +97,18 @@ export function NodeTuneModal({
       size="2xl"
       onOpenChange={(open) => !open && onClose()}
     >
-      <ModalContent>
+      <DialogContent>
         {() => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">服务器调优</h2>
               <p className="text-sm font-normal text-muted-foreground">
                 {node?.name}
                 {status &&
                   ` · 内核 ${status.kernel || "未知"} · 拥塞控制 ${status.congestion || "未知"}`}
               </p>
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               {error ? (
                 <p className="py-6 text-center text-sm text-destructive">
                   {error}
@@ -118,7 +118,7 @@ export function NodeTuneModal({
                   <Loader2 className="size-4 animate-spin text-muted-foreground" />
                 </div>
               ) : (
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   <p className="text-xs text-muted-foreground">
                     勾选的项目写入系统配置并立即生效，重启后保持；取消勾选的会恢复成调优前的值。
                   </p>
@@ -162,7 +162,7 @@ export function NodeTuneModal({
                               {g.desc}
                             </p>
                             {detail === g.id && (
-                              <div className="mt-2 space-y-0.5 font-mono text-[11px] text-muted-foreground">
+                              <div className="mt-2 flex flex-col gap-0.5 font-mono text-[11px] text-muted-foreground">
                                 {g.settings.map((s) => (
                                   <div key={s.key} className="break-all">
                                     {s.key}:{" "}
@@ -191,8 +191,8 @@ export function NodeTuneModal({
                   })}
                 </div>
               )}
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               {status?.hasBackup && (
                 <Button
                   className="mr-auto"
@@ -212,10 +212,10 @@ export function NodeTuneModal({
               >
                 应用
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

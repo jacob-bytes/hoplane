@@ -5,12 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SelectField } from "@/components/select-native";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Tunnel } from "@/pages/forward/types";
 
 export interface ForwardFilterModalProps {
@@ -50,7 +50,7 @@ export function ForwardFilterModal({
   uniqueUsers,
 }: ForwardFilterModalProps) {
   return (
-    <Modal
+    <Dialog
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
       }}
@@ -59,13 +59,13 @@ export function ForwardFilterModal({
       size="md"
       onOpenChange={setIsSearchModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {() => (
           <>
-            <ModalHeader closable className="flex flex-col gap-1">
+            <DialogHeader closable className="flex flex-col gap-1">
               筛选规则
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               <div className="flex flex-col gap-4 py-2">
                 {isAdmin && (
                   <SelectField
@@ -138,15 +138,15 @@ export function ForwardFilterModal({
                   />
                 </div>
               </div>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="secondary" onClick={resetSearchParams}>
                 重置
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

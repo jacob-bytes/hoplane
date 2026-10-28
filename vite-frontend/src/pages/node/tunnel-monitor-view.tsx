@@ -298,16 +298,20 @@ const QualityChartCard = React.memo(function QualityChartCard({
             <ResponsiveContainer height="100%" width="100%">
               <LineChart data={data}>
                 <CartesianGrid opacity={0.3} strokeDasharray="3 3" />
-                <XAxis dataKey="time" fontSize={11} tick={{ fill: "#888" }} />
+                <XAxis
+                  dataKey="time"
+                  fontSize={11}
+                  tick={{ fill: "var(--muted-foreground)" }}
+                />
                 <YAxis
                   fontSize={11}
                   label={{
                     value: "延迟 (ms)",
                     angle: -90,
                     position: "insideLeft",
-                    style: { fontSize: 11, fill: "#888" },
+                    style: { fontSize: 11, fill: "var(--muted-foreground)" },
                   }}
-                  tick={{ fill: "#888" }}
+                  tick={{ fill: "var(--muted-foreground)" }}
                   tickFormatter={(v: any) => `${Number(v).toFixed(0)}ms`}
                 />
                 <Tooltip
@@ -330,7 +334,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
 
                     return [`${n.toFixed(1)}ms`, label];
                   }}
-                  labelStyle={{ color: "#fff" }}
+                  labelStyle={{ color: "var(--popover-foreground)" }}
                 />
                 <Line
                   connectNulls
@@ -346,7 +350,7 @@ const QualityChartCard = React.memo(function QualityChartCard({
                   dataKey="exitToBing"
                   dot={false}
                   name="exitToBing"
-                  stroke="#3b82f6"
+                  stroke="var(--chart-1)"
                   strokeWidth={2}
                   type="monotone"
                 />
@@ -424,10 +428,14 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
             <ResponsiveContainer height="100%" width="100%">
               <LineChart data={data}>
                 <CartesianGrid opacity={0.3} strokeDasharray="3 3" />
-                <XAxis dataKey="time" fontSize={11} tick={{ fill: "#888" }} />
+                <XAxis
+                  dataKey="time"
+                  fontSize={11}
+                  tick={{ fill: "var(--muted-foreground)" }}
+                />
                 <YAxis
                   fontSize={11}
-                  tick={{ fill: "#888" }}
+                  tick={{ fill: "var(--muted-foreground)" }}
                   tickFormatter={yFormatter}
                 />
                 <Tooltip
@@ -438,7 +446,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
                     fontSize: 12,
                   }}
                   formatter={yFormatter}
-                  labelStyle={{ color: "#fff" }}
+                  labelStyle={{ color: "var(--popover-foreground)" }}
                 />
                 <Line
                   dataKey="bytesIn"
@@ -452,7 +460,7 @@ const TrafficChartCard = React.memo(function TrafficChartCard({
                   dataKey="bytesOut"
                   dot={false}
                   name="下载流量"
-                  stroke="#ef4444"
+                  stroke="var(--destructive)"
                   strokeWidth={2}
                   type="monotone"
                 />
@@ -721,7 +729,7 @@ const ForwardingChainTopology = React.memo(function ForwardingChainTopology({
         </h3>
       </CardHeader>
       <CardContent className="py-2 px-4 pb-4">
-        <div className="max-h-80 space-y-1 overflow-auto pb-1">
+        <div className="max-h-80 flex flex-col gap-1 overflow-auto pb-1">
           {topologyPaths.map((path, index) => (
             <div
               key={path.key}
@@ -1177,7 +1185,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
     const quality = qualityMap[detailTunnelId];
 
     return (
-      <div className="space-y-4">
+      <div className="flex flex-col gap-4">
         {/* Header */}
         <div className="flex items-center gap-3 flex-wrap">
           <Button
@@ -1333,7 +1341,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
 
   // ===== LIST VIEW =====
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-4">
       <div className="flex items-center gap-2">
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
           <span>
@@ -1422,7 +1430,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
 
                 <CardContent className="py-3 px-5 flex-1 flex flex-col justify-end gap-3 z-10 w-full overflow-hidden">
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="space-y-1">
+                    <div className="flex flex-col gap-1">
                       <div className="text-[11px] text-muted-foreground flex items-center gap-1">
                         <Zap className="w-3 h-3" />
                         入口→出口
@@ -1433,7 +1441,7 @@ export function TunnelMonitorView({ card }: { card?: boolean } = {}) {
                         type="entryToExit"
                       />
                     </div>
-                    <div className="space-y-1">
+                    <div className="flex flex-col gap-1">
                       <div className="text-[11px] text-muted-foreground flex items-center gap-1">
                         <Globe className="w-3 h-3" />
                         出口→测试目标

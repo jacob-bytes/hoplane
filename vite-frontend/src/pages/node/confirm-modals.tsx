@@ -2,12 +2,12 @@ import type { Dispatch, SetStateAction } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Node } from "@/pages/node/types";
 
 export interface RollbackNodeModalProps {
@@ -25,7 +25,7 @@ export function RollbackNodeModal({
   setRollbackModalOpen,
 }: RollbackNodeModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -36,13 +36,13 @@ export function RollbackNodeModal({
       size="sm"
       onOpenChange={setRollbackModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">确认回退</h2>
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               <p>
                 确定要将服务器{" "}
                 <strong>&quot;{nodeToRollback?.name}&quot;</strong>{" "}
@@ -51,19 +51,19 @@ export function RollbackNodeModal({
               <p className="text-small text-muted-foreground">
                 服务器将执行版本回退并自动重启，期间会导致服务器短暂离线。
               </p>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button variant="secondary" onClick={confirmRollback}>
                 回退
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -84,7 +84,7 @@ export function DeleteNodeModal({
   setDeleteModalOpen,
 }: DeleteNodeModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -95,13 +95,13 @@ export function DeleteNodeModal({
       size="sm"
       onOpenChange={setDeleteModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-base font-semibold">删除服务器</h2>
-            </ModalHeader>
-            <ModalBody className="space-y-2">
+            </DialogHeader>
+            <DialogBody className="flex flex-col gap-2">
               <p className="text-sm">
                 确定要删除 <strong>{nodeToDelete?.name}</strong> 吗？
               </p>
@@ -109,8 +109,8 @@ export function DeleteNodeModal({
                 服务器会从面板移除；agent
                 仍在机器上运行，需要登录服务器手动卸载。此操作不可恢复。
               </p>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -121,11 +121,11 @@ export function DeleteNodeModal({
               >
                 {deleteLoading ? "删除中..." : "删除"}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -146,7 +146,7 @@ export function BatchDeleteNodesModal({
   setBatchDeleteModalOpen,
 }: BatchDeleteNodesModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -157,13 +157,13 @@ export function BatchDeleteNodesModal({
       size="md"
       onOpenChange={setBatchDeleteModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-base font-semibold">批量删除服务器</h2>
-            </ModalHeader>
-            <ModalBody className="space-y-2">
+            </DialogHeader>
+            <DialogBody className="flex flex-col gap-2">
               <p className="text-sm">
                 确定要删除选中的 <strong>{selectedIds.size}</strong>{" "}
                 个服务器吗？
@@ -172,8 +172,8 @@ export function BatchDeleteNodesModal({
                 这些服务器会从面板移除；agent
                 仍在机器上运行，需要登录服务器手动卸载。此操作不可恢复。
               </p>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -184,10 +184,10 @@ export function BatchDeleteNodesModal({
               >
                 {batchLoading ? "删除中..." : "删除"}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

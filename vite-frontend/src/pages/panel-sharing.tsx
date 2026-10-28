@@ -29,12 +29,12 @@ import {
   type TrafficUnit,
 } from "@/utils/traffic";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { SelectField } from "@/components/select-native";
 import {
   getNodeList,
@@ -464,7 +464,7 @@ export default function PanelSharingPage() {
     remoteUsageNodes.find((item) => item.nodeId === sheetRemoteId) ?? null;
 
   const renderDetails = (rows: Array<[string, React.ReactNode]>) => (
-    <div className="space-y-2 text-sm">
+    <div className="flex flex-col gap-2 text-sm">
       {rows.map(([k, v]) => (
         <div key={k} className="flex justify-between gap-3">
           <span className="shrink-0 text-muted-foreground">{k}</span>
@@ -714,7 +714,7 @@ export default function PanelSharingPage() {
               ],
             ])}
             {sheetRemote.bindings && sheetRemote.bindings.length > 0 && (
-              <div className="space-y-1 border-t border-hairline pt-2">
+              <div className="flex flex-col gap-1 border-t border-hairline pt-2">
                 {sheetRemote.bindings.map((binding) => (
                   <p
                     key={binding.bindingId}
@@ -733,8 +733,8 @@ export default function PanelSharingPage() {
         )}
       </ActionsDialog>
 
-      {/* Create Share Modal */}
-      <Modal
+      {/* Create Share Dialog */}
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -743,9 +743,9 @@ export default function PanelSharingPage() {
         scrollBehavior="inside"
         onClose={() => setCreateShareOpen(false)}
       >
-        <ModalContent>
-          <ModalHeader>创建分享</ModalHeader>
-          <ModalBody>
+        <DialogContent>
+          <DialogHeader>创建分享</DialogHeader>
+          <DialogBody>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="share-name">名称</Label>
               <Input
@@ -853,18 +853,18 @@ export default function PanelSharingPage() {
                 仅白名单IP可导入此分享，支持IPv4/IPv6/CIDR，多个用逗号分隔
               </p>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={() => setCreateShareOpen(false)}>
               取消
             </Button>
             <Button onClick={handleCreateShare}>创建</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      {/* Edit Share Modal */}
-      <Modal
+      {/* Edit Share Dialog */}
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -873,9 +873,9 @@ export default function PanelSharingPage() {
         scrollBehavior="inside"
         onClose={() => setEditShareOpen(false)}
       >
-        <ModalContent>
-          <ModalHeader>编辑分享</ModalHeader>
-          <ModalBody>
+        <DialogContent>
+          <DialogHeader>编辑分享</DialogHeader>
+          <DialogBody>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="edit-share-name">名称</Label>
               <Input
@@ -982,18 +982,18 @@ export default function PanelSharingPage() {
                 仅白名单IP可导入此分享，支持IPv4/IPv6/CIDR，多个用逗号分隔
               </p>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={() => setEditShareOpen(false)}>
               取消
             </Button>
             <Button onClick={handleEditShare}>保存</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      {/* Import Node Modal */}
-      <Modal
+      {/* Import Node Dialog */}
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -1001,9 +1001,9 @@ export default function PanelSharingPage() {
         open={importNodeOpen}
         onClose={() => setImportNodeOpen(false)}
       >
-        <ModalContent>
-          <ModalHeader>导入远程服务器</ModalHeader>
-          <ModalBody>
+        <DialogContent>
+          <DialogHeader>导入远程服务器</DialogHeader>
+          <DialogBody>
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="import-remote-url">远程面板地址</Label>
               <Input
@@ -1026,15 +1026,15 @@ export default function PanelSharingPage() {
                 }
               />
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={() => setImportNodeOpen(false)}>
               取消
             </Button>
             <Button onClick={handleImportNode}>导入</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </AnimatedPage>
   );
 }

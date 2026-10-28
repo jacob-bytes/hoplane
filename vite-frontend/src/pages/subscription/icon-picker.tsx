@@ -12,11 +12,11 @@ import {
 } from "@/api";
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+} from "@/components/dialog";
 
 const selectClass =
   "h-9 min-w-0 rounded-lg border border-hairline bg-background px-2 text-sm";
@@ -228,7 +228,7 @@ export function IconPicker({
   };
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -239,8 +239,8 @@ export function IconPicker({
       size="lg"
       onOpenChange={(open) => !open && onClose()}
     >
-      <ModalContent>
-        <ModalHeader className="flex items-center gap-2">
+      <DialogContent>
+        <DialogHeader className="flex items-center gap-2">
           <button
             aria-label="返回"
             className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
@@ -250,7 +250,7 @@ export function IconPicker({
             <ChevronLeft className="h-5 w-5" />
           </button>
           <h2 className="min-w-0 truncate text-lg font-bold">{title} · 图标</h2>
-        </ModalHeader>
+        </DialogHeader>
         <div className="flex shrink-0 flex-col gap-2">
           <div className="flex items-center gap-2">
             <select
@@ -287,7 +287,7 @@ export function IconPicker({
             />
           </label>
         </div>
-        <ModalBody className="space-y-4 pb-4">
+        <DialogBody className="flex flex-col gap-4 pb-4">
           {loading ? (
             <p className="py-6 text-center text-sm text-muted-foreground">
               正在加载图标库…
@@ -323,7 +323,7 @@ export function IconPicker({
             </div>
           )}
 
-          <div className="space-y-2 rounded-xl border border-hairline p-3">
+          <div className="flex flex-col gap-2 rounded-xl border border-hairline p-3">
             <p className="text-sm font-medium">使用图片地址</p>
             <div className="flex items-center gap-2">
               <GroupIcon src={customValid ? custom.trim() : undefined} />
@@ -359,7 +359,7 @@ export function IconPicker({
             </div>
           </div>
 
-          <div className="space-y-2 rounded-xl border border-hairline p-3">
+          <div className="flex flex-col gap-2 rounded-xl border border-hairline p-3">
             <p className="text-sm font-medium">添加图标库</p>
             <p className="text-xs text-muted-foreground">
               填写图标订阅 JSON 地址（Quantumult X / Loon / BoxJs 通用格式，含
@@ -383,8 +383,8 @@ export function IconPicker({
               </Button>
             </div>
           </div>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }

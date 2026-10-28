@@ -5,12 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Accordion, AccordionItem } from "@/components/accordion-field";
@@ -45,7 +45,7 @@ export function NodeFormModal({
   submitLoading,
 }: NodeFormModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -56,17 +56,17 @@ export function NodeFormModal({
       size="lg"
       onClose={() => setDialogVisible(false)}
     >
-      <ModalContent>
-        <ModalHeader>
+      <DialogContent>
+        <DialogHeader>
           <div>
             <div>{dialogTitle}</div>
             <p className="mt-1 text-xs font-normal text-muted-foreground">
               填写服务器信息；创建后在“服务器”页安装 agent 即可上线。
             </p>
           </div>
-        </ModalHeader>
-        <ModalBody>
-          <div className="space-y-6">
+        </DialogHeader>
+        <DialogBody>
+          <div className="flex flex-col gap-6">
             <FormSection title="基本信息">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="field-0">服务器名称</Label>
@@ -285,9 +285,9 @@ export function NodeFormModal({
                   </span>
                 }
               >
-                <div className="space-y-4 pb-2">
+                <div className="flex flex-col gap-4 pb-2">
                   {form.forwardMode === "nftables" ? (
-                    <div className="space-y-4 rounded-xl border border-warning-200 bg-warning-50/60 p-4 dark:border-warning-500/30 dark:bg-warning-950/20">
+                    <div className="flex flex-col gap-4 rounded-xl border border-warning-200 bg-warning-50/60 p-4 dark:border-warning-500/30 dark:bg-warning-950/20">
                       <div>
                         <div className="text-sm font-medium text-warning-700 dark:text-warning-300">
                           SSH 配置
@@ -725,17 +725,17 @@ export function NodeFormModal({
               </AccordionItem>
             </Accordion>
           </div>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={() => setDialogVisible(false)}>
             取消
           </Button>
           <Button loading={submitLoading} onClick={handleSubmit}>
             {submitLoading ? "提交中..." : form.id ? "保存" : "创建"}
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -750,7 +750,7 @@ function FormSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="space-y-3 border-t border-border pt-5 first:border-t-0 first:pt-0">
+    <section className="flex flex-col gap-3 border-t border-border pt-5 first:border-t-0 first:pt-0">
       <div>
         <h3 className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
           {title}

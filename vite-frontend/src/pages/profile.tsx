@@ -18,13 +18,13 @@ import {
 
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
   useDisclosure,
-} from "@/components/modal";
+} from "@/components/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { isWebViewFunc } from "@/utils/panel";
@@ -454,19 +454,19 @@ export default function ProfilePage() {
   return (
     <div className="flex min-h-full flex-col px-3 py-6 lg:px-6">
       {isH5 ? (
-        <div className="w-full flex-1 space-y-6">
+        <div className="w-full flex-1 flex flex-col gap-6">
           <PageHeader title="更多" />
 
           <div className="flex items-center gap-4 rounded-xl bg-raised px-4 py-4 shadow-sm">
             <Avatar name={username} size="md" />
-            <div className="min-w-0 flex-1 space-y-1">
+            <div className="min-w-0 flex-1 flex flex-col gap-1">
               <div className="truncate text-lg font-semibold">{username}</div>
               <RoleChip isAdmin={isAdmin} />
             </div>
           </div>
 
           {isAdmin && (
-            <section className="space-y-2">
+            <section className="flex flex-col gap-2">
               <h2 className="px-1 text-xs font-medium text-muted-foreground">
                 管理
               </h2>
@@ -486,7 +486,7 @@ export default function ProfilePage() {
             </section>
           )}
 
-          <section className="space-y-2">
+          <section className="flex flex-col gap-2">
             <h2 className="px-1 text-xs font-medium text-muted-foreground">
               登录与安全
             </h2>
@@ -569,7 +569,7 @@ export default function ProfilePage() {
       />
 
       {/* 修改密码弹窗 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -583,14 +583,14 @@ export default function ProfilePage() {
           resetPasswordForm();
         }}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose: () => void) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <DialogHeader className="flex flex-col gap-1">
                 修改密码
-              </ModalHeader>
-              <ModalBody>
-                <div className="space-y-4">
+              </DialogHeader>
+              <DialogBody>
+                <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="profile-new-username">新用户名</Label>
                     <Input
@@ -651,8 +651,8 @@ export default function ProfilePage() {
                     />
                   </div>
                 </div>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
@@ -662,11 +662,11 @@ export default function ProfilePage() {
                 >
                   修改密码
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

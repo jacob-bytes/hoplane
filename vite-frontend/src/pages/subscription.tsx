@@ -56,12 +56,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SubTrafficStats } from "@/components/lazy-charts";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { Switch } from "@/components/ui/switch";
 import { formatTraffic } from "@/utils/traffic";
 import { SubClientGrid } from "@/pages/subscription/client-grid";
@@ -165,7 +165,7 @@ function Usage({ s, compact }: { s: SubscriptionItem; compact?: boolean }) {
   const used = s.uploadBytes + s.downloadBytes;
 
   return (
-    <div className={compact ? "space-y-1" : "space-y-1.5"}>
+    <div className={compact ? "flex flex-col gap-1" : "flex flex-col gap-1.5"}>
       <div className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
         <span className="font-mono">
           {formatTraffic(used)}
@@ -464,13 +464,13 @@ function Editor({
 
   return (
     <>
-      <ModalHeader>
+      <DialogHeader>
         <h2 className="text-lg font-bold">
           {draft.id ? "编辑订阅" : "新建订阅"}
         </h2>
-      </ModalHeader>
+      </DialogHeader>
       {/* A steady height, so switching pages doesn't resize the dialog. */}
-      <ModalBody className="min-h-[min(65vh,34rem)] space-y-4">
+      <DialogBody className="min-h-[min(65vh,34rem)] flex flex-col gap-4">
         <div className="sticky top-0 z-10">
           <EditorTabs
             tabs={[
@@ -497,7 +497,7 @@ function Editor({
         </div>
 
         {page === "basic" && (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <Section title="基本">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="sub-name">名称</Label>
@@ -512,7 +512,7 @@ function Editor({
                 有独立的 UUID /
                 密码：停用、到期或流量用完后从服务器上删除，已导入的配置也连不上
               </p>
-              <div className="space-y-1">
+              <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium" htmlFor="sub-expire">
                   到期日期
                 </label>
@@ -537,7 +537,7 @@ function Editor({
                   {draft.expire ? "到期当天 23:59 后断开" : "留空表示永不过期"}
                 </p>
               </div>
-              <div className="space-y-1">
+              <div className="flex flex-col gap-1">
                 <label className="text-sm font-medium" htmlFor="sub-limit">
                   流量上限
                 </label>
@@ -605,7 +605,7 @@ function Editor({
         )}
 
         {page === "nodes" && (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <Section
               hint="订阅按顺序列出所选节点组的节点；筛选、改名在「节点组」里设置，多个订阅可以共用"
               title="节点组"
@@ -664,7 +664,7 @@ function Editor({
                 </p>
               ) : (
                 groups.some((g) => !draft.groupIds.includes(g.id)) && (
-                  <div className="space-y-1">
+                  <div className="flex flex-col gap-1">
                     <p className="text-xs text-muted-foreground">
                       {pickedGroups.length ? "再加入" : "选择节点组"}
                     </p>
@@ -701,7 +701,7 @@ function Editor({
         )}
 
         {page === "rules" && (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <Section
               hint="用自己的 Mihomo / sing-box / Surge 配置当骨架：规则、策略组、DNS 按模板来，面板只放节点进去；没选模板的客户端用下面的内置规则"
               title="订阅模板"
@@ -711,7 +711,7 @@ function Editor({
                   还没有模板，在订阅页右上角「模板」里添加
                 </p>
               ) : (
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {TEMPLATE_SLOTS.map(([kind, label, format]) => {
                     const options = templates.filter((t) => t.kind === format);
 
@@ -791,7 +791,7 @@ function Editor({
                 onChange={(regionGroups) => setOpts({ regionGroups })}
               />
               {o.rules && (
-                <div className="space-y-1.5">
+                <div className="flex flex-col gap-1.5">
                   <p className="text-xs font-medium">分组</p>
                   <p className="text-xs text-muted-foreground">
                     每组可在客户端里单独选节点：AI
@@ -867,7 +867,7 @@ function Editor({
                 </p>
               )}
 
-              <div className="space-y-3">
+              <div className="flex flex-col gap-3">
                 <p className="text-xs font-medium">按来源</p>
                 <ToggleRow
                   hint="自己面板上的节点（含它们的中转线路）都作为出口"
@@ -902,7 +902,10 @@ function Editor({
                         : ofSource.length;
 
                       return (
-                        <div key={src.id} className="space-y-2 px-3 py-2">
+                        <div
+                          key={src.id}
+                          className="flex flex-col gap-2 px-3 py-2"
+                        >
                           <div className="flex items-center gap-3">
                             <div className="min-w-0 flex-1">
                               <div className="truncate text-sm">{src.name}</div>
@@ -957,7 +960,7 @@ function Editor({
                 )}
               </div>
 
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 <p className="text-xs font-medium">按节点</p>
                 <p className="text-xs text-muted-foreground">
                   单独调整某个节点，优先于来源设置；用的是处理前的原名，改名不影响
@@ -1009,7 +1012,7 @@ function Editor({
         )}
 
         {page === "preview" && (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <Section title="预览">
               {previewing && !preview && (
                 <p className="py-6 text-center text-xs text-muted-foreground">
@@ -1108,15 +1111,15 @@ function Editor({
               })()}
           </div>
         )}
-      </ModalBody>
-      <ModalFooter>
+      </DialogBody>
+      <DialogFooter>
         <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
         <Button loading={saving} onClick={onSave}>
           保存
         </Button>
-      </ModalFooter>
+      </DialogFooter>
     </>
   );
 }
@@ -1498,7 +1501,7 @@ export default function SubscriptionPage() {
   );
 
   return (
-    <AnimatedPage className="mx-auto w-full max-w-[1440px] space-y-4 px-6 py-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] flex flex-col gap-4 px-6 py-6">
       <PageHeader
         description={
           tab === "subs"
@@ -1632,7 +1635,7 @@ export default function SubscriptionPage() {
       )}
 
       {/* Detail: import into a client, copy links, actions. */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(detail) && !confirm}
@@ -1641,11 +1644,11 @@ export default function SubscriptionPage() {
         size="lg"
         onOpenChange={(open) => !open && setDetail(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) =>
             detail && (
               <>
-                <ModalHeader closable className="flex flex-col gap-1">
+                <DialogHeader closable className="flex flex-col gap-1">
                   <h2 className="text-lg font-bold break-all">{detail.name}</h2>
                   <p className="text-small font-normal text-muted-foreground">
                     {detail.nodeCount} 个节点
@@ -1653,9 +1656,9 @@ export default function SubscriptionPage() {
                       ? ` · ${expiryLabel(detail.expireTime)}`
                       : ""}
                   </p>
-                </ModalHeader>
-                <ModalBody className="space-y-3">
-                  <div className="space-y-1.5 rounded-xl bg-muted px-3 py-2.5">
+                </DialogHeader>
+                <DialogBody className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1.5 rounded-xl bg-muted px-3 py-2.5">
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-mono text-sm">
                         {formatTraffic(
@@ -1727,7 +1730,7 @@ export default function SubscriptionPage() {
                         name={detail.name}
                         rules={detail.options.rules}
                       />
-                      <div className="space-y-1 text-xs leading-relaxed text-muted-foreground">
+                      <div className="flex flex-col gap-1 text-xs leading-relaxed text-muted-foreground">
                         <p>
                           点客户端直接导入，右侧按钮复制链接
                           {detail.options.rules &&
@@ -1742,8 +1745,8 @@ export default function SubscriptionPage() {
                       </div>
                     </>
                   )}
-                </ModalBody>
-                <ModalFooter className="flex-wrap">
+                </DialogBody>
+                <DialogFooter className="flex-wrap">
                   <Button
                     size="sm"
                     variant="ghost"
@@ -1769,14 +1772,14 @@ export default function SubscriptionPage() {
                   >
                     编辑
                   </Button>
-                </ModalFooter>
+                </DialogFooter>
               </>
             )
           }
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(draft)}
@@ -1785,7 +1788,7 @@ export default function SubscriptionPage() {
         size="2xl"
         onOpenChange={(open) => !open && setDraft(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) =>
             draft && (
               <Editor
@@ -1801,10 +1804,10 @@ export default function SubscriptionPage() {
               />
             )
           }
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(groupDraft)}
@@ -1813,7 +1816,7 @@ export default function SubscriptionPage() {
         size="2xl"
         onOpenChange={(open) => !open && setGroupDraft(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) =>
             groupDraft && (
               <NodeGroupEditor
@@ -1834,34 +1837,34 @@ export default function SubscriptionPage() {
               />
             )
           }
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(confirm)}
         placement="center"
         onOpenChange={(open) => !open && setConfirm(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader>
+              <DialogHeader>
                 <h2
                   className={`text-lg font-bold ${confirm === "delete" ? "text-destructive" : ""}`}
                 >
                   {confirm === "reset" ? "重置链接" : "删除订阅"}
                 </h2>
-              </ModalHeader>
-              <ModalBody>
+              </DialogHeader>
+              <DialogBody>
                 <p className="text-sm text-muted-foreground">
                   {confirm === "reset"
                     ? "旧链接和已导入的配置会立即失效，需要用新链接重新导入。"
                     : "订阅链接立即失效，无法恢复。"}
                 </p>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
@@ -1874,11 +1877,11 @@ export default function SubscriptionPage() {
                 >
                   {confirm === "delete" ? "删除" : "重置"}
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </AnimatedPage>
   );
 }

@@ -14,12 +14,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import {
   createSpeedLimit,
   getSpeedLimitList,
@@ -301,7 +301,7 @@ export default function LimitPage({
         onClose={() => setSheetRuleId(null)}
       >
         {sheetRule && (
-          <div className="space-y-2 text-sm">
+          <div className="flex flex-col gap-2 text-sm">
             <div className="flex justify-between gap-3">
               <span className="shrink-0 text-muted-foreground">速度限制</span>
               <span className="font-mono text-xs leading-5">
@@ -313,7 +313,7 @@ export default function LimitPage({
       </ActionsDialog>
 
       {/* 新增/编辑模态框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -324,19 +324,19 @@ export default function LimitPage({
         size="2xl"
         onOpenChange={setModalOpen}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <DialogHeader className="flex flex-col gap-1">
                 <h2 className="text-xl font-bold">
                   {isEdit ? "编辑限速规则" : "新建限速规则"}
                 </h2>
                 <p className="text-small text-muted-foreground">
                   {isEdit ? "修改现有限速规则的配置信息" : "创建新的限速规则"}
                 </p>
-              </ModalHeader>
-              <ModalBody>
-                <div className="space-y-4">
+              </DialogHeader>
+              <DialogBody>
+                <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">
                     <Label htmlFor="limit-name">规则名称</Label>
                     <Input
@@ -383,22 +383,22 @@ export default function LimitPage({
                     ) : null}
                   </div>
                 </div>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button loading={submitLoading} onClick={handleSubmit}>
                   {isEdit ? "保存修改" : "创建规则"}
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
       {/* 删除确认模态框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -409,13 +409,13 @@ export default function LimitPage({
         size="2xl"
         onOpenChange={setDeleteModalOpen}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">
+              <DialogHeader className="flex flex-col gap-1">
                 <h2 className="text-lg font-bold text-destructive">确认删除</h2>
-              </ModalHeader>
-              <ModalBody>
+              </DialogHeader>
+              <DialogBody>
                 <p className="text-muted-foreground">
                   确定要删除限速规则{" "}
                   <span className="font-semibold text-foreground">
@@ -426,8 +426,8 @@ export default function LimitPage({
                 <p className="text-small text-muted-foreground mt-2">
                   此操作无法撤销，删除后该规则将永久消失。
                 </p>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
@@ -438,11 +438,11 @@ export default function LimitPage({
                 >
                   删除
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }

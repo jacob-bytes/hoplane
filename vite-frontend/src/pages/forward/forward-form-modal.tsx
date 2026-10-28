@@ -7,12 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SelectField } from "@/components/select-native";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Accordion, AccordionItem } from "@/components/accordion-field";
 import { Tunnel, ForwardForm } from "@/pages/forward/types";
 
@@ -61,7 +61,7 @@ export function ForwardFormModal({
   tunnels,
 }: ForwardFormModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -72,19 +72,19 @@ export function ForwardFormModal({
       size="2xl"
       onOpenChange={setModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">
                 {isEdit ? "编辑规则" : "新增规则"}
               </h2>
               <p className="text-small text-muted-foreground">
                 {isEdit ? "修改现有规则配置的信息" : "创建新的规则配置"}
               </p>
-            </ModalHeader>
-            <ModalBody>
-              <div className="space-y-4 pb-4">
+            </DialogHeader>
+            <DialogBody>
+              <div className="flex flex-col gap-4 pb-4">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="forward-name">规则名称</Label>
                   <Input
@@ -245,7 +245,7 @@ export function ForwardFormModal({
                       </span>
                     }
                   >
-                    <div className="space-y-4 pb-2">
+                    <div className="flex flex-col gap-4 pb-2">
                       <div className="flex flex-col gap-1.5">
                         <Label htmlFor="forward-max-conn">最大连接数</Label>
                         <Input
@@ -386,18 +386,18 @@ export function ForwardFormModal({
                   </AccordionItem>
                 </Accordion>
               </div>
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
               <Button loading={submitLoading} onClick={handleSubmit}>
                 {isEdit ? "保存修改" : "创建规则"}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

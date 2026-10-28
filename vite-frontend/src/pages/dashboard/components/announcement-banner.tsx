@@ -61,7 +61,7 @@ export const AnnouncementBanner = ({
                     </ul>
                   ),
                   ol: ({ children }) => (
-                    <ol className="list-decimal pl-5 space-y-1 mb-2 last:mb-0">
+                    <ol className="list-decimal pl-5 flex flex-col gap-1 mb-2 last:mb-0">
                       {children}
                     </ol>
                   ),

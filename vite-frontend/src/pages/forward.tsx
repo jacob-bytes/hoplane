@@ -2985,7 +2985,7 @@ export default function ForwardPage({
           </SortableContext>
         </DndContext>
       ) : (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
           {groupedForwards.map((group) => {
             const isSelfGroup =
               isAdmin && tokenUserId !== null && group.userId === tokenUserId;
@@ -2997,7 +2997,7 @@ export default function ForwardPage({
             return (
               <section
                 key={`group-${group.userId}-${group.userName}`}
-                className="space-y-4"
+                className="flex flex-col gap-4"
               >
                 {groupedForwards.length > 1 && (
                   <div className="flex items-center gap-2 px-1">
@@ -3024,7 +3024,7 @@ export default function ForwardPage({
                     )}
                     strategy={verticalListSortingStrategy}
                   >
-                    <div className="space-y-4">
+                    <div className="flex flex-col gap-4">
                       {group.tunnels.map((tunnel) => (
                         <SortableTunnelGroup
                           key={`group-${group.userId}-${tunnel.tunnelKey}`}
@@ -3182,7 +3182,7 @@ export default function ForwardPage({
             onClose={close}
           >
             {forward && (
-              <div className="space-y-2 text-sm">
+              <div className="flex flex-col gap-2 text-sm">
                 {rows.map(([k, v]) => (
                   <div key={k} className="flex justify-between gap-3">
                     <span className="shrink-0 text-muted-foreground">{k}</span>

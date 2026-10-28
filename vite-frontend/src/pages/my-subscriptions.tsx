@@ -18,12 +18,12 @@ import { SubClientGrid } from "@/pages/subscription/client-grid";
 import { SubTrafficStats } from "@/components/lazy-charts";
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { formatTraffic } from "@/utils/traffic";
 
 const DAY = 86400000;
@@ -84,7 +84,7 @@ function Traffic({ s }: { s: UserSubscription }) {
     pct >= 100 ? "bg-destructive" : pct >= 90 ? "bg-warning" : "bg-success";
 
   return (
-    <div className="space-y-1.5">
+    <div className="flex flex-col gap-1.5">
       <div className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
         <span className="font-mono">
           {ymd(s.trafficSince)} 起已用 {formatTraffic(used)}
@@ -129,7 +129,7 @@ function SubscriptionCard({
   const [traffic, setTraffic] = useState(false);
 
   return (
-    <div className="space-y-4 rounded-xl border border-hairline bg-raised p-4 shadow-sm sm:p-5">
+    <div className="flex flex-col gap-4 rounded-xl border border-hairline bg-raised p-4 shadow-sm sm:p-5">
       <div className="flex items-center justify-between gap-2">
         <span className="min-w-0 truncate text-lg font-bold">{s.name}</span>
         <span
@@ -181,7 +181,7 @@ function SubscriptionCard({
         </button>
       )}
       {open && (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {!onToggle && (
             <div className="text-sm font-medium text-muted-foreground">
               导入客户端
@@ -293,7 +293,7 @@ export default function MySubscriptionsPage() {
   const several = items.length > 1;
 
   return (
-    <AnimatedPage className="mx-auto w-full max-w-[1440px] space-y-4 px-6 py-6">
+    <AnimatedPage className="mx-auto w-full max-w-[1440px] flex flex-col gap-4 px-6 py-6">
       <PageHeader
         description="管理员分配给你的订阅：一键导入客户端，查看流量和到期时间"
         title="我的订阅"
@@ -319,56 +319,56 @@ export default function MySubscriptionsPage() {
         </div>
       )}
 
-      <Modal
+      <Dialog
         open={Boolean(qr)}
         placement="center"
         size="sm"
         onOpenChange={(v) => !v && setQr(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {() => (
             <>
-              <ModalHeader closable>{qr?.name}</ModalHeader>
-              <ModalBody className="items-center">
+              <DialogHeader closable>{qr?.name}</DialogHeader>
+              <DialogBody className="items-center">
                 {qr && <QrImage text={link(qr)} />}
                 <p className="text-center text-xs text-muted-foreground">
                   用客户端扫码导入（自动识别客户端格式）
                 </p>
-              </ModalBody>
+              </DialogBody>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         open={Boolean(resetting)}
         placement="center"
         size="sm"
         onOpenChange={(v) => !v && setResetting(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(close) => (
             <>
-              <ModalHeader>重置订阅链接</ModalHeader>
-              <ModalBody>
+              <DialogHeader>重置订阅链接</DialogHeader>
+              <DialogBody>
                 <p className="text-sm">
                   「{resetting?.name}」会换成新的链接和凭据，
                   <b>旧链接和所有设备上已导入的配置都会立即失效</b>
                   ，需要重新导入。适合链接泄露时使用。
                 </p>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={close}>
                   取消
                 </Button>
                 <Button disabled={busy} variant="destructive" onClick={reset}>
                   重置
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </AnimatedPage>
   );
 }

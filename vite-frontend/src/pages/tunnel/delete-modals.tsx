@@ -6,12 +6,12 @@ import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/select-native";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -62,7 +62,7 @@ export function DeleteTunnelModal({
   tunnelToDelete,
 }: DeleteTunnelModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -73,18 +73,18 @@ export function DeleteTunnelModal({
       size="2xl"
       onOpenChange={handleDeleteModalOpenChange}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-lg font-bold sm:text-xl">删除隧道</h2>
               <p className="text-xs font-normal leading-5 text-muted-foreground sm:text-sm">
                 {tunnelDeletePreview?.tunnelName || tunnelToDelete?.name
                   ? `即将删除“${tunnelDeletePreview?.tunnelName || tunnelToDelete?.name}”，删除前会先检查是否有关联规则。`
                   : "删除前会先检查是否有关联规则。"}
               </p>
-            </ModalHeader>
-            <ModalBody className="space-y-3 sm:space-y-4">
+            </DialogHeader>
+            <DialogBody className="flex flex-col gap-3 sm:gap-4">
               {deletePreviewLoading ? (
                 <div className="flex items-center gap-3 rounded-xl border border-hairline bg-surface/40 px-3 py-5 text-sm text-muted-foreground sm:px-4 sm:py-6">
                   <Loader2 className="size-4 animate-spin text-muted-foreground" />
@@ -98,7 +98,7 @@ export function DeleteTunnelModal({
                   </Alert>
 
                   {(tunnelDeletePreview?.sampleForwards?.length ?? 0) > 0 ? (
-                    <div className="space-y-3 rounded-xl border border-hairline bg-surface/40 p-3 sm:p-4">
+                    <div className="flex flex-col gap-3 rounded-xl border border-hairline bg-surface/40 p-3 sm:p-4">
                       <div className="flex items-center justify-between gap-3">
                         <h3 className="text-sm font-semibold text-foreground">
                           关联规则预览
@@ -108,7 +108,7 @@ export function DeleteTunnelModal({
                           条
                         </span>
                       </div>
-                      <div className="space-y-2">
+                      <div className="flex flex-col gap-2">
                         {tunnelDeletePreview?.sampleForwards?.map((forward) => (
                           <div
                             key={forward.id}
@@ -178,7 +178,7 @@ export function DeleteTunnelModal({
                   ) : null}
 
                   {deleteAction === "replace" && !deleteReplaceUnavailable ? (
-                    <div className="space-y-2">
+                    <div className="flex flex-col gap-2">
                       <SelectField
                         label="目标隧道"
                         options={deleteReplacementTunnels.map((tunnel) => ({
@@ -209,8 +209,8 @@ export function DeleteTunnelModal({
                   <AlertDescription>{`当前未发现关联规则。确认后将直接删除“${tunnelToDelete?.name || "该隧道"}”，此操作不可撤销。`}</AlertDescription>
                 </Alert>
               )}
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -227,11 +227,11 @@ export function DeleteTunnelModal({
               >
                 {deleteLoading ? "删除中..." : deleteConfirmLabel}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -278,7 +278,7 @@ export function BatchDeleteTunnelsModal({
   setBatchDeleteTargetTunnelId,
 }: BatchDeleteTunnelsModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -286,17 +286,17 @@ export function BatchDeleteTunnelsModal({
       open={batchDeleteModalOpen}
       onOpenChange={handleBatchDeleteModalOpenChange}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-lg font-bold sm:text-xl">批量删除隧道</h2>
               <p className="text-xs font-normal leading-5 text-muted-foreground sm:text-sm">
                 即将删除这 {selectedTunnelIdList.length}{" "}
                 条隧道，删除前会先检查是否有关联规则。
               </p>
-            </ModalHeader>
-            <ModalBody className="space-y-3 sm:space-y-4">
+            </DialogHeader>
+            <DialogBody className="flex flex-col gap-3 sm:gap-4">
               {batchDeletePreviewLoading ? (
                 <div className="flex items-center gap-3 rounded-xl border border-hairline bg-surface/40 px-3 py-5 text-sm text-muted-foreground sm:px-4 sm:py-6">
                   <Loader2 className="size-4 animate-spin text-muted-foreground" />
@@ -309,7 +309,7 @@ export function BatchDeleteTunnelsModal({
                     <AlertDescription>{`已选 ${selectedTunnelIdList.length} 条隧道，其中 ${batchDeleteDependentTunnelCount} 条仍被规则使用，共 ${batchDeleteTotalForwardCount} 条规则待处理。${batchDeleteDirectDeleteTunnelCount > 0 ? `其余 ${batchDeleteDirectDeleteTunnelCount} 条会直接删除。` : ""}`}</AlertDescription>
                   </Alert>
 
-                  <div className="max-h-64 space-y-3 overflow-y-auto scrollbar-hide rounded-xl border border-hairline bg-surface/40 p-3 sm:max-h-72 sm:p-4">
+                  <div className="max-h-64 flex flex-col gap-3 overflow-y-auto scrollbar-hide rounded-xl border border-hairline bg-surface/40 p-3 sm:max-h-72 sm:p-4">
                     {batchDeleteDependentItems.map((item) => (
                       <div
                         key={item.tunnelId}
@@ -328,7 +328,7 @@ export function BatchDeleteTunnelsModal({
                         </div>
 
                         {item.sampleForwards.length > 0 ? (
-                          <div className="mt-3 space-y-2">
+                          <div className="mt-3 flex flex-col gap-2">
                             {item.sampleForwards.map((forward) => (
                               <div
                                 key={forward.id}
@@ -398,7 +398,7 @@ export function BatchDeleteTunnelsModal({
 
                   {batchDeleteAction === "replace" &&
                   !batchDeleteReplaceUnavailable ? (
-                    <div className="space-y-2">
+                    <div className="flex flex-col gap-2">
                       <SelectField
                         label="目标隧道"
                         options={batchDeleteReplacementTunnels.map(
@@ -431,8 +431,8 @@ export function BatchDeleteTunnelsModal({
                   <AlertDescription>{`已选 ${selectedTunnelIdList.length} 条隧道，当前未发现关联规则。确认后将直接删除这些隧道，此操作不可撤销。`}</AlertDescription>
                 </Alert>
               )}
-            </ModalBody>
-            <ModalFooter>
+            </DialogBody>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -450,10 +450,10 @@ export function BatchDeleteTunnelsModal({
               >
                 {batchLoading ? "删除中..." : batchDeleteConfirmLabel}
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

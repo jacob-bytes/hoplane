@@ -20,12 +20,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { SelectField } from "@/components/select-native";
 import { Switch } from "@/components/ui/switch";
 
@@ -160,7 +160,7 @@ export function ImportModal({
   };
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{ base: modalBase }}
       open={isOpen}
@@ -169,14 +169,14 @@ export function ImportModal({
       size="lg"
       onOpenChange={(open) => !open && onClose()}
     >
-      <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">
+      <DialogContent>
+        <DialogHeader className="flex flex-col gap-1">
           <h2 className="text-lg font-bold">导入节点</h2>
           <p className="text-small font-normal text-muted-foreground">
             导入别处搭好的节点或机场订阅，用来对接中转和加入订阅。面板不会部署或修改这些节点。
           </p>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <DialogBody>
           <FilePick
             fileName={fileName}
             onFile={async (file) => {
@@ -205,7 +205,7 @@ export function ImportModal({
             </p>
           </div>
           {(subURL || fromFile) && (
-            <div className="space-y-3 rounded-xl border border-hairline p-3">
+            <div className="flex flex-col gap-3 rounded-xl border border-hairline p-3">
               <div className="flex items-start gap-2">
                 <Switch checked={sync} onCheckedChange={setSync} />
                 <div>
@@ -244,7 +244,7 @@ export function ImportModal({
                       onChange={setIntervalHours}
                     />
                   )}
-                  <div className="space-y-1.5">
+                  <div className="flex flex-col gap-1.5">
                     <p className="text-sm">用途</p>
                     <Segmented
                       options={SOURCE_ROLES}
@@ -277,17 +277,17 @@ export function ImportModal({
               ))}
             </ul>
           )}
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
           <Button disabled={!links.trim() || saving} onClick={submit}>
             {syncing ? (fromFile ? "添加订阅源" : "添加并同步") : "导入"}
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -379,7 +379,7 @@ export function ExternalEditModal({
       : ssMethods;
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{ base: modalBase }}
       open={Boolean(item)}
@@ -388,16 +388,16 @@ export function ExternalEditModal({
       size="lg"
       onOpenChange={(open) => !open && onClose()}
     >
-      <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">
+      <DialogContent>
+        <DialogHeader className="flex flex-col gap-1">
           <h2 className="text-lg font-bold">编辑导入的节点</h2>
           <p className="text-small font-normal text-muted-foreground">
             只修改面板里的记录；原服务器上的配置变了才需要在这里同步
           </p>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <DialogBody>
           {form && (
-            <div className="space-y-3">
+            <div className="flex flex-col gap-3">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="external-name">名称</Label>
                 <Input
@@ -486,16 +486,16 @@ export function ExternalEditModal({
               </div>
             </div>
           )}
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={onClose}>
             取消
           </Button>
           <Button loading={saving} onClick={submit}>
             保存
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

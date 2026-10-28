@@ -22,13 +22,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
   useDisclosure,
-} from "@/components/modal";
+} from "@/components/dialog";
 import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
 import {
@@ -527,7 +527,7 @@ export default function GroupPage({
   const closeSheet = () => setSheet(null);
 
   const renderDetails = (rows: Array<[string, React.ReactNode]>) => (
-    <div className="space-y-2 text-sm">
+    <div className="flex flex-col gap-2 text-sm">
       {rows.map(([k, v]) => (
         <div key={k} className="flex justify-between gap-3">
           <span className="shrink-0 text-muted-foreground">{k}</span>
@@ -864,7 +864,7 @@ export default function GroupPage({
               ])}
           </ActionsDialog>
 
-          <Modal
+          <Dialog
             backdrop="blur"
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -872,11 +872,11 @@ export default function GroupPage({
             open={tunnelGroupModalOpen}
             onOpenChange={onTunnelGroupModalChange}
           >
-            <ModalContent>
-              <ModalHeader>
+            <DialogContent>
+              <DialogHeader>
                 {editingTunnelGroup ? "编辑隧道分组" : "新建隧道分组"}
-              </ModalHeader>
-              <ModalBody className="space-y-3">
+              </DialogHeader>
+              <DialogBody className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="tunnel-group-name">分组名称</Label>
                   <Input
@@ -894,19 +894,19 @@ export default function GroupPage({
                   value={groupStatus}
                   onValueChange={setGroupStatus}
                 />
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onTunnelGroupModalClose}>
                   取消
                 </Button>
                 <Button loading={savingGroup} onClick={saveTunnelGroup}>
                   保存
                 </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
-          <Modal
+          <Dialog
             backdrop="blur"
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -914,11 +914,11 @@ export default function GroupPage({
             open={userGroupModalOpen}
             onOpenChange={onUserGroupModalChange}
           >
-            <ModalContent>
-              <ModalHeader>
+            <DialogContent>
+              <DialogHeader>
                 {editingUserGroup ? "编辑用户分组" : "新建用户分组"}
-              </ModalHeader>
-              <ModalBody className="space-y-3">
+              </DialogHeader>
+              <DialogBody className="flex flex-col gap-3">
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="user-group-name">分组名称</Label>
                   <Input
@@ -936,19 +936,19 @@ export default function GroupPage({
                   value={groupStatus}
                   onValueChange={setGroupStatus}
                 />
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onUserGroupModalClose}>
                   取消
                 </Button>
                 <Button loading={savingGroup} onClick={saveUserGroup}>
                   保存
                 </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
-          <Modal
+          <Dialog
             backdrop="blur"
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -956,9 +956,9 @@ export default function GroupPage({
             open={tunnelAssignModalOpen}
             onOpenChange={onTunnelAssignModalChange}
           >
-            <ModalContent>
-              <ModalHeader>分配隧道 - {assignTunnelGroup?.name}</ModalHeader>
-              <ModalBody className="min-w-0">
+            <DialogContent>
+              <DialogHeader>分配隧道 - {assignTunnelGroup?.name}</DialogHeader>
+              <DialogBody className="min-w-0">
                 <MultiSelectField
                   className="min-w-0"
                   label="选择隧道"
@@ -981,19 +981,19 @@ export default function GroupPage({
                 <p className="text-xs text-muted-foreground">
                   不选择任何隧道并保存将清空该分组成员。
                 </p>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onTunnelAssignModalClose}>
                   取消
                 </Button>
                 <Button loading={savingAssign} onClick={saveAssignTunnels}>
                   保存
                 </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
-          <Modal
+          <Dialog
             backdrop="blur"
             classNames={{
               base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -1001,9 +1001,9 @@ export default function GroupPage({
             open={userAssignModalOpen}
             onOpenChange={onUserAssignModalChange}
           >
-            <ModalContent>
-              <ModalHeader>分配用户 - {assignUserGroup?.name}</ModalHeader>
-              <ModalBody className="min-w-0">
+            <DialogContent>
+              <DialogHeader>分配用户 - {assignUserGroup?.name}</DialogHeader>
+              <DialogBody className="min-w-0">
                 <MultiSelectField
                   className="min-w-0"
                   label="选择用户"
@@ -1024,17 +1024,17 @@ export default function GroupPage({
                 <p className="text-xs text-muted-foreground">
                   不选择任何用户并保存将清空该分组成员。
                 </p>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onUserAssignModalClose}>
                   取消
                 </Button>
                 <Button loading={savingAssign} onClick={saveAssignUsers}>
                   保存
                 </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </PageShell>

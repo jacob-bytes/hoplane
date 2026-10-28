@@ -13,12 +13,12 @@ import { OutboundIPSelect } from "./outbound-ip-select";
 import { updateInboundSplit } from "@/api";
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 
 /** 出站: where an inbound's traffic leaves — IP version, default exit and 分流 rules. */
 export function SplitModal({
@@ -35,7 +35,7 @@ export function SplitModal({
   onSaved: () => void;
 }) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -46,7 +46,7 @@ export function SplitModal({
       size="2xl"
       onOpenChange={(open) => !open && onClose()}
     >
-      <ModalContent>
+      <DialogContent>
         {item && (
           <SplitForm
             key={item.id}
@@ -57,8 +57,8 @@ export function SplitModal({
             onSaved={onSaved}
           />
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -135,19 +135,19 @@ function SplitForm({
 
   return (
     <>
-      <ModalHeader className="flex flex-col gap-1">
+      <DialogHeader className="flex flex-col gap-1">
         <h2 className="text-lg font-bold">出站</h2>
         <p className="truncate text-small font-normal text-muted-foreground">
           {item.name}
         </p>
-      </ModalHeader>
-      <ModalBody className="space-y-5">
+      </DialogHeader>
+      <DialogBody className="flex flex-col gap-5">
         <OutboundIPSelect
           kernelType={item.kernelType}
           value={outboundIpStrategy}
           onChange={setOutboundIpStrategy}
         />
-        <section className="space-y-2">
+        <section className="flex flex-col gap-2">
           <p className="text-sm font-medium">默认去向</p>
           <TargetButton
             missing={outboundMissing}
@@ -163,7 +163,7 @@ function SplitForm({
               : "没命中规则的流量从这里出去；选节点即链式代理"}
           </p>
         </section>
-        <section className="space-y-2">
+        <section className="flex flex-col gap-2">
           <div className="flex items-baseline justify-between gap-2">
             <p className="text-sm font-medium">
               分流规则
@@ -210,15 +210,15 @@ function SplitForm({
             }
           }}
         />
-      </ModalBody>
-      <ModalFooter>
+      </DialogBody>
+      <DialogFooter>
         <Button variant="ghost" onClick={onClose}>
           取消
         </Button>
         <Button loading={saving} onClick={submit}>
           保存并下发
         </Button>
-      </ModalFooter>
+      </DialogFooter>
     </>
   );
 }

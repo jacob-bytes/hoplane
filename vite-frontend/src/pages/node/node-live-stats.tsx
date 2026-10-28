@@ -73,7 +73,7 @@ export function NodeLiveStats({
   if (variant !== "row") {
     return (
       <div
-        className={`space-y-2 ${variant === "footer" ? "mt-2 lg:hidden" : ""}`}
+        className={`flex flex-col gap-2 ${variant === "footer" ? "mt-2 lg:hidden" : ""}`}
       >
         <NodeMeters info={info} />
         <div className="grid grid-cols-2 divide-x divide-divider rounded-lg bg-muted/60 py-1.5 text-[11px] tabular-nums">
@@ -171,7 +171,7 @@ export function NodeMonth({
 }) {
   return (
     <div
-      className={`space-y-0.5 leading-tight tabular-nums ${align === "end" ? "text-right" : ""}`}
+      className={`flex flex-col gap-0.5 leading-tight tabular-nums ${align === "end" ? "text-right" : ""}`}
     >
       <div
         className={`flex items-baseline gap-1.5 text-[11px] ${align === "end" ? "justify-end" : ""}`}

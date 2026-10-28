@@ -3,12 +3,12 @@ import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -105,7 +105,7 @@ export function PasskeyModal({
   };
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -116,9 +116,9 @@ export function PasskeyModal({
       size="md"
       onClose={onClose}
     >
-      <ModalContent>
-        <ModalHeader closable>通行证密钥</ModalHeader>
-        <ModalBody>
+      <DialogContent>
+        <DialogHeader closable>通行证密钥</DialogHeader>
+        <DialogBody>
           <p className="text-sm text-muted-foreground">
             绑定后可用设备解锁（指纹、面容等）登录。绑定和删除都需要当前密码。
           </p>
@@ -170,13 +170,13 @@ export function PasskeyModal({
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button disabled={busy} onClick={() => void register()}>
             绑定新密钥
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

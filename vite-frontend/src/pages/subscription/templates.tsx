@@ -32,12 +32,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 
 export const TEMPLATE_KINDS: Array<[SubTemplateKind, string]> = [
   ["clash", "Mihomo"],
@@ -206,7 +206,7 @@ export function TemplateGroups({
   warnings?: string[];
 }) {
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2">
       {warnings?.map((w) => (
         <p
           key={w}
@@ -463,7 +463,7 @@ function Editor({
 
   return (
     <>
-      <ModalHeader className="flex items-center gap-2">
+      <DialogHeader className="flex items-center gap-2">
         <button
           aria-label="返回"
           className="rounded-lg p-1 text-muted-foreground hover:bg-muted"
@@ -473,8 +473,8 @@ function Editor({
           <ChevronLeft className="h-5 w-5" />
         </button>
         <h2 className="text-lg font-bold">{saved ? "编辑模板" : "新建模板"}</h2>
-      </ModalHeader>
-      <ModalBody className="space-y-3">
+      </DialogHeader>
+      <DialogBody className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="tpl-name">名称</Label>
@@ -485,7 +485,7 @@ function Editor({
               onChange={(e) => set({ name: e.target.value })}
             />
           </div>
-          <div className="space-y-1.5">
+          <div className="flex flex-col gap-1.5">
             <p className="text-sm font-medium">格式</p>
             <Segmented
               options={TEMPLATE_KINDS}
@@ -501,7 +501,7 @@ function Editor({
               : `节点进策略组的写法：${AUTO_HINT[draft.kind]}`}
           </p>
         )}
-        <div className="space-y-1.5">
+        <div className="flex flex-col gap-1.5">
           <p className="text-sm font-medium">编辑方式</p>
           <Segmented
             options={[
@@ -517,7 +517,7 @@ function Editor({
         </div>
 
         {building && draft.builder ? (
-          <div className="space-y-3">
+          <div className="flex flex-col gap-3">
             {initial.content && !initial.builder && (
               <p className="text-xs text-muted-foreground">
                 原有源码不会自动转换为规则选项，保存时将按下面的选择重新生成配置。
@@ -530,7 +530,7 @@ function Editor({
             />
           </div>
         ) : fromUrl ? (
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <Input
               aria-label="订阅地址"
               placeholder="https://raw.githubusercontent.com/.../config.yaml"
@@ -586,7 +586,7 @@ function Editor({
             )}
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-1.5">
               <span className="text-xs text-muted-foreground">插入分组：</span>
               {REGION_PRESETS.map(([name, kw]) => (
@@ -630,7 +630,7 @@ function Editor({
           </div>
         )}
 
-        <div className="space-y-2 rounded-xl bg-muted p-3 dark:bg-muted/40">
+        <div className="flex flex-col gap-2 rounded-xl bg-muted p-3 dark:bg-muted/40">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-muted-foreground">用订阅预演：</span>
             <select
@@ -707,7 +707,7 @@ function Editor({
                 </details>
               )}
               {check.builder ? (
-                <details className="space-y-2 rounded-lg border border-hairline p-2">
+                <details className="flex flex-col gap-2 rounded-lg border border-hairline p-2">
                   <summary className="cursor-pointer text-xs">
                     代理节点详情 · {check.sample}（{check.nodes} 个节点）
                   </summary>
@@ -739,8 +739,8 @@ function Editor({
             </p>
           )}
         </div>
-      </ModalBody>
-      <ModalFooter>
+      </DialogBody>
+      <DialogFooter>
         {saved &&
           (confirmDelete ? (
             <>
@@ -782,7 +782,7 @@ function Editor({
             </Button>
           </>
         )}
-      </ModalFooter>
+      </DialogFooter>
     </>
   );
 }
@@ -822,7 +822,7 @@ export function TemplatesModal({
   }, [isOpen]);
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -833,7 +833,7 @@ export function TemplatesModal({
       size="2xl"
       onOpenChange={(v) => !v && onClose()}
     >
-      <ModalContent>
+      <DialogContent>
         {() =>
           editing ? (
             <Editor
@@ -852,16 +852,16 @@ export function TemplatesModal({
             />
           ) : (
             <>
-              <ModalHeader closable className="flex flex-col gap-0.5">
+              <DialogHeader closable className="flex flex-col gap-0.5">
                 <h2 className="text-lg font-bold">订阅模板</h2>
                 <p className="text-xs font-normal text-muted-foreground">
                   用自己的配置当订阅骨架：规则、策略组、DNS
                   按模板来，面板只负责把节点放进去
                 </p>
-              </ModalHeader>
-              <ModalBody className="space-y-2">
+              </DialogHeader>
+              <DialogBody className="flex flex-col gap-2">
                 {templates.length === 0 ? (
-                  <div className="space-y-2 py-6 text-center text-sm text-muted-foreground">
+                  <div className="flex flex-col gap-2 py-6 text-center text-sm text-muted-foreground">
                     <p>还没有模板</p>
                     <p className="text-xs">
                       可以选择规则快速创建模板，也支持源码编辑和网址导入；在订阅的「规则」页里选用
@@ -903,17 +903,17 @@ export function TemplatesModal({
                     />
                   ))
                 )}
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button onClick={() => setEditing({ draft: blank() })}>
                   {<Plus className="h-4 w-4" />}
                   新建模板
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )
         }
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

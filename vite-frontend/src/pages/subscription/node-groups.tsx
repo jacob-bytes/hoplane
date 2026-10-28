@@ -20,7 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ModalBody, ModalFooter, ModalHeader } from "@/components/modal";
+import { DialogBody, DialogFooter, DialogHeader } from "@/components/dialog";
 import { RenameRules } from "@/pages/subscription/rename-rules";
 import {
   ChipPicker,
@@ -341,7 +341,7 @@ export function NodeGroupEditor({
 
   const pickList = (title: string, list: InboundApiItem[]) =>
     list.length > 0 && (
-      <div className="space-y-1">
+      <div className="flex flex-col gap-1">
         <p className="text-xs text-muted-foreground">{title}</p>
         {list.map((i) => (
           <div key={i.id} className="inline-flex items-center gap-2">
@@ -370,12 +370,12 @@ export function NodeGroupEditor({
 
   return (
     <>
-      <ModalHeader>
+      <DialogHeader>
         <h2 className="text-lg font-bold">
           {draft.id ? "编辑节点组" : "新建节点组"}
         </h2>
-      </ModalHeader>
-      <ModalBody className="min-h-[min(65vh,34rem)] space-y-4">
+      </DialogHeader>
+      <DialogBody className="min-h-[min(65vh,34rem)] flex flex-col gap-4">
         <div className="sticky top-0 z-10">
           <EditorTabs
             tabs={[
@@ -398,7 +398,7 @@ export function NodeGroupEditor({
         </div>
 
         {page === "source" && (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <Section title="基本">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="group-name">名称</Label>
@@ -430,11 +430,11 @@ export function NodeGroupEditor({
                   包括以后新增的节点和订阅源；只想要一部分可以在“处理”里筛选
                 </p>
               ) : (
-                <div className="max-h-56 space-y-3 overflow-y-auto rounded-xl border border-hairline p-2">
+                <div className="max-h-56 flex flex-col gap-3 overflow-y-auto rounded-xl border border-hairline p-2">
                   {pickList("自建", selfBuilt)}
                   {pickList("导入", imported)}
                   {sources.length > 0 && (
-                    <div className="space-y-1">
+                    <div className="flex flex-col gap-1">
                       <p className="text-xs text-muted-foreground">
                         订阅源（整个源，更新后的节点自动跟上）
                       </p>
@@ -475,7 +475,7 @@ export function NodeGroupEditor({
         )}
 
         {page === "process" && (
-          <div className="space-y-4">
+          <div className="flex flex-col gap-4">
             <Section
               collapsible
               defaultOpen={false}
@@ -483,7 +483,7 @@ export function NodeGroupEditor({
               summary={filterSummary(o) || "未设置"}
               title="筛选"
             >
-              <div className="space-y-1.5">
+              <div className="flex flex-col gap-1.5">
                 <p className="text-xs font-medium">线路</p>
                 <Segmented
                   columns={2}
@@ -502,7 +502,7 @@ export function NodeGroupEditor({
                   </p>
                 )}
               </div>
-              <div className="space-y-1.5">
+              <div className="flex flex-col gap-1.5">
                 <p className="text-xs font-medium">地区</p>
                 <ChipPicker
                   emptyText="全部地区"
@@ -512,7 +512,7 @@ export function NodeGroupEditor({
                 />
               </div>
               {protocols.length > 1 && (
-                <div className="space-y-1.5">
+                <div className="flex flex-col gap-1.5">
                   <p className="text-xs font-medium">协议</p>
                   <ChipPicker
                     emptyText="全部协议"
@@ -560,7 +560,7 @@ export function NodeGroupEditor({
               summary={namingSummary(o) || "未设置"}
               title="命名"
             >
-              <div className="space-y-1.5">
+              <div className="flex flex-col gap-1.5">
                 <p className="text-xs font-medium">改名规则</p>
                 <p className="text-xs text-muted-foreground">
                   从上到下依次替换，替换为留空就是删除匹配的部分，可用 $1
@@ -587,7 +587,7 @@ export function NodeGroupEditor({
                   onChange={(e) => setOpts({ prefix: e.target.value })}
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="flex flex-col gap-1.5">
                 <p className="text-xs font-medium">排序</p>
                 <Segmented
                   options={[
@@ -692,8 +692,8 @@ export function NodeGroupEditor({
             )}
           </Section>
         )}
-      </ModalBody>
-      <ModalFooter className="flex-wrap">
+      </DialogBody>
+      <DialogFooter className="flex-wrap">
         {draft.id &&
           (confirmDelete ? (
             <>
@@ -728,7 +728,7 @@ export function NodeGroupEditor({
             </Button>
           </>
         )}
-      </ModalFooter>
+      </DialogFooter>
     </>
   );
 }

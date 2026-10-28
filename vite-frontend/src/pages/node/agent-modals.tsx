@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { Badge } from "@/components/ui/badge";
 import { SelectField } from "@/components/select-native";
 import { Tab, Tabs } from "@/components/tabs-field";
@@ -66,7 +66,7 @@ export function InstallCommandModal({
   );
 
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -77,10 +77,10 @@ export function InstallCommandModal({
       size="2xl"
       onClose={() => setInstallCommandModal(false)}
     >
-      <ModalContent>
-        <ModalHeader closable>安装命令 - {currentNodeName}</ModalHeader>
-        <ModalBody>
-          <div className="space-y-4">
+      <DialogContent>
+        <DialogHeader closable>安装命令 - {currentNodeName}</DialogHeader>
+        <DialogBody>
+          <div className="flex flex-col gap-4">
             {installCommands.docker ? (
               <Tabs
                 aria-label="安装方式"
@@ -88,7 +88,7 @@ export function InstallCommandModal({
                 onSelectionChange={(key) => setMode(key as InstallMode)}
               >
                 <Tab key="script" title="一键脚本">
-                  <div className="space-y-3 pt-2">
+                  <div className="flex flex-col gap-3 pt-2">
                     <p className="text-sm text-muted-foreground">
                       在服务器上以 root 执行，安装为 systemd / OpenRC 服务：
                     </p>
@@ -96,7 +96,7 @@ export function InstallCommandModal({
                   </div>
                 </Tab>
                 <Tab key="docker" title="Docker">
-                  <div className="space-y-3 pt-2">
+                  <div className="flex flex-col gap-3 pt-2">
                     <p className="text-sm text-muted-foreground">
                       在已安装 Docker 的服务器上执行：
                     </p>
@@ -127,9 +127,9 @@ export function InstallCommandModal({
               💡 提示：如果复制按钮失效，请手动选择上方文本进行复制
             </div>
           </div>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -169,7 +169,7 @@ export function UpgradeNodeModal({
   onRollback,
 }: UpgradeNodeModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -180,23 +180,23 @@ export function UpgradeNodeModal({
       size="md"
       onOpenChange={setUpgradeModalOpen}
     >
-      <ModalContent>
+      <DialogContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
+            <DialogHeader className="flex flex-col gap-1">
               <h2 className="text-xl font-bold">
                 {upgradeTarget === "batch"
                   ? `批量升级 (${selectedIds.size} 个服务器)`
                   : "版本管理"}
               </h2>
-            </ModalHeader>
-            <ModalBody>
+            </DialogHeader>
+            <DialogBody>
               {releasesLoading ? (
                 <div className="flex justify-center py-8">
                   <Loader2 className="size-7 animate-spin text-muted-foreground" />
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="flex flex-col gap-4">
                   <SelectField
                     label="选择版本"
                     options={releases.map((r) => ({
@@ -231,9 +231,9 @@ export function UpgradeNodeModal({
                   </p>
                 </div>
               )}
-            </ModalBody>
+            </DialogBody>
             {upgradeTarget === "single" && onRollback && (
-              <ModalBody className="border-t border-border pt-4">
+              <DialogBody className="border-t border-border pt-4">
                 <div className="rounded-lg border border-border p-3">
                   <div className="text-sm font-medium">回退到上一版</div>
                   <p className="mt-0.5 text-xs text-muted-foreground">
@@ -249,9 +249,9 @@ export function UpgradeNodeModal({
                     回退
                   </Button>
                 </div>
-              </ModalBody>
+              </DialogBody>
             )}
-            <ModalFooter>
+            <DialogFooter>
               <Button variant="ghost" onClick={onClose}>
                 取消
               </Button>
@@ -262,10 +262,10 @@ export function UpgradeNodeModal({
               >
                 升级
               </Button>
-            </ModalFooter>
+            </DialogFooter>
           </>
         )}
-      </ModalContent>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
 }

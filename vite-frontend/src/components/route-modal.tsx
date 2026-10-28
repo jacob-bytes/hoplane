@@ -38,11 +38,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogHeader,
+} from "@/components/dialog";
 
 // Short tag per return route.
 const ROUTES: Record<string, string> = {
@@ -113,7 +113,7 @@ export function RouteModal({
   onClose: () => void;
 }) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -124,18 +124,18 @@ export function RouteModal({
       size="lg"
       onOpenChange={(v) => !v && onClose()}
     >
-      <ModalContent>
-        <ModalHeader closable className="flex flex-col gap-0.5">
+      <DialogContent>
+        <DialogHeader closable className="flex flex-col gap-0.5">
           <h2 className="text-lg font-bold">回程路由</h2>
           <p className="text-xs font-normal text-muted-foreground">
             {nodeName ? `${nodeName} → 各测试点` : "服务器 → 各测试点"}
           </p>
-        </ModalHeader>
-        <ModalBody>
+        </DialogHeader>
+        <DialogBody>
           <RoutePanel nodeId={nodeId} />
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 

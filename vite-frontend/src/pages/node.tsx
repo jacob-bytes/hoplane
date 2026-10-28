@@ -1889,9 +1889,9 @@ export default function NodePage({
                                           : "right-[calc(100%+0.75rem)] top-1/2 -translate-y-1/2 translate-x-1 group-hover/info:translate-x-0 group-focus-within/info:translate-x-0"
                                       }`}
                                     >
-                                      <div className="space-y-3">
+                                      <div className="flex flex-col gap-3">
                                         {hasExpiryInfo && (
-                                          <div className="space-y-2">
+                                          <div className="flex flex-col gap-2">
                                             <div className="flex items-center justify-between">
                                               <div className="text-[11px] font-medium text-muted-foreground">
                                                 到期提醒
@@ -1929,7 +1929,7 @@ export default function NodePage({
                                         )}
 
                                         {hasRemark && (
-                                          <div className="space-y-2">
+                                          <div className="flex flex-col gap-2">
                                             <div className="text-[11px] font-medium text-muted-foreground">
                                               备注
                                             </div>
@@ -1956,7 +1956,7 @@ export default function NodePage({
                               </div>
                             )}
                             {isRemoteNode ? (
-                              <div className="space-y-2 mb-4">
+                              <div className="flex flex-col gap-2 mb-4">
                                 <div className="flex justify-between items-center text-sm min-w-0">
                                   <span className="text-muted-foreground flex-shrink-0">
                                     IP
@@ -1964,7 +1964,7 @@ export default function NodePage({
                                   <div className="text-right text-xs min-w-0 flex-1 ml-2 min-h-[2.125rem]">
                                     {node.serverIpV4?.trim() ||
                                     node.serverIpV6?.trim() ? (
-                                      <div className="space-y-0.5">
+                                      <div className="flex flex-col gap-0.5">
                                         {node.serverIpV4?.trim() && (
                                           <span
                                             className="font-mono truncate block"
@@ -1994,7 +1994,7 @@ export default function NodePage({
                                 </div>
                               </div>
                             ) : (
-                              <div className="mb-4 space-y-3">
+                              <div className="mb-4 flex flex-col gap-3">
                                 <p className="truncate font-mono text-xs text-muted-foreground">
                                   {[
                                     node.serverIpV4?.trim() ||
@@ -2033,10 +2033,10 @@ export default function NodePage({
                             )}
 
                             {isRemoteNode && (
-                              <div className="space-y-3 mb-4">
+                              <div className="flex flex-col gap-3 mb-4">
                                 {remoteUsage ? (
                                   <>
-                                    <div className="text-xs rounded-md border border-border dark:border-border/30 bg-muted dark:bg-muted/20 p-2.5 space-y-2">
+                                    <div className="text-xs rounded-md border border-border dark:border-border/30 bg-muted dark:bg-muted/20 p-2.5 flex flex-col gap-2">
                                       <div className="flex justify-between gap-2">
                                         <span className="text-muted-foreground">
                                           远程地址
@@ -2131,7 +2131,7 @@ export default function NodePage({
                                           {remoteUsage.activeBindingNum}
                                         </span>
                                       </div>
-                                      <div className="max-h-32 overflow-y-auto space-y-1.5 pr-1 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1">
+                                      <div className="max-h-32 overflow-y-auto flex flex-col gap-1.5 pr-1 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1">
                                         {remoteUsage.bindings.length > 0 ? (
                                           remoteUsage.bindings.map(
                                             (binding) => (
@@ -2628,7 +2628,7 @@ export default function NodePage({
             onClose={close}
           >
             {node && (
-              <div className="space-y-2 text-sm">
+              <div className="flex flex-col gap-2 text-sm">
                 {isRemoteNode && node.syncError && (
                   <p className="rounded-lg bg-warning-50 px-2 py-1.5 text-xs text-warning-700 dark:bg-warning-100/10 dark:text-warning-400">
                     {getRemoteSyncErrorMessage(node.syncError)}

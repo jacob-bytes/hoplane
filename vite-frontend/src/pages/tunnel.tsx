@@ -1703,7 +1703,7 @@ export default function TunnelPage({
         onClose={() => setSheetTunnelId(null)}
       >
         {sheetTunnel && (
-          <div className="space-y-2 text-sm">
+          <div className="flex flex-col gap-2 text-sm">
             {(
               [
                 ["入口", listNodes(sheetTunnel.inNodeId)],

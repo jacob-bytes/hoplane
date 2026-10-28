@@ -1,6 +1,6 @@
-import type * as React from "react";
 import type { ViewMode } from "@/components/view-mode";
 
+import * as React from "react";
 import { Inbox, MoreHorizontal, Search, X } from "lucide-react";
 
 import { AnimatedPage } from "@/components/animated-page";
@@ -106,39 +106,85 @@ export function PageTabs<T extends string>({
   tabs: Array<PageTab<T>>;
   onChange: (key: T) => void;
 }) {
+  const listRef = React.useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = React.useState({ left: false, right: false });
+
+  React.useEffect(() => {
+    const element = listRef.current;
+
+    if (!element) return;
+
+    const update = () => {
+      setEdges({
+        left: element.scrollLeft > 2,
+        right:
+          element.scrollLeft + element.clientWidth < element.scrollWidth - 2,
+      });
+    };
+
+    update();
+    element.addEventListener("scroll", update, { passive: true });
+
+    const observer = new ResizeObserver(update);
+
+    observer.observe(element);
+
+    return () => {
+      element.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, [tabs.length]);
+
   return (
-    <div
-      className="mb-4 flex gap-1 overflow-x-auto border-b border-border scrollbar-hide"
-      role="tablist"
-      style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
-    >
-      {tabs.map((t) => (
-        <button
-          key={t.key}
-          aria-selected={value === t.key}
-          className={`relative flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-2.5 pb-2.5 pt-1 text-[13px] sm:px-3 transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full after:transition-opacity ${
-            value === t.key
-              ? "font-medium text-foreground after:bg-primary after:opacity-100"
-              : "text-muted-foreground after:opacity-0 hover:text-foreground"
-          }`}
-          role="tab"
-          type="button"
-          onClick={() => onChange(t.key)}
-        >
-          <span className="truncate">{t.label}</span>
-          {t.badge !== undefined && t.badge !== null && (
-            <span
-              className={`shrink-0 rounded-full px-1.5 text-[11px] leading-4 tabular ${
-                value === t.key
-                  ? "bg-primary/10 text-primary"
-                  : "bg-muted text-muted-foreground"
-              }`}
-            >
-              {t.badge}
-            </span>
-          )}
-        </button>
-      ))}
+    <div className="relative mb-4">
+      <div
+        ref={listRef}
+        className="flex gap-1 overflow-x-auto border-b border-border scrollbar-hide"
+        role="tablist"
+        style={{
+          gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))`,
+        }}
+      >
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            aria-selected={value === t.key}
+            className={`relative flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap px-2.5 pb-2.5 pt-1 text-[13px] sm:px-3 transition-colors duration-150 after:absolute after:inset-x-2 after:-bottom-px after:h-0.5 after:rounded-full after:transition-opacity ${
+              value === t.key
+                ? "font-medium text-foreground after:bg-primary after:opacity-100"
+                : "text-muted-foreground after:opacity-0 hover:text-foreground"
+            }`}
+            role="tab"
+            type="button"
+            onClick={() => onChange(t.key)}
+          >
+            <span className="truncate">{t.label}</span>
+            {t.badge !== undefined && t.badge !== null && (
+              <span
+                className={`shrink-0 rounded-full px-1.5 text-[11px] leading-4 tabular ${
+                  value === t.key
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground"
+                }`}
+              >
+                {t.badge}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+      {edges.left ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-background to-transparent"
+        />
+      ) : null}
+      {edges.right ? (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-background to-transparent"
+        />
+      ) : null}
     </div>
   );
 }

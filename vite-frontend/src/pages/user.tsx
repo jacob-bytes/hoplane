@@ -22,13 +22,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
   useDisclosure,
-} from "@/components/modal";
+} from "@/components/dialog";
 import { Badge, badgeTone } from "@/components/ui/badge";
 import { MultiSelectField } from "@/components/multi-select-field";
 import { SelectField } from "@/components/select-native";
@@ -241,7 +241,7 @@ function SubscriptionPicker({
   );
 
   return (
-    <div className="space-y-1">
+    <div className="flex flex-col gap-1">
       <MultiSelectField
         label="订阅（可选）"
         options={subscriptions.map((s) => ({
@@ -1404,8 +1404,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             onClose={() => setSheetUserId(null)}
           >
             {user && (
-              <div className="space-y-2 text-sm">
-                <div className="space-y-1">
+              <div className="flex flex-col gap-2 text-sm">
+                <div className="flex flex-col gap-1">
                   <div className="flex justify-between gap-3">
                     <span className="shrink-0 text-muted-foreground">流量</span>
                     <span className="font-mono text-xs leading-5">
@@ -1443,7 +1443,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
       })()}
 
       {/* 用户表单模态框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
@@ -1454,9 +1454,9 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="xl"
         onClose={onUserModalClose}
       >
-        <ModalContent>
-          <ModalHeader>{isEdit ? "编辑用户" : "新建用户"}</ModalHeader>
-          <ModalBody>
+        <DialogContent>
+          <DialogHeader>{isEdit ? "编辑用户" : "新建用户"}</DialogHeader>
+          <DialogBody>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
                 <Label htmlFor="user-name">
@@ -1589,7 +1589,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               ((editingUser.dailyQuotaGB ?? 0) > 0 ||
                 (editingUser.monthlyQuotaGB ?? 0) > 0 ||
                 (editingUser.disabledByQuota ?? 0) > 0) && (
-                <div className="space-y-3 rounded-xl border border-border bg-muted/60 p-4">
+                <div className="flex flex-col gap-3 rounded-xl border border-border bg-muted/60 p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <h3 className="text-sm font-semibold text-foreground">
@@ -1694,20 +1694,20 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 setUserForm((prev) => ({ ...prev, subscriptionIds: ids }))
               }
             />
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={onUserModalClose}>
               取消
             </Button>
             <Button loading={userFormLoading} onClick={handleSubmitUser}>
               {isEdit ? "保存" : "创建"}
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* 隧道权限管理模态框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "max-w-[95vw] sm:max-w-4xl",
@@ -1719,12 +1719,12 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="2xl"
         onClose={onTunnelModalClose}
       >
-        <ModalContent>
-          <ModalHeader closable>
+        <DialogContent>
+          <DialogHeader closable>
             用户 {currentUser?.user} 的权限管理
-          </ModalHeader>
-          <ModalBody>
-            <div className="space-y-6">
+          </DialogHeader>
+          <DialogBody>
+            <div className="flex flex-col gap-6">
               {/* 监控权限部分 */}
               <div>
                 <h3 className="text-lg font-semibold mb-4">监控权限</h3>
@@ -1764,7 +1764,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               {/* 分配新权限部分 */}
               <div>
                 <h3 className="text-lg font-semibold mb-4">分配新权限</h3>
-                <div className="space-y-4">
+                <div className="flex flex-col gap-4">
                   <div className="text-sm text-muted-foreground bg-muted dark:bg-muted p-3 rounded-lg border border-border dark:border-border/30">
                     流量限制、规则数量、到期时间、流量重置时间将自动继承用户设置
                   </div>
@@ -1900,7 +1900,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 ) : userTunnels.length === 0 ? (
                   <EmptyHint text="暂无隧道权限" />
                 ) : (
-                  <div className="space-y-2">
+                  <div className="flex flex-col gap-2">
                     {userTunnels.map((userTunnel) => (
                       <div
                         key={userTunnel.id}
@@ -1970,12 +1970,12 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 )}
               </div>
             </div>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DialogBody>
+        </DialogContent>
+      </Dialog>
 
       {/* 编辑隧道权限模态框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
@@ -1987,9 +1987,11 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="2xl"
         onClose={onEditTunnelModalClose}
       >
-        <ModalContent>
-          <ModalHeader>编辑隧道权限 - {editTunnelForm?.tunnelName}</ModalHeader>
-          <ModalBody>
+        <DialogContent>
+          <DialogHeader>
+            编辑隧道权限 - {editTunnelForm?.tunnelName}
+          </DialogHeader>
+          <DialogBody>
             {editTunnelForm && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2117,20 +2119,20 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 </RadioGroup>
               </>
             )}
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={onEditTunnelModalClose}>
               取消
             </Button>
             <Button loading={editTunnelLoading} onClick={handleUpdateTunnel}>
               保存
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* 删除确认对话框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
@@ -2141,11 +2143,11 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="2xl"
         onClose={onDeleteModalClose}
       >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
+        <DialogContent>
+          <DialogHeader className="flex flex-col gap-1">
             确认删除用户
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center">
                 <DeleteIcon className="w-6 h-6 text-destructive" />
@@ -2163,20 +2165,20 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 </p>
               </div>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={onDeleteModalClose}>
               取消
             </Button>
             <Button variant="destructive" onClick={handleConfirmDelete}>
               删除
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* 删除隧道权限确认对话框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
@@ -2187,11 +2189,11 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="2xl"
         onClose={onDeleteTunnelModalClose}
       >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
+        <DialogContent>
+          <DialogHeader className="flex flex-col gap-1">
             确认删除隧道权限
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-destructive/10 rounded-full flex items-center justify-center">
                 <DeleteIcon className="w-6 h-6 text-destructive" />
@@ -2211,20 +2213,20 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 </p>
               </div>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={onDeleteTunnelModalClose}>
               取消
             </Button>
             <Button variant="destructive" onClick={handleConfirmRemoveTunnel}>
               删除
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* 重置流量确认对话框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
@@ -2235,11 +2237,11 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="2xl"
         onClose={onResetFlowModalClose}
       >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
+        <DialogContent>
+          <DialogHeader className="flex flex-col gap-1">
             确认重置流量
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-warning-100 rounded-full flex items-center justify-center">
                 <svg
@@ -2270,7 +2272,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   <div className="text-warning-700 dark:text-warning-300">
                     当前流量使用情况：
                   </div>
-                  <div className="mt-1 space-y-1">
+                  <div className="mt-1 flex flex-col gap-1">
                     <div className="flex justify-between">
                       <span>上行流量：</span>
                       <span className="font-mono">
@@ -2299,8 +2301,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 </div>
               </div>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={onResetFlowModalClose}>
               取消
             </Button>
@@ -2311,12 +2313,12 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             >
               重置
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* 重置隧道流量确认对话框 */}
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl",
@@ -2327,11 +2329,11 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
         size="2xl"
         onClose={onResetTunnelFlowModalClose}
       >
-        <ModalContent>
-          <ModalHeader className="flex flex-col gap-1">
+        <DialogContent>
+          <DialogHeader className="flex flex-col gap-1">
             确认重置隧道流量
-          </ModalHeader>
-          <ModalBody>
+          </DialogHeader>
+          <DialogBody>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-warning-100 rounded-full flex items-center justify-center">
                 <svg
@@ -2364,7 +2366,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                   <div className="text-warning-700 dark:text-warning-300">
                     当前流量使用情况：
                   </div>
-                  <div className="mt-1 space-y-1">
+                  <div className="mt-1 flex flex-col gap-1">
                     <div className="flex justify-between">
                       <span>上行流量：</span>
                       <span className="font-mono">
@@ -2393,8 +2395,8 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                 </div>
               </div>
             </div>
-          </ModalBody>
-          <ModalFooter>
+          </DialogBody>
+          <DialogFooter>
             <Button variant="ghost" onClick={onResetTunnelFlowModalClose}>
               取消
             </Button>
@@ -2405,9 +2407,9 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
             >
               重置
             </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }

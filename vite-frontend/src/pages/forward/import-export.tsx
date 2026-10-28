@@ -5,12 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { SelectField } from "@/components/select-native";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@/components/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@/components/dialog";
 import { ImportFormat, Tunnel } from "@/pages/forward/types";
 
 export interface ExportModalProps {
@@ -40,7 +40,7 @@ export function ExportModal({
   tunnels,
 }: ExportModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -55,15 +55,15 @@ export function ExportModal({
         setExportData("");
       }}
     >
-      <ModalContent>
-        <ModalHeader closable className="flex flex-col gap-1">
+      <DialogContent>
+        <DialogHeader closable className="flex flex-col gap-1">
           <h2 className="text-xl font-bold">导出规则数据</h2>
           <p className="text-small text-muted-foreground">
             格式：目标地址|规则名称|入口端口
           </p>
-        </ModalHeader>
-        <ModalBody className="pb-6">
-          <div className="space-y-4">
+        </DialogHeader>
+        <DialogBody className="pb-6">
+          <div className="flex flex-col gap-4">
             {/* 隧道选择 */}
             <div>
               <SelectField
@@ -167,9 +167,9 @@ export function ExportModal({
               </div>
             )}
           </div>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+        </DialogBody>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -220,7 +220,7 @@ export function ImportModal({
   tunnels,
 }: ImportModalProps) {
   return (
-    <Modal
+    <Dialog
       backdrop="blur"
       classNames={{
         base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -231,8 +231,8 @@ export function ImportModal({
       size="2xl"
       onClose={() => setImportModalOpen(false)}
     >
-      <ModalContent>
-        <ModalHeader className="flex flex-col gap-1">
+      <DialogContent>
+        <DialogHeader className="flex flex-col gap-1">
           <h2 className="text-xl font-bold">导入规则数据</h2>
           {importFormat === "hoplane" ? (
             <>
@@ -253,9 +253,9 @@ export function ImportModal({
               </p>
             </>
           )}
-        </ModalHeader>
-        <ModalBody className="pb-6">
-          <div className="space-y-4">
+        </DialogHeader>
+        <DialogBody className="pb-6">
+          <div className="flex flex-col gap-4">
             {/* 格式选择 */}
             <SelectField
               isRequired
@@ -323,7 +323,7 @@ export function ImportModal({
                 </div>
 
                 <div
-                  className="max-h-40 overflow-y-auto space-y-1 scrollbar-hide"
+                  className="max-h-40 overflow-y-auto flex flex-col gap-1 scrollbar-hide"
                   style={{
                     scrollbarWidth: "thin",
                     scrollbarColor: "rgb(156 163 175) transparent",
@@ -401,8 +401,8 @@ export function ImportModal({
               </div>
             )}
           </div>
-        </ModalBody>
-        <ModalFooter>
+        </DialogBody>
+        <DialogFooter>
           <Button variant="ghost" onClick={() => setImportModalOpen(false)}>
             取消
           </Button>
@@ -415,8 +415,8 @@ export function ImportModal({
           >
             开始导入
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

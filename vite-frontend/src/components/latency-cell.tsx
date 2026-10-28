@@ -395,7 +395,7 @@ export function LatencyCell({
             <span>{title}</span>
             {probe && <span>{ago(probe.checkedAt)}</span>}
           </div>
-          <div className="space-y-1 px-2 pb-2">
+          <div className="flex flex-col gap-1 px-2 pb-2">
             {points.map((p) => {
               const [, dot] = TONE[pointTone(p)];
 

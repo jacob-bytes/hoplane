@@ -16,12 +16,12 @@ import { Switch } from "@/components/ui/switch";
 import { SelectField } from "@/components/select-native";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import {
   updateConfigs,
   exportBackup,
@@ -1104,7 +1104,7 @@ export default function ConfigPage() {
 
     return (
       <div
-        className={`space-y-1.5 rounded-lg border p-2 ${
+        className={`flex flex-col gap-1.5 rounded-lg border p-2 ${
           isChanged ? "border-warning-300" : "border-hairline"
         }`}
       >
@@ -1412,7 +1412,7 @@ export default function ConfigPage() {
     const allSelected = isAllTypesSelected(selectedTypes);
 
     return (
-      <div className="space-y-3">
+      <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <span className="text-sm font-medium text-foreground dark:text-muted-foreground">
             {label}
@@ -1928,7 +1928,7 @@ export default function ConfigPage() {
         </div>
       )}
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -1936,27 +1936,27 @@ export default function ConfigPage() {
         open={exportSelectorOpen}
         onOpenChange={setExportSelectorOpen}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader>选择导出内容</ModalHeader>
-              <ModalBody>
+              <DialogHeader>选择导出内容</DialogHeader>
+              <DialogBody>
                 {renderTypeSelection("导出内容", exportTypes, setExportTypes)}
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
                 <Button disabled={exporting} onClick={handleExport}>
                   {exporting ? "导出中..." : "导出"}
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -1964,14 +1964,14 @@ export default function ConfigPage() {
         open={importSelectorOpen}
         onOpenChange={setImportSelectorOpen}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader>选择导入内容</ModalHeader>
-              <ModalBody>
+              <DialogHeader>选择导入内容</DialogHeader>
+              <DialogBody>
                 {renderTypeSelection("导入内容", importTypes, setImportTypes)}
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={onClose}>
                   取消
                 </Button>
@@ -1981,13 +1981,13 @@ export default function ConfigPage() {
                 >
                   下一步选择文件
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{
           base: "!w-[calc(100%-32px)] !mx-auto sm:!w-full rounded-xl overflow-hidden",
@@ -1999,12 +1999,12 @@ export default function ConfigPage() {
           }
         }}
       >
-        <ModalContent>
+        <DialogContent>
           {(onClose) => (
             <>
-              <ModalHeader>确认面板升级</ModalHeader>
-              <ModalBody>
-                <div className="space-y-3 text-sm text-foreground dark:text-muted-foreground">
+              <DialogHeader>确认面板升级</DialogHeader>
+              <DialogBody>
+                <div className="flex flex-col gap-3 text-sm text-foreground dark:text-muted-foreground">
                   <p>
                     升级过程需要访问 Docker
                     Socket，并会在短时间内中断当前面板服务。
@@ -2013,7 +2013,7 @@ export default function ConfigPage() {
                     请确认已经允许面板管理容器与宿主机 Docker
                     交互，并且可以接受升级期间的临时不可用。
                   </p>
-                  <div className="space-y-2 rounded-lg border border-warning-200 bg-warning-50 px-4 py-3 text-warning-800 dark:border-warning-900/40 dark:bg-warning-950/30 dark:text-warning-200">
+                  <div className="flex flex-col gap-2 rounded-lg border border-warning-200 bg-warning-50 px-4 py-3 text-warning-800 dark:border-warning-900/40 dark:bg-warning-950/30 dark:text-warning-200">
                     <p className="text-xs font-medium">升级前请确认</p>
                     <ul className="list-disc space-y-1 pl-4 text-xs">
                       <li>Docker Socket 可用且挂载权限正常。</li>
@@ -2022,8 +2022,8 @@ export default function ConfigPage() {
                     </ul>
                   </div>
                 </div>
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button
                   disabled={systemUpgradeExecuting}
                   variant="ghost"
@@ -2037,11 +2037,11 @@ export default function ConfigPage() {
                 >
                   升级
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </AnimatedPage>
   );
 }

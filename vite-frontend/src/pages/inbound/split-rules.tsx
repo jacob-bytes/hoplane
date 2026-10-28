@@ -92,7 +92,7 @@ export function SplitRulesEditor({
   const groups = [...new Set(categories.map((c) => c.group))];
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2">
       {rules.length === 0 && (
         <div className="rounded-xl border border-dashed border-hairline px-4 py-6 text-center text-sm text-muted-foreground">
           还没有分流规则，所有流量走默认去向
@@ -157,9 +157,9 @@ export function SplitRulesEditor({
               />
             </button>
             {isOpen && (
-              <div className="space-y-3 border-t border-hairline px-3 pb-3 pt-3">
+              <div className="flex flex-col gap-3 border-t border-hairline px-3 pb-3 pt-3">
                 {groups.map((g) => (
-                  <div key={g} className="space-y-1.5">
+                  <div key={g} className="flex flex-col gap-1.5">
                     <p className="text-[11px] text-muted-foreground">{g}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {categories
@@ -222,7 +222,7 @@ export function SplitRulesEditor({
                     + 自定义域名 / IP
                   </button>
                 )}
-                <div className="space-y-1.5">
+                <div className="flex flex-col gap-1.5">
                   <p className="text-[11px] text-muted-foreground">去向</p>
                   <TargetButton
                     missing={missing}

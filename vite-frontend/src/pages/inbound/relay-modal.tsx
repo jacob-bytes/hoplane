@@ -21,12 +21,12 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@/components/modal";
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/dialog";
 import { SelectField } from "@/components/select-native";
 
 const modalBase =
@@ -248,7 +248,7 @@ export function RelayModal({
 
   return (
     <>
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(item)}
@@ -257,18 +257,18 @@ export function RelayModal({
         size="2xl"
         onOpenChange={(open) => !open && onClose()}
       >
-        <ModalContent>
+        <DialogContent>
           {() => (
             <>
-              <ModalHeader closable className="flex flex-col gap-1">
+              <DialogHeader closable className="flex flex-col gap-1">
                 <h2 className="text-lg font-bold">中转 · {item?.name}</h2>
                 <p className="text-small text-muted-foreground">
                   在中转机上创建一条指向该入站的转发，订阅会自动加入中转节点
                 </p>
-              </ModalHeader>
-              <ModalBody>
-                <div className="space-y-4">
-                  <div className="space-y-2">
+              </DialogHeader>
+              <DialogBody>
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
                     {loading && (
                       <p className="text-sm text-muted-foreground">加载中...</p>
                     )}
@@ -281,7 +281,7 @@ export function RelayModal({
                       editing?.id === rel.id ? (
                         <div
                           key={rel.id}
-                          className="space-y-3 rounded-xl border border-primary/40 px-3 py-3"
+                          className="flex flex-col gap-3 rounded-xl border border-primary/40 px-3 py-3"
                         >
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div className="flex flex-col gap-1.5">
@@ -411,7 +411,7 @@ export function RelayModal({
                     )}
                   </div>
 
-                  <div className="space-y-3 rounded-xl border border-hairline p-3">
+                  <div className="flex flex-col gap-3 rounded-xl border border-hairline p-3">
                     <p className="text-sm font-medium">添加中转</p>
                     {usable.length === 0 && !loading && (
                       <p className="text-xs text-warning">
@@ -487,26 +487,26 @@ export function RelayModal({
                     </Button>
                   </div>
                 </div>
-              </ModalBody>
+              </DialogBody>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
 
-      <Modal
+      <Dialog
         backdrop="blur"
         classNames={{ base: modalBase }}
         open={Boolean(removing)}
         placement="center"
         onOpenChange={(open) => !open && setRemoving(null)}
       >
-        <ModalContent>
+        <DialogContent>
           {(close) => (
             <>
-              <ModalHeader>
+              <DialogHeader>
                 <h2 className="text-lg font-bold text-destructive">删除中转</h2>
-              </ModalHeader>
-              <ModalBody>
+              </DialogHeader>
+              <DialogBody>
                 <p className="text-sm text-muted-foreground">
                   会同时删除中转机上的转发 “
                   {removing?.forwardName || removing?.name}
@@ -517,8 +517,8 @@ export function RelayModal({
                     中转服务器上的转发删除失败（可能离线），可以强制删除面板记录。
                   </p>
                 )}
-              </ModalBody>
-              <ModalFooter>
+              </DialogBody>
+              <DialogFooter>
                 <Button variant="ghost" onClick={close}>
                   取消
                 </Button>
@@ -538,11 +538,11 @@ export function RelayModal({
                 >
                   删除
                 </Button>
-              </ModalFooter>
+              </DialogFooter>
             </>
           )}
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
