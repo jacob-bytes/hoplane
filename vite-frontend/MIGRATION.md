@@ -114,7 +114,7 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 | `Input` / `Textarea` | `ui/input` / `ui/textarea` | `onValueChange`→`onChange(e.target.value)`；`isInvalid`→`aria-invalid` + `Field data-invalid` |
 | `Select` | `ui/select` | `selectedKeys`→`value`；`onSelectionChange`→`onValueChange`；`SelectItem` 必须在 `SelectGroup` 内 |
 | `Checkbox` / `Switch` / `Radio` | `ui/checkbox` / `ui/switch` / `ui/radio-group` | `isSelected`→`checked`；`onValueChange`→`onCheckedChange` |
-| `Modal` | `ui/dialog` | `isOpen`→`open`；`onOpenChange`→`onOpenChange`；`ModalContent`→`DialogContent`；`ModalHeader`→`DialogHeader` + `DialogTitle`（必需） |
+| `Dialog` | `components/dialog` → `ui/dialog` | `ModalContent`→`DialogContent`；`ModalHeader`→`DialogHeader`；已删除 `Modal*` 命名 |
 | `Card` | `ui/card` | `CardBody`→`CardContent`；必须完整组合 Header/Title/Description |
 | `Tabs` | `ui/tabs` | `selectedKey`→`value`；`onSelectionChange`→`onValueChange`；`Tab`→`TabsTrigger`；`TabPanel`→`TabsContent` |
 | `Table` | `ui/table` | `TableColumn`→`TableHead`；`TableCell` 同名 |
@@ -199,7 +199,7 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 - `ui/button` 增加 `loading`，43 处提交/保存/删除按钮恢复转圈
 - legacy token：`border-divider` / `text-danger` / `bg-danger` / `bg-card` / `bg-default-*` / `bg-content2` 为 0
 - 演示浮层降到弹窗之下，移动端默认折叠；13 路由 × 320/375/768 页面横向溢出 0
-- Modal 保留 `components/modal.tsx` kit（内部是 `ui/dialog`），不逐页展开为 Dialog；42 个页面调用不变
+- Modal 已改名为 Dialog：`components/dialog.tsx` 组合 `ui/dialog`，42 个文件的 `Modal*` 调用全部改为 `Dialog*`；关闭后焦点返回触发按钮
 
 ## 9.2 v3 落地验收（2026-10-27）
 

@@ -168,7 +168,7 @@ const theme: ThemePackage = {
 | `Switch` | `components/ui/switch` | 开关 |
 | `Checkbox` | `components/ui/checkbox` | 复选框 |
 | `Chip` | `components/ui/badge` | 标签/芯片 |
-| `Modal`, `ModalContent`, `ModalHeader`, `ModalBody`, `ModalFooter` | `components/modal` | 模态框 |
+| `Dialog`, `DialogContent`, `DialogHeader`, `DialogBody`, `DialogFooter` | `components/dialog` | 对话框 |
 | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableCell`, `TableColumn` | `components/ui/table` | 表格 |
 | `Tabs`, `Tab` | `components/tabs-field` | 标签页 |
 | `Progress` | `components/progress-bar` | 进度条 |

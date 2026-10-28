@@ -19,10 +19,10 @@ React dashboard for Hoplane. rolldown-vite + TypeScript + Tailwind v4 + shadcn/r
 
 - **Auth**: raw JWT in `Authorization` header — no `Bearer` prefix.
 - **API envelope**: `{code, msg, data, ts}`, code 0 = success.
-- **UI imports**: `src/components/ui/*` primitives plus the `src/components/*` kit (`modal`, `select-native`, `multi-select-field`, `accordion-field`, `tabs-field`, `date-picker-field`, `progress-bar`, `radio-group-field`); never `@heroui/*` or `@nextui-org/*`.
+- **UI imports**: `src/components/ui/*` primitives plus the `src/components/*` kit (`dialog`, `select-native`, `multi-select-field`, `accordion-field`, `tabs-field`, `date-picker-field`, `progress-bar`, `radio-group-field`); never `@heroui/*` or `@nextui-org/*`.
 - **Theme**: don't remove `tailwind-theme.pcss` import from `globals.css` — breaks semantic classes (`bg-primary`, `text-foreground`, `border-input`).
 - **Buttons**: use `loading` for submit/save/delete in flight; it renders the spinner and disables the button.
-- **Dialogs**: `components/modal.tsx` is the app kit on top of `ui/dialog`; use it instead of composing Dialog per page.
+- **Dialogs**: `components/dialog.tsx` exposes `Dialog/DialogContent/DialogHeader/DialogBody/DialogFooter` on top of `ui/dialog`; pages use this kit.
 
 ## Anti-patterns
 

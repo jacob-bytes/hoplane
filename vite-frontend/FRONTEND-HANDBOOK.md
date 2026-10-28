@@ -23,7 +23,7 @@ src/
   layouts/        壳：admin / h5 / h5-simple
   hooks/          可复用状态与实时逻辑
   styles/         globals.css + tailwind-theme.pcss（唯一 token 源）
-  components/*    业务 kit：modal、select-native、multi-select-field、progress-bar 等
+  components/*    业务 kit：dialog、select-native、multi-select-field、progress-bar 等
 ```
 
 规则：
