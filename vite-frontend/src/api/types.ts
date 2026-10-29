@@ -6,6 +6,7 @@ export interface NodeApiItem {
   sshConfig?: NodeSshConfigApiItem | null;
   inx?: number;
   remark?: string;
+  country?: string;
   expiryTime?: number;
   renewalCycle?: "month" | "quarter" | "year" | "";
   expiryReminderDismissed?: number;
@@ -316,6 +317,7 @@ export interface NodeMutationPayload {
   sshConfig?: NodeSshConfigMutationPayload | null;
   inx?: number;
   remark?: string;
+  country?: string;
   expiryTime?: number;
   renewalCycle?: "month" | "quarter" | "year" | "";
   serverIp?: string;

@@ -17,6 +17,7 @@ import { Accordion, AccordionItem } from "@/components/accordion-field";
 import { SelectField } from "@/components/select-native";
 import { type NodeRenewalCycle } from "@/pages/node/renewal";
 import { NodeForm } from "@/pages/node/types";
+import { NODE_COUNTRIES } from "@/pages/node/display";
 
 export interface NodeFormModalProps {
   dialogTitle: string;
@@ -83,6 +84,27 @@ export function NodeFormModal({
                     {errors.name}
                   </p>
                 ) : null}
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <SelectField
+                  label="国家/地区"
+                  options={NODE_COUNTRIES.map((item) => ({
+                    value: item.value,
+                    label: item.label,
+                  }))}
+                  placeholder="自动（按名称判断）"
+                  value={form.country || "AUTO"}
+                  onValueChange={(selected) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      country: selected === "AUTO" ? "" : selected,
+                    }))
+                  }
+                />
+                <p className="text-xs text-muted-foreground">
+                  留空时按服务器名称推断；选择后卡片显示对应国旗
+                </p>
               </div>
 
               <div className="flex flex-col gap-1.5">

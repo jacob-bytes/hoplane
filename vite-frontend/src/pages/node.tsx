@@ -242,6 +242,7 @@ export default function NodePage({
     id: null,
     name: "",
     remark: "",
+    country: "",
     expiryTime: 0,
     renewalCycle: "",
     serverHost: "",
@@ -859,6 +860,7 @@ export default function NodePage({
       id: node.id,
       name: node.name,
       remark: node.remark || "",
+      country: node.country || "",
       expiryTime: node.expiryTime || 0,
       renewalCycle: node.renewalCycle || "",
       serverHost: normalizedHost,
@@ -1156,6 +1158,7 @@ export default function NodePage({
       const data = {
         ...rest,
         remark: form.remark.trim(),
+        country: form.country,
         expiryTime: form.expiryTime,
         renewalCycle: form.renewalCycle,
         extraIPs: form.extraIPs,
@@ -1182,6 +1185,7 @@ export default function NodePage({
                     ...n,
                     name: form.name,
                     remark: form.remark.trim(),
+                    country: form.country,
                     expiryTime: form.expiryTime,
                     renewalCycle: form.renewalCycle,
                     serverIp:
@@ -1223,6 +1227,7 @@ export default function NodePage({
       id: null,
       name: "",
       remark: "",
+      country: "",
       expiryTime: 0,
       renewalCycle: "",
       serverHost: "",
@@ -1865,7 +1870,11 @@ export default function NodePage({
                                   role="img"
                                   title="地区"
                                 >
-                                  <NodeFlag code={getNodeFlag(node.name)} />
+                                  <NodeFlag
+                                    code={
+                                      node.country || getNodeFlag(node.name)
+                                    }
+                                  />
                                 </span>
                                 {selectMode && (
                                   <Checkbox

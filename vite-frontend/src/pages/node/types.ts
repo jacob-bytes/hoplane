@@ -15,6 +15,8 @@ export interface Node {
   expiryTime?: number;
   renewalCycle?: NodeRenewalCycle;
   expiryReminderDismissed?: number;
+  /** ISO country code chosen in the form; empty falls back to the name. */
+  country?: string;
   ip: string;
   serverIp: string;
   serverIpV4?: string;
@@ -53,6 +55,7 @@ export interface NodeForm {
   id: number | null;
   name: string;
   remark: string;
+  country: string;
   expiryTime: number;
   renewalCycle: NodeRenewalCycle;
   serverHost: string;

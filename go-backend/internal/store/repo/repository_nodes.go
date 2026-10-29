@@ -108,6 +108,7 @@ func (r *Repository) ListNodes() ([]map[string]interface{}, error) {
 		items = append(items, map[string]interface{}{
 			"id": n.ID, "inx": n.Inx, "name": n.Name,
 			"remark":       nullableString(n.Remark),
+			"country":      nullableString(n.Country),
 			"expiryTime":   nullableInt64(n.ExpiryTime),
 			"renewalCycle": nullableString(n.RenewalCycle),
 			"ip":           n.ServerIP, "serverIp": n.ServerIP,

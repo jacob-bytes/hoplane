@@ -54,3 +54,25 @@ const FLAG_RULES: Array<[RegExp, string]> = [
 /** A country/region code inferred from the node name; empty when unknown. */
 export const getNodeFlag = (name: string): string =>
   FLAG_RULES.find(([pattern]) => pattern.test(name))?.[1] ?? "";
+
+/** Options for the node form's country/region picker. */
+export const NODE_COUNTRIES = [
+  { value: "AUTO", label: "自动（按名称判断）" },
+  { value: "HK", label: "香港" },
+  { value: "TW", label: "台湾" },
+  { value: "JP", label: "日本" },
+  { value: "SG", label: "新加坡" },
+  { value: "KR", label: "韩国" },
+  { value: "US", label: "美国" },
+  { value: "CA", label: "加拿大" },
+  { value: "DE", label: "德国" },
+  { value: "GB", label: "英国" },
+  { value: "FR", label: "法国" },
+  { value: "NL", label: "荷兰" },
+  { value: "RU", label: "俄罗斯" },
+  { value: "AU", label: "澳大利亚" },
+  { value: "IN", label: "印度" },
+  { value: "BR", label: "巴西" },
+  { value: "TR", label: "土耳其" },
+  { value: "CN", label: "中国" },
+] as const;

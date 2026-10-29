@@ -302,6 +302,16 @@ func (r *Repository) GetNodeStatusFields(nodeID int64) (status, httpFlag, tlsFla
 	return node.Status, node.HTTP, node.TLS, node.Socks, nil
 }
 
+// SetNodeCountry stores the optional ISO country code used for the card flag.
+func (r *Repository) SetNodeCountry(id int64, country string) error {
+	if r == nil || r.db == nil {
+		return errors.New("repository not initialized")
+	}
+
+	return r.db.Model(&model.Node{}).Where("id = ?", id).
+		Update("country", sql.NullString{String: country, Valid: country != ""}).Error
+}
+
 func (r *Repository) UpdateNode(id int64, name, serverIP string, serverIPV4, serverIPV6, port, interfaceName, extraIPs, remark, expiryTime, renewalCycle interface{}, forwardMode string, httpFlag, tlsFlag, socksFlag int, tcpAddr, udpAddr string, now int64) error {
 	if r == nil || r.db == nil {
 		return errors.New("repository not initialized")

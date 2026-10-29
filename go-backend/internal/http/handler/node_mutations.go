@@ -75,6 +75,11 @@ func (h *Handler) nodeCreate(w http.ResponseWriter, r *http.Request) {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return
 	}
+	country := strings.ToUpper(strings.TrimSpace(asString(req["country"])))
+	if err := h.repo.SetNodeCountry(nodeID, country); err != nil {
+		response.WriteJSON(w, response.Err(-2, err.Error()))
+		return
+	}
 	if err := h.persistNodeSSHConfig(nodeID, req, forwardMode, now, false); err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return
@@ -154,6 +159,13 @@ func (h *Handler) nodeUpdate(w http.ResponseWriter, r *http.Request) {
 	); err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return
+	}
+	if _, ok := req["country"]; ok {
+		country := strings.ToUpper(strings.TrimSpace(asString(req["country"])))
+		if err := h.repo.SetNodeCountry(id, country); err != nil {
+			response.WriteJSON(w, response.Err(-2, err.Error()))
+			return
+		}
 	}
 	if err := h.persistNodeSSHConfig(id, req, forwardMode, now, true); err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))

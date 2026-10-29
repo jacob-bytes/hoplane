@@ -95,6 +95,9 @@ type Node struct {
 	RemoteToken             sql.NullString `gorm:"column:remote_token;type:text"`
 	RemoteConfig            sql.NullString `gorm:"column:remote_config;type:text"`
 	ExpiryReminderDismissed int            `gorm:"column:expiry_reminder_dismissed;not null;default:0"`
+	// Country is an ISO 3166-1 alpha-2 code chosen in the node form. Empty
+	// means the UI falls back to inferring a flag from the node name.
+	Country sql.NullString `gorm:"column:country;type:varchar(8)"`
 	// LatencyTargets is the node's own choice of latency reference points as
 	// JSON {"points":[...],"pinned":[...]}; empty follows the defaults.
 	LatencyTargets string `gorm:"column:latency_targets;type:text;not null;default:''"`
