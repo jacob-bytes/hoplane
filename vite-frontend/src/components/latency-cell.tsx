@@ -172,7 +172,7 @@ function Row({
   const loss = point.ok ? (point.lossPct ?? 0) : 0;
 
   return (
-    <span className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 px-2 py-1 text-left">
+    <span className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,6rem)] items-center gap-2 border-b border-hairline/60 px-2 py-1.5 text-left last:border-b-0">
       <span className="flex min-w-0 items-center gap-1 text-[11px] opacity-80">
         {spinning ? (
           <Loader2 className="h-2.5 w-2.5 shrink-0 animate-spin" />
@@ -181,18 +181,17 @@ function Row({
         )}
         <span className="truncate">{point.name}</span>
       </span>
-      <span className="flex items-baseline gap-1 whitespace-nowrap font-mono text-sm font-semibold">
+      <span className="flex items-baseline justify-end gap-1 whitespace-nowrap font-mono text-sm font-semibold tabular-nums">
         {valueText(point)}
         {loss > 0 && (
           <span className="text-[11px] font-normal opacity-80">丢{loss}%</span>
         )}
       </span>
-      {point.route && point.route !== "未识别" && (
-        <span className="flex flex-wrap items-center gap-1">
+      <span className="flex min-w-0 flex-wrap items-center justify-end gap-1">
+        {point.route && point.route !== "未识别" && (
           <RouteTag short route={point.route} />
-          <V6Route point={point} />
-        </span>
-      )}
+        )}
+      </span>
     </span>
   );
 }
@@ -309,7 +308,12 @@ export function LatencyCell({
                 {probe ? ago(probe.checkedAt) : ""}
               </span>
             </span>
-            <span className="flex flex-col gap-1">
+            <span className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,6rem)] gap-2 px-2 pb-1 text-[10px] text-muted-foreground/60">
+              <span>测试点</span>
+              <span className="text-right">延迟</span>
+              <span className="text-right">线路</span>
+            </span>
+            <span className="flex flex-col">
               {shown.map((p, i) => (
                 <Row key={p.name} point={p} spinning={probing && i === 0} />
               ))}
