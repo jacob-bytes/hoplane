@@ -9,6 +9,20 @@ import "database/sql"
 
 // User maps to the "user" table. PostgreSQL treats "user" as a reserved
 // word, so TableName() is required for correct quoting.
+type UserSession struct {
+	ID         int64         `gorm:"primaryKey;autoIncrement"`
+	UserID     int64         `gorm:"column:user_id;not null;index"`
+	TokenID    string        `gorm:"column:token_id;type:varchar(64);not null;uniqueIndex"`
+	IP         string        `gorm:"column:ip;type:varchar(100);not null;default:''"`
+	UserAgent  string        `gorm:"column:user_agent;type:text;not null;default:''"`
+	CreatedAt  int64         `gorm:"column:created_at;not null;default:0"`
+	LastSeenAt int64         `gorm:"column:last_seen_at;not null;default:0"`
+	ExpiresAt  int64         `gorm:"column:expires_at;not null;default:0"`
+	RevokedAt  sql.NullInt64 `gorm:"column:revoked_at"`
+}
+
+func (UserSession) TableName() string { return "user_session" }
+
 type User struct {
 	ID                int64         `gorm:"primaryKey;autoIncrement"`
 	User              string        `gorm:"column:user;type:varchar(100);not null"`

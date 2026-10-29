@@ -22,6 +22,7 @@ import type {
   UserMutationPayload,
   NodeMutationPayload,
   TunnelMutationPayload,
+  UserSessionApiItem,
   UserQuotaResetPayload,
   UserTunnelAssignPayload,
   UserTunnelListQuery,
@@ -967,6 +968,15 @@ export interface UserSubscription {
 export const getMySubscriptions = () =>
   Network.post<UserSubscription[]>("/user/subscription/list");
 /** Gives one of the user's subscriptions a new link and credentials. */
+export const getUserSessions = () =>
+  Network.post<UserSessionApiItem[]>("/user/session/list");
+export const revokeUserSession = (id: number) =>
+  Network.post("/user/session/revoke", { id });
+export const revokeOtherUserSessions = () =>
+  Network.post("/user/session/revoke-others");
+export const revokeAllUserSessions = () =>
+  Network.post("/user/session/revoke-all");
+
 export const resetMySubscription = (id: number) =>
   Network.post<UserSubscription>("/user/subscription/reset", { id });
 export type SubTrafficRange = "hour" | "day" | "month";
@@ -1226,3 +1236,5 @@ export const updateInboundRelay = (data: {
 }) => Network.post("/inbound/relay/update", data);
 export const deleteInboundRelay = (id: number, force = false) =>
   Network.post("/inbound/relay/delete", { id, force });
+
+export type { UserSessionApiItem } from "./types";

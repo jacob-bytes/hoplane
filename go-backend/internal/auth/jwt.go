@@ -2,8 +2,10 @@ package auth
 
 import (
 	"crypto/hmac"
+	"crypto/rand"
 	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"strconv"
@@ -17,6 +19,7 @@ const (
 
 type Claims struct {
 	Sub    string `json:"sub"`
+	JTI    string `json:"jti"`
 	Iat    int64  `json:"iat"`
 	IatMs  int64  `json:"iat_ms"`
 	Exp    int64  `json:"exp"`
@@ -38,6 +41,7 @@ func GenerateTokenAt(userID int64, username string, roleID int, secret string, n
 	header := tokenHeader{Alg: algorithm, Typ: "JWT"}
 	claims := Claims{
 		Sub:    strconv.FormatInt(userID, 10),
+		JTI:    newTokenID(),
 		Iat:    now.Unix(),
 		IatMs:  now.UnixMilli(),
 		Exp:    now.Add(expireTime).Unix(),
@@ -94,6 +98,15 @@ func ParseClaims(token, secret string) (Claims, error) {
 	}
 
 	return claims, nil
+}
+
+func newTokenID() string {
+	buf := make([]byte, 16)
+	if _, err := rand.Read(buf); err != nil {
+		return strconv.FormatInt(time.Now().UnixNano(), 16)
+	}
+
+	return hex.EncodeToString(buf)
 }
 
 func splitToken(token string) []string {

@@ -133,6 +133,16 @@ export interface StatisticsFlowApiItem {
   [key: string]: unknown;
 }
 
+export interface UserSessionApiItem {
+  id: number;
+  ip: string;
+  userAgent: string;
+  createdAt: number;
+  lastSeenAt: number;
+  expiresAt: number;
+  current: boolean;
+}
+
 export interface SpeedLimitApiItem {
   id: number;
   name: string;

@@ -17,6 +17,8 @@ const ClaimsContextKey contextKey = "claims"
 type AuthOptions struct {
 	JWTSecret        string
 	GetUserAuthState func(userID int64) (*auth.UserAuthState, error)
+	// EnsureUserSession records the session and rejects revoked tokens.
+	EnsureUserSession func(userID int64, tokenID, ip, userAgent string, expiresAt int64) (bool, error)
 }
 
 func JWT(opts AuthOptions) func(http.Handler) http.Handler {
@@ -73,6 +75,16 @@ func JWT(opts AuthOptions) func(http.Handler) http.Handler {
 				}
 			}
 
+			if claims.JTI != "" && opts.EnsureUserSession != nil {
+				valid, err := opts.EnsureUserSession(
+					userIDFromClaims(claims), claims.JTI, clientIP(r), r.UserAgent(), claims.Exp,
+				)
+				if err != nil || !valid {
+					response.WriteJSON(w, response.Err(401, "会话已失效，请重新登录"))
+					return
+				}
+			}
+
 			if requiresAdmin(r.URL.Path) && claims.RoleID != 0 {
 				response.WriteJSON(w, response.Err(403, "权限不足，仅管理员可操作"))
 				return
@@ -98,6 +110,20 @@ func RequireAdmin(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+func userIDFromClaims(claims auth.Claims) int64 {
+	id, _ := strconv.ParseInt(claims.Sub, 10, 64)
+
+	return id
+}
+
+func clientIP(r *http.Request) string {
+	if forwarded := strings.TrimSpace(r.Header.Get("X-Forwarded-For")); forwarded != "" {
+		return strings.TrimSpace(strings.Split(forwarded, ",")[0])
+	}
+
+	return r.RemoteAddr
 }
 
 func allowsOptionalAuth(path string) bool {

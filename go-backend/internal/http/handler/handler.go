@@ -170,6 +170,10 @@ func (h *Handler) GetUserAuthState(userID int64) (*auth.UserAuthState, error) {
 	return h.repo.GetUserAuthState(userID)
 }
 
+func (h *Handler) EnsureUserSession(userID int64, tokenID, ip, userAgent string, expiresAt int64) (bool, error) {
+	return h.repo.EnsureUserSession(userID, tokenID, ip, userAgent, expiresAt)
+}
+
 func (h *Handler) Register(mux *http.ServeMux) {
 	mux.HandleFunc("/api/v1/user/login", h.login)
 	mux.HandleFunc("/api/v1/user/passkey/status", h.passkeyStatus)

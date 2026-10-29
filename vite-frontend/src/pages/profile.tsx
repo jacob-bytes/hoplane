@@ -15,6 +15,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -34,8 +35,13 @@ import {
   getPasskeyStatus,
   listPasskeys,
   updatePassword,
+  getUserSessions,
+  revokeUserSession,
+  revokeOtherUserSessions,
+  revokeAllUserSessions,
   type GithubInfo,
   type PasskeyItem,
+  type UserSessionApiItem,
 } from "@/api";
 import { safeLogout } from "@/utils/logout";
 import { getAdminFlag, getSessionName, getToken } from "@/utils/session";
@@ -263,6 +269,44 @@ function sessionTimes() {
   }
 }
 
+function describeUA(ua: string) {
+  const browser = /Edg\//.test(ua)
+    ? "Edge"
+    : /Chrome\//.test(ua)
+      ? "Chrome"
+      : /Safari\//.test(ua) && !/Chrome/.test(ua)
+        ? "Safari"
+        : /Firefox\//.test(ua)
+          ? "Firefox"
+          : "浏览器";
+  const os = /Mac OS X/.test(ua)
+    ? "macOS"
+    : /Windows/.test(ua)
+      ? "Windows"
+      : /Android/.test(ua)
+        ? "Android"
+        : /iPhone|iPad/.test(ua)
+          ? "iOS"
+          : "未知系统";
+
+  return `${browser} · ${os}`;
+}
+
+function relativeTime(ms: number) {
+  if (!ms) return "刚刚";
+  const diff = Math.max(0, Date.now() - ms);
+  const minutes = Math.floor(diff / 60000);
+
+  if (minutes < 1) return "刚刚";
+  if (minutes < 60) return `${minutes} 分钟前`;
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) return `${hours} 小时前`;
+  const days = Math.floor(hours / 24);
+
+  return `${days} 天前`;
+}
+
 export default function ProfilePage() {
   const navigate = useNavigate();
   const isH5 = useH5Mode();
@@ -283,6 +327,9 @@ export default function ProfilePage() {
   const passkeyCount = passkeys?.length ?? cached.passkeyCount;
   const [github, setGithub] = useState<GithubInfo | null>(cached.github);
   const [openLogin, setOpenLogin] = useState<"passkey" | "github" | null>(null);
+  const [sessions, setSessions] = useState<UserSessionApiItem[]>([]);
+  const [sessionsLoading, setSessionsLoading] = useState(true);
+  const [sessionBusy, setSessionBusy] = useState(false);
   // The app's WebView can't do passkeys or come back from GitHub.
   const webView = isWebViewFunc();
 
@@ -310,6 +357,12 @@ export default function ProfilePage() {
     setUsername(getSessionName() || "Admin");
     setIsAdmin(getAdminFlag());
     void loadGithub();
+    getUserSessions()
+      .then((res) => {
+        if (res.code === 0) setSessions(res.data || []);
+      })
+      .catch(() => setSessions([]))
+      .finally(() => setSessionsLoading(false));
     if (
       window.isSecureContext &&
       typeof window.PublicKeyCredential !== "undefined"
@@ -326,6 +379,61 @@ export default function ProfilePage() {
   }, []);
 
   const go = (path: string) => () => navigate(path);
+
+  const reloadSessions = () =>
+    getUserSessions()
+      .then((res) => {
+        if (res.code === 0) setSessions(res.data || []);
+      })
+      .catch(() => undefined);
+
+  const revokeOne = async (session: UserSessionApiItem) => {
+    if (!window.confirm(`退出 ${describeUA(session.userAgent)} 这个会话？`))
+      return;
+    setSessionBusy(true);
+    try {
+      const res = await revokeUserSession(session.id);
+
+      if (res.code === 0) {
+        toast.success("已退出该设备");
+        await reloadSessions();
+      } else toast.error(res.msg || "退出失败");
+    } finally {
+      setSessionBusy(false);
+    }
+  };
+
+  const revokeOthers = async () => {
+    if (!window.confirm("退出除当前设备外的所有会话？")) return;
+    setSessionBusy(true);
+    try {
+      const res = await revokeOtherUserSessions();
+
+      if (res.code === 0) {
+        toast.success("已退出其他设备");
+        await reloadSessions();
+      } else toast.error(res.msg || "操作失败");
+    } finally {
+      setSessionBusy(false);
+    }
+  };
+
+  const revokeAll = async () => {
+    if (!window.confirm("退出所有设备？当前会话也会失效，需要重新登录。"))
+      return;
+    setSessionBusy(true);
+    try {
+      const res = await revokeAllUserSessions();
+
+      if (res.code === 0) {
+        toast.success("已退出所有设备");
+        safeLogout();
+        navigate("/");
+      } else toast.error(res.msg || "操作失败");
+    } finally {
+      setSessionBusy(false);
+    }
+  };
 
   // On phones the sidebar is gone; these are its admin pages.
   const shortcuts: ShortcutItem[] = [
@@ -589,6 +697,78 @@ export default function ProfilePage() {
                 <div className="mt-1 truncate font-mono">
                   {sessionTimes().expiry}
                 </div>
+              </div>
+            </div>
+            <div className="border-t border-hairline p-5">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <h3 className="text-sm font-medium">登录设备</h3>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    当前账号最近活跃的会话
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    disabled={sessionBusy || sessions.length <= 1}
+                    size="sm"
+                    variant="ghost"
+                    onClick={revokeOthers}
+                  >
+                    退出其他设备
+                  </Button>
+                  <Button
+                    className="text-destructive hover:text-destructive"
+                    disabled={sessionBusy}
+                    size="sm"
+                    variant="outline"
+                    onClick={revokeAll}
+                  >
+                    退出所有设备
+                  </Button>
+                </div>
+              </div>
+              <div className="mt-3 flex flex-col">
+                {sessionsLoading ? (
+                  <p className="py-3 text-xs text-muted-foreground">
+                    正在加载会话…
+                  </p>
+                ) : sessions.length === 0 ? (
+                  <p className="py-3 text-xs text-muted-foreground">
+                    当前会话已在上方显示
+                  </p>
+                ) : (
+                  sessions.map((session) => (
+                    <div
+                      key={session.id}
+                      className="flex items-center justify-between gap-3 border-b border-hairline py-2.5 last:border-b-0"
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="truncate">
+                            {describeUA(session.userAgent)}
+                          </span>
+                          {session.current && (
+                            <Badge variant="success">当前</Badge>
+                          )}
+                        </div>
+                        <div className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                          {session.ip || "未知 IP"} · 最近活跃{" "}
+                          {relativeTime(session.lastSeenAt)}
+                        </div>
+                      </div>
+                      {!session.current && (
+                        <Button
+                          disabled={sessionBusy}
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => revokeOne(session)}
+                        >
+                          退出
+                        </Button>
+                      )}
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </section>
