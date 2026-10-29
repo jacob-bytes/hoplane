@@ -27,14 +27,40 @@ export const FlowChartCard = ({
   chartData,
   formatFlow,
 }: FlowChartCardProps) => {
+  const peak = chartData.reduce<FlowChartPoint | null>(
+    (best, point) => (best === null || point.flow > best.flow ? point : best),
+    null,
+  );
+  const average =
+    chartData.length > 0
+      ? chartData.reduce((sum, point) => sum + point.flow, 0) / chartData.length
+      : 0;
+
   return (
     <Card className="mb-6 lg:mb-8">
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <ChartPie aria-hidden="true" className="h-5 w-5 text-primary" />
-          <h2 className="text-lg lg:text-xl font-semibold text-foreground">
+          <ChartPie aria-hidden="true" className="h-4 w-4 text-primary" />
+          <h2 className="text-[15px] font-medium text-foreground">
             24小时流量统计
           </h2>
+          {statisticsFlowsCount > 0 && (
+            <div className="ml-auto flex items-center gap-3 text-[11px] text-muted-foreground">
+              <span>
+                峰值{" "}
+                <span className="font-mono tabular text-foreground">
+                  {formatFlow(peak?.flow ?? 0)}
+                </span>
+                {peak ? ` · ${peak.time}` : ""}
+              </span>
+              <span>
+                平均{" "}
+                <span className="font-mono tabular text-foreground">
+                  {formatFlow(average)}
+                </span>
+              </span>
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent className="pt-0">
@@ -43,7 +69,7 @@ export const FlowChartCard = ({
         ) : (
           <div
             aria-label={`24 小时流量统计，共 ${chartData.length} 个采样点`}
-            className="h-64 w-full text-primary lg:h-80"
+            className="h-56 w-full text-primary lg:h-72"
             role="img"
           >
             <ResponsiveContainer height="100%" width="100%">

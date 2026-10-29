@@ -1,4 +1,14 @@
 import { useState } from "react";
+import {
+  CalendarClock,
+  Database,
+  ListChecks,
+  TimerReset,
+  Waypoints,
+} from "lucide-react";
+
+const DAY = 86400000;
+
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -697,23 +707,7 @@ function UserDashboard() {
           onDontShowAgain={dismissAnnouncementModal}
         />
       )}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4 mb-6 lg:mb-8">
-        <MetricCard
-          icon={
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
-            </svg>
-          }
-          iconClassName="bg-muted"
-          title="总流量"
-          value={formatFlowLimit(userInfo.flow, userInfo.flowMiB)}
-        />
-
+      <div className="mb-6 grid grid-cols-2 gap-3 lg:mb-8 lg:grid-cols-4 lg:gap-4">
         <MetricCard
           bottomContent={
             <div className="mt-1">
@@ -722,72 +716,26 @@ function UserDashboard() {
                 "sm",
                 userInfo.flow === 99999 && !userInfo.flowMiB,
               )}
-              <div className="flex items-center justify-between mt-1">
-                <p className="text-xs text-muted-foreground truncate">
+              <div className="mt-1 flex items-center justify-between gap-2">
+                <p className="truncate text-xs text-muted-foreground">
                   {userInfo.flow === 99999 && !userInfo.flowMiB
-                    ? "无限制"
-                    : `${calculateUsagePercentage("flow").toFixed(1)}%`}
+                    ? "不限流量"
+                    : `共 ${formatFlowLimit(userInfo.flow, userInfo.flowMiB)} · ${calculateUsagePercentage("flow").toFixed(1)}%`}
                 </p>
                 {userInfo.flowResetTime !== undefined &&
                   userInfo.flowResetTime !== null && (
-                    <div className="text-xs text-muted-foreground flex items-center gap-1">
-                      <svg
-                        aria-hidden="true"
-                        className="w-3 h-3"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          clipRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                          fillRule="evenodd"
-                        />
-                      </svg>
-                      <span className="truncate">
-                        {formatResetTime(userInfo.flowResetTime)}
-                      </span>
-                    </div>
+                    <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
+                      <TimerReset className="h-3 w-3" />
+                      {formatResetTime(userInfo.flowResetTime)}
+                    </span>
                   )}
               </div>
             </div>
           }
-          icon={
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                clipRule="evenodd"
-                d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
-                fillRule="evenodd"
-              />
-            </svg>
-          }
+          icon={<Database className="h-4 w-4 text-muted-foreground" />}
           iconClassName="bg-muted"
           title="已用流量"
           value={formatFlow(calculateUserTotalUsedFlow())}
-        />
-
-        <MetricCard
-          icon={
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                clipRule="evenodd"
-                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                fillRule="evenodd"
-              />
-            </svg>
-          }
-          iconClassName="bg-muted"
-          title="规则配额"
-          value={formatNumber(userInfo.num || 0)}
         />
 
         <MetricCard
@@ -798,30 +746,59 @@ function UserDashboard() {
                 "sm",
                 userInfo.num === 99999,
               )}
-              <p className="text-xs text-muted-foreground mt-1 truncate">
+              <p className="mt-1 truncate text-xs text-muted-foreground">
                 {userInfo.num === 99999
-                  ? "无限制"
-                  : `${calculateUsagePercentage("forwards").toFixed(1)}%`}
+                  ? "不限规则数"
+                  : `配额 ${formatNumber(userInfo.num || 0)} · ${calculateUsagePercentage("forwards").toFixed(1)}%`}
               </p>
             </div>
           }
-          icon={
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4 text-muted-foreground"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                clipRule="evenodd"
-                d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-                fillRule="evenodd"
-              />
-            </svg>
-          }
+          icon={<ListChecks className="h-4 w-4 text-muted-foreground" />}
           iconClassName="bg-muted"
           title="已用规则"
           value={forwardList.length}
+        />
+
+        <MetricCard
+          bottomContent={
+            <p className="mt-1 truncate text-xs text-muted-foreground">
+              {userTunnels.length > 0
+                ? "可创建转发规则的隧道"
+                : "暂无隧道权限，请联系管理员"}
+            </p>
+          }
+          icon={<Waypoints className="h-4 w-4 text-muted-foreground" />}
+          iconClassName="bg-muted"
+          title="隧道权限"
+          value={userTunnels.length}
+        />
+
+        <MetricCard
+          bottomContent={
+            <p className="mt-1 truncate text-xs text-muted-foreground">
+              {userInfo.expTime
+                ? (() => {
+                    const days = Math.ceil(
+                      (new Date(userInfo.expTime).getTime() - Date.now()) / DAY,
+                    );
+
+                    return days <= 0 ? "已到期" : `剩余 ${days} 天`;
+                  })()
+                : "永久有效"}
+            </p>
+          }
+          icon={<CalendarClock className="h-4 w-4 text-muted-foreground" />}
+          iconClassName="bg-muted"
+          title="账户到期"
+          value={
+            userInfo.expTime
+              ? new Date(userInfo.expTime).toLocaleDateString("zh-CN", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                })
+              : "永久"
+          }
         />
       </div>
 

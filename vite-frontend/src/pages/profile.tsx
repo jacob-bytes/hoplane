@@ -38,7 +38,7 @@ import {
   type PasskeyItem,
 } from "@/api";
 import { safeLogout } from "@/utils/logout";
-import { getAdminFlag, getSessionName } from "@/utils/session";
+import { getAdminFlag, getSessionName, getToken } from "@/utils/session";
 import { PasskeyModal } from "@/components/passkey-manager";
 import { GithubBindingModal } from "@/components/github-binding";
 import { PageHeader } from "@/components/page-kit";
@@ -218,6 +218,48 @@ function writeLoginCache(patch: Partial<LoginCache>) {
     );
   } catch {
     // ignore
+  }
+}
+
+function sessionDevice() {
+  const ua = navigator.userAgent;
+  const browser = /Edg\//.test(ua)
+    ? "Edge"
+    : /Chrome\//.test(ua)
+      ? "Chrome"
+      : /Safari\//.test(ua) && !/Chrome/.test(ua)
+        ? "Safari"
+        : /Firefox\//.test(ua)
+          ? "Firefox"
+          : "浏览器";
+  const os = /Mac OS X/.test(ua)
+    ? "macOS"
+    : /Windows/.test(ua)
+      ? "Windows"
+      : /Android/.test(ua)
+        ? "Android"
+        : /iPhone|iPad/.test(ua)
+          ? "iOS"
+          : "未知系统";
+
+  return `${browser} · ${os}`;
+}
+
+function sessionTimes() {
+  const token = getToken();
+
+  if (!token) return { login: "—", expiry: "—" };
+
+  try {
+    const payload = JSON.parse(
+      atob(token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")),
+    ) as { iat?: number; exp?: number };
+    const format = (value?: number) =>
+      value ? new Date(value * 1000).toLocaleString("zh-CN") : "—";
+
+    return { login: format(payload.iat), expiry: format(payload.exp) };
+  } catch {
+    return { login: "—", expiry: "—" };
   }
 }
 
@@ -528,6 +570,26 @@ export default function ProfilePage() {
                 {<LogOut className="h-4 w-4" />}
                 退出登录
               </Button>
+            </div>
+            <div className="grid gap-3 border-t border-hairline p-5 text-xs sm:grid-cols-3">
+              <div>
+                <div className="text-muted-foreground">当前设备</div>
+                <div className="mt-1 truncate font-medium">
+                  {sessionDevice()}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">登录时间</div>
+                <div className="mt-1 truncate font-mono">
+                  {sessionTimes().login}
+                </div>
+              </div>
+              <div>
+                <div className="text-muted-foreground">会话到期</div>
+                <div className="mt-1 truncate font-mono">
+                  {sessionTimes().expiry}
+                </div>
+              </div>
             </div>
           </section>
         </div>

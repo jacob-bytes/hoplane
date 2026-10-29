@@ -113,6 +113,7 @@ function Traffic({ s }: { s: UserSubscription }) {
 function SubscriptionCard({
   s,
   open,
+  wide,
   onToggle,
   onQr,
   onReset,
@@ -120,6 +121,8 @@ function SubscriptionCard({
   s: UserSubscription;
   /** Whether the import section shows (collapsible when there are several). */
   open: boolean;
+  /** A single subscription gets a full-width, two-pane layout. */
+  wide?: boolean;
   onToggle?: () => void;
   onQr: () => void;
   onReset: () => void;
@@ -128,8 +131,8 @@ function SubscriptionCard({
   const usable = s.status === "ok";
   const [traffic, setTraffic] = useState(false);
 
-  return (
-    <div className="flex flex-col gap-4 rounded-xl border border-hairline bg-raised p-4 shadow-sm sm:p-5">
+  const info = (
+    <>
       <div className="flex items-center justify-between gap-2">
         <span className="min-w-0 truncate text-lg font-bold">{s.name}</span>
         <span
@@ -168,26 +171,31 @@ function SubscriptionCard({
               : "订阅已被管理员停用"}
         </p>
       )}
-      {onToggle && (
-        <button
-          className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
-          type="button"
-          onClick={onToggle}
-        >
-          导入客户端
-          <ChevronDown
-            className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
-          />
-        </button>
+    </>
+  );
+
+  const clients = (
+    <>
+      {wide ? (
+        <div className="text-sm font-medium">导入客户端</div>
+      ) : (
+        onToggle && (
+          <button
+            className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
+            type="button"
+            onClick={onToggle}
+          >
+            导入客户端
+            <ChevronDown
+              className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
+            />
+          </button>
+        )
       )}
-      {open && (
-        <div className="flex flex-col gap-3">
-          {!onToggle && (
-            <div className="text-sm font-medium text-muted-foreground">
-              导入客户端
-            </div>
-          )}
+      {wide || open ? (
+        <>
           <SubClientGrid
+            columns={wide ? 3 : 2}
             configClients={s.templates}
             link={(format) => link(s, format)}
             name={s.name}
@@ -196,30 +204,57 @@ function SubscriptionCard({
           <p className="text-center text-xs text-muted-foreground">
             点客户端直接导入，右侧按钮复制链接
           </p>
+        </>
+      ) : null}
+    </>
+  );
+
+  const actions = (
+    <div className="flex gap-2">
+      <Button
+        className="flex-1"
+        variant="secondary"
+        onClick={() => copyText(link(s), "订阅链接已复制")}
+      >
+        <Copy className="h-4 w-4" />
+        复制订阅链接
+      </Button>
+      <Button
+        aria-label="二维码"
+        size="icon"
+        variant="secondary"
+        onClick={onQr}
+      >
+        <QrCode className="h-4 w-4" />
+      </Button>
+      <Button
+        className="text-destructive hover:text-destructive"
+        variant="outline"
+        onClick={onReset}
+      >
+        <RefreshCw className="h-4 w-4" />
+        重置链接
+      </Button>
+    </div>
+  );
+
+  if (wide) {
+    return (
+      <div className="overflow-hidden rounded-xl border border-hairline bg-raised lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+        <div className="flex flex-col gap-4 p-5 sm:p-6">{info}</div>
+        <div className="flex flex-col gap-3 border-t border-hairline bg-surface/40 p-5 sm:p-6 lg:border-l lg:border-t-0">
+          {clients}
+          <div className="mt-auto pt-2">{actions}</div>
         </div>
-      )}
-      <div className="flex gap-2">
-        <Button
-          className="flex-1"
-          variant="secondary"
-          onClick={() => copyText(link(s), "订阅链接已复制")}
-        >
-          {<Copy className="h-4 w-4" />}
-          复制订阅链接
-        </Button>
-        <Button
-          aria-label="二维码"
-          size="icon"
-          variant="secondary"
-          onClick={onQr}
-        >
-          <QrCode className="h-4 w-4" />
-        </Button>
-        <Button variant="secondary" onClick={onReset}>
-          {<RefreshCw className="h-4 w-4" />}
-          重置链接
-        </Button>
       </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4 rounded-xl border border-hairline bg-raised p-4 sm:p-5">
+      {info}
+      {clients}
+      {actions}
     </div>
   );
 }
@@ -301,12 +336,17 @@ export default function MySubscriptionsPage() {
       {items.length === 0 ? (
         <EmptyHint text="还没有分配给你的订阅，请联系管理员" />
       ) : (
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        <div
+          className={
+            several ? "grid grid-cols-1 gap-4 xl:grid-cols-2" : "flex flex-col"
+          }
+        >
           {items.map((s) => (
             <SubscriptionCard
               key={s.id}
               open={!several || openId === s.id}
               s={s}
+              wide={!several}
               onQr={() => setQr(s)}
               onReset={() => setResetting(s)}
               onToggle={

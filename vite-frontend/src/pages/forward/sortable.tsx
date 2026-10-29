@@ -105,6 +105,7 @@ export const SortableTunnelGroup = ({
           strategy={rectSortingStrategy}
         >
           <ListGroup
+            columns="minmax(0,1fr) minmax(0,1.5fr) 24px"
             title={
               <span className="flex min-w-0 flex-1 items-center gap-2">
                 <button

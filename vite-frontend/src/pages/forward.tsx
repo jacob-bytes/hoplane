@@ -2800,32 +2800,52 @@ export default function ForwardPage({
                 )}
               </>
             }
-            cells={
-              flat
-                ? [
-                    <div key="name" className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="truncate text-sm font-medium text-foreground">
-                          {forward.name}
-                        </span>
-                        {forward.status !== 1 && (
-                          <Badge variant="outline">{statusDisplay.text}</Badge>
-                        )}
-                      </div>
-                      <div className="truncate text-xs text-muted-foreground">
-                        {forward.userName ?? ""}
-                      </div>
-                    </div>,
-                    <div
-                      key="meta"
-                      className="min-w-0 truncate text-xs text-muted-foreground tabular"
-                    >
-                      {meta.filter(Boolean).join(" · ")}
-                    </div>,
-                    handle,
+            cells={[
+              <div key="name" className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="truncate text-sm font-medium text-foreground">
+                    {forward.name}
+                  </span>
+                  {forward.status !== 1 && (
+                    <Badge variant="outline">{statusDisplay.text}</Badge>
+                  )}
+                </div>
+                <div className="truncate text-xs text-muted-foreground">
+                  {[
+                    flat ? forward.userName : "",
+                    showTunnel ? forward.tunnelName : "",
                   ]
-                : undefined
-            }
+                    .filter(Boolean)
+                    .join(" · ")}
+                </div>
+              </div>,
+              <div key="route" className="min-w-0">
+                <div className="flex min-w-0 items-center gap-1.5 font-mono text-xs">
+                  <span
+                    className="max-w-[46%] truncate"
+                    title={formatInAddress(forward.inIp, forward.inPort)}
+                  >
+                    {formatInAddress(forward.inIp, forward.inPort) || "-"}
+                  </span>
+                  <span aria-hidden className="shrink-0 text-muted-foreground">
+                    →
+                  </span>
+                  <span
+                    className="min-w-0 truncate text-muted-foreground"
+                    title={formatRemoteAddress(forward.remoteAddr)}
+                  >
+                    {formatRemoteAddress(forward.remoteAddr) || "-"}
+                  </span>
+                </div>
+                <div className="mt-0.5 truncate text-[11px] tabular text-muted-foreground">
+                  {getForwardFlowText(forward)}
+                  {showTunnel && ratio !== 1
+                    ? ` · ${formatTunnelTrafficRatio(ratio)}`
+                    : ""}
+                </div>
+              </div>,
+              handle,
+            ]}
             meta={meta.filter(Boolean).join(" · ")}
             right={
               <span className="flex items-center gap-3">

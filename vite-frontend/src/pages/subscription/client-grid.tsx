@@ -13,6 +13,7 @@ export function SubClientGrid({
   name,
   rules,
   configClients = [],
+  columns = 2,
 }: {
   /** The subscription link for a ?format= value ("" for auto). */
   link: (format: string) => string;
@@ -20,9 +21,13 @@ export function SubClientGrid({
   rules: boolean;
   /** Clients rendered from a template: they get a full configuration too. */
   configClients?: string[];
+  /** Wide cards can fit one more column. */
+  columns?: 2 | 3;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-1.5">
+    <div
+      className={`grid gap-1.5 ${columns === 3 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-2"}`}
+    >
       {SUB_CLIENTS.map((c) => {
         const url = link(c.format);
         const isConfig =
