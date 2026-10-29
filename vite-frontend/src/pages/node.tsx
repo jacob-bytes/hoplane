@@ -77,6 +77,7 @@ import { CARD_GRID } from "@/components/info-card";
 import { useViewMode } from "@/components/view-mode";
 import {
   getConnectionStatusMeta,
+  getNodeFlag,
   getRemoteSyncErrorMessage,
 } from "@/pages/node/display";
 import { NodeTuneModal } from "@/pages/node/tune-modal";
@@ -1826,10 +1827,7 @@ export default function NodePage({
                       ? `${connectionStatusMeta.text} · ${formatUptime(node.systemInfo.uptime)}`
                       : connectionStatusMeta.text;
                   const osLabel = node.systemInfo
-                    ? [
-                        node.systemInfo.osName,
-                        node.systemInfo.osVersion,
-                      ]
+                    ? [node.systemInfo.osName, node.systemInfo.osVersion]
                         .filter(Boolean)
                         .join(" ")
                     : "";
@@ -1851,7 +1849,7 @@ export default function NodePage({
 
                   return (
                     <SortableItem key={node.id} id={node.id}>
-                      {(listeners) => (
+                      {() => (
                         <Card
                           key={node.id}
                           className={`group relative overflow-visible h-full flex flex-col [content-visibility:auto] [contain-intrinsic-size:auto_420px] ${node.expiryReminderDismissed ? "" : expiryMeta.accentClassName}`}
@@ -1860,21 +1858,14 @@ export default function NodePage({
                           <CardHeader className="pb-3 md:pb-3">
                             <div className="flex justify-between items-start w-full gap-3">
                               <div className="flex items-start gap-2 flex-1 min-w-0">
-                                <div
-                                  className="cursor-grab active:cursor-grabbing p-2 -ml-2 -mt-1 text-muted-foreground hover:text-muted-foreground transition-colors touch-manipulation opacity-100 sm:opacity-0 sm:group-hover:opacity-100 flex-shrink-0"
-                                  {...listeners}
-                                  style={{ touchAction: "none" }}
-                                  title="拖拽排序"
+                                <span
+                                  aria-label={`地区 ${getNodeFlag(node.name)}`}
+                                  className="mt-0.5 flex-shrink-0 select-none text-lg leading-none"
+                                  role="img"
+                                  title="地区"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    className="w-4 h-4"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path d="M7 2a2 2 0 1 1 .001 4.001A2 2 0 0 1 7 2zm0 6a2 2 0 1 1 .001 4.001A2 2 0 0 1 7 8zm0 6a2 2 0 1 1 .001 4.001A2 2 0 0 1 7 14zm6-8a2 2 0 1 1-.001-4.001A2 2 0 0 1 13 6zm0 2a2 2 0 1 1 .001 4.001A2 2 0 0 1 13 8zm0 6a2 2 0 1 1 .001 4.001A2 2 0 0 1 13 14z" />
-                                  </svg>
-                                </div>
+                                  {getNodeFlag(node.name)}
+                                </span>
                                 {selectMode && (
                                   <Checkbox
                                     checked={selectedIds.has(node.id)}
@@ -1942,7 +1933,7 @@ export default function NodePage({
                                       )}
                                     </button>
                                     <div
-                                      className={`pointer-events-none invisible absolute z-[60] w-72 max-w-[min(18rem,calc(100vw-4rem))] rounded-xl border border-hairline/80 bg-background/98 p-3 opacity-0 shadow-xl  transition-all duration-150 group-hover/info:visible group-hover/info:pointer-events-auto group-hover/info:opacity-100 group-focus-within/info:visible group-focus-within/info:pointer-events-auto group-focus-within/info:opacity-100 ${
+                                      className={`pointer-events-none invisible absolute z-[60] w-72 max-w-[min(18rem,calc(100vw-4rem))] rounded-xl border border-hairline bg-popover p-3 opacity-0 text-popover-foreground shadow-xl  transition-all duration-150 group-hover/info:visible group-hover/info:pointer-events-auto group-hover/info:opacity-100 group-focus-within/info:visible group-focus-within/info:pointer-events-auto group-focus-within/info:opacity-100 ${
                                         infoPlacement === "bottom"
                                           ? "right-0 top-[calc(100%+0.75rem)] translate-y-1 group-hover/info:translate-y-0 group-focus-within/info:translate-y-0"
                                           : "right-[calc(100%+0.75rem)] top-1/2 -translate-y-1/2 translate-x-1 group-hover/info:translate-x-0 group-focus-within/info:translate-x-0"

@@ -284,7 +284,6 @@ export function LatencyCell({
   const hiddenBad = points.filter(
     (p) => !shown.includes(p) && pointTone(p) === "danger",
   ).length;
-  const others = points.filter((p) => p !== worst);
 
   if (onOpenDetails) {
     return (
@@ -319,16 +318,16 @@ export function LatencyCell({
         ) : (
           <>
             <Pill label={false} point={worst} spinning={probing} />
-            {others.length > 0 && (
-              <span className="flex items-center gap-0.5">
-                {others.map((p) => (
-                  <span
-                    key={p.name}
-                    className={`h-1.5 w-1.5 rounded-full ${TONE[pointTone(p)][1]}`}
-                  />
-                ))}
-              </span>
-            )}
+            <span className="flex flex-1 items-center justify-around gap-1">
+              {points.map((p) => (
+                <span
+                  key={p.name}
+                  aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : "异常"}`}
+                  className={`h-2 w-2 rounded-full ${TONE[pointTone(p)][1]}`}
+                  title={`${p.name} ${p.ok ? `${p.latencyMs} ms` : "异常"}`}
+                />
+              ))}
+            </span>
           </>
         )}
       </button>
@@ -372,16 +371,16 @@ export function LatencyCell({
             onKeyDown={stop}
           >
             <Pill label={false} point={worst} spinning={probing} />
-            {others.length > 0 && (
-              <span className="flex items-center gap-0.5">
-                {others.map((p) => (
-                  <span
-                    key={p.name}
-                    className={`h-1.5 w-1.5 rounded-full ${TONE[pointTone(p)][1]}`}
-                  />
-                ))}
-              </span>
-            )}
+            <span className="flex flex-1 items-center justify-around gap-1">
+              {points.map((p) => (
+                <span
+                  key={p.name}
+                  aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : "异常"}`}
+                  className={`h-2 w-2 rounded-full ${TONE[pointTone(p)][1]}`}
+                  title={`${p.name} ${p.ok ? `${p.latencyMs} ms` : "异常"}`}
+                />
+              ))}
+            </span>
           </button>
         )}
       </DropdownMenuTrigger>

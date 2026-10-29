@@ -769,7 +769,7 @@ export function AdminOverview() {
         )}
       </Panel>
 
-      <div className="mt-4 grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
+      <div className="grid grid-cols-1 items-stretch gap-4 lg:grid-cols-2">
         <Panel
           action={
             <span className="text-xs text-muted-foreground">
