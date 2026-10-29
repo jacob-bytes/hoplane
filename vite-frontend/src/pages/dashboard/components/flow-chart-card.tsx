@@ -125,18 +125,33 @@ export const FlowChartCard = ({
                         : 0;
 
                       return (
-                        <div className="rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-md">
-                          <p className="font-medium text-foreground">{`时间: ${label ?? ""}`}</p>
-                          <p className="text-primary font-semibold mt-1">{`流量: ${formatFlow(flowValue)}`}</p>
+                        <div className="min-w-40 rounded-xl border border-hairline bg-popover px-3 py-2.5 text-popover-foreground shadow-lg">
+                          <div className="flex items-baseline justify-between gap-6">
+                            <span className="text-[11px] text-muted-foreground">
+                              {label ?? ""}
+                            </span>
+                            <span className="font-mono text-sm font-semibold tabular text-foreground">
+                              {formatFlow(flowValue)}
+                            </span>
+                          </div>
+                          <div className="mt-1 text-[10px] text-muted-foreground">
+                            这一小时的总流量
+                          </div>
                         </div>
                       );
                     }
 
                     return null;
                   }}
-                  cursor={{ fill: "var(--muted)" }}
+                  cursor={{ stroke: "var(--hairline-strong)", strokeWidth: 1 }}
                 />
                 <Area
+                  activeDot={{
+                    r: 3.5,
+                    fill: "var(--primary)",
+                    stroke: "var(--background)",
+                    strokeWidth: 2,
+                  }}
                   dataKey="flow"
                   dot={false}
                   fill="currentColor"

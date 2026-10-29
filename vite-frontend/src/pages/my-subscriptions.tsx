@@ -132,6 +132,7 @@ function SubscriptionCard({
   const [label, tone] = status(s);
   const usable = s.status === "ok";
   const [traffic, setTraffic] = useState(false);
+  const [pane, setPane] = useState<"clients" | "traffic">("clients");
 
   const info = (
     <>
@@ -170,18 +171,22 @@ function SubscriptionCard({
           </div>
         </div>
       )}
-      <button
-        aria-expanded={traffic}
-        className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
-        type="button"
-        onClick={() => setTraffic(!traffic)}
-      >
-        流量统计
-        <ChevronDown
-          className={`h-4 w-4 transition-transform ${traffic ? "rotate-180" : ""}`}
-        />
-      </button>
-      {traffic && <SubTrafficStats mine id={s.id} />}
+      {!wide && (
+        <>
+          <button
+            aria-expanded={traffic}
+            className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
+            type="button"
+            onClick={() => setTraffic(!traffic)}
+          >
+            流量统计
+            <ChevronDown
+              className={`h-4 w-4 transition-transform ${traffic ? "rotate-180" : ""}`}
+            />
+          </button>
+          {traffic && <SubTrafficStats mine id={s.id} />}
+        </>
+      )}
       {!usable && (
         <p className="text-xs text-destructive">
           {s.status === "over_quota"
@@ -194,38 +199,38 @@ function SubscriptionCard({
     </>
   );
 
-  const clients = (
+  const clientGrid = (
     <>
-      {wide ? (
-        <div className="text-sm font-medium">导入客户端</div>
-      ) : (
-        onToggle && (
-          <button
-            className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
-            type="button"
-            onClick={onToggle}
-          >
-            导入客户端
-            <ChevronDown
-              className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
-            />
-          </button>
-        )
-      )}
-      {wide || open ? (
-        <>
-          <SubClientGrid
-            columns={wide ? 3 : 2}
-            configClients={s.templates}
-            link={(format) => link(s, format)}
-            name={s.name}
-            rules={s.rules}
+      <SubClientGrid
+        columns={wide ? 3 : 2}
+        configClients={s.templates}
+        link={(format) => link(s, format)}
+        name={s.name}
+        rules={s.rules}
+      />
+      <p className="text-center text-xs text-muted-foreground">
+        点客户端直接导入，右侧按钮复制链接
+      </p>
+    </>
+  );
+
+  const clients = wide ? (
+    clientGrid
+  ) : (
+    <>
+      {onToggle && (
+        <button
+          className="flex w-full items-center justify-between text-sm font-medium text-muted-foreground"
+          type="button"
+          onClick={onToggle}
+        >
+          导入客户端
+          <ChevronDown
+            className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
           />
-          <p className="text-center text-xs text-muted-foreground">
-            点客户端直接导入，右侧按钮复制链接
-          </p>
-        </>
-      ) : null}
+        </button>
+      )}
+      {open ? clientGrid : null}
     </>
   );
 
@@ -260,11 +265,47 @@ function SubscriptionCard({
 
   if (wide) {
     return (
-      <div className="overflow-hidden rounded-xl border border-hairline bg-raised lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
-        <div className="flex flex-col gap-4 p-5 sm:p-6">{info}</div>
-        <div className="flex flex-col gap-3 border-t border-hairline bg-surface/40 p-5 sm:p-6 lg:border-l lg:border-t-0">
-          <div className="lg:order-last lg:mt-auto lg:pt-2">{actions}</div>
-          {clients}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 rounded-xl border border-hairline bg-raised p-5 sm:p-6">
+          {info}
+          {actions}
+        </div>
+
+        <div className="overflow-hidden rounded-xl border border-hairline bg-raised">
+          <div
+            aria-label="订阅详情"
+            className="flex gap-1 border-b border-hairline p-1.5"
+            role="tablist"
+          >
+            {(
+              [
+                ["clients", "导入客户端"],
+                ["traffic", "流量统计"],
+              ] as const
+            ).map(([key, label]) => (
+              <button
+                key={key}
+                aria-selected={pane === key}
+                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+                  pane === key
+                    ? "bg-primary-soft text-primary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                }`}
+                role="tab"
+                type="button"
+                onClick={() => setPane(key)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="p-5 sm:p-6">
+            {pane === "clients" ? (
+              <div className="flex flex-col gap-3">{clientGrid}</div>
+            ) : (
+              <SubTrafficStats mine id={s.id} />
+            )}
+          </div>
         </div>
       </div>
     );
