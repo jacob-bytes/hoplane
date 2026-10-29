@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { motion } from "framer-motion";
+import { CircleAlert, Eye, EyeOff } from "lucide-react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -42,6 +43,8 @@ export default function IndexPage() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<LoginForm>>({});
   const [showCaptcha, setShowCaptcha] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState("");
   const [siteKey, setSiteKey] = useState("");
   const [passkeyEnabled, setPasskeyEnabled] = useState(false);
   const [githubEnabled, setGithubEnabled] = useState(false);
@@ -136,6 +139,7 @@ export default function IndexPage() {
 
   // 处理输入变化
   const handleInputChange = (field: keyof LoginForm, value: string) => {
+    setAuthError("");
     setForm((prev) => ({ ...prev, [field]: value }));
     // 清除该字段的错误
     if (errors[field]) {
@@ -160,6 +164,7 @@ export default function IndexPage() {
       const response = await login(loginData);
 
       if (response.code !== 0) {
+        setAuthError(response.msg || "登录失败");
         toast.error(response.msg || "登录失败");
         if (showCaptcha) {
           setForm((prev) => ({ ...prev, captchaId: "" }));
@@ -184,6 +189,7 @@ export default function IndexPage() {
       toast.success("登录成功");
       navigate("/dashboard");
     } catch {
+      setAuthError("网络错误，请稍后重试");
       toast.error("网络错误，请稍后重试");
     } finally {
       setLoading(false);
@@ -234,7 +240,7 @@ export default function IndexPage() {
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-canvas">
-      <section className="flex flex-col items-center justify-center flex-1 w-full p-4 relative z-10">
+      <section className="relative z-10 flex w-full flex-1 flex-col items-center justify-center p-4 pb-20 sm:pb-4">
         <motion.div
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-[420px] px-4 sm:px-0"
@@ -257,6 +263,7 @@ export default function IndexPage() {
                   <Label htmlFor="login-username">用户名</Label>
                   <Input
                     aria-invalid={!!errors.username || undefined}
+                    autoComplete="username"
                     className="h-10 rounded-md text-sm"
                     disabled={loading}
                     id="login-username"
@@ -276,19 +283,34 @@ export default function IndexPage() {
 
                 <div className="flex flex-col gap-1.5">
                   <Label htmlFor="login-password">密码</Label>
-                  <Input
-                    aria-invalid={!!errors.password || undefined}
-                    className="h-10 rounded-md text-sm tracking-wider"
-                    disabled={loading}
-                    id="login-password"
-                    placeholder="••••••••"
-                    type="password"
-                    value={form.password}
-                    onChange={(e) =>
-                      handleInputChange("password", e.target.value)
-                    }
-                    onKeyDown={handleKeyPress}
-                  />
+                  <div className="relative">
+                    <Input
+                      aria-invalid={!!errors.password || undefined}
+                      autoComplete="current-password"
+                      className="h-10 rounded-md pr-10 text-sm tracking-wider"
+                      disabled={loading}
+                      id="login-password"
+                      placeholder="••••••••"
+                      type={showPassword ? "text" : "password"}
+                      value={form.password}
+                      onChange={(e) =>
+                        handleInputChange("password", e.target.value)
+                      }
+                      onKeyDown={handleKeyPress}
+                    />
+                    <button
+                      aria-label={showPassword ? "隐藏密码" : "显示密码"}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                      type="button"
+                      onClick={() => setShowPassword((value) => !value)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                   {errors.password ? (
                     <p className="text-xs text-destructive" role="alert">
                       {errors.password}
@@ -296,6 +318,15 @@ export default function IndexPage() {
                   ) : null}
                 </div>
 
+                {authError ? (
+                  <div
+                    className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-xs text-destructive"
+                    role="alert"
+                  >
+                    <CircleAlert className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                    <span>{authError}</span>
+                  </div>
+                ) : null}
                 <Button
                   className="mt-2 h-10 rounded-md bg-primary text-sm font-medium shadow-none"
                   loading={loading}

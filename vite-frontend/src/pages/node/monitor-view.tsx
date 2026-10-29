@@ -1451,7 +1451,7 @@ export function MonitorView({
           </div>
 
           {nodes.length === 0 ? (
-            <EmptyHint text="暂无服务器" />
+            <EmptyHint text="还没有可监控的服务器；先在「服务器」添加，等待 agent 上报后再回来查看" />
           ) : card ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {nodes.map((node) => (
