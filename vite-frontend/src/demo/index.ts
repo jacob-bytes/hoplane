@@ -152,6 +152,27 @@ async function answer(config: InternalAxiosRequestConfig) {
   const write = isWrite(last);
   const delta = Math.max(0, Date.now() - fixtures.recordedAt);
 
+  if (bare === "user/session/list") {
+    const now = Date.now();
+
+    return {
+      code: 0,
+      msg: "操作成功",
+      data: [
+        {
+          id: 1,
+          ip: "127.0.0.1",
+          userAgent: navigator.userAgent,
+          createdAt: now - 3600_000,
+          lastSeenAt: now,
+          expiresAt: now + 7 * 86400_000,
+          current: true,
+        },
+      ],
+      ts: now,
+    };
+  }
+
   // The latency point pool is a config value; the demo ships a small one so
   // the 测试点 tab can be opened and edited.
   if (bare === "config/get" || bare === "public/config/get") {
