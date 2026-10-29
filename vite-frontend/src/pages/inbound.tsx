@@ -38,8 +38,6 @@ import {
   PageToolbar,
   SortHeader,
 } from "@/components/page-kit";
-import { CARD_GRID, type CardTone, InfoCard } from "@/components/info-card";
-import { useViewMode } from "@/components/view-mode";
 import { useLocalStorageState } from "@/hooks/use-local-storage-state";
 import {
   markPageCached,
@@ -270,8 +268,6 @@ export default function InboundPage() {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [toggling, setToggling] = useState<number | null>(null);
   const [selectMode, setSelectMode] = useState(false);
-  const [viewMode, setViewMode] = useViewMode("inbound");
-  const card = viewMode === "card";
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [batchDeleteOpen, setBatchDeleteOpen] = useState(false);
   const [batchDeleting, setBatchDeleting] = useState(false);
@@ -648,10 +644,9 @@ export default function InboundPage() {
     }
   };
 
-  const gridClass = card
-    ? CARD_GRID
-    : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised";
-  const listHead = !card && (
+  const gridClass =
+    "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised";
+  const listHead = (
     <div
       className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-raised px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
       data-slot="list-head"
@@ -705,12 +700,10 @@ export default function InboundPage() {
         <LatencyCell
           probe={probe}
           probing={probingIds.has(item.id)}
-          variant={card ? "card" : "list"}
+          variant="list"
           onProbe={() => probeOne(item.id)}
         />
       ) : null;
-    // Cards give measured points their own block under the rows.
-    const latencyTiles = card && latency !== null && probe !== undefined;
     const activate = () =>
       selectMode ? toggleSelect(item.id) : setSheetFor(item.id);
     const dotClass = unreachable
@@ -781,92 +774,6 @@ export default function InboundPage() {
         )}
       </>
     );
-
-    if (card) {
-      const tone: CardTone = unreachable
-        ? "danger"
-        : running
-          ? "success"
-          : item.enabled
-            ? "warning"
-            : "default";
-
-      return (
-        <InfoCard
-          key={item.id}
-          actions={[
-            {
-              key: "share",
-              label: "分享",
-              color: "primary",
-              onClick: () => setSharing(item),
-            },
-            {
-              key: "relay",
-              label: "中转",
-              color: "secondary",
-              onClick: () => setRelaying(item),
-            },
-            {
-              key: "more",
-              label: "更多",
-              onClick: () => setSheetFor(item.id),
-            },
-          ]}
-          badges={badges}
-          headerRight={
-            <Switch
-              aria-label={`${item.enabled ? "停用" : "启用"} ${item.name}`}
-              checked={item.enabled}
-              disabled={toggling === item.id}
-              onCheckedChange={() => handleToggle(item)}
-            />
-          }
-          rows={[
-            ["协议", describeInbound(item)],
-            [
-              "端口",
-              <span key="port" className="font-mono">
-                {item.port}
-              </span>,
-            ],
-            [
-              item.external ? "地址" : "服务器",
-              <span key="where" className="font-mono">
-                {item.external ? item.listen : item.nodeName}
-              </span>,
-            ],
-            [
-              "流量",
-              <span key="traffic" className="font-mono">
-                ↑ {formatTraffic(item.uploadBytes)} · ↓{" "}
-                {formatTraffic(item.downloadBytes)}
-              </span>,
-            ],
-            ...(latency && !latencyTiles
-              ? ([["延迟", latency]] as Array<[string, React.ReactNode]>)
-              : []),
-          ]}
-          selectMode={selectMode}
-          selected={selected}
-          status={
-            unreachable
-              ? "连不上"
-              : running
-                ? "运行中"
-                : item.enabled
-                  ? "异常"
-                  : "已停用"
-          }
-          title={item.name}
-          tone={tone}
-          onClick={() => setSheetFor(item.id)}
-          onSelect={() => toggleSelect(item.id)}
-        >
-          {latencyTiles ? latency : null}
-        </InfoCard>
-      );
-    }
 
     return (
       <div
@@ -1047,7 +954,6 @@ export default function InboundPage() {
                 onClick: openCreate,
               }}
               search={searchKeyword}
-              view={{ value: viewMode, onChange: setViewMode }}
               onSearch={setSearchKeyword}
             >
               {nodeOptions.length > 1 && (
