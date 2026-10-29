@@ -293,6 +293,11 @@ body {
   outline-offset: 2px;
 }
 
+/* The command palette input sits inside its own bordered bar. */
+[data-cmdk-input-wrapper] input:focus-visible {
+  outline: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

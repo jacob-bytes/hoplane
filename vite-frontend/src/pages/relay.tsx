@@ -163,8 +163,8 @@ function LinesView() {
   const [editing, setEditing] = useState<InboundApiItem | null>(null);
   const [onlyWithRelays, setOnlyWithRelays] = useState(false);
   const [query, setQuery] = useState("");
-  const [viewMode, setViewMode] = useViewMode("relay");
-  const card = viewMode === "card";
+  // 线路列表只保留表格视图，卡片视图在节点页已经覆盖。
+  const card = false;
   const [probingIds, setProbingIds] = useState<Set<number>>(new Set());
   const loadingRef = useRef(false);
   // A reload asked for during a silent poll (after an edit) runs after it.
@@ -285,7 +285,6 @@ function LinesView() {
       <PageToolbar
         placeholder="搜索节点名称"
         search={query}
-        view={{ value: viewMode, onChange: setViewMode }}
         onSearch={setQuery}
       >
         <ToolbarButton

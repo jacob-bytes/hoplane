@@ -318,7 +318,7 @@ export function LatencyCell({
         ) : (
           <>
             <Pill label={false} point={worst} spinning={probing} />
-            <span className="flex flex-1 items-center justify-around gap-1">
+            <span className="flex items-center gap-1">
               {points.map((p) => (
                 <span
                   key={p.name}
@@ -371,7 +371,7 @@ export function LatencyCell({
             onKeyDown={stop}
           >
             <Pill label={false} point={worst} spinning={probing} />
-            <span className="flex flex-1 items-center justify-around gap-1">
+            <span className="flex items-center gap-1">
               {points.map((p) => (
                 <span
                   key={p.name}
