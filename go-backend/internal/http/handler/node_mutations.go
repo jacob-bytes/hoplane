@@ -76,6 +76,9 @@ func (h *Handler) nodeCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	country := strings.ToUpper(strings.TrimSpace(asString(req["country"])))
+	if country == "" {
+		country = h.lookupNodeCountry(serverIP)
+	}
 	if err := h.repo.SetNodePrice(nodeID, asFloat(req["price"], 0)); err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return
@@ -172,6 +175,9 @@ func (h *Handler) nodeUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 	if _, ok := req["country"]; ok {
 		country := strings.ToUpper(strings.TrimSpace(asString(req["country"])))
+		if country == "" {
+			country = h.lookupNodeCountry(asString(req["serverIp"]))
+		}
 		if err := h.repo.SetNodeCountry(id, country); err != nil {
 			response.WriteJSON(w, response.Err(-2, err.Error()))
 			return
