@@ -15,7 +15,6 @@ import {
   Rss,
   Server,
   Settings,
-  Share2,
   UserRound,
   Users,
 } from "lucide-react";
@@ -130,12 +129,6 @@ export default function AdminLayout({
       section: "系统",
       label: "监控",
       icon: <Activity className="h-5 w-5" />,
-    },
-    {
-      path: "/panel-sharing",
-      label: "共享",
-      icon: <Share2 className="h-5 w-5" />,
-      adminOnly: true,
     },
     {
       path: "/config",
@@ -276,7 +269,6 @@ export default function AdminLayout({
     "/user": ["分发", "用户"],
     "/group": ["分发", "分组"],
     "/limit": ["分发", "限速"],
-    "/panel-sharing": ["分发", "共享"],
     "/my-subscriptions": ["分发", "我的订阅"],
     "/config": ["系统", "设置"],
     "/profile": ["系统", "账户与登录"],

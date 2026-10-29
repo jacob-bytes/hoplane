@@ -10,7 +10,6 @@ import {
   Link2,
   LogOut,
   Settings,
-  Share2,
   ShieldCheck,
   Users,
   type LucideIcon,
@@ -295,14 +294,6 @@ export default function ProfilePage() {
       icon: Users,
       tone: "primary",
       onClick: go("/user"),
-    },
-    {
-      key: "/panel-sharing",
-      label: "面板共享",
-      description: "与其他面板联邦共享",
-      icon: Share2,
-      tone: "success",
-      onClick: go("/panel-sharing"),
     },
     {
       key: "/relay",

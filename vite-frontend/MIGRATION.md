@@ -36,7 +36,6 @@
 | `/tunnel` | `pages/tunnel.tsx` + `node/tunnel-monitor-view` | 1,847 + 1,553 | 3 | 未开始 | P2 | 3d |
 | `/forward` | `pages/forward.tsx` | 3,347 | 4 | 未开始 | P2 | 3d |
 | `/subscription` | `pages/subscription.tsx` | 1,964 | 6 | 部分 | P2 | 2.5d |
-| `/panel-sharing` | `pages/panel-sharing.tsx` | 991 | 5 | 未开始 | P2 | 1d |
 | `/my-subscriptions` | `pages/my-subscriptions.tsx` | 379 | 2 | 未开始 | P2 | 0.5d |
 | `/user` | `pages/user.tsx` | 2,475 | 11 | 未开始 | P3 | 2d |
 | `/group` | `pages/group.tsx` | 1,058 | 4 | 未开始 | P3 | 1.5d |
@@ -178,7 +177,7 @@ token ─→ 应用壳 ─→ 共享 kit ─→ 页面（按域）
 | 登录页（白底、深蓝、中文文案） | 已完成 | 本轮 |
 | 表单控件（Input/Textarea/Select/Dialog） | 已完成 | c4cdd25 |
 | 改密页（白底卡片、深蓝主操作、警示块） | 已完成 | 本轮 |
-| 账户与登录 / 面板共享 / 我的订阅 | 已完成（列表与空态） | 本轮 |
+| 账户与登录 / 我的订阅 | 已完成（列表与空态） | 本轮 |
 | 订阅弹窗（分段 Tab、宽度、开关行） | 已完成 | 本轮 |
 | 用户弹窗 / 隧道弹窗（宽度 768、表单基座） | 已完成 | 本轮 |
 | 转发（行内流量、居中操作弹窗） | 已完成 | 本轮 |

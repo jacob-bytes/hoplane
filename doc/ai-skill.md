@@ -194,7 +194,6 @@ cat ~/.agents/skills/hoplane-api/SKILL.md >> ~/.claude/CLAUDE.md
 | 转发 | 增删改查、暂停/恢复、诊断 |
 | 分组 | 用户/隧道分组、权限 |
 | 限速 | 增删改查 |
-| 联邦 | 服务器共享、远程服务器 |
 | 备份 | 导出/导入 |
 
 ## 安全提示

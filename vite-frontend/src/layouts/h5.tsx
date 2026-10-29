@@ -153,7 +153,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
     "/user": "分发",
     "/group": "分发",
     "/limit": "分发",
-    "/panel-sharing": "分发",
     "/my-subscriptions": "分发",
     "/config": "系统",
     "/profile": "系统",
@@ -283,7 +282,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
             "/group",
             "/limit",
             "/config",
-            "/panel-sharing",
             "/relay",
           ].includes(path));
       const tabs = tabsRef.current;
@@ -374,7 +372,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
                 "/group",
                 "/limit",
                 "/config",
-                "/panel-sharing",
                 "/relay",
               ].includes(location.pathname));
           const isMonitor = item.path === "/monitor";

@@ -47,7 +47,6 @@ const RelayPage = lazy(loadRelay);
 const SubscriptionPage = lazy(loadSubscription);
 const MySubscriptionsPage = lazy(loadMySubscriptions);
 const ConfigPage = lazy(loadConfig);
-const PanelSharingPage = lazy(() => import("@/pages/panel-sharing"));
 const GithubCallbackPage = lazy(() => import("@/pages/github-callback"));
 
 let pagesPreloaded = false;
@@ -366,14 +365,6 @@ function App() {
           </ProtectedRoute>
         }
         path="/config"
-      />
-      <Route
-        element={
-          <ProtectedRoute>
-            <PanelSharingPage />
-          </ProtectedRoute>
-        }
-        path="/panel-sharing"
       />
     </Routes>
   );

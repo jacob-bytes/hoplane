@@ -217,7 +217,6 @@ export type PageKey =
   | "ProfilePage"
   | "LimitPage"
   | "ConfigPage"
-  | "PanelSharingPage"
   | "SettingsPage"
   | "ChangePasswordPage";
 
