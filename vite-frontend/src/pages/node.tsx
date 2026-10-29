@@ -19,8 +19,11 @@ import {
 import {
   Activity,
   BellOff,
+  Bot,
   Crosshair,
   GitBranch,
+  Globe2,
+  Monitor,
   GripVertical,
   Pencil,
   Settings2,
@@ -1822,6 +1825,19 @@ export default function NodePage({
                     node.connectionStatus === "online" && node.systemInfo
                       ? `${connectionStatusMeta.text} · ${formatUptime(node.systemInfo.uptime)}`
                       : connectionStatusMeta.text;
+                  const osLabel = node.systemInfo
+                    ? [
+                        node.systemInfo.osName,
+                        node.systemInfo.osVersion,
+                      ]
+                        .filter(Boolean)
+                        .join(" ")
+                    : "";
+                  const osExtra = node.systemInfo
+                    ? [node.systemInfo.virt, node.systemInfo.arch]
+                        .filter(Boolean)
+                        .join(" · ")
+                    : "";
                   const hasRemark = Boolean(node.remark?.trim());
                   const hasExpiryInfo = Boolean(
                     node.expiryTime &&
@@ -2037,33 +2053,52 @@ export default function NodePage({
                                 </div>
                               </div>
                             ) : (
-                              <div className="mb-4 flex flex-col gap-3">
-                                <p className="truncate font-mono text-xs text-muted-foreground">
-                                  {[
-                                    node.serverIpV4?.trim() ||
+                              <div className="mb-4 flex min-w-0 flex-col gap-3">
+                                <div className="flex min-w-0 items-center gap-2 overflow-hidden text-[11px] text-muted-foreground">
+                                  <span
+                                    className="flex max-w-[45%] shrink-0 items-center gap-1"
+                                    title={
+                                      node.serverIpV4?.trim() ||
                                       node.serverIpV6?.trim() ||
-                                      node.serverIp.trim(),
-                                    node.version || "未连接过",
-                                  ]
-                                    .filter(Boolean)
-                                    .join(" · ")}
-                                </p>
-                                {node.systemInfo?.osName ? (
-                                  <p className="truncate text-[11px] text-muted-foreground">
-                                    {[
-                                      [
-                                        node.systemInfo.osName,
-                                        node.systemInfo.osVersion,
-                                      ]
+                                      node.serverIp.trim()
+                                    }
+                                  >
+                                    <Globe2 className="h-3 w-3 shrink-0 text-muted-foreground/70" />
+                                    <span className="truncate font-mono">
+                                      {node.serverIpV4?.trim() ||
+                                        node.serverIpV6?.trim() ||
+                                        node.serverIp.trim()}
+                                    </span>
+                                  </span>
+                                  <span
+                                    className="flex shrink-0 items-center gap-1"
+                                    title={`Agent ${node.version || "未连接过"}`}
+                                  >
+                                    <Bot className="h-3 w-3 shrink-0 text-muted-foreground/70" />
+                                    <span className="font-mono">
+                                      {node.version || "未连接过"}
+                                    </span>
+                                  </span>
+                                  {osLabel ? (
+                                    <span
+                                      className="flex min-w-0 flex-1 items-center gap-1"
+                                      title={[osLabel, osExtra]
                                         .filter(Boolean)
-                                        .join(" "),
-                                      node.systemInfo.virt,
-                                      node.systemInfo.arch,
-                                    ]
-                                      .filter(Boolean)
-                                      .join(" · ")}
-                                  </p>
-                                ) : null}
+                                        .join(" · ")}
+                                    >
+                                      <Monitor className="h-3 w-3 shrink-0 text-muted-foreground/70" />
+                                      <span className="truncate">
+                                        {osLabel}
+                                        {osExtra ? (
+                                          <span className="hidden sm:inline">
+                                            {" · "}
+                                            {osExtra}
+                                          </span>
+                                        ) : null}
+                                      </span>
+                                    </span>
+                                  ) : null}
+                                </div>
                                 {upgradeProgress[node.id] &&
                                   upgradeProgress[node.id].percent < 100 && (
                                     <Progress
