@@ -1939,7 +1939,7 @@ export default function NodePage({
                                         />
                                       </svg>
                                       {hasRemark && (
-                                        <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5 rounded-full border border-background bg-muted shadow-sm dark:bg-muted0" />
+                                        <span className="absolute -right-1 -top-1 flex h-2.5 w-2.5 rounded-full border border-background bg-muted shadow-sm dark:bg-muted" />
                                       )}
                                     </button>
                                     <div
@@ -2190,7 +2190,7 @@ export default function NodePage({
                                           )}
                                         </span>
                                       </div>
-                                      <div className="max-h-20 overflow-y-auto rounded bg-white/10 dark:bg-black/10 p-1.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1">
+                                      <div className="max-h-20 overflow-y-auto rounded bg-muted/40 dark:bg-black/20 p-1.5 [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1">
                                         {remoteUsage.usedPorts.length > 0 ? (
                                           <div className="flex flex-wrap gap-1">
                                             {remoteUsage.usedPorts.map(
@@ -2228,7 +2228,7 @@ export default function NodePage({
                                             (binding) => (
                                               <div
                                                 key={binding.bindingId}
-                                                className="rounded border border-border dark:border-border/30 bg-white/10 dark:bg-black/10 p-2"
+                                                className="rounded border border-border dark:border-border/30 bg-muted/40 dark:bg-black/20 p-2"
                                               >
                                                 <div className="flex items-center justify-between gap-2">
                                                   <span

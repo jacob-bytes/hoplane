@@ -1,7 +1,16 @@
 import type { BatchOperationFailure, SpeedLimitApiItem } from "@/api/types";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { Copy } from "lucide-react";
+import {
+  Activity,
+  Clipboard,
+  Copy,
+  Pause,
+  Pencil,
+  Play,
+  RotateCcw,
+  Trash2,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   DndContext,
@@ -3108,130 +3117,210 @@ export default function ForwardPage({
         const directFlow = forward
           ? (forward.inFlow || 0) + (forward.outFlow || 0)
           : 0;
-        const rows: Array<[string, React.ReactNode]> = forward
-          ? ([
-              [
-                "入口",
-                forward.inIp
-                  .split(",")
-                  .map((ip) => ip.trim())
-                  .filter(Boolean)
-                  .map((ip) => formatInAddress(ip, forward.inPort))
-                  .join("\n") || "-",
-              ],
-              [
-                "目标",
-                forward.remoteAddr
-                  .split(",")
-                  .map((addr) => addr.trim())
-                  .filter(Boolean)
-                  .join("\n") || "-",
-              ],
-              [
-                "隧道",
-                `${forward.tunnelName || UNCATEGORIZED_FORWARD_TUNNEL_NAME}${
-                  normalizeTunnelTrafficRatio(forward.tunnelTrafficRatio) !== 1
-                    ? `（倍率 ${formatTunnelTrafficRatio(forward.tunnelTrafficRatio)}）`
-                    : ""
-                }`,
-              ],
-              isAdmin
-                ? ["用户", normalizeForwardUserName(forward.userName)]
-                : null,
-              hasMultipleAddresses(forward.remoteAddr)
-                ? ["策略", getStrategyDisplay(forward.strategy).text]
-                : null,
-              ["流量", getForwardFlowText(forward)],
-              (forward.maxConn || 0) > 0
-                ? ["最大连接", String(forward.maxConn)]
-                : null,
-              (forward.ipMaxConn || 0) > 0
-                ? ["每 IP 连接", String(forward.ipMaxConn)]
-                : null,
-              forward.ipSpeedLimitName
-                ? ["每 IP 限速", forward.ipSpeedLimitName]
-                : null,
-              formatDate(forward.createdTime, true)
-                ? ["创建时间", formatDate(forward.createdTime, true)]
-                : null,
-            ].filter(Boolean) as Array<[string, React.ReactNode]>)
+        const status = forward ? getStatusDisplay(forward.status) : null;
+        const actionSections = forward
+          ? [
+              {
+                section: "常用",
+                key: "edit",
+                label: "编辑规则",
+                description: "修改入口、目标和隧道",
+                icon: Pencil,
+                kind: "dialog" as const,
+                onClick: () => handleEdit(forward),
+              },
+              {
+                section: "常用",
+                key: "toggle",
+                label: forward.serviceRunning ? "暂停规则" : "启用规则",
+                description: forward.serviceRunning
+                  ? "停止转发，规则配置保留"
+                  : "恢复这条规则的转发",
+                icon: forward.serviceRunning ? Pause : Play,
+                disabled: forward.status !== 1 && forward.status !== 0,
+                onClick: () => handleServiceToggle(forward),
+              },
+              {
+                section: "常用",
+                key: "diagnose",
+                label: "诊断",
+                description: "检查入口、隧道和目标连通性",
+                icon: Activity,
+                kind: "dialog" as const,
+                onClick: () => handleDiagnose(forward),
+              },
+              {
+                section: "复制",
+                key: "copy-in",
+                label: "复制入口地址",
+                description: formatInAddress(forward.inIp, forward.inPort),
+                icon: Clipboard,
+                kind: "copy" as const,
+                hint: "入口",
+                disabled: !formatInAddress(forward.inIp, forward.inPort),
+                onClick: () =>
+                  showAddressModal(forward.inIp, forward.inPort, "入口端口"),
+              },
+              {
+                section: "复制",
+                key: "copy-target",
+                label: "复制目标地址",
+                description: formatRemoteAddress(forward.remoteAddr),
+                icon: Copy,
+                kind: "copy" as const,
+                hint: "目标",
+                disabled: !forward.remoteAddr,
+                onClick: () =>
+                  showAddressModal(forward.remoteAddr, null, "目标地址"),
+              },
+              {
+                section: "复制",
+                key: "copy-name",
+                label: "复制规则名称",
+                description: forward.name,
+                icon: Copy,
+                kind: "copy" as const,
+                hint: "名称",
+                onClick: () => copyToClipboard(forward.name, "规则名"),
+              },
+              {
+                section: "危险操作",
+                key: "reset-flow",
+                label: "流量清零",
+                description: "把这条规则已记录的流量归零",
+                icon: RotateCcw,
+                color: "danger" as const,
+                disabled: directFlow <= 0,
+                onClick: () => handleResetFlow(forward),
+              },
+              {
+                section: "危险操作",
+                key: "delete",
+                label: "删除规则",
+                description: "删除后不可恢复",
+                icon: Trash2,
+                color: "danger" as const,
+                onClick: () => handleDelete(forward),
+              },
+            ]
           : [];
 
         return (
           <ActionsDialog
-            actions={
-              !forward
-                ? []
-                : [
-                    {
-                      key: "edit",
-                      label: "编辑",
-                      color: "primary" as const,
-                      onClick: () => handleEdit(forward),
-                    },
-                    {
-                      key: "toggle",
-                      label: forward.serviceRunning ? "暂停" : "启用",
-                      disabled: forward.status !== 1 && forward.status !== 0,
-                      onClick: () => handleServiceToggle(forward),
-                    },
-                    {
-                      key: "diagnose",
-                      label: "诊断",
-                      onClick: () => handleDiagnose(forward),
-                    },
-                    {
-                      key: "copy-in",
-                      label: "复制入口",
-                      disabled: !formatInAddress(forward.inIp, forward.inPort),
-                      onClick: () =>
-                        showAddressModal(
-                          forward.inIp,
-                          forward.inPort,
-                          "入口端口",
-                        ),
-                    },
-                    {
-                      key: "copy-target",
-                      label: "复制目标",
-                      disabled: !forward.remoteAddr,
-                      onClick: () =>
-                        showAddressModal(forward.remoteAddr, null, "目标地址"),
-                    },
-                    {
-                      key: "copy-name",
-                      label: "复制名称",
-                      onClick: () => copyToClipboard(forward.name, "规则名"),
-                    },
-                    {
-                      key: "reset-flow",
-                      label: "流量清零",
-                      disabled: directFlow <= 0,
-                      onClick: () => handleResetFlow(forward),
-                    },
-                    {
-                      key: "delete",
-                      label: "删除",
-                      color: "danger" as const,
-                      onClick: () => handleDelete(forward),
-                    },
-                  ]
+            actions={actionSections}
+            badge={
+              status ? (
+                <Badge
+                  variant={
+                    forward?.status === 1
+                      ? "success"
+                      : forward?.status === 0
+                        ? "warning"
+                        : "destructive"
+                  }
+                >
+                  {status.text}
+                </Badge>
+              ) : undefined
+            }
+            footer={
+              forward && formatDate(forward.createdTime, true)
+                ? `创建于 ${formatDate(forward.createdTime, true)}`
+                : undefined
             }
             open={Boolean(forward)}
-            subtitle={forward && getStatusDisplay(forward.status).text}
+            subtitle={
+              forward
+                ? [
+                    forward.tunnelName || UNCATEGORIZED_FORWARD_TUNNEL_NAME,
+                    isAdmin ? normalizeForwardUserName(forward.userName) : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")
+                : undefined
+            }
             title={forward?.name ?? ""}
             onClose={close}
           >
             {forward && (
-              <div className="flex flex-col gap-2 text-sm">
-                {rows.map(([k, v]) => (
-                  <div key={k} className="flex justify-between gap-3">
-                    <span className="shrink-0 text-muted-foreground">{k}</span>
-                    <span className="min-w-0 whitespace-pre-line break-all text-right font-mono text-xs leading-5">
-                      {v}
-                    </span>
+              <div className="grid gap-2 rounded-xl border border-hairline bg-muted/30 p-3 text-xs sm:grid-cols-2">
+                <div className="min-w-0 sm:col-span-2">
+                  <div className="text-[11px] text-muted-foreground">入口</div>
+                  <div className="mt-0.5 whitespace-pre-line break-all font-mono">
+                    {forward.inIp
+                      .split(",")
+                      .map((ip) => ip.trim())
+                      .filter(Boolean)
+                      .map((ip) => formatInAddress(ip, forward.inPort))
+                      .join("\n") || "-"}
                   </div>
-                ))}
+                </div>
+                <div className="min-w-0 sm:col-span-2">
+                  <div className="text-[11px] text-muted-foreground">目标</div>
+                  <div className="mt-0.5 whitespace-pre-line break-all font-mono">
+                    {forward.remoteAddr
+                      .split(",")
+                      .map((addr) => addr.trim())
+                      .filter(Boolean)
+                      .join("\n") || "-"}
+                  </div>
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[11px] text-muted-foreground">隧道</div>
+                  <div className="mt-0.5 truncate">
+                    {forward.tunnelName || UNCATEGORIZED_FORWARD_TUNNEL_NAME}
+                    {normalizeTunnelTrafficRatio(forward.tunnelTrafficRatio) !==
+                    1
+                      ? ` · 倍率 ${formatTunnelTrafficRatio(forward.tunnelTrafficRatio)}`
+                      : ""}
+                  </div>
+                </div>
+                <div className="min-w-0">
+                  <div className="text-[11px] text-muted-foreground">流量</div>
+                  <div className="mt-0.5 truncate font-mono">
+                    {getForwardFlowText(forward)}
+                  </div>
+                </div>
+                {hasMultipleAddresses(forward.remoteAddr) && (
+                  <div className="min-w-0">
+                    <div className="text-[11px] text-muted-foreground">
+                      策略
+                    </div>
+                    <div className="mt-0.5 truncate">
+                      {getStrategyDisplay(forward.strategy).text}
+                    </div>
+                  </div>
+                )}
+                {(forward.maxConn || 0) > 0 && (
+                  <div className="min-w-0">
+                    <div className="text-[11px] text-muted-foreground">
+                      最大连接
+                    </div>
+                    <div className="mt-0.5 truncate font-mono">
+                      {forward.maxConn}
+                    </div>
+                  </div>
+                )}
+                {(forward.ipMaxConn || 0) > 0 && (
+                  <div className="min-w-0">
+                    <div className="text-[11px] text-muted-foreground">
+                      每 IP 连接
+                    </div>
+                    <div className="mt-0.5 truncate font-mono">
+                      {forward.ipMaxConn}
+                    </div>
+                  </div>
+                )}
+                {forward.ipSpeedLimitName && (
+                  <div className="min-w-0">
+                    <div className="text-[11px] text-muted-foreground">
+                      每 IP 限速
+                    </div>
+                    <div className="mt-0.5 truncate">
+                      {forward.ipSpeedLimitName}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </ActionsDialog>

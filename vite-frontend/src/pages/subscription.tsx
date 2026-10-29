@@ -163,26 +163,38 @@ function UsageBar({ s, track }: { s: SubscriptionItem; track: string }) {
 /** Used / limit of a subscription, with a bar when it has a limit. */
 function Usage({ s, compact }: { s: SubscriptionItem; compact?: boolean }) {
   const used = s.uploadBytes + s.downloadBytes;
+  const pct = s.trafficLimit ? Math.min(100, (used / s.trafficLimit) * 100) : 0;
 
   return (
     <div className={compact ? "flex flex-col gap-1" : "flex flex-col gap-1.5"}>
       <div className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
-        <span className="font-mono">
+        <span className="truncate font-mono">
           {formatTraffic(used)}
           {s.trafficLimit
             ? ` / ${formatTraffic(s.trafficLimit)}`
             : " · 不限流量"}
         </span>
-        {!compact && (
-          <span>{s.resetDay ? `每月 ${s.resetDay} 号重置` : "不自动重置"}</span>
+        {s.trafficLimit > 0 && (
+          <span className="shrink-0 font-mono tabular">{Math.floor(pct)}%</span>
         )}
       </div>
       {s.trafficLimit > 0 && (
         <UsageBar s={s} track={compact ? "bg-muted" : "bg-muted"} />
       )}
       {!compact && (
-        <div className="font-mono text-xs text-muted-foreground">
-          ↑ {formatTraffic(s.uploadBytes)} · ↓ {formatTraffic(s.downloadBytes)}
+        <div className="flex items-center justify-between gap-2 text-[11px] text-muted-foreground">
+          <span className="truncate font-mono">
+            ↑ {formatTraffic(s.uploadBytes)} · ↓{" "}
+            {formatTraffic(s.downloadBytes)}
+          </span>
+          <span className="shrink-0">
+            {s.resetDay ? `每月 ${s.resetDay} 号重置` : "不自动重置"}
+          </span>
+        </div>
+      )}
+      {compact && (
+        <div className="truncate text-[11px] text-muted-foreground">
+          {s.resetDay ? `每月 ${s.resetDay} 号重置` : "不自动重置"}
         </div>
       )}
     </div>

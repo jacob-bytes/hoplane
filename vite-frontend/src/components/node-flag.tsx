@@ -66,7 +66,7 @@ export function NodeFlag({
     <img
       alt=""
       className={cn(
-        "h-4 w-6 rounded-[3px] object-cover ring-1 ring-black/5",
+        "h-4 w-6 rounded-[3px] object-cover ring-1 ring-black/5 dark:ring-white/10",
         className,
       )}
       src={src}
