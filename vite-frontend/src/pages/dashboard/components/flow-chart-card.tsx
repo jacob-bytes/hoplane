@@ -1,6 +1,6 @@
 import {
-  Line,
-  LineChart,
+  Area,
+  AreaChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -31,10 +31,8 @@ export const FlowChartCard = ({
     (best, point) => (best === null || point.flow > best.flow ? point : best),
     null,
   );
-  const average =
-    chartData.length > 0
-      ? chartData.reduce((sum, point) => sum + point.flow, 0) / chartData.length
-      : 0;
+  const total = chartData.reduce((sum, point) => sum + point.flow, 0);
+  const average = chartData.length > 0 ? total / chartData.length : 0;
 
   return (
     <Card className="mb-6 lg:mb-8">
@@ -46,6 +44,12 @@ export const FlowChartCard = ({
           </h2>
           {statisticsFlowsCount > 0 && (
             <div className="flex w-full items-center gap-3 text-[11px] text-muted-foreground sm:ml-auto sm:w-auto">
+              <span>
+                合计{" "}
+                <span className="font-mono tabular text-foreground">
+                  {formatFlow(total)}
+                </span>
+              </span>
               <span>
                 峰值{" "}
                 <span className="font-mono tabular text-foreground">
@@ -69,13 +73,13 @@ export const FlowChartCard = ({
         ) : (
           <div
             aria-label={`24 小时流量统计，共 ${chartData.length} 个采样点`}
-            className="h-44 w-full text-primary sm:h-52 lg:h-60"
+            className="h-40 w-full text-primary sm:h-44 lg:h-52"
             role="img"
           >
             <ResponsiveContainer height="100%" width="100%">
-              <LineChart
+              <AreaChart
                 data={chartData}
-                margin={{ top: 20, right: 0, left: -20, bottom: 0 }}
+                margin={{ top: 12, right: 0, left: -20, bottom: 0 }}
               >
                 <XAxis
                   axisLine={false}
@@ -132,15 +136,17 @@ export const FlowChartCard = ({
                   }}
                   cursor={{ fill: "var(--muted)" }}
                 />
-                <Line
+                <Area
                   dataKey="flow"
                   dot={false}
+                  fill="currentColor"
+                  fillOpacity={0.08}
                   isAnimationActive={false}
                   stroke="currentColor"
                   strokeWidth={2}
                   type="monotone"
                 />
-              </LineChart>
+              </AreaChart>
             </ResponsiveContainer>
           </div>
         )}

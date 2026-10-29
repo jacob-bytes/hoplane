@@ -1,6 +1,8 @@
 import { useState } from "react";
 import {
   CalendarClock,
+  ChevronDown,
+  ChevronRight,
   Database,
   ListChecks,
   TimerReset,
@@ -12,7 +14,6 @@ const DAY = 86400000;
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
-import { copyWithToast } from "@/utils/clipboard";
 import { AnimatedPage } from "@/components/animated-page";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,13 +23,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogBody,
-} from "@/components/dialog";
 import { PageEmptyState, PageLoadingState } from "@/components/page-state";
+import { ListGroup, ListRow } from "@/components/page-kit";
 import { AnnouncementBanner } from "@/pages/dashboard/components/announcement-banner";
 import { AnnouncementModal } from "@/pages/dashboard/components/announcement-modal";
 import { FlowChartCard } from "@/components/lazy-charts";
@@ -52,13 +48,6 @@ import {
   type DashboardNodeExpiryItem,
   type DashboardUserTunnel as UserTunnel,
 } from "@/pages/dashboard/use-dashboard-data";
-
-interface AddressItem {
-  id: number;
-  ip: string;
-  address: string;
-  copying: boolean;
-}
 
 /** Admins get the health overview; regular users their traffic and rules. */
 export default function DashboardPage() {
@@ -88,9 +77,9 @@ function UserDashboard() {
     dismissAnnouncementModal,
   } = useDashboardData();
 
-  const [addressModalOpen, setAddressModalOpen] = useState(false);
-  const [addressModalTitle, setAddressModalTitle] = useState("");
-  const [addressList, setAddressList] = useState<AddressItem[]>([]);
+  const [expandedTunnels, setExpandedTunnels] = useState<Set<number>>(
+    new Set(),
+  );
 
   const formatFlow = formatTraffic;
 
@@ -406,26 +395,6 @@ function UserDashboard() {
     }
   };
 
-  const groupedForwards = () => {
-    const groups: {
-      [key: string]: { tunnelName: string; forwards: Forward[] };
-    } = {};
-
-    forwardList.forEach((forward) => {
-      const tunnelName = forward.tunnelName || "未知隧道";
-
-      if (!groups[tunnelName]) {
-        groups[tunnelName] = {
-          tunnelName,
-          forwards: [],
-        };
-      }
-      groups[tunnelName].forwards.push(forward);
-    });
-
-    return Object.values(groups);
-  };
-
   const formatInAddress = (ipString: string, port: number): string => {
     if (!ipString) return "";
 
@@ -489,136 +458,6 @@ function UserDashboard() {
     }
 
     return `${addresses[0]} (+${addresses.length - 1})`;
-  };
-
-  const hasMultipleIps = (ipString: string): boolean => {
-    if (!ipString) return false;
-    const ips = ipString
-      .split(",")
-      .map((ip) => ip.trim())
-      .filter((ip) => ip);
-
-    return ips.length > 1;
-  };
-
-  const hasMultipleRemoteAddresses = (remoteAddr: string): boolean => {
-    if (!remoteAddr) return false;
-    const addresses = remoteAddr
-      .split(",")
-      .map((addr) => addr.trim())
-      .filter((addr) => addr);
-
-    return addresses.length > 1;
-  };
-
-  const showAddressModal = (ipString: string, port: number, title: string) => {
-    if (!ipString) return;
-
-    const items = ipString
-      .split(",")
-      .map((item) => item.trim())
-      .filter((item) => item);
-
-    if (items.length <= 1) {
-      copyToClipboard(formatInAddress(ipString, port));
-
-      return;
-    }
-
-    // 检查是否已经包含端口
-    const hasPort = /:\d+$/.test(items[0]);
-
-    let formattedList: AddressItem[];
-
-    if (hasPort) {
-      // 已经包含完整的 IP:Port 组合，直接使用
-      formattedList = items.map((item, index) => ({
-        id: index,
-        ip: item,
-        address: item,
-        copying: false,
-      }));
-    } else {
-      // 只包含IP，需要添加端口
-      formattedList = items.map((ip, index) => {
-        let formattedAddress: string;
-
-        if (ip.includes(":") && !ip.startsWith("[")) {
-          formattedAddress = `[${ip}]:${port}`;
-        } else {
-          formattedAddress = `${ip}:${port}`;
-        }
-
-        return {
-          id: index,
-          ip: ip,
-          address: formattedAddress,
-          copying: false,
-        };
-      });
-    }
-
-    setAddressList(formattedList);
-    setAddressModalTitle(`${title} (${items.length}个)`);
-    setAddressModalOpen(true);
-  };
-
-  const showRemoteAddressModal = (remoteAddr: string, title: string) => {
-    if (!remoteAddr) return;
-
-    const addresses = remoteAddr
-      .split(",")
-      .map((addr) => addr.trim())
-      .filter((addr) => addr);
-
-    if (addresses.length <= 1) {
-      copyToClipboard(remoteAddr);
-
-      return;
-    }
-
-    const formattedList = addresses.map((address, index) => {
-      return {
-        id: index,
-        ip: address,
-        address: address,
-        copying: false,
-      };
-    });
-
-    setAddressList(formattedList);
-    setAddressModalTitle(`${title} (${addresses.length}个)`);
-    setAddressModalOpen(true);
-  };
-
-  const copyToClipboard = async (text: string) => {
-    await copyWithToast(text);
-  };
-
-  const copyAddress = async (addressItem: AddressItem) => {
-    try {
-      setAddressList((prev) =>
-        prev.map((item) =>
-          item.id === addressItem.id ? { ...item, copying: true } : item,
-        ),
-      );
-      await copyToClipboard(addressItem.address);
-    } catch {
-      toast.error("复制失败");
-    } finally {
-      setAddressList((prev) =>
-        prev.map((item) =>
-          item.id === addressItem.id ? { ...item, copying: false } : item,
-        ),
-      );
-    }
-  };
-
-  const copyAllAddresses = async () => {
-    if (addressList.length === 0) return;
-    const allAddresses = addressList.map((item) => item.address).join("\n");
-
-    await copyToClipboard(allAddresses);
   };
 
   const calculateForwardBillingFlow = (forward: Forward): number => {
@@ -862,118 +701,176 @@ function UserDashboard() {
 
       {/* 隧道权限 - 管理员不显示 */}
       {!isAdmin && (
-        <Card className="mb-6 lg:mb-8">
+        <Card className="mb-6 border border-hairline shadow-none lg:mb-8">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
-              <svg
-                aria-hidden="true"
-                className="w-5 h-5 text-primary"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  clipRule="evenodd"
-                  d="M12.586 4.586a2 2 0 112.828 2.828l-3 3a2 2 0 01-2.828 0 1 1 0 00-1.414 1.414 4 4 0 005.656 0l3-3a4 4 0 00-5.656-5.656l-1.5 1.5a1 1 0 101.414 1.414l1.5-1.5zm-5 5a2 2 0 012.828 0 1 1 0 101.414-1.414 4 4 0 00-5.656 0l-3 3a4 4 0 105.656 5.656l1.5-1.5a1 1 0 10-1.414-1.414l-1.5 1.5a2 2 0 11-2.828-2.828l3-3z"
-                  fillRule="evenodd"
-                />
-              </svg>
-              <h2 className="text-lg lg:text-xl font-semibold text-foreground">
-                隧道权限
-              </h2>
-              <span className="px-2 py-1 bg-muted dark:bg-muted text-muted-foreground rounded-full text-xs">
+              <Waypoints className="h-4 w-4 text-primary" />
+              <h2 className="text-[15px] font-medium">隧道权限</h2>
+              <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
                 {userTunnels.length}
               </span>
             </div>
           </CardHeader>
           <CardContent className="pt-0">
             {userTunnels.length === 0 ? (
-              <PageEmptyState className="h-48" message="暂无隧道权限" />
+              <PageEmptyState className="h-40" message="暂无隧道权限" />
             ) : (
-              <div className="flex flex-col gap-3">
+              <div className="divide-y divide-hairline overflow-hidden rounded-xl border border-hairline">
                 {userTunnels.map((tunnel) => {
-                  const tunnelExpStatus = getExpStatus(tunnel.expTime);
+                  const expStatus = getExpStatus(tunnel.expTime);
+                  const flowUsed = calculateTunnelUsedFlow(tunnel);
+                  const flowPct = calculateTunnelFlowPercentage(tunnel);
+                  const rulesUsed = getTunnelUsedForwards(tunnel.tunnelId);
+                  const rulesPct = calculateTunnelForwardPercentage(tunnel);
+                  const expanded = expandedTunnels.has(tunnel.id);
+                  const rules = forwardList
+                    .filter((item) => item.tunnelId === tunnel.tunnelId)
+                    .slice(0, 3);
 
                   return (
-                    <div
-                      key={tunnel.id}
-                      className="rounded-lg border border-border p-3 transition-colors duration-150 hover:bg-accent/40 lg:p-4"
-                    >
-                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-3">
-                        <div>
-                          <h3 className="font-semibold text-foreground">
-                            {tunnel.tunnelName} ID: {tunnel.id}
-                          </h3>
-                          <div className="flex flex-wrap items-center gap-2 mt-1">
-                            <span
-                              className={`px-2 py-1 rounded-md text-xs font-medium ${tunnel.tunnelFlow === 1 ? "bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-300" : "bg-warning/10 dark:bg-warning/20 text-warning dark:text-warning-300"}`}
-                            >
-                              {tunnel.tunnelFlow === 1
-                                ? "单向计费"
-                                : "双向计费"}
-                            </span>
-                            <span
-                              className={`px-2 py-1 rounded-md text-xs font-medium border ${tunnelExpStatus.bg} ${tunnelExpStatus.color}`}
-                            >
-                              {tunnelExpStatus.text}
-                            </span>
-                            {tunnel.flowResetTime !== undefined &&
-                              tunnel.flowResetTime !== null && (
-                                <span className="text-xs text-muted-foreground">
-                                  {formatResetTime(tunnel.flowResetTime)}
-                                </span>
-                              )}
+                    <div key={tunnel.id}>
+                      <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+                        <button
+                          aria-expanded={expanded}
+                          className="flex min-w-0 flex-1 items-start gap-2 text-left"
+                          type="button"
+                          onClick={() =>
+                            setExpandedTunnels((prev) => {
+                              const next = new Set(prev);
+
+                              if (next.has(tunnel.id)) next.delete(tunnel.id);
+                              else next.add(tunnel.id);
+
+                              return next;
+                            })
+                          }
+                        >
+                          <ChevronDown
+                            className={`mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform ${expanded ? "" : "-rotate-90"}`}
+                          />
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+                              <span className="text-sm font-medium">
+                                {tunnel.tunnelName}
+                              </span>
+                              <span className="text-[11px] text-muted-foreground">
+                                ID {tunnel.id}
+                              </span>
+                            </div>
+                            <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+                              <span className="rounded-md border border-hairline px-1.5 py-0.5">
+                                {tunnel.tunnelFlow === 1
+                                  ? "单向计费"
+                                  : "双向计费"}
+                              </span>
+                              <span
+                                className={`rounded-md border px-1.5 py-0.5 ${expStatus.bg} ${expStatus.color}`}
+                              >
+                                {expStatus.text}
+                              </span>
+                              {tunnel.flowResetTime !== undefined &&
+                                tunnel.flowResetTime !== null && (
+                                  <span>
+                                    {formatResetTime(tunnel.flowResetTime)}
+                                  </span>
+                                )}
+                            </div>
                           </div>
+                        </button>
+                        <Button
+                          className="shrink-0 self-start sm:self-auto"
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => navigate("/forward")}
+                        >
+                          查看规则
+                          <ChevronRight className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 px-4 pb-4">
+                        <div className="flex flex-col gap-1.5">
+                          <div className="flex items-baseline justify-between gap-2 text-[11px] text-muted-foreground">
+                            <span>流量</span>
+                            <span className="truncate font-mono tabular text-foreground">
+                              {formatFlow(flowUsed)} /{" "}
+                              {formatFlowLimit(tunnel.flow, tunnel.flowMiB)}
+                            </span>
+                          </div>
+                          {renderProgressBar(
+                            flowPct,
+                            "sm",
+                            tunnel.flow === 99999 && !tunnel.flowMiB,
+                          )}
+                          <span className="text-[11px] text-muted-foreground">
+                            {tunnel.flow === 99999 && !tunnel.flowMiB
+                              ? "不限流量"
+                              : `${flowPct.toFixed(1)}%`}
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1.5">
+                          <div className="flex items-baseline justify-between gap-2 text-[11px] text-muted-foreground">
+                            <span>规则</span>
+                            <span className="truncate font-mono tabular text-foreground">
+                              {rulesUsed} / {formatNumber(tunnel.num)}
+                            </span>
+                          </div>
+                          {renderProgressBar(
+                            rulesPct,
+                            "sm",
+                            tunnel.num === 99999,
+                          )}
+                          <span className="text-[11px] text-muted-foreground">
+                            {tunnel.num === 99999
+                              ? "不限规则"
+                              : `${rulesPct.toFixed(1)}%`}
+                          </span>
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4">
-                        <div>
-                          <p className="text-sm text-muted-foreground mb-1">
-                            流量配额
-                          </p>
-                          <p className="font-semibold text-foreground">
-                            {formatFlowLimit(tunnel.flow, tunnel.flowMiB)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground mb-1">
-                            已用流量
-                          </p>
-                          <p className="font-semibold text-foreground">
-                            {formatFlow(calculateTunnelUsedFlow(tunnel))}
-                          </p>
-                          <div className="mt-1">
-                            {renderProgressBar(
-                              calculateTunnelFlowPercentage(tunnel),
-                              "sm",
-                              tunnel.flow === 99999 && !tunnel.flowMiB,
-                            )}
+                      {expanded && (
+                        <div className="border-t border-hairline bg-surface/40 px-4 py-3">
+                          <div className="mb-2 flex items-center justify-between text-xs">
+                            <span className="font-medium text-muted-foreground">
+                              最近规则
+                            </span>
+                            <button
+                              className="text-primary"
+                              type="button"
+                              onClick={() => navigate("/forward")}
+                            >
+                              新建规则
+                            </button>
                           </div>
+                          {rules.length === 0 ? (
+                            <p className="text-xs text-muted-foreground">
+                              这条隧道下还没有规则
+                            </p>
+                          ) : (
+                            <div className="flex flex-col gap-1.5">
+                              {rules.map((rule) => (
+                                <div
+                                  key={rule.id}
+                                  className="flex min-w-0 items-center gap-3 text-xs"
+                                >
+                                  <span className="w-28 shrink-0 truncate font-medium">
+                                    {rule.name}
+                                  </span>
+                                  <span className="min-w-0 flex-1 truncate font-mono text-muted-foreground">
+                                    {formatInAddress(rule.inIp, rule.inPort)} →{" "}
+                                    {formatRemoteAddress(rule.remoteAddr)}
+                                  </span>
+                                  <span className="shrink-0 font-mono tabular text-muted-foreground">
+                                    {formatFlow(
+                                      calculateForwardBillingFlow(rule),
+                                    )}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground mb-1">
-                            规则配额
-                          </p>
-                          <p className="font-semibold text-foreground">
-                            {formatNumber(tunnel.num)}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-muted-foreground mb-1">
-                            已用规则
-                          </p>
-                          <p className="font-semibold text-foreground">
-                            {getTunnelUsedForwards(tunnel.tunnelId)}
-                          </p>
-                          <div className="mt-1">
-                            {renderProgressBar(
-                              calculateTunnelForwardPercentage(tunnel),
-                              "sm",
-                              tunnel.num === 99999,
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      )}
                     </div>
                   );
                 })}
@@ -983,201 +880,80 @@ function UserDashboard() {
         </Card>
       )}
 
-      {/* 规则配置 */}
-      <Card>
-        <CardHeader className="pb-3">
+      {/* 规则配置：首页只保留最近五条，完整列表在转发规则页 */}
+      <section className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <svg
-              aria-hidden="true"
-              className="w-5 h-5 text-primary"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                clipRule="evenodd"
-                d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                fillRule="evenodd"
-              />
-            </svg>
-            <h2 className="text-lg lg:text-xl font-semibold text-foreground">
-              规则配置
-            </h2>
-            <span className="px-2 py-1 bg-muted dark:bg-muted text-muted-foreground rounded-full text-xs">
+            <ListChecks className="h-4 w-4 text-primary" />
+            <h2 className="text-[15px] font-medium">规则配置</h2>
+            <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">
               {forwardList.length}
             </span>
           </div>
-        </CardHeader>
-        <CardContent className="pt-0">
-          {groupedForwards().length === 0 ? (
-            <div className="text-center py-12">
-              <svg
-                aria-hidden="true"
-                className="w-12 h-12 text-muted-foreground mx-auto mb-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={1.5}
-                />
-              </svg>
-              <p className="text-muted-foreground">暂无规则配置</p>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {groupedForwards().map((group) => (
-                <div
-                  key={group.tunnelName}
-                  className="border border-border dark:border-border rounded-lg p-3 lg:p-4"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-semibold text-foreground">
-                      {group.tunnelName}
-                    </h3>
-                    <span className="px-2 py-1 bg-primary-100 dark:bg-primary/20 text-primary-700 dark:text-primary-300 rounded-md text-sm">
-                      {group.forwards.length} 个规则
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-                    {group.forwards.map((forward) => (
-                      <div
-                        key={forward.id}
-                        className="bg-white/10 dark:bg-black/10  border border-white/20 dark:border-white/10 rounded-lg p-3 shadow-sm hover:shadow-md transition-all duration-300"
-                      >
-                        <div className="flex flex-col gap-3">
-                          <div>
-                            <h4 className="font-medium text-foreground text-sm mb-2 truncate">
-                              {forward.name}
-                            </h4>
-                            <div className="flex flex-col gap-1">
-                              <button
-                                className={`block px-2 py-1 bg-white/20 dark:bg-black/20  rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleIps(forward.inIp) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
-                                disabled={!hasMultipleIps(forward.inIp)}
-                                title={formatInAddress(
-                                  forward.inIp,
-                                  forward.inPort,
-                                )}
-                                type="button"
-                                onClick={() =>
-                                  showAddressModal(
-                                    forward.inIp,
-                                    forward.inPort,
-                                    "入口地址",
-                                  )
-                                }
-                              >
-                                {formatInAddress(forward.inIp, forward.inPort)}
-                              </button>
-                              <div className="text-center text-muted-foreground text-xs">
-                                ↓
-                              </div>
-                              <button
-                                className={`block px-2 py-1 bg-white/20 dark:bg-black/20  rounded-lg border border-white/20 dark:border-white/10 font-mono text-xs truncate text-foreground transition-all duration-300 ${hasMultipleRemoteAddresses(forward.remoteAddr) ? "cursor-pointer hover:bg-white/30 dark:hover:bg-white/10" : ""}`}
-                                disabled={
-                                  !hasMultipleRemoteAddresses(
-                                    forward.remoteAddr,
-                                  )
-                                }
-                                title={formatRemoteAddress(forward.remoteAddr)}
-                                type="button"
-                                onClick={() =>
-                                  showRemoteAddressModal(
-                                    forward.remoteAddr,
-                                    "出口地址",
-                                  )
-                                }
-                              >
-                                {formatRemoteAddress(forward.remoteAddr)}
-                              </button>
-                            </div>
-                          </div>
-
-                          <div className="pt-2 border-t border-border dark:border-border">
-                            <div className="grid grid-cols-3 gap-1 text-xs">
-                              <div className="text-center">
-                                <div className="text-muted-foreground mb-1">
-                                  上传
-                                </div>
-                                <div className="font-medium text-success dark:text-success-400 truncate">
-                                  {formatFlow(forward.inFlow || 0)}
-                                </div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-muted-foreground mb-1">
-                                  下载
-                                </div>
-                                <div className="font-medium text-warning dark:text-warning-400 truncate">
-                                  {formatFlow(forward.outFlow || 0)}
-                                </div>
-                              </div>
-                              <div className="text-center">
-                                <div className="text-muted-foreground mb-1">
-                                  计费
-                                </div>
-                                <div className="font-medium text-primary truncate">
-                                  {formatFlow(
-                                    calculateForwardBillingFlow(forward),
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+          {forwardList.length > 0 && (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => navigate("/forward")}
+            >
+              查看全部
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Button>
           )}
-        </CardContent>
-      </Card>
+        </div>
 
-      {/* 地址列表弹窗 */}
-      <Dialog
-        backdrop="blur"
-        open={addressModalOpen}
-        placement="center"
-        scrollBehavior="inside"
-        size="2xl"
-        onClose={() => setAddressModalOpen(false)}
-      >
-        <DialogContent>
-          <DialogHeader className="text-base">{addressModalTitle}</DialogHeader>
-          <DialogBody className="pb-6">
-            <div className="mb-4 text-right">
-              <Button size="sm" onClick={copyAllAddresses}>
-                复制全部
-              </Button>
-            </div>
-
-            <div className="flex flex-col gap-2 max-h-60 overflow-y-auto scrollbar-hide">
-              {addressList.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between items-center p-3 border border-border dark:border-border rounded-lg"
-                >
-                  <code className="font-mono text-sm flex-1 mr-3 text-foreground">
-                    {item.address}
-                  </code>
-                  <Button
-                    disabled={item.copying}
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => copyAddress(item)}
+        {forwardList.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border bg-raised/50 py-10">
+            <ListChecks className="h-8 w-8 text-muted-foreground" />
+            <p className="text-sm text-muted-foreground">暂无规则配置</p>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => navigate("/forward")}
+            >
+              新建规则
+            </Button>
+          </div>
+        ) : (
+          <ListGroup
+            columns="minmax(0,1fr) minmax(0,1.6fr) 150px"
+            head={["规则", "入口 → 目标", "流量"]}
+          >
+            {forwardList.slice(0, 5).map((forward) => (
+              <ListRow
+                key={forward.id}
+                cells={[
+                  <div key="name" className="min-w-0">
+                    <div className="truncate text-sm font-medium">
+                      {forward.name}
+                    </div>
+                    <div className="truncate text-xs text-muted-foreground">
+                      {forward.tunnelName}
+                    </div>
+                  </div>,
+                  <div
+                    key="route"
+                    className="min-w-0 truncate font-mono text-xs text-muted-foreground"
                   >
-                    复制
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </DialogBody>
-        </DialogContent>
-      </Dialog>
+                    {formatInAddress(forward.inIp, forward.inPort) || "-"} →{" "}
+                    {formatRemoteAddress(forward.remoteAddr) || "-"}
+                  </div>,
+                  <div
+                    key="flow"
+                    className="truncate text-right font-mono text-xs tabular text-muted-foreground"
+                  >
+                    ↑ {formatFlow(forward.inFlow || 0)} · ↓{" "}
+                    {formatFlow(forward.outFlow || 0)}
+                  </div>,
+                ]}
+                meta={`${formatInAddress(forward.inIp, forward.inPort) || "-"} → ${formatRemoteAddress(forward.remoteAddr) || "-"}`}
+                title={forward.name}
+                onClick={() => navigate("/forward")}
+              />
+            ))}
+          </ListGroup>
+        )}
+      </section>
     </AnimatedPage>
   );
 }
