@@ -1,6 +1,7 @@
 import type { BatchOperationFailure, SpeedLimitApiItem } from "@/api/types";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import {
   DndContext,
@@ -2844,7 +2845,27 @@ export default function ForwardPage({
                     : ""}
                 </div>
               </div>,
-              handle,
+              <div
+                key="actions"
+                className="flex items-center justify-end gap-1"
+              >
+                <button
+                  aria-label="复制入口和目标地址"
+                  className="relative z-10 rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  title="复制入口和目标地址"
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    copyWithToast(
+                      `${formatInAddress(forward.inIp, forward.inPort) || "-"} → ${formatRemoteAddress(forward.remoteAddr) || "-"}`,
+                      "地址已复制",
+                    );
+                  }}
+                >
+                  <Copy className="h-3.5 w-3.5" />
+                </button>
+                {handle}
+              </div>,
             ]}
             meta={meta.filter(Boolean).join(" · ")}
             right={

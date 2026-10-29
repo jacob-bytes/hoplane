@@ -716,8 +716,8 @@ function UserDashboard() {
                 "sm",
                 userInfo.flow === 99999 && !userInfo.flowMiB,
               )}
-              <div className="mt-1 flex items-center justify-between gap-2">
-                <p className="truncate text-xs text-muted-foreground">
+              <div className="mt-1 flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5">
+                <p className="min-w-0 truncate text-xs text-muted-foreground">
                   {userInfo.flow === 99999 && !userInfo.flowMiB
                     ? "不限流量"
                     : `共 ${formatFlowLimit(userInfo.flow, userInfo.flowMiB)} · ${calculateUsagePercentage("flow").toFixed(1)}%`}
@@ -736,6 +736,7 @@ function UserDashboard() {
           iconClassName="bg-muted"
           title="已用流量"
           value={formatFlow(calculateUserTotalUsedFlow())}
+          onClick={() => navigate("/my-subscriptions")}
         />
 
         <MetricCard
@@ -757,6 +758,7 @@ function UserDashboard() {
           iconClassName="bg-muted"
           title="已用规则"
           value={forwardList.length}
+          onClick={() => navigate("/forward")}
         />
 
         <MetricCard
@@ -771,6 +773,7 @@ function UserDashboard() {
           iconClassName="bg-muted"
           title="隧道权限"
           value={userTunnels.length}
+          onClick={() => navigate("/monitor")}
         />
 
         <MetricCard
@@ -799,6 +802,7 @@ function UserDashboard() {
                 })
               : "永久"
           }
+          onClick={() => navigate("/profile")}
         />
       </div>
 

@@ -53,7 +53,7 @@ export function SubClientGrid({
             className="relative flex h-11 items-center rounded-xl border border-hairline transition-colors hover:bg-muted"
           >
             <button
-              className="h-full min-w-0 flex-1 truncate pl-3 pr-9 text-left text-sm font-medium"
+              className="h-full min-w-0 flex-1 truncate pl-2 pr-8 text-left text-[13px] font-medium sm:pl-3 sm:text-sm"
               title={
                 importURL
                   ? `导入到 ${c.label}`

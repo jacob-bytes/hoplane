@@ -251,6 +251,7 @@ export default function AdminLayout({
   const filteredMenuItems = menuItems
     .filter((item) => (isAdmin ? !item.userOnly : !item.adminOnly))
     .filter((item) => item.path !== "/my-subscriptions" || hasMySubs)
+    .filter((item) => item.path !== "/monitor" || monitorAllowed !== false)
     .map((item) =>
       isAdmin && item.adminLabel ? { ...item, label: item.adminLabel } : item,
     );

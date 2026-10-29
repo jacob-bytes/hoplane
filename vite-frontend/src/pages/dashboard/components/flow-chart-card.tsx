@@ -39,13 +39,13 @@ export const FlowChartCard = ({
   return (
     <Card className="mb-6 lg:mb-8">
       <CardHeader className="pb-3">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <ChartPie aria-hidden="true" className="h-4 w-4 text-primary" />
           <h2 className="text-[15px] font-medium text-foreground">
             24小时流量统计
           </h2>
           {statisticsFlowsCount > 0 && (
-            <div className="ml-auto flex items-center gap-3 text-[11px] text-muted-foreground">
+            <div className="flex w-full items-center gap-3 text-[11px] text-muted-foreground sm:ml-auto sm:w-auto">
               <span>
                 峰值{" "}
                 <span className="font-mono tabular text-foreground">
@@ -53,7 +53,7 @@ export const FlowChartCard = ({
                 </span>
                 {peak ? ` · ${peak.time}` : ""}
               </span>
-              <span>
+              <span className="hidden sm:inline">
                 平均{" "}
                 <span className="font-mono tabular text-foreground">
                   {formatFlow(average)}
@@ -69,7 +69,7 @@ export const FlowChartCard = ({
         ) : (
           <div
             aria-label={`24 小时流量统计，共 ${chartData.length} 个采样点`}
-            className="h-56 w-full text-primary lg:h-72"
+            className="h-44 w-full text-primary sm:h-52 lg:h-60"
             role="img"
           >
             <ResponsiveContainer height="100%" width="100%">

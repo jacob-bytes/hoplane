@@ -223,7 +223,8 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   const filteredTabItems = tabItems.filter(
     (item) =>
       (isAdmin ? !item.userOnly : !item.adminOnly) &&
-      (item.path !== "/my-subscriptions" || hasMySubs),
+      (item.path !== "/my-subscriptions" || hasMySubs) &&
+      (item.path !== "/monitor" || isAdmin || monitorAllowed === true),
   );
 
   const tabsRef = useRef(filteredTabItems);
