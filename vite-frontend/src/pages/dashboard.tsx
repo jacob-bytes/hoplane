@@ -916,7 +916,7 @@ function UserDashboard() {
           </div>
         ) : (
           <ListGroup
-            columns="minmax(0,1fr) minmax(0,1.6fr) 150px"
+            columns="minmax(0,1fr) minmax(0,1.6fr) 170px"
             head={["规则", "入口 → 目标", "流量"]}
           >
             {forwardList.slice(0, 5).map((forward) => (
