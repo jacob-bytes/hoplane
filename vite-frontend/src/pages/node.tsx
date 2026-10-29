@@ -97,6 +97,7 @@ import {
 } from "@/hooks/use-cached-state";
 import { useVisiblePolling } from "@/hooks/use-visible-polling";
 import { useDebouncedValue } from "@/hooks/use-debounced-value";
+import { useWindowedList } from "@/hooks/use-windowed-list";
 import { latestProbe } from "@/utils/latest-probe";
 import { useLocalStorageState } from "@/hooks/use-local-storage-state";
 import { loadStoredOrder, saveOrder } from "@/utils/order-storage";
@@ -1645,6 +1646,16 @@ export default function NodePage({
     </button>
   );
 
+  const virtualizeList = !card && orderedNodes.length > 60;
+  const windowed = useWindowedList({
+    count: orderedNodes.length,
+    rowHeight: 72,
+    enabled: virtualizeList,
+  });
+  const visibleNodes = virtualizeList
+    ? orderedNodes.slice(windowed.start, windowed.end)
+    : orderedNodes;
+
   const canBatchUpgrade = activeTab === "local";
   const canUseExpiryFilter = activeTab === "local";
   const hasKeywordSearch = currentSearchKeyword.trim().length > 0;
@@ -1782,6 +1793,7 @@ export default function NodePage({
             strategy={rectSortingStrategy}
           >
             <div
+              ref={windowed.ref}
               className={
                 card
                   ? CARD_GRID
@@ -1820,7 +1832,10 @@ export default function NodePage({
                   <div />
                 </div>
               )}
-              {orderedNodes.map((node) => {
+              {virtualizeList && windowed.start > 0 && (
+                <div aria-hidden style={{ height: windowed.start * 72 }} />
+              )}
+              {visibleNodes.map((node) => {
                 if (card) {
                   const isRemoteNode = node.isRemote === 1;
                   const remoteUsage = isRemoteNode
@@ -2492,6 +2507,12 @@ export default function NodePage({
                   </SortableItem>
                 );
               })}
+              {virtualizeList && windowed.end < orderedNodes.length && (
+                <div
+                  aria-hidden
+                  style={{ height: (orderedNodes.length - windowed.end) * 72 }}
+                />
+              )}
             </div>
           </SortableContext>
         </DndContext>
