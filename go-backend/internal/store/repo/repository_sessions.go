@@ -79,3 +79,14 @@ func (r *Repository) RevokeAllUserSessions(userID int64) error {
 		Where("user_id = ? AND revoked_at IS NULL", userID).
 		Update("revoked_at", time.Now().UnixMilli()).Error
 }
+
+func (r *Repository) PurgeUserSessions(cutoffMs int64) error {
+	if r == nil || r.db == nil {
+		return errors.New("repository not initialized")
+	}
+
+	return r.db.Where(
+		"(expires_at > 0 AND expires_at < ?) OR (revoked_at IS NOT NULL AND revoked_at < ?)",
+		cutoffMs, cutoffMs,
+	).Delete(&model.UserSession{}).Error
+}
