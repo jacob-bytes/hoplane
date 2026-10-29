@@ -58,6 +58,7 @@ import {
   type ReleaseChannel,
 } from "@/api";
 import { LatencyCell, probePoints } from "@/components/latency-cell";
+import { NodeFlag } from "@/components/node-flag";
 import { LatencyDialog } from "@/components/latency-dialog";
 import { LatencyTargetsModal } from "@/pages/node/latency-targets-modal";
 import { ListPageSkeleton } from "@/components/page-state";
@@ -1859,12 +1860,12 @@ export default function NodePage({
                             <div className="flex justify-between items-start w-full gap-3">
                               <div className="flex items-start gap-2 flex-1 min-w-0">
                                 <span
-                                  aria-label={`地区 ${getNodeFlag(node.name)}`}
-                                  className="mt-0.5 flex-shrink-0 select-none text-lg leading-none"
+                                  aria-label="地区"
+                                  className="mt-0.5 flex-shrink-0 select-none"
                                   role="img"
                                   title="地区"
                                 >
-                                  {getNodeFlag(node.name)}
+                                  <NodeFlag code={getNodeFlag(node.name)} />
                                 </span>
                                 {selectMode && (
                                   <Checkbox

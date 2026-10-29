@@ -52,21 +52,74 @@ function Meter({ label, value }: { label: string; value?: number }) {
  * under the name on narrow screens, "card" in a node card at any width.
  */
 
+function useHistory(value?: number) {
+  const [values, setValues] = React.useState<number[]>([]);
+
+  React.useEffect(() => {
+    if (value === undefined) return;
+
+    setValues((prev) =>
+      prev.length > 0 && prev[prev.length - 1] === value
+        ? prev
+        : [...prev, value].slice(-16),
+    );
+  }, [value]);
+
+  return values;
+}
+
+function MiniSpark({ values }: { values: number[] }) {
+  if (values.length < 3) return null;
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const span = max - min || 1;
+  const points = values
+    .map((value, index) => {
+      const x = (index / (values.length - 1)) * 40;
+
+      return `${x.toFixed(1)},${(10 - ((value - min) / span) * 8).toFixed(1)}`;
+    })
+    .join(" ");
+
+  return (
+    <svg
+      aria-hidden
+      className="h-3 w-10 shrink-0 text-primary/50"
+      viewBox="0 0 40 12"
+    >
+      <polyline
+        fill="none"
+        points={points}
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.2"
+      />
+    </svg>
+  );
+}
+
 function ResourceMetric({
   label,
   value,
   detail,
+  spark,
 }: {
   label: string;
   value?: number;
   detail?: string;
+  spark?: number[];
 }) {
   return (
     <div className="flex min-w-0 flex-col gap-1">
       <div className="flex items-baseline justify-between gap-2">
         <span className="text-[11px] text-muted-foreground">{label}</span>
-        <span className="font-mono text-sm font-semibold tabular-nums">
-          {value === undefined ? "—" : `${Math.round(value)}%`}
+        <span className="flex items-center gap-1">
+          {spark ? <MiniSpark values={spark} /> : null}
+          <span className="font-mono text-sm font-semibold tabular-nums">
+            {value === undefined ? "—" : `${Math.round(value)}%`}
+          </span>
         </span>
       </div>
       <div className="h-1.5 overflow-hidden rounded-full bg-muted">
@@ -104,6 +157,9 @@ export const NodeLiveStats = React.memo(function NodeLiveStats({
   );
   const total = month ? bytes(month[0] + month[1]) : "—";
   const split = month ? `↑${bytes(month[1])} ↓${bytes(month[0])}` : "";
+  const cpuHistory = useHistory(info?.cpuUsage);
+  const memoryHistory = useHistory(info?.memoryUsage);
+  const diskHistory = useHistory(info?.diskUsage);
 
   if (variant === "card") {
     const load =
@@ -129,6 +185,7 @@ export const NodeLiveStats = React.memo(function NodeLiveStats({
                 .join(" · ") || undefined
             }
             label="CPU"
+            spark={cpuHistory}
             value={info?.cpuUsage}
           />
           <ResourceMetric
@@ -138,6 +195,7 @@ export const NodeLiveStats = React.memo(function NodeLiveStats({
                 : undefined
             }
             label="内存"
+            spark={memoryHistory}
             value={info?.memoryUsage}
           />
           <ResourceMetric
@@ -147,6 +205,7 @@ export const NodeLiveStats = React.memo(function NodeLiveStats({
                 : undefined
             }
             label="磁盘"
+            spark={diskHistory}
             value={info?.diskUsage}
           />
           <div className="flex min-w-0 flex-col gap-1">
@@ -157,6 +216,28 @@ export const NodeLiveStats = React.memo(function NodeLiveStats({
               <span className="font-mono text-sm font-semibold tabular-nums">
                 {total}
               </span>
+            </div>
+            <div
+              aria-hidden
+              className="flex h-1.5 overflow-hidden rounded-full bg-muted"
+              title="上行 / 下行占本月流量的比例"
+            >
+              {month && month[0] + month[1] > 0 ? (
+                <>
+                  <span
+                    className="h-full bg-success/70"
+                    style={{
+                      width: `${(month[1] / (month[0] + month[1])) * 100}%`,
+                    }}
+                  />
+                  <span
+                    className="h-full bg-primary/60"
+                    style={{
+                      width: `${(month[0] / (month[0] + month[1])) * 100}%`,
+                    }}
+                  />
+                </>
+              ) : null}
             </div>
             <div className="flex items-center gap-2 text-[11px] tabular-nums text-muted-foreground">
               <span className="flex items-center gap-0.5">

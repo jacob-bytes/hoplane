@@ -22,14 +22,12 @@ import {
   PageToolbar,
   ToolbarButton,
 } from "@/components/page-kit";
-import { CARD_GRID, InfoCard } from "@/components/info-card";
 import { RelayLatencyCell } from "@/components/relay-latency";
 import { useViewMode } from "@/components/view-mode";
 import ForwardPage from "@/pages/forward";
 import { RelayModal } from "@/pages/inbound/relay-modal";
 import TunnelPage from "@/pages/tunnel";
 import { TunnelMonitorView } from "@/components/lazy-charts";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 type RelayTab = "lines" | "tunnels" | "rules" | "quality";
@@ -164,7 +162,6 @@ function LinesView() {
   const [onlyWithRelays, setOnlyWithRelays] = useState(false);
   const [query, setQuery] = useState("");
   // 线路列表只保留表格视图，卡片视图在节点页已经覆盖。
-  const card = false;
   const [probingIds, setProbingIds] = useState<Set<number>>(new Set());
   const loadingRef = useRef(false);
   // A reload asked for during a silent poll (after an edit) runs after it.
@@ -312,14 +309,10 @@ function LinesView() {
         />
       ) : (
         <div
-          className={
-            card
-              ? CARD_GRID
-              : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-raised"
-          }
-          data-list={card ? undefined : "relay"}
+          className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-raised"
+          data-list="relay"
         >
-          {!card && (
+          {
             <div
               className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-raised px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
               data-slot="list-head"
@@ -328,7 +321,7 @@ function LinesView() {
               <div role="columnheader">节点</div>
               <div role="columnheader">中转线路</div>
             </div>
-          )}
+          }
           {shown.map((i) => {
             const lines = byInbound.get(i.id) ?? [];
             const broken = lines.some(
@@ -342,65 +335,6 @@ function LinesView() {
             const lineList = lines.length > 0 && (
               <RelayLines lines={lines} renderLatency={latencyOf} />
             );
-
-            if (card) {
-              return (
-                <InfoCard
-                  key={i.id}
-                  actions={
-                    lines.length === 0
-                      ? [
-                          {
-                            key: "add",
-                            label: "添加中转",
-                            color: "primary",
-                            onClick: () => setEditing(i),
-                          },
-                        ]
-                      : undefined
-                  }
-                  badges={
-                    i.relayOnly && <Badge variant="outline">仅中转</Badge>
-                  }
-                  headerRight={
-                    lines.length > 0 && (
-                      <Button
-                        className="h-7 min-w-0 px-2.5 text-xs"
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => setEditing(i)}
-                      >
-                        管理
-                      </Button>
-                    )
-                  }
-                  rows={[]}
-                  status={
-                    lines.length === 0
-                      ? "无中转"
-                      : broken
-                        ? "有暂停"
-                        : `${lines.length} 条中转`
-                  }
-                  title={i.name}
-                  tone={
-                    lines.length === 0
-                      ? "default"
-                      : broken
-                        ? "warning"
-                        : "success"
-                  }
-                  onClick={() => setEditing(i)}
-                >
-                  <div className="flex flex-col gap-2">
-                    <p className="truncate text-xs text-muted-foreground">
-                      节点：{landing}
-                    </p>
-                    {lineList}
-                  </div>
-                </InfoCard>
-              );
-            }
 
             return (
               <ListRow

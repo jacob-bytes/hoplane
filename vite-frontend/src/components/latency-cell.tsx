@@ -1,6 +1,13 @@
 import type { InboundProbe, InboundProbePoint } from "@/api/types";
 
-import { ChartLine, ListChecks, Loader2, RefreshCw, Route } from "lucide-react";
+import {
+  ChartLine,
+  ChevronRight,
+  ListChecks,
+  Loader2,
+  RefreshCw,
+  Route,
+} from "lucide-react";
 
 import {
   DropdownMenu,
@@ -302,10 +309,11 @@ export function LatencyCell({
           <>
             <span className="mb-1.5 flex items-center justify-between text-sm">
               <span className="text-muted-foreground">延迟</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
                 {note ? `${note} · ` : ""}
                 {more > 0 ? `共 ${points.length} 个 · ` : ""}
                 {probe ? ago(probe.checkedAt) : ""}
+                <ChevronRight aria-hidden className="h-3 w-3" />
               </span>
             </span>
             <span className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,6rem)] gap-2 px-2 pb-1 text-[10px] text-muted-foreground/60">
@@ -322,13 +330,17 @@ export function LatencyCell({
         ) : (
           <>
             <Pill label={false} point={worst} spinning={probing} />
-            <span className="flex items-center gap-1">
+            <span
+              className="flex min-w-0 flex-1 items-center gap-0.5"
+              title={points
+                .map((p) => `${p.name} ${p.ok ? `${p.latencyMs} ms` : "异常"}`)
+                .join(" · ")}
+            >
               {points.map((p) => (
                 <span
                   key={p.name}
                   aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : "异常"}`}
-                  className={`h-2 w-2 rounded-full ${TONE[pointTone(p)][1]}`}
-                  title={`${p.name} ${p.ok ? `${p.latencyMs} ms` : "异常"}`}
+                  className={`h-1.5 flex-1 rounded-full ${TONE[pointTone(p)][1]}`}
                 />
               ))}
             </span>
@@ -350,7 +362,7 @@ export function LatencyCell({
           >
             <span className="mb-1.5 flex items-center justify-between text-sm">
               <span className="text-muted-foreground">延迟</span>
-              <span className="text-xs text-muted-foreground">
+              <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
                 {note ? `${note} · ` : ""}
                 {more > 0 ? `共 ${points.length} 个 · ` : ""}
                 {hiddenBad > 0 && (
@@ -359,6 +371,7 @@ export function LatencyCell({
                   </span>
                 )}
                 {probe ? ago(probe.checkedAt) : ""}
+                <ChevronRight aria-hidden className="h-3 w-3" />
               </span>
             </span>
             <span className="flex flex-col gap-1">
@@ -375,13 +388,17 @@ export function LatencyCell({
             onKeyDown={stop}
           >
             <Pill label={false} point={worst} spinning={probing} />
-            <span className="flex items-center gap-1">
+            <span
+              className="flex min-w-0 flex-1 items-center gap-0.5"
+              title={points
+                .map((p) => `${p.name} ${p.ok ? `${p.latencyMs} ms` : "异常"}`)
+                .join(" · ")}
+            >
               {points.map((p) => (
                 <span
                   key={p.name}
                   aria-label={`${p.name} ${p.ok ? `${p.latencyMs} 毫秒` : "异常"}`}
-                  className={`h-2 w-2 rounded-full ${TONE[pointTone(p)][1]}`}
-                  title={`${p.name} ${p.ok ? `${p.latencyMs} ms` : "异常"}`}
+                  className={`h-1.5 flex-1 rounded-full ${TONE[pointTone(p)][1]}`}
                 />
               ))}
             </span>
