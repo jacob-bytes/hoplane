@@ -9,7 +9,7 @@ import type { InboundApiItem } from "@/api/types";
 
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp } from "lucide-react";
+import { ArrowDown, ArrowUp, Layers } from "lucide-react";
 
 import { deleteNodeGroup, previewNodeGroup, saveNodeGroup } from "@/api";
 import { EmptyHint } from "@/components/page-kit";
@@ -154,69 +154,112 @@ export function NodeGroupList({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-2 2xl:grid-cols-2">
-      {groups.map((g, i) => (
-        <div
-          key={g.id}
-          className="flex cursor-pointer items-center gap-3 rounded-xl border border-hairline bg-raised px-3 py-2.5 shadow-sm transition-colors hover:bg-muted"
-          role="button"
-          tabIndex={0}
-          onClick={() => onEdit(g)}
-          onKeyDown={(e) => {
-            if (e.target !== e.currentTarget) return;
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              onEdit(g);
-            }
-          }}
-        >
-          <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-1.5">
-              <span className="truncate font-medium">{g.name}</span>
-              {g.subscriptions.length === 0 && (
-                <Badge variant="outline">未使用</Badge>
-              )}
+    <div className="grid grid-cols-1 gap-3 xl:grid-cols-2">
+      {groups.map((g, i) => {
+        const filters = filterSummary(g.options);
+        const naming = namingSummary(g.options);
+
+        return (
+          <div
+            key={g.id}
+            className="group flex h-full cursor-pointer flex-col gap-2.5 rounded-xl border border-hairline bg-raised p-3.5 transition-colors hover:border-hairline-strong hover:bg-surface"
+            role="button"
+            tabIndex={0}
+            onClick={() => onEdit(g)}
+            onKeyDown={(e) => {
+              if (e.target !== e.currentTarget) return;
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onEdit(g);
+              }
+            }}
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex min-w-0 items-center gap-2.5">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-hairline bg-muted text-muted-foreground">
+                  <Layers className="h-4 w-4" />
+                </span>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <span className="truncate text-sm font-medium">
+                      {g.name}
+                    </span>
+                    {g.subscriptions.length === 0 && (
+                      <Badge variant="outline">未使用</Badge>
+                    )}
+                  </div>
+                  <div className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                    {groupSourceText(g)}
+                  </div>
+                </div>
+              </div>
+              <div className="shrink-0 text-right">
+                <div className="font-mono text-lg leading-none">
+                  {g.nodeCount}
+                </div>
+                <div className="mt-0.5 text-[10px] text-muted-foreground">
+                  节点
+                </div>
+              </div>{" "}
             </div>
-            <div className="truncate text-xs text-muted-foreground">
-              {g.nodeCount} 个节点 · {groupSourceText(g)}
-              {[filterSummary(g.options), namingSummary(g.options)]
-                .filter(Boolean)
-                .map((x) => ` · ${x}`)
-                .join("")}
-              {g.options.script ? " · 脚本" : ""}
-            </div>
-            {g.subscriptions.length > 0 && (
-              <div className="mt-1 truncate text-xs text-muted-foreground">
-                订阅：{g.subscriptions.map((s) => s.name).join("、")}
+
+            {(filters || naming || g.options.script) && (
+              <div className="flex flex-wrap gap-1">
+                {filters && <Badge variant="secondary">{filters}</Badge>}
+                {naming && <Badge variant="secondary">{naming}</Badge>}
+                {g.options.script && <Badge variant="secondary">脚本</Badge>}
               </div>
             )}
+
+            <div className="mt-auto flex min-w-0 items-center gap-2 border-t border-hairline pt-2 text-[11px] text-muted-foreground">
+              <div className="flex min-w-0 flex-1 items-center gap-1.5">
+                <span className="shrink-0">订阅</span>
+                {g.subscriptions.length > 0 ? (
+                  <span className="flex min-w-0 flex-wrap gap-1">
+                    {g.subscriptions.map((sub) => (
+                      <span
+                        key={sub.id}
+                        className="max-w-40 truncate rounded-md bg-muted/70 px-1.5 py-0.5 text-foreground/80"
+                        title={sub.name}
+                      >
+                        {sub.name}
+                      </span>
+                    ))}
+                  </span>
+                ) : (
+                  <span>未被订阅使用</span>
+                )}
+              </div>
+              <div
+                className="flex shrink-0 items-center gap-0.5 opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
+                role="presentation"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Button
+                  aria-label={`上移 ${g.name}`}
+                  className="h-6 w-6"
+                  disabled={i === 0}
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => onMove(i, -1)}
+                >
+                  <ArrowUp className="h-3 w-3" />
+                </Button>
+                <Button
+                  aria-label={`下移 ${g.name}`}
+                  className="h-6 w-6"
+                  disabled={i === groups.length - 1}
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => onMove(i, 1)}
+                >
+                  <ArrowDown className="h-3 w-3" />
+                </Button>
+              </div>
+            </div>
           </div>
-          <div
-            className="flex shrink-0 items-center gap-1"
-            role="presentation"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Button
-              aria-label={`上移 ${g.name}`}
-              disabled={i === 0}
-              size="icon"
-              variant="ghost"
-              onClick={() => onMove(i, -1)}
-            >
-              <ArrowUp className="h-4 w-4" />
-            </Button>
-            <Button
-              aria-label={`下移 ${g.name}`}
-              disabled={i === groups.length - 1}
-              size="icon"
-              variant="ghost"
-              onClick={() => onMove(i, 1)}
-            >
-              <ArrowDown className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

@@ -1234,13 +1234,21 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
               const expStatus = user.expTime
                 ? getExpireStatus(user.expTime)
                 : null;
+              const usedFlow = calculateUserTotalUsedFlow(user);
+              const flowLimit = flowLimitBytes(user.flow, user.flowMiB);
+              const hasFlowLimit = flowLimit > 0;
+              const flowPercent = hasFlowLimit
+                ? Math.min(100, (usedFlow / flowLimit) * 100)
+                : 0;
               const meta = [
-                `已用 ${formatFlow(calculateUserTotalUsedFlow(user))} / ${formatFlowLimit(user.flow, user.flowMiB)}`,
                 `规则 ${user.num}`,
                 ...(userSubCount.get(user.id)
                   ? [`订阅 ${userSubCount.get(user.id)}`]
                   : []),
                 user.expTime ? `到期 ${formatDate(user.expTime)}` : "永久",
+                hasFlowLimit
+                  ? `已用 ${formatFlow(usedFlow)} / ${formatFlowLimit(user.flow, user.flowMiB)}`
+                  : "不限流量",
               ];
 
               return (
@@ -1269,35 +1277,60 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
                     </>
                   }
                   cells={[
-                    <div key="who" className="min-w-0">
-                      <div className="flex items-center gap-1.5">
-                        <span className="truncate text-sm font-medium text-foreground">
+                    <div
+                      key="who"
+                      className="flex min-w-0 items-center gap-2.5"
+                    >
+                      <span
+                        aria-hidden
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-hairline bg-muted text-xs font-semibold text-muted-foreground"
+                      >
+                        {(user.name || user.user || "?")
+                          .slice(0, 1)
+                          .toUpperCase()}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-medium text-foreground">
                           {user.name || user.user}
-                        </span>
-                        {user.status !== 1 && (
-                          <Badge className="shrink-0" variant="outline">
-                            已禁用
-                          </Badge>
-                        )}
-                        {user.disabledByQuota ? (
-                          <Badge className="shrink-0" variant="destructive">
-                            配额超额
-                          </Badge>
-                        ) : null}
-                      </div>
-                      {user.name && user.name !== user.user && (
-                        <div className="truncate text-xs text-muted-foreground">
-                          {user.user}
                         </div>
-                      )}
+                        {user.name && user.name !== user.user && (
+                          <div className="truncate text-xs text-muted-foreground">
+                            {user.user}
+                          </div>
+                        )}
+                      </div>
                     </div>,
                     <div
                       key="meta"
-                      className="min-w-0 truncate text-xs text-muted-foreground tabular"
+                      className="flex min-w-0 flex-col gap-1 text-xs text-muted-foreground"
                     >
-                      {meta.join(" · ")}
+                      <span className="truncate">
+                        {[
+                          `规则 ${user.num}`,
+                          ...(userSubCount.get(user.id)
+                            ? [`订阅 ${userSubCount.get(user.id)}`]
+                            : []),
+                        ].join(" · ")}
+                      </span>
+                      <span className="truncate tabular">
+                        {user.expTime
+                          ? `到期 ${formatDate(user.expTime)}`
+                          : "永久有效"}
+                      </span>
                     </div>,
-                    <div key="usage" className="min-w-0">
+                    <div key="usage" className="flex min-w-0 flex-col gap-1.5">
+                      <div className="flex items-center justify-between gap-2 text-[11px] text-muted-foreground">
+                        <span className="truncate tabular">
+                          {hasFlowLimit
+                            ? `已用 ${formatFlow(usedFlow)} / ${formatFlowLimit(user.flow, user.flowMiB)}`
+                            : "不限流量"}
+                        </span>
+                        {hasFlowLimit && (
+                          <span className="shrink-0 font-mono tabular">
+                            {Math.round(flowPercent)}%
+                          </span>
+                        )}
+                      </div>
                       <UsageBar user={user} />
                     </div>,
                   ]}
