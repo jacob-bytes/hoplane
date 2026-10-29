@@ -280,6 +280,8 @@ func migratePostgresTrafficInt64Columns(db *gorm.DB) error {
 		{TableName: "forward", ColumnName: "in_flow"},
 		{TableName: "forward", ColumnName: "out_flow"},
 		{TableName: "statistics_flow", ColumnName: "flow"},
+		{TableName: "statistics_flow", ColumnName: "in_flow"},
+		{TableName: "statistics_flow", ColumnName: "out_flow"},
 		{TableName: "statistics_flow", ColumnName: "total_flow"},
 		{TableName: "tunnel", ColumnName: "flow"},
 		{TableName: "user_tunnel", ColumnName: "flow"},

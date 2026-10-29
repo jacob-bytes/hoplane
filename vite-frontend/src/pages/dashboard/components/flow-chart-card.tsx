@@ -14,6 +14,8 @@ import { PageEmptyState } from "@/components/page-state";
 interface FlowChartPoint {
   time: string;
   flow: number;
+  in?: number;
+  out?: number;
 }
 
 interface FlowChartCardProps {
@@ -33,6 +35,9 @@ export const FlowChartCard = ({
   );
   const total = chartData.reduce((sum, point) => sum + point.flow, 0);
   const average = chartData.length > 0 ? total / chartData.length : 0;
+  const hasDirections = chartData.some(
+    (point) => (point.in ?? 0) + (point.out ?? 0) > 0,
+  );
 
   return (
     <Card className="mb-6 lg:mb-8">
@@ -42,6 +47,18 @@ export const FlowChartCard = ({
           <h2 className="text-[15px] font-medium text-foreground">
             24小时流量统计
           </h2>
+          {hasDirections && (
+            <span className="flex items-center gap-2 text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                上行
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-chart-2" />
+                下行
+              </span>
+            </span>
+          )}
           {statisticsFlowsCount > 0 && (
             <div className="flex w-full items-center gap-3 text-[11px] text-muted-foreground sm:ml-auto sm:w-auto">
               <span>
@@ -111,56 +128,112 @@ export const FlowChartCard = ({
                     label,
                   }: {
                     active?: boolean;
-                    payload?: Array<{ value?: number | string }>;
+                    payload?: Array<{
+                      value?: number | string;
+                      payload?: FlowChartPoint;
+                    }>;
                     label?: string | number;
                   }) => {
-                    if (active && payload && payload.length) {
-                      const firstValue = payload[0]?.value;
-                      const numericValue =
-                        typeof firstValue === "number"
-                          ? firstValue
-                          : Number(firstValue);
-                      const flowValue = Number.isFinite(numericValue)
-                        ? numericValue
-                        : 0;
+                    if (!active || !payload?.length) return null;
 
-                      return (
-                        <div className="min-w-40 rounded-xl border border-hairline bg-popover px-3 py-2.5 text-popover-foreground shadow-lg">
-                          <div className="flex items-baseline justify-between gap-6">
-                            <span className="text-[11px] text-muted-foreground">
-                              {label ?? ""}
-                            </span>
-                            <span className="font-mono text-sm font-semibold tabular text-foreground">
-                              {formatFlow(flowValue)}
-                            </span>
+                    const point = payload[0]?.payload;
+
+                    if (!point) return null;
+
+                    return (
+                      <div className="min-w-44 rounded-xl border border-hairline bg-popover px-3 py-2.5 text-popover-foreground shadow-lg">
+                        <div className="flex items-baseline justify-between gap-6">
+                          <span className="text-[11px] text-muted-foreground">
+                            {label ?? ""}
+                          </span>
+                          <span className="font-mono text-sm font-semibold tabular text-foreground">
+                            {formatFlow(point.flow)}
+                          </span>
+                        </div>
+                        {hasDirections ? (
+                          <div className="mt-1.5 flex flex-col gap-0.5 text-[11px]">
+                            <div className="flex justify-between gap-6">
+                              <span className="text-muted-foreground">
+                                上行
+                              </span>
+                              <span className="font-mono tabular">
+                                {formatFlow(point.in ?? 0)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between gap-6">
+                              <span className="text-muted-foreground">
+                                下行
+                              </span>
+                              <span className="font-mono tabular">
+                                {formatFlow(point.out ?? 0)}
+                              </span>
+                            </div>
                           </div>
+                        ) : (
                           <div className="mt-1 text-[10px] text-muted-foreground">
                             这一小时的总流量
                           </div>
-                        </div>
-                      );
-                    }
-
-                    return null;
+                        )}
+                      </div>
+                    );
                   }}
                   cursor={{ stroke: "var(--hairline-strong)", strokeWidth: 1 }}
                 />
-                <Area
-                  activeDot={{
-                    r: 3.5,
-                    fill: "var(--primary)",
-                    stroke: "var(--background)",
-                    strokeWidth: 2,
-                  }}
-                  dataKey="flow"
-                  dot={false}
-                  fill="currentColor"
-                  fillOpacity={0.1}
-                  isAnimationActive={false}
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  type="monotone"
-                />
+                {hasDirections ? (
+                  <>
+                    <Area
+                      activeDot={{
+                        r: 3.5,
+                        fill: "var(--primary)",
+                        stroke: "var(--background)",
+                        strokeWidth: 2,
+                      }}
+                      dataKey="in"
+                      dot={false}
+                      fill="var(--primary)"
+                      fillOpacity={0.16}
+                      isAnimationActive={false}
+                      stackId="traffic"
+                      stroke="var(--primary)"
+                      strokeWidth={2}
+                      type="monotone"
+                    />
+                    <Area
+                      activeDot={{
+                        r: 3.5,
+                        fill: "var(--chart-2)",
+                        stroke: "var(--background)",
+                        strokeWidth: 2,
+                      }}
+                      dataKey="out"
+                      dot={false}
+                      fill="var(--chart-2)"
+                      fillOpacity={0.12}
+                      isAnimationActive={false}
+                      stackId="traffic"
+                      stroke="var(--chart-2)"
+                      strokeWidth={2}
+                      type="monotone"
+                    />
+                  </>
+                ) : (
+                  <Area
+                    activeDot={{
+                      r: 3.5,
+                      fill: "var(--primary)",
+                      stroke: "var(--background)",
+                      strokeWidth: 2,
+                    }}
+                    dataKey="flow"
+                    dot={false}
+                    fill="currentColor"
+                    fillOpacity={0.1}
+                    isAnimationActive={false}
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    type="monotone"
+                  />
+                )}
               </AreaChart>
             </ResponsiveContainer>
           </div>

@@ -250,18 +250,33 @@ func (h *Handler) runStatisticsFlowJob(now time.Time) {
 	}
 
 	for _, user := range users {
-		currentTotal := user.InFlow + user.OutFlow
+		currentIn := user.InFlow
+		currentOut := user.OutFlow
+		currentTotal := currentIn + currentOut
+		incIn := currentIn
+		incOut := currentOut
 		increment := currentTotal
 
-		lastTotal, err := h.repo.GetLastStatisticsFlowTotal(user.UserID)
-		if err == nil && lastTotal.Valid {
-			increment = currentTotal - lastTotal.Int64
-			if increment < 0 {
+		last, ok, err := h.repo.GetLastStatisticsFlow(user.UserID)
+		if err == nil && ok {
+			incIn = currentIn - last.InFlow
+			incOut = currentOut - last.OutFlow
+			increment = currentTotal - last.TotalFlow
+			if incIn < 0 || incOut < 0 || increment < 0 {
+				incIn = currentIn
+				incOut = currentOut
 				increment = currentTotal
+			}
+
+			// Rows written before direction tracking have no split; infer the
+			// historical increment from the user's current up/down ratio.
+			if last.InFlow == 0 && last.OutFlow == 0 && last.TotalFlow > 0 && currentTotal > 0 {
+				incIn = int64(float64(increment) * float64(currentIn) / float64(currentTotal))
+				incOut = increment - incIn
 			}
 		}
 
-		_ = h.repo.CreateStatisticsFlow(user.UserID, increment, currentTotal, hourText, createdTime)
+		_ = h.repo.CreateStatisticsFlow(user.UserID, increment, incIn, incOut, currentTotal, hourText, createdTime)
 	}
 }
 

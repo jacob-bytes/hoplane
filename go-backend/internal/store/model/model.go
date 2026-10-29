@@ -98,6 +98,8 @@ type Node struct {
 	// Country is an ISO 3166-1 alpha-2 code chosen in the node form. Empty
 	// means the UI falls back to inferring a flag from the node name.
 	Country sql.NullString `gorm:"column:country;type:varchar(8)"`
+	// Price is the optional renewal amount in CNY.
+	Price float64 `gorm:"column:price;not null;default:0"`
 	// LatencyTargets is the node's own choice of latency reference points as
 	// JSON {"points":[...],"pinned":[...]}; empty follows the defaults.
 	LatencyTargets string `gorm:"column:latency_targets;type:text;not null;default:''"`
@@ -173,6 +175,8 @@ type StatisticsFlow struct {
 	ID          int64  `gorm:"primaryKey;autoIncrement" json:"id"`
 	UserID      int64  `gorm:"column:user_id;not null;index" json:"userId"`
 	Flow        int64  `gorm:"not null" json:"flow"`
+	InFlow      int64  `gorm:"column:in_flow;not null;default:0" json:"inFlow"`
+	OutFlow     int64  `gorm:"column:out_flow;not null;default:0" json:"outFlow"`
 	TotalFlow   int64  `gorm:"column:total_flow;not null" json:"totalFlow"`
 	Time        string `gorm:"type:varchar(100);not null" json:"time"`
 	CreatedTime int64  `gorm:"column:created_time;not null;index" json:"-"`

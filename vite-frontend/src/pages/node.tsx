@@ -243,6 +243,7 @@ export default function NodePage({
     name: "",
     remark: "",
     country: "",
+    price: "",
     expiryTime: 0,
     renewalCycle: "",
     serverHost: "",
@@ -861,6 +862,7 @@ export default function NodePage({
       name: node.name,
       remark: node.remark || "",
       country: node.country || "",
+      price: node.price ? String(node.price) : "",
       expiryTime: node.expiryTime || 0,
       renewalCycle: node.renewalCycle || "",
       serverHost: normalizedHost,
@@ -1159,6 +1161,7 @@ export default function NodePage({
         ...rest,
         remark: form.remark.trim(),
         country: form.country,
+        price: Number(form.price) || 0,
         expiryTime: form.expiryTime,
         renewalCycle: form.renewalCycle,
         extraIPs: form.extraIPs,
@@ -1186,6 +1189,7 @@ export default function NodePage({
                     name: form.name,
                     remark: form.remark.trim(),
                     country: form.country,
+                    price: Number(form.price) || 0,
                     expiryTime: form.expiryTime,
                     renewalCycle: form.renewalCycle,
                     serverIp:
@@ -1228,6 +1232,7 @@ export default function NodePage({
       name: "",
       remark: "",
       country: "",
+      price: "",
       expiryTime: 0,
       renewalCycle: "",
       serverHost: "",
@@ -2098,6 +2103,14 @@ export default function NodePage({
                                         ) : null}
                                       </span>
                                     </span>
+                                  ) : null}
+                                  {node.price ? (
+                                    <p className="truncate text-[11px] text-muted-foreground">
+                                      费用 ¥{node.price.toFixed(2)}
+                                      {node.renewalCycle
+                                        ? ` / ${getNodeRenewalCycleLabel(node.renewalCycle)}`
+                                        : ""}
+                                    </p>
                                   ) : null}
                                 </div>
                                 {upgradeProgress[node.id] &&

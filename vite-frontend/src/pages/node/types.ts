@@ -17,6 +17,8 @@ export interface Node {
   expiryReminderDismissed?: number;
   /** ISO country code chosen in the form; empty falls back to the name. */
   country?: string;
+  /** Optional renewal amount in CNY. */
+  price?: number;
   ip: string;
   serverIp: string;
   serverIpV4?: string;
@@ -56,6 +58,7 @@ export interface NodeForm {
   name: string;
   remark: string;
   country: string;
+  price: string;
   expiryTime: number;
   renewalCycle: NodeRenewalCycle;
   serverHost: string;

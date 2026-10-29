@@ -197,19 +197,31 @@ function UserDashboard() {
     }
 
     // 创建数据映射
-    const flowMap = new Map<string, number>();
+    const flowMap = new Map<
+      string,
+      { flow: number; in: number; out: number }
+    >();
 
     statisticsFlows.forEach((item) => {
-      flowMap.set(item.time, item.flow || 0);
+      flowMap.set(item.time, {
+        flow: item.flow || 0,
+        in: item.inFlow || 0,
+        out: item.outFlow || 0,
+      });
     });
 
     // 生成图表数据，没有数据的小时显示为0
-    return hours.map((hour) => ({
-      time: hour,
-      flow: flowMap.get(hour) || 0,
-      // 格式化显示用的流量值
-      formattedFlow: formatFlow(flowMap.get(hour) || 0),
-    }));
+    return hours.map((hour) => {
+      const point = flowMap.get(hour);
+
+      return {
+        time: hour,
+        flow: point?.flow || 0,
+        in: point?.in || 0,
+        out: point?.out || 0,
+        formattedFlow: formatFlow(point?.flow || 0),
+      };
+    });
   };
 
   const getExpStatus = (expTime?: string | number) => {

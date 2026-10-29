@@ -174,6 +174,22 @@ export function NodeFormModal({
                 </div>
               </div>
 
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="node-price">续费金额（元）</Label>
+                <Input
+                  id="node-price"
+                  inputMode="decimal"
+                  placeholder="例如 38"
+                  value={form.price}
+                  onChange={(e) =>
+                    setForm((prev) => ({ ...prev, price: e.target.value }))
+                  }
+                />
+                <p className="text-xs text-muted-foreground">
+                  可选，仅用于卡片展示，不影响计费
+                </p>
+              </div>
+
               <p className="text-xs text-muted-foreground">
                 例如选择月付并填写
                 2026-03-01，系统会自动按每月同日推算下次续费时间。

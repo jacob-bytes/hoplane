@@ -52,6 +52,8 @@ export interface DashboardStatisticsFlow {
   id: number;
   userId: number;
   flow: number;
+  inFlow?: number;
+  outFlow?: number;
   totalFlow: number;
   time: string;
 }

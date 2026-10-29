@@ -312,6 +312,16 @@ func (r *Repository) SetNodeCountry(id int64, country string) error {
 		Update("country", sql.NullString{String: country, Valid: country != ""}).Error
 }
 
+// SetNodePrice stores the optional renewal price (CNY).
+func (r *Repository) SetNodePrice(id int64, price float64) error {
+	if r == nil || r.db == nil {
+		return errors.New("repository not initialized")
+	}
+
+	return r.db.Model(&model.Node{}).Where("id = ?", id).
+		Update("price", price).Error
+}
+
 func (r *Repository) UpdateNode(id int64, name, serverIP string, serverIPV4, serverIPV6, port, interfaceName, extraIPs, remark, expiryTime, renewalCycle interface{}, forwardMode string, httpFlag, tlsFlag, socksFlag int, tcpAddr, udpAddr string, now int64) error {
 	if r == nil || r.db == nil {
 		return errors.New("repository not initialized")

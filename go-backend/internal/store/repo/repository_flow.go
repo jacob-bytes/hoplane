@@ -576,27 +576,27 @@ func (r *Repository) ListAllUserFlowSnapshots() ([]model.UserFlowSnapshot, error
 	return out, nil
 }
 
-func (r *Repository) GetLastStatisticsFlowTotal(userID int64) (sql.NullInt64, error) {
+func (r *Repository) GetLastStatisticsFlow(userID int64) (model.StatisticsFlow, bool, error) {
 	if r == nil || r.db == nil {
-		return sql.NullInt64{}, errors.New("repository not initialized")
+		return model.StatisticsFlow{}, false, errors.New("repository not initialized")
 	}
 	var sf model.StatisticsFlow
 	err := r.db.Where("user_id = ?", userID).Order("id DESC").First(&sf).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return sql.NullInt64{}, nil
+		return model.StatisticsFlow{}, false, nil
 	}
 	if err != nil {
-		return sql.NullInt64{}, err
+		return model.StatisticsFlow{}, false, err
 	}
-	return sql.NullInt64{Int64: sf.TotalFlow, Valid: true}, nil
+	return sf, true, nil
 }
 
-func (r *Repository) CreateStatisticsFlow(userID, flow, totalFlow int64, timeText string, createdTime int64) error {
+func (r *Repository) CreateStatisticsFlow(userID, flow, inFlow, outFlow, totalFlow int64, timeText string, createdTime int64) error {
 	if r == nil || r.db == nil {
 		return errors.New("repository not initialized")
 	}
 	return r.db.Create(&model.StatisticsFlow{
-		UserID: userID, Flow: flow, TotalFlow: totalFlow,
-		Time: timeText, CreatedTime: createdTime,
+		UserID: userID, Flow: flow, InFlow: inFlow, OutFlow: outFlow,
+		TotalFlow: totalFlow, Time: timeText, CreatedTime: createdTime,
 	}).Error
 }

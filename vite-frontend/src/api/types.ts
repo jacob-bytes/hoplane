@@ -7,6 +7,7 @@ export interface NodeApiItem {
   inx?: number;
   remark?: string;
   country?: string;
+  price?: number;
   expiryTime?: number;
   renewalCycle?: "month" | "quarter" | "year" | "";
   expiryReminderDismissed?: number;
@@ -125,6 +126,8 @@ export interface StatisticsFlowApiItem {
   id: number;
   userId: number;
   flow: number;
+  inFlow?: number;
+  outFlow?: number;
   totalFlow: number;
   time: string;
   [key: string]: unknown;
@@ -318,6 +321,7 @@ export interface NodeMutationPayload {
   inx?: number;
   remark?: string;
   country?: string;
+  price?: number;
   expiryTime?: number;
   renewalCycle?: "month" | "quarter" | "year" | "";
   serverIp?: string;
