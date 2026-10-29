@@ -1,7 +1,6 @@
 package repo
 
 import (
-	"database/sql"
 	"errors"
 	"go-backend/internal/store/model"
 	"sort"
