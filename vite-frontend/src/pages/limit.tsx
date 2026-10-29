@@ -266,7 +266,11 @@ export default function LimitPage({
           {filteredRules.map((rule) => (
             <ListRow
               key={rule.id}
-              meta={rule.speed >= 99999 ? "不限制带宽" : `${rule.speed} Mbps`}
+              meta={
+                rule.speed >= 99999
+                  ? "不限制带宽 · 用于隧道权限"
+                  : `${rule.speed} Mbps · 用于隧道权限`
+              }
               status={rule.status === 1 ? "ok" : "bad"}
               statusTitle={rule.status === 1 ? "运行" : "异常"}
               title={rule.name}

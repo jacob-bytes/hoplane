@@ -1550,6 +1550,7 @@ export default function TunnelPage({
                 role="row"
               >
                 <div role="columnheader">隧道</div>
+                <div role="columnheader">入口</div>
                 <div role="columnheader">线路</div>
                 <div role="columnheader" />
               </div>
@@ -1613,8 +1614,16 @@ export default function TunnelPage({
                                 )}
                               </div>
                               <div className="truncate text-xs text-muted-foreground">
-                                {`${tunnel.trafficRatio}x`}
+                                ID {tunnel.id}
                               </div>
+                            </div>
+                          </div>,
+                          <div key="entry" className="min-w-0">
+                            <div className="truncate font-mono text-xs">
+                              {tunnel.inIp || tunnel.probeTargetHost || "—"}
+                            </div>
+                            <div className="truncate text-[11px] text-muted-foreground">
+                              倍率 {tunnel.trafficRatio ?? 1}x
                             </div>
                           </div>,
                           <div
@@ -1637,8 +1646,9 @@ export default function TunnelPage({
                           ),
                         ]}
                         meta={[
+                          tunnel.inIp || "—",
                           describeRoute(tunnel),
-                          `${tunnel.trafficRatio}x`,
+                          `倍率 ${tunnel.trafficRatio ?? 1}x`,
                         ].join(" · ")}
                         right={
                           !isSearching && (

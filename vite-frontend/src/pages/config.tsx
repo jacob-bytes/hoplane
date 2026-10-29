@@ -113,7 +113,7 @@ const CONFIG_ITEMS: ConfigItem[] = [
     key: "panel_domain",
     label: "面板域名",
     placeholder: "请输入面板域名",
-    description: "与其他面板联邦共享时用来验证身份",
+    description: "用于生成面板访问地址、登录回调和订阅链接",
     type: "input",
   },
   {
@@ -404,7 +404,7 @@ export default function ConfigPage() {
     "basic" | "security" | "network" | "notify" | "system"
   >("basic");
   const [openSections, setOpenSections] = useState<Set<SectionKey>>(
-    () => new Set(),
+    () => new Set(["basic"]),
   );
 
   const initialConfigs = getInitialConfigs();
@@ -1529,9 +1529,9 @@ export default function ConfigPage() {
         tabs={[
           { key: "basic", label: "基本" },
           { key: "security", label: "安全" },
-          { key: "network", label: "网络与监控" },
+          { key: "network", label: "网络" },
           { key: "notify", label: "通知" },
-          { key: "system", label: "数据与升级" },
+          { key: "system", label: "数据" },
         ]}
         value={tab}
         onChange={(key) => setTab(key as typeof tab)}

@@ -646,6 +646,8 @@ export default function InboundPage() {
 
   const gridClass =
     "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised";
+  const showLatency = inbounds.some((item) => item.external && item.enabled);
+  const listName = showLatency ? "inbound" : "inbound-compact";
   const listHead = (
     <div
       className="sticky top-0 z-10 hidden items-center gap-4 border-b border-border bg-raised px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
@@ -660,7 +662,7 @@ export default function InboundPage() {
           onToggle={() => toggleSort("name")}
         />
       </div>
-      <div role="columnheader">延迟</div>
+      {showLatency && <div role="columnheader">端口 / 延迟</div>}
       <div className="text-right" role="columnheader">
         <SortHeader
           active={sortKey === "traffic"}
@@ -830,8 +832,14 @@ export default function InboundPage() {
             </span>
           </div>
         </div>
-        {latency && (
-          <div className="flex shrink-0 justify-end sm:w-32">{latency}</div>
+        {showLatency && (
+          <div className="flex shrink-0 justify-end sm:w-32">
+            {latency ?? (
+              <span className="font-mono text-xs text-muted-foreground">
+                {item.port}
+              </span>
+            )}
+          </div>
         )}
         <div className="hidden shrink-0 text-right font-mono text-xs text-muted-foreground sm:block">
           <div>↑ {formatTraffic(item.uploadBytes)}</div>
@@ -1053,7 +1061,7 @@ export default function InboundPage() {
               </CardContent>
             </Card>
           ) : !grouped ? (
-            <StaggerList className={gridClass} data-list="inbound">
+            <StaggerList className={gridClass} data-list={listName}>
               {listHead}
               {filtered.map((i) => (
                 <StaggerItem key={i.id}>{renderInbound(i)}</StaggerItem>
@@ -1081,7 +1089,7 @@ export default function InboundPage() {
                       onToggle={() => toggleCollapsed(id)}
                     />
                     {!folded && (
-                      <div className={gridClass} data-list="inbound">
+                      <div className={gridClass} data-list={listName}>
                         {listHead}
                         {g.items.map(renderInbound)}
                       </div>

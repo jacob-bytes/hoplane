@@ -377,11 +377,15 @@ body {
 }
 
 [data-list="tunnel"] {
-  --list-cols: minmax(0, 1fr) minmax(0, 1.2fr) 24px;
+  --list-cols: minmax(0, 1fr) 150px minmax(0, 1.2fr) 24px;
 }
 
 [data-list="inbound"] {
   --list-cols: 10px minmax(0, 1fr) 112px 96px 176px 48px;
+}
+
+[data-list="inbound-compact"] {
+  --list-cols: 10px minmax(0, 1fr) 96px 176px 48px;
 }
 
 [data-list="subscription"] {
