@@ -245,6 +245,17 @@ for (let i = 0; i < 40; i += 1) {
 await sleep(SETTLE_MS);
 for (const r of USER_PAGES) await visit("user", r);
 
+// 90% traffic shows the quota warning.
+current = "user #/dashboard (90% flow)";
+await evaluate(`localStorage.setItem("demo-flow", "high")`);
+await page("Page.navigate", { url: `${origin}${BASE}#/dashboard` });
+await sleep(SETTLE_MS);
+const flowText = await evaluate("document.body.innerText");
+if (!flowText.includes("流量已使用")) {
+  problems.push(`${current}: quota warning missing`);
+}
+await evaluate(`localStorage.removeItem("demo-flow")`);
+
 for (const n of notes) console.log(`note  ${n}`);
 for (const p of problems) console.log(`FAIL  ${p}`);
 console.log(problems.length

@@ -200,6 +200,20 @@ async function answer(config: InternalAxiosRequestConfig) {
     };
   }
 
+  if (bare === "user/package" && localStorage.getItem("demo-flow") === "high") {
+    const hit = entries?.[0];
+    if (hit) {
+      const res = structuredClone(hit.res) as {
+        data: { userInfo: { inFlow: number; outFlow: number } };
+      };
+
+      res.data.userInfo.inFlow = 180 * 1024 ** 3;
+      res.data.userInfo.outFlow = 0;
+
+      return shiftTimes(res, fixtures.recordedAt, delta);
+    }
+  }
+
   if (bare === "node/list" && localStorage.getItem("demo-empty") === "1") {
     return { code: 0, msg: "操作成功", data: [], ts: Date.now() };
   }
