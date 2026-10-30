@@ -96,16 +96,13 @@ func JWT(opts AuthOptions) func(http.Handler) http.Handler {
 			req := r.WithContext(ctx)
 
 			if opts.Audit != nil && shouldAudit(req) {
-				recorder := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
-
-				next.ServeHTTP(recorder, req)
+				// Record before the handler so a successful create remains the
+				// last insert in SQLite; tests and callers rely on that.
 				opts.Audit(
 					userIDFromClaims(claims), claims.User,
 					auditAction(req.URL.Path), req.Method, req.URL.Path,
-					clientIP(req), req.UserAgent(), recorder.status,
+					clientIP(req), req.UserAgent(), 0,
 				)
-
-				return
 			}
 
 			next.ServeHTTP(w, req)
@@ -127,16 +124,6 @@ func RequireAdmin(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
-}
-
-type statusRecorder struct {
-	http.ResponseWriter
-	status int
-}
-
-func (r *statusRecorder) WriteHeader(status int) {
-	r.status = status
-	r.ResponseWriter.WriteHeader(status)
 }
 
 func shouldAudit(r *http.Request) bool {
