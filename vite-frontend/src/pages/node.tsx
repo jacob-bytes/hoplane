@@ -21,6 +21,7 @@ import {
   BellOff,
   Bot,
   Crosshair,
+  Eye,
   GitBranch,
   Globe2,
   Monitor,
@@ -81,6 +82,7 @@ import {
   getNodeFlag,
   getRemoteSyncErrorMessage,
 } from "@/pages/node/display";
+import { NodeDetailDialog } from "@/pages/node/node-detail-dialog";
 import { NodeTuneModal } from "@/pages/node/tune-modal";
 import { copyWithToast } from "@/utils/clipboard";
 import {
@@ -314,6 +316,7 @@ export default function NodePage({
   );
 
   const [sheetNodeId, setSheetNodeId] = useState<number | null>(null);
+  const [detailNodeId, setDetailNodeId] = useState<number | null>(null);
   const [probingIds, setProbingIds] = useState<Set<number>>(new Set());
   const [latencyNode, setLatencyNode] = useState<Node | null>(null);
   const pendingMetricsRef = useRef<Map<number, Record<string, unknown>>>(
@@ -2519,6 +2522,24 @@ export default function NodePage({
       )}
 
       {(() => {
+        const node = nodeList.find((n) => n.id === detailNodeId) ?? null;
+
+        return (
+          <NodeDetailDialog
+            month={node ? monthTraffic[String(node.id)] : undefined}
+            node={node}
+            online={node?.connectionStatus === "online"}
+            onClose={() => setDetailNodeId(null)}
+            onEdit={(target) => {
+              setDetailNodeId(null);
+              handleEdit(target);
+            }}
+            onMonitor={(target) => onOpenMonitor?.(target.id)}
+          />
+        );
+      })()}
+
+      {(() => {
         const node = nodeList.find((n) => n.id === sheetNodeId) ?? null;
         const isRemoteNode = node?.isRemote === 1;
         const online = node?.connectionStatus === "online";
@@ -2598,6 +2619,19 @@ export default function NodePage({
                       },
                     ]
                   : [
+                      {
+                        key: "detail",
+                        label: "详情",
+                        section: "概览",
+                        description: "资源、运行时长、续费与实时速率",
+                        icon: Eye,
+                        kind: "dialog" as const,
+                        closeOnSelect: false,
+                        onClick: () => {
+                          setSheetNodeId(null);
+                          setDetailNodeId(node.id);
+                        },
+                      },
                       ...(onOpenMonitor
                         ? [
                             {
