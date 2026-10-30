@@ -4,8 +4,6 @@ import (
 	"errors"
 	"time"
 
-	"gorm.io/gorm"
-
 	"go-backend/internal/store/model"
 )
 
