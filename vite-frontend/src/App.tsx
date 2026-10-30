@@ -211,6 +211,7 @@ function App() {
         }
         path="/dashboard"
       />
+      <Route element={<Navigate replace to="/dashboard" />} path="/monitor" />
       <Route
         element={
           <ProtectedRoute>
