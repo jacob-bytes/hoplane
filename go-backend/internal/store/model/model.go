@@ -193,7 +193,7 @@ type StatisticsFlow struct {
 	OutFlow     int64  `gorm:"column:out_flow;not null;default:0" json:"outFlow"`
 	TotalFlow   int64  `gorm:"column:total_flow;not null" json:"totalFlow"`
 	Time        string `gorm:"type:varchar(100);not null" json:"time"`
-	CreatedTime int64  `gorm:"column:created_time;not null;index" json:"-"`
+	CreatedTime int64  `gorm:"column:created_time;not null;index" json:"createdTime"`
 }
 
 func (StatisticsFlow) TableName() string { return "statistics_flow" }

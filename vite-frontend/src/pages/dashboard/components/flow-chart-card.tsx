@@ -18,16 +18,22 @@ interface FlowChartPoint {
   out?: number;
 }
 
+type FlowRange = "24h" | "7d" | "30d";
+
 interface FlowChartCardProps {
   statisticsFlowsCount: number;
   chartData: FlowChartPoint[];
   formatFlow: (value: number, unit?: string) => string;
+  range: FlowRange;
+  onRangeChange: (range: FlowRange) => void;
 }
 
 export const FlowChartCard = ({
   statisticsFlowsCount,
   chartData,
   formatFlow,
+  range,
+  onRangeChange,
 }: FlowChartCardProps) => {
   const peak = chartData.reduce<FlowChartPoint | null>(
     (best, point) => (best === null || point.flow > best.flow ? point : best),
@@ -44,9 +50,30 @@ export const FlowChartCard = ({
       <CardHeader className="pb-3">
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
           <ChartPie aria-hidden="true" className="h-4 w-4 text-primary" />
-          <h2 className="text-[15px] font-medium text-foreground">
-            24小时流量统计
-          </h2>
+          <h2 className="text-[15px] font-medium text-foreground">流量趋势</h2>
+          <div className="flex rounded-lg border border-hairline p-0.5 text-[11px]">
+            {(
+              [
+                ["24h", "24h"],
+                ["7d", "7天"],
+                ["30d", "30天"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                aria-pressed={range === value}
+                className={`rounded-md px-2 py-1 transition-colors ${
+                  range === value
+                    ? "bg-primary-soft text-primary"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+                type="button"
+                onClick={() => onRangeChange(value)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
           {hasDirections && (
             <span className="flex items-center gap-2 text-[10px] text-muted-foreground">
               <span className="flex items-center gap-1">
@@ -89,7 +116,7 @@ export const FlowChartCard = ({
           <PageEmptyState className="h-48" message="暂无流量统计数据" />
         ) : (
           <div
-            aria-label={`24 小时流量统计，共 ${chartData.length} 个采样点`}
+            aria-label={`流量趋势，共 ${chartData.length} 个采样点`}
             className="h-40 w-full text-primary sm:h-44 lg:h-52"
             role="img"
           >

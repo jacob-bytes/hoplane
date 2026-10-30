@@ -1232,7 +1232,7 @@ func (h *Handler) userPackage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	stats, err := h.repo.GetStatisticsFlows(userID, 24)
+	stats, err := h.repo.GetStatisticsFlows(userID, 24*31)
 	if err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return

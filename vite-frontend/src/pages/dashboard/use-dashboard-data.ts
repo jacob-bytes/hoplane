@@ -56,6 +56,7 @@ export interface DashboardStatisticsFlow {
   outFlow?: number;
   totalFlow: number;
   time: string;
+  createdTime?: number;
 }
 
 export interface DashboardNodeExpiryItem {

@@ -80,6 +80,7 @@ function UserDashboard() {
   const [expandedTunnels, setExpandedTunnels] = useState<Set<number>>(
     new Set(),
   );
+  const [flowRange, setFlowRange] = useState<"24h" | "7d" | "30d">("24h");
 
   const formatFlow = formatTraffic;
 
@@ -184,45 +185,103 @@ function UserDashboard() {
   };
 
   // 处理24小时流量统计数据
-  const processFlowChartData = () => {
-    // 生成最近24小时的时间数组（从当前小时往前推24小时）
-    const now = new Date();
-    const hours: string[] = [];
+  const processFlowChartData = (range: "24h" | "7d" | "30d") => {
+    if (range === "24h") {
+      const now = new Date();
+      const hours: string[] = [];
 
-    for (let i = 23; i >= 0; i--) {
-      const time = new Date(now.getTime() - i * 60 * 60 * 1000);
-      const hourString = time.getHours().toString().padStart(2, "0") + ":00";
+      for (let i = 23; i >= 0; i--) {
+        const time = new Date(now.getTime() - i * 60 * 60 * 1000);
 
-      hours.push(hourString);
+        hours.push(time.getHours().toString().padStart(2, "0") + ":00");
+      }
+
+      const flowMap = new Map<
+        string,
+        { flow: number; in: number; out: number }
+      >();
+
+      statisticsFlows.forEach((item) => {
+        flowMap.set(item.time, {
+          flow: item.flow || 0,
+          in: item.inFlow || 0,
+          out: item.outFlow || 0,
+        });
+      });
+
+      return hours.map((hour) => {
+        const point = flowMap.get(hour);
+
+        return {
+          time: hour,
+          flow: point?.flow || 0,
+          in: point?.in || 0,
+          out: point?.out || 0,
+          formattedFlow: formatFlow(point?.flow || 0),
+        };
+      });
     }
 
-    // 创建数据映射
-    const flowMap = new Map<
+    const days = range === "7d" ? 7 : 30;
+    const buckets = new Map<
       string,
       { flow: number; in: number; out: number }
     >();
+    const labels: string[] = [];
 
-    statisticsFlows.forEach((item) => {
-      flowMap.set(item.time, {
-        flow: item.flow || 0,
-        in: item.inFlow || 0,
-        out: item.outFlow || 0,
-      });
+    for (let i = days - 1; i >= 0; i--) {
+      const day = new Date();
+
+      day.setHours(0, 0, 0, 0);
+      day.setDate(day.getDate() - i);
+      const key = day.toISOString().slice(0, 10);
+
+      buckets.set(key, { flow: 0, in: 0, out: 0 });
+      labels.push(
+        `${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`,
+      );
+    }
+
+    statisticsFlows.forEach((item, index) => {
+      const stamp =
+        item.createdTime ??
+        Date.now() - (statisticsFlows.length - 1 - index) * 3600_000;
+      const key = new Date(stamp).toISOString().slice(0, 10);
+      const bucket = buckets.get(key);
+
+      if (!bucket) return;
+      bucket.flow += item.flow || 0;
+      bucket.in += item.inFlow || 0;
+      bucket.out += item.outFlow || 0;
     });
 
-    // 生成图表数据，没有数据的小时显示为0
-    return hours.map((hour) => {
-      const point = flowMap.get(hour);
+    return labels.map((time, index) => {
+      const key = [...buckets.keys()][index];
+      const bucket = buckets.get(key) ?? { flow: 0, in: 0, out: 0 };
 
       return {
-        time: hour,
-        flow: point?.flow || 0,
-        in: point?.in || 0,
-        out: point?.out || 0,
-        formattedFlow: formatFlow(point?.flow || 0),
+        time,
+        flow: bucket.flow,
+        in: bucket.in,
+        out: bucket.out,
+        formattedFlow: formatFlow(bucket.flow),
       };
     });
   };
+
+  const flowLimit = flowLimitBytes(userInfo.flow || 0, userInfo.flowMiB);
+  const flowUsed = (userInfo.inFlow || 0) + (userInfo.outFlow || 0);
+  const recentFlow = statisticsFlows
+    .filter(
+      (item) =>
+        item.createdTime && Date.now() - item.createdTime < 7 * 86400_000,
+    )
+    .reduce((sum, item) => sum + (item.flow || 0), 0);
+  const dailyAverage = recentFlow / 7;
+  const forecastDays =
+    flowLimit > flowUsed && dailyAverage > 0
+      ? Math.ceil((flowLimit - flowUsed) / dailyAverage)
+      : null;
 
   const getExpStatus = (expTime?: string | number) => {
     if (!expTime)
@@ -573,6 +632,11 @@ function UserDashboard() {
                     ? "不限流量"
                     : `共 ${formatFlowLimit(userInfo.flow, userInfo.flowMiB)} · ${calculateUsagePercentage("flow").toFixed(1)}%`}
                 </p>
+                {forecastDays !== null && (
+                  <span className="shrink-0 text-[11px] text-muted-foreground">
+                    预计 {forecastDays} 天用完
+                  </span>
+                )}
                 {userInfo.flowResetTime !== undefined &&
                   userInfo.flowResetTime !== null && (
                     <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
@@ -658,9 +722,11 @@ function UserDashboard() {
       </div>
 
       <FlowChartCard
-        chartData={processFlowChartData()}
+        chartData={processFlowChartData(flowRange)}
         formatFlow={formatFlow}
+        range={flowRange}
         statisticsFlowsCount={statisticsFlows.length}
+        onRangeChange={setFlowRange}
       />
 
       {isAdmin && nodeExpiryReminders.length > 0 && (
