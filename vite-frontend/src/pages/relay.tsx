@@ -309,7 +309,7 @@ function LinesView() {
         />
       ) : (
         <div
-          className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-raised"
+          className="relay-list list-enter flex flex-col gap-2 lg:gap-0 lg:overflow-hidden lg:rounded-xl lg:border lg:border-border lg:bg-raised"
           data-list="relay"
         >
           {

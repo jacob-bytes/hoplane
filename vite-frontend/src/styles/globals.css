@@ -589,3 +589,13 @@ body {
 .user-list [data-slot="list-row"]:hover {
   background: color-mix(in srgb, var(--surface) 70%, transparent);
 }
+
+/* Relay rows: a visible divider even though ListRow removes its own
+ * desktop border. */
+.relay-list [data-slot="list-row"] {
+  border-bottom: 1px solid var(--hairline-strong);
+}
+
+.relay-list [data-slot="list-row"]:last-child {
+  border-bottom: 0;
+}
