@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   Activity,
+  ScrollText,
   ArrowLeftRight,
   ChevronRight,
   Globe,
@@ -129,6 +130,13 @@ export default function AdminLayout({
       section: "系统",
       label: "监控",
       icon: <Activity className="h-5 w-5" />,
+    },
+    {
+      path: "/audit",
+      section: "系统",
+      label: "审计",
+      icon: <ScrollText className="h-5 w-5" />,
+      adminOnly: true,
     },
     {
       path: "/config",
@@ -266,6 +274,7 @@ export default function AdminLayout({
     "/tunnel": ["资源", "隧道"],
     "/forward": ["资源", "转发规则"],
     "/monitor": ["资源", "监控"],
+    "/audit": ["系统", "审计"],
     "/subscription": ["分发", "订阅"],
     "/user": ["分发", "用户"],
     "/group": ["分发", "分组"],

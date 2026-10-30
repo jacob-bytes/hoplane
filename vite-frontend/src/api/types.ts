@@ -143,6 +143,19 @@ export interface UserSessionApiItem {
   current: boolean;
 }
 
+export interface AuditLogApiItem {
+  id: number;
+  userId: number;
+  username: string;
+  action: string;
+  method: string;
+  path: string;
+  ip: string;
+  userAgent: string;
+  status: number;
+  createdAt: number;
+}
+
 export interface SpeedLimitApiItem {
   id: number;
   name: string;

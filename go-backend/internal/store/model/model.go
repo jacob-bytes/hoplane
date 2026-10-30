@@ -9,6 +9,21 @@ import "database/sql"
 
 // User maps to the "user" table. PostgreSQL treats "user" as a reserved
 // word, so TableName() is required for correct quoting.
+type AuditLog struct {
+	ID        int64  `gorm:"primaryKey;autoIncrement"`
+	UserID    int64  `gorm:"column:user_id;not null;index"`
+	Username  string `gorm:"column:username;type:varchar(100);not null;default:''"`
+	Action    string `gorm:"column:action;type:varchar(64);not null;default:''"`
+	Method    string `gorm:"column:method;type:varchar(10);not null;default:''"`
+	Path      string `gorm:"column:path;type:text;not null;default:''"`
+	IP        string `gorm:"column:ip;type:varchar(100);not null;default:''"`
+	UserAgent string `gorm:"column:user_agent;type:text;not null;default:''"`
+	Status    int    `gorm:"column:status;not null;default:0"`
+	CreatedAt int64  `gorm:"column:created_at;not null;index"`
+}
+
+func (AuditLog) TableName() string { return "audit_log" }
+
 type UserSession struct {
 	ID         int64         `gorm:"primaryKey;autoIncrement"`
 	UserID     int64         `gorm:"column:user_id;not null;index"`

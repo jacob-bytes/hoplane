@@ -16,7 +16,14 @@ import type { InboundApiItem } from "@/api/types";
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, Copy, LayoutTemplate, Pencil, X } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowUp,
+  Copy,
+  LayoutTemplate,
+  Pencil,
+  X,
+} from "lucide-react";
 
 import {
   deleteSubscription,

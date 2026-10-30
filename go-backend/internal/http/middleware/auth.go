@@ -19,6 +19,8 @@ type AuthOptions struct {
 	GetUserAuthState func(userID int64) (*auth.UserAuthState, error)
 	// EnsureUserSession records the session and rejects revoked tokens.
 	EnsureUserSession func(userID int64, tokenID, ip, userAgent string, expiresAt int64) (bool, error)
+	// Audit records successful authenticated mutations.
+	Audit func(userID int64, username, action, method, path, ip, userAgent string, status int)
 }
 
 func JWT(opts AuthOptions) func(http.Handler) http.Handler {
@@ -91,7 +93,22 @@ func JWT(opts AuthOptions) func(http.Handler) http.Handler {
 			}
 
 			ctx := context.WithValue(r.Context(), ClaimsContextKey, claims)
-			next.ServeHTTP(w, r.WithContext(ctx))
+			req := r.WithContext(ctx)
+
+			if opts.Audit != nil && shouldAudit(req) {
+				recorder := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
+
+				next.ServeHTTP(recorder, req)
+				opts.Audit(
+					userIDFromClaims(claims), claims.User,
+					auditAction(req.URL.Path), req.Method, req.URL.Path,
+					clientIP(req), req.UserAgent(), recorder.status,
+				)
+
+				return
+			}
+
+			next.ServeHTTP(w, req)
 		})
 	}
 }
@@ -110,6 +127,39 @@ func RequireAdmin(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+type statusRecorder struct {
+	http.ResponseWriter
+	status int
+}
+
+func (r *statusRecorder) WriteHeader(status int) {
+	r.status = status
+	r.ResponseWriter.WriteHeader(status)
+}
+
+func shouldAudit(r *http.Request) bool {
+	if r.Method != http.MethodPost || !strings.HasPrefix(r.URL.Path, "/api/v1/") {
+		return false
+	}
+	if strings.Contains(r.URL.Path, "/federation/") || strings.Contains(r.URL.Path, "/stream") {
+		return false
+	}
+
+	last := r.URL.Path[strings.LastIndex(r.URL.Path, "/")+1:]
+
+	switch last {
+	case "list", "get", "status", "info", "preview", "query", "search",
+		"probe", "diagnose", "check", "render", "export", "test":
+		return false
+	}
+
+	return true
+}
+
+func auditAction(path string) string {
+	return strings.TrimPrefix(path, "/api/v1/")
 }
 
 func userIDFromClaims(claims auth.Claims) int64 {
@@ -169,6 +219,10 @@ func shouldSkip(path string) bool {
 
 func requiresAdmin(path string) bool {
 	if strings.HasPrefix(path, "/api/v1/monitor/permission/") {
+		return true
+	}
+
+	if strings.HasPrefix(path, "/api/v1/audit/") {
 		return true
 	}
 

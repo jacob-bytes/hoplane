@@ -47,6 +47,7 @@ const RelayPage = lazy(loadRelay);
 const SubscriptionPage = lazy(loadSubscription);
 const MySubscriptionsPage = lazy(loadMySubscriptions);
 const ConfigPage = lazy(loadConfig);
+const AuditPage = lazy(() => import("@/pages/audit"));
 const GithubCallbackPage = lazy(() => import("@/pages/github-callback"));
 
 let pagesPreloaded = false;
@@ -365,6 +366,14 @@ function App() {
           </ProtectedRoute>
         }
         path="/config"
+      />
+      <Route
+        element={
+          <ProtectedRoute>
+            <AuditPage />
+          </ProtectedRoute>
+        }
+        path="/audit"
       />
     </Routes>
   );

@@ -154,6 +154,7 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
     "/group": "分发",
     "/limit": "分发",
     "/my-subscriptions": "分发",
+    "/audit": "系统",
     "/config": "系统",
     "/profile": "系统",
   };

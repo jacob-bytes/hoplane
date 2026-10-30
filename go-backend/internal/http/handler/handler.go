@@ -24,6 +24,7 @@ import (
 	"go-backend/internal/monitoring"
 	runtimenft "go-backend/internal/runtime/nftables"
 	"go-backend/internal/security"
+	"go-backend/internal/store/model"
 	"go-backend/internal/store/repo"
 	"go-backend/internal/ws"
 )
@@ -172,6 +173,13 @@ func (h *Handler) GetUserAuthState(userID int64) (*auth.UserAuthState, error) {
 
 func (h *Handler) EnsureUserSession(userID int64, tokenID, ip, userAgent string, expiresAt int64) (bool, error) {
 	return h.repo.EnsureUserSession(userID, tokenID, ip, userAgent, expiresAt)
+}
+
+func (h *Handler) RecordAudit(userID int64, username, action, method, path, ip, userAgent string, status int) {
+	_ = h.repo.CreateAuditLog(model.AuditLog{
+		UserID: userID, Username: username, Action: action, Method: method,
+		Path: path, IP: ip, UserAgent: userAgent, Status: status,
+	})
 }
 
 func (h *Handler) Register(mux *http.ServeMux) {
