@@ -102,6 +102,37 @@ async function visit(role, route) {
   const state = await evaluate(`({ hash: location.hash, text: document.body.innerText.length })`);
   if (!state.hash.startsWith(`#/${route}`)) problems.push(`${current}: ended up at ${state.hash} (signed out?)`);
   else if (state.text < 40) problems.push(`${current}: blank page`);
+
+  if (route === "config") {
+    await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.includes("外观")); b?.click(); return Boolean(b); })()`,
+    );
+    await sleep(500);
+    const text = await evaluate("document.body.innerText");
+    if (text.includes("背景壁纸") || text.includes("赛博朋克")) {
+      problems.push(`${current}: removed appearance controls are still visible`);
+    }
+    if (!text.includes("显示模式")) {
+      problems.push(`${current}: appearance mode picker missing`);
+    }
+  }
+
+  if (route === "audit") {
+    const text = await evaluate("document.body.innerText");
+    if (!text.includes("forward/update")) {
+      problems.push(`${current}: audit rows missing`);
+    }
+    if (!text.includes("xiaoming")) {
+      problems.push(`${current}: audit user missing`);
+    }
+  }
+
+  if (route === "subscription") {
+    const hasEdit = await evaluate(
+      `[...document.querySelectorAll("button")].some((b) => (b.getAttribute("aria-label") || "").startsWith("编辑 "))`,
+    );
+    if (!hasEdit) problems.push(`${current}: subscription edit action missing`);
+  }
 }
 
 current = "admin (first load)";

@@ -184,6 +184,11 @@ func (h *Handler) RecordAudit(userID int64, username, action, method, path, ip, 
 
 func (h *Handler) Register(mux *http.ServeMux) {
 	mux.HandleFunc("/api/v1/user/login", h.login)
+	mux.HandleFunc("/api/v1/user/session/list", h.userSessionList)
+	mux.HandleFunc("/api/v1/user/session/revoke", h.userSessionRevoke)
+	mux.HandleFunc("/api/v1/user/session/revoke-others", h.userSessionRevokeOthers)
+	mux.HandleFunc("/api/v1/user/session/revoke-all", h.userSessionRevokeAll)
+	mux.HandleFunc("/api/v1/audit/list", h.auditList)
 	mux.HandleFunc("/api/v1/user/passkey/status", h.passkeyStatus)
 	mux.HandleFunc("/api/v1/user/passkey/login/begin", h.passkeyLoginBegin)
 	mux.HandleFunc("/api/v1/user/passkey/login/finish", h.passkeyLoginFinish)

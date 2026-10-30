@@ -48,6 +48,47 @@ func TestRunStatisticsFlowJobTracksIncrementAndPrunes(t *testing.T) {
 	if hour != "12:00" {
 		t.Fatalf("expected hour mark 12:00, got %s", hour)
 	}
+
+	// Legacy row has no direction split: fall back to the current 1:2 ratio.
+	var inFlow, outFlow int64
+	if err := r.DB().Raw(`SELECT in_flow, out_flow FROM statistics_flow WHERE user_id = 1 ORDER BY id DESC LIMIT 1`).Row().Scan(&inFlow, &outFlow); err != nil {
+		t.Fatal(err)
+	}
+	if inFlow != 16 || outFlow != 34 {
+		t.Fatalf("expected fallback split 16/34, got %d/%d", inFlow, outFlow)
+	}
+}
+
+func TestRunStatisticsFlowJobTracksDirectionDeltas(t *testing.T) {
+	r, err := repo.Open(filepath.Join(t.TempDir(), "jobs-direction.db"))
+	if err != nil {
+		t.Fatalf("open sqlite: %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	h := New(r, "secret")
+	now := time.Date(2026, 2, 7, 12, 0, 0, 0, time.UTC)
+	nowMs := now.UnixMilli()
+
+	if err := r.DB().Exec(`UPDATE user SET in_flow = 500, out_flow = 700 WHERE id = 1`).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := r.DB().Exec(`INSERT INTO statistics_flow(user_id, flow, in_flow, out_flow, total_flow, time, created_time) VALUES(1, 700, 300, 400, 700, '11:00', ?)`, now.Add(-time.Hour).UnixMilli()).Error; err != nil {
+		t.Fatal(err)
+	}
+
+	h.runStatisticsFlowJob(now)
+
+	var flow, inFlow, outFlow, total int64
+	if err := r.DB().Raw(`SELECT flow, in_flow, out_flow, total_flow FROM statistics_flow WHERE user_id = 1 ORDER BY id DESC LIMIT 1`).Row().Scan(&flow, &inFlow, &outFlow, &total); err != nil {
+		t.Fatal(err)
+	}
+	if flow != 500 || inFlow != 200 || outFlow != 300 || total != 1200 {
+		t.Fatalf("unexpected direction row: flow=%d in=%d out=%d total=%d", flow, inFlow, outFlow, total)
+	}
+	if rowTime := mustQueryInt(t, r, `SELECT COUNT(1) FROM statistics_flow WHERE created_time = ?`, nowMs); rowTime != 1 {
+		t.Fatalf("expected one row at the hour mark, got %d", rowTime)
+	}
 }
 
 func TestRunResetAndExpiryJobResetsFlowAndDisablesExpiredRecords(t *testing.T) {

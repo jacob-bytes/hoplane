@@ -20,6 +20,10 @@ func (r *Repository) EnsureUserSession(userID int64, tokenID, ip, userAgent stri
 	}
 
 	now := time.Now().UnixMilli()
+	if expiresAt > 0 && expiresAt*1000 < now {
+		return false, nil
+	}
+
 	var session model.UserSession
 	err := r.db.Where("token_id = ?", tokenID).First(&session).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
