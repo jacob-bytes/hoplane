@@ -1210,6 +1210,7 @@ export default function UserPage({ embedded = false }: { embedded?: boolean }) {
       ) : (
         <>
           <ListGroup
+            className="user-list"
             columns="minmax(0,1fr) minmax(0,1.15fr) 240px"
             head={[
               <SortHeader

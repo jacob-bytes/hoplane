@@ -565,3 +565,27 @@ body {
 .audit-list [data-slot="list-row"]:last-child {
   border-bottom: 0;
 }
+
+/* User rows: a visible divider and a little more breathing room than the
+ * generic list, matching the audit table. */
+.user-list [data-slot="list-row"] {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.user-list [data-slot="list-row"]:last-child {
+  border-bottom: 0;
+}
+
+.user-list [data-slot="list-row-body"] {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.user-list [data-slot="list-row-body"] > [role="cell"] + [role="cell"] {
+  border-left: 1px solid var(--hairline);
+  padding-left: 1.25rem;
+}
+
+.user-list [data-slot="list-row"]:hover {
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+}
