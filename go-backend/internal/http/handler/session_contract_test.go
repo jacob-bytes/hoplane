@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"go-backend/internal/auth"
 	"go-backend/internal/http/middleware"
@@ -125,5 +126,147 @@ func TestAuditListEndpoint(t *testing.T) {
 	_ = json.Unmarshal(raw, &items)
 	if len(items) != 1 || items[0]["action"] != "node/create" {
 		t.Fatalf("unexpected audit list: %s", raw)
+	}
+}
+
+func TestSessionRevokeSingleDevice(t *testing.T) {
+	r, err := repo.Open(t.TempDir() + "/session-revoke-one.db")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+	h := New(r, "unit-test-secret")
+	mux := http.NewServeMux()
+	h.Register(mux)
+	router := middleware.JWT(middleware.AuthOptions{
+		JWTSecret:         "unit-test-secret",
+		GetUserAuthState:  h.GetUserAuthState,
+		EnsureUserSession: h.EnsureUserSession,
+	})(mux)
+
+	token1, _ := auth.GenerateToken(1, "admin_user", 0, "unit-test-secret")
+	token2, _ := auth.GenerateToken(1, "admin_user", 0, "unit-test-secret")
+	call := func(token, path, body string) response.R {
+		req := httptest.NewRequest(http.MethodPost, path, bytes.NewBufferString(body))
+		req.Header.Set("Content-Type", "application/json")
+		req.Header.Set("Authorization", token)
+		rec := httptest.NewRecorder()
+		router.ServeHTTP(rec, req)
+		var out response.R
+		_ = json.NewDecoder(rec.Body).Decode(&out)
+
+		return out
+	}
+
+	out := call(token1, "/api/v1/user/session/list", "{}")
+	_ = call(token2, "/api/v1/user/session/list", "{}")
+	out = call(token1, "/api/v1/user/session/list", "{}")
+	raw, _ := json.Marshal(out.Data)
+	var items []map[string]interface{}
+	_ = json.Unmarshal(raw, &items)
+	if len(items) != 2 {
+		t.Fatalf("sessions = %d", len(items))
+	}
+
+	var otherID float64
+	for _, item := range items {
+		if item["current"] != true {
+			otherID, _ = item["id"].(float64)
+		}
+	}
+	if otherID == 0 {
+		t.Fatal("other session id not found")
+	}
+
+	body, _ := json.Marshal(map[string]interface{}{"id": int64(otherID)})
+	if out := call(token1, "/api/v1/user/session/revoke", string(body)); out.Code != 0 {
+		t.Fatalf("revoke failed: %+v", out)
+	}
+	if out := call(token2, "/api/v1/user/session/list", "{}"); out.Code != 401 {
+		t.Fatalf("revoked token still accepted: %+v", out)
+	}
+}
+
+func TestAuditListRequiresAdmin(t *testing.T) {
+	r, err := repo.Open(t.TempDir() + "/audit-role.db")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+	h := New(r, "unit-test-secret")
+	mux := http.NewServeMux()
+	h.Register(mux)
+	router := middleware.JWT(middleware.AuthOptions{
+		JWTSecret:        "unit-test-secret",
+		GetUserAuthState: h.GetUserAuthState,
+	})(mux)
+
+	if _, err := r.CreateUser("normal_user", "pwd", 1, 2727251700000, 100, 0, 10, 1, 0, 1); err != nil {
+		t.Fatal(err)
+	}
+	token, _ := auth.GenerateToken(2, "normal_user", 1, "unit-test-secret")
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/audit/list", bytes.NewBufferString("{}"))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", token)
+	rec := httptest.NewRecorder()
+	router.ServeHTTP(rec, req)
+
+	var out response.R
+	_ = json.NewDecoder(rec.Body).Decode(&out)
+	if out.Code != 403 {
+		t.Fatalf("expected 403, got %+v", out)
+	}
+}
+
+func TestUserPackageReturnsDirectionalStatistics(t *testing.T) {
+	r, err := repo.Open(t.TempDir() + "/package-stats.db")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+	h := New(r, "unit-test-secret")
+	mux := http.NewServeMux()
+	h.Register(mux)
+	router := middleware.JWT(middleware.AuthOptions{
+		JWTSecret:        "unit-test-secret",
+		GetUserAuthState: h.GetUserAuthState,
+	})(mux)
+
+	userID, err := r.CreateUser("pkg_user", "pwd", 1, 2727251700000, 1000, 0, 10, 1, 0, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	now := time.Now().UnixMilli()
+	if err := r.CreateStatisticsFlow(userID, 300, 100, 200, 300, "10:00", now); err != nil {
+		t.Fatal(err)
+	}
+	if err := r.CreateStatisticsFlow(userID, 500, 200, 300, 800, "11:00", now+3600_000); err != nil {
+		t.Fatal(err)
+	}
+
+	token, _ := auth.GenerateToken(userID, "pkg_user", 1, "unit-test-secret")
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/user/package", bytes.NewBufferString("{}"))
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", token)
+	rec := httptest.NewRecorder()
+	router.ServeHTTP(rec, req)
+
+	var out response.R
+	_ = json.NewDecoder(rec.Body).Decode(&out)
+	if out.Code != 0 {
+		t.Fatalf("user package failed: %+v", out)
+	}
+	data, _ := out.Data.(map[string]interface{})
+	raw, _ := json.Marshal(data["statisticsFlows"])
+	var rows []map[string]interface{}
+	_ = json.Unmarshal(raw, &rows)
+	if len(rows) != 2 {
+		t.Fatalf("statistics rows = %d", len(rows))
+	}
+	if rows[0]["inFlow"].(float64) != 100 || rows[0]["outFlow"].(float64) != 200 {
+		t.Fatalf("missing direction fields: %+v", rows[0])
+	}
+	if rows[0]["createdTime"].(float64) != float64(now) {
+		t.Fatalf("missing createdTime: %+v", rows[0])
 	}
 }

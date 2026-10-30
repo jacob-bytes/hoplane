@@ -3,6 +3,8 @@ package repo
 import (
 	"testing"
 	"time"
+
+	"go-backend/internal/store/model"
 )
 
 func TestUserSessionLifecycle(t *testing.T) {
@@ -97,5 +99,83 @@ func TestUserSessionRejectsExpiredToken(t *testing.T) {
 	}
 	if valid {
 		t.Fatal("expired session was accepted")
+	}
+}
+
+func TestRevokeUserSessionIsScopedToUser(t *testing.T) {
+	r, err := Open(t.TempDir() + "/sessions-scope.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	expiry := time.Now().Add(time.Hour).Unix()
+	if _, err := r.EnsureUserSession(1, "owner", "127.0.0.1", "ua", expiry); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := r.EnsureUserSession(2, "victim", "127.0.0.1", "ua", expiry); err != nil {
+		t.Fatal(err)
+	}
+
+	items, _ := r.ListUserSessions(2)
+	if len(items) != 1 {
+		t.Fatalf("victim sessions = %d", len(items))
+	}
+	if err := r.RevokeUserSession(1, items[0].ID); err != nil {
+		t.Fatal(err)
+	}
+	if valid, _ := r.EnsureUserSession(2, "victim", "127.0.0.1", "ua", expiry); !valid {
+		t.Fatal("another user's session was revoked")
+	}
+}
+
+func TestEnsureUserSessionRefreshesLastSeen(t *testing.T) {
+	r, err := Open(t.TempDir() + "/sessions-seen.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	expiry := time.Now().Add(time.Hour).Unix()
+	if _, err := r.EnsureUserSession(1, "seen", "127.0.0.1", "ua", expiry); err != nil {
+		t.Fatal(err)
+	}
+	old := time.Now().Add(-10 * time.Minute).UnixMilli()
+	if err := r.DB().Model(&model.UserSession{}).Where("token_id = ?", "seen").Update("last_seen_at", old).Error; err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := r.EnsureUserSession(1, "seen", "127.0.0.1", "ua", expiry); err != nil {
+		t.Fatal(err)
+	}
+	var seen int64
+	if err := r.DB().Raw(`SELECT last_seen_at FROM user_session WHERE token_id = ?`, "seen").Row().Scan(&seen); err != nil {
+		t.Fatal(err)
+	}
+	if seen <= old {
+		t.Fatalf("last_seen_at was not refreshed: %d", seen)
+	}
+}
+
+func TestPurgeUserSessions(t *testing.T) {
+	r, err := Open(t.TempDir() + "/sessions-purge.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	expiry := time.Now().Add(time.Hour).Unix()
+	if _, err := r.EnsureUserSession(1, "purge", "127.0.0.1", "ua", expiry); err != nil {
+		t.Fatal(err)
+	}
+	cutoff := time.Now().Add(-time.Hour).UnixMilli()
+	if err := r.DB().Model(&model.UserSession{}).Where("token_id = ?", "purge").Update("revoked_at", cutoff-1).Error; err != nil {
+		t.Fatal(err)
+	}
+	if err := r.PurgeUserSessions(cutoff); err != nil {
+		t.Fatal(err)
+	}
+	if items, _ := r.ListUserSessions(1); len(items) != 0 {
+		t.Fatalf("revoked session was not purged: %+v", items)
 	}
 }

@@ -1,10 +1,15 @@
 package middleware
 
 import (
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
+	"time"
 
 	"go-backend/internal/auth"
 	"go-backend/internal/http/response"
@@ -63,7 +68,7 @@ func TestSessionMiddlewareRejectsRevokedToken(t *testing.T) {
 func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 	token := testToken(t)
 	var calls int
-	var action, username string
+	var action, username, auditedIP, auditedUA string
 	handler := JWT(AuthOptions{
 		JWTSecret: "unit-test-secret",
 		GetUserAuthState: func(userID int64) (*auth.UserAuthState, error) {
@@ -73,6 +78,8 @@ func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 			calls++
 			username = user
 			action = auditedAction
+			auditedIP = ip
+			auditedUA = ua
 			if status != 0 {
 				t.Fatalf("expected pre-handler status 0, got %d", status)
 			}
@@ -84,12 +91,15 @@ func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 	post := func(path string) {
 		req := httptest.NewRequest(http.MethodPost, path, nil)
 		req.Header.Set("Authorization", token)
+		req.Header.Set("User-Agent", "audit-test-agent")
 		handler.ServeHTTP(httptest.NewRecorder(), req)
 	}
 
 	post("/api/v1/forward/create")
-	if calls != 1 || action != "forward/create" || username != "admin_user" {
-		t.Fatalf("unexpected audit: calls=%d action=%q user=%q", calls, action, username)
+	if calls != 1 || action != "forward/create" || username != "admin_user" ||
+		auditedIP == "" || auditedUA != "audit-test-agent" {
+		t.Fatalf("unexpected audit: calls=%d action=%q user=%q ip=%q ua=%q",
+			calls, action, username, auditedIP, auditedUA)
 	}
 
 	post("/api/v1/forward/list")
@@ -97,4 +107,47 @@ func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 	if calls != 1 {
 		t.Fatalf("read/federation requests were audited: %d", calls)
 	}
+}
+
+func TestLegacyTokenWithoutJTIStillWorks(t *testing.T) {
+	const secret = "unit-test-secret"
+	encode := func(value string) string {
+		return base64.RawURLEncoding.EncodeToString([]byte(value))
+	}
+	now := time.Now()
+	header := encode(`{"alg":"HmacSHA256","typ":"JWT"}`)
+	payload := encode(`{"sub":"1","iat":` + jsonNumber(now.Unix()) + `,"iat_ms":` + jsonNumber(now.UnixMilli()) + `,"exp":` + jsonNumber(now.Add(time.Hour).Unix()) + `,"user":"admin_user","name":"admin_user","role_id":0}`)
+	mac := hmac.New(sha256.New, []byte(secret))
+	_, _ = mac.Write([]byte(header + "." + payload))
+	token := header + "." + payload + "." + base64.RawURLEncoding.EncodeToString(mac.Sum(nil))
+
+	called := false
+	handler := JWT(AuthOptions{
+		JWTSecret: secret,
+		GetUserAuthState: func(userID int64) (*auth.UserAuthState, error) {
+			return &auth.UserAuthState{ID: userID, RoleID: 0, Status: 1}, nil
+		},
+		EnsureUserSession: func(int64, string, string, string, int64) (bool, error) {
+			called = true
+
+			return true, nil
+		},
+	})(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	}))
+
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/node/list", nil)
+	req.Header.Set("Authorization", token)
+	res := httptest.NewRecorder()
+	handler.ServeHTTP(res, req)
+	if res.Code != http.StatusNoContent {
+		t.Fatalf("legacy token status = %d", res.Code)
+	}
+	if called {
+		t.Fatal("session lookup ran for a legacy token without jti")
+	}
+}
+
+func jsonNumber(value int64) string {
+	return strconv.FormatInt(value, 10)
 }

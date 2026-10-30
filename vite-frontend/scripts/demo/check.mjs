@@ -115,6 +115,10 @@ async function visit(role, route) {
     if (!text.includes("显示模式")) {
       problems.push(`${current}: appearance mode picker missing`);
     }
+    const rootClass = await evaluate("document.documentElement.className");
+    if (rootClass.includes("has-custom-bg") || rootClass.includes("has-wallpaper-bg")) {
+      problems.push(`${current}: legacy background class is active`);
+    }
   }
 
   if (route === "audit") {
@@ -132,6 +136,35 @@ async function visit(role, route) {
       `[...document.querySelectorAll("button")].some((b) => (b.getAttribute("aria-label") || "").startsWith("编辑 "))`,
     );
     if (!hasEdit) problems.push(`${current}: subscription edit action missing`);
+    const opened = await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find((x) => (x.getAttribute("aria-label") || "").startsWith("编辑 ")); if (!b) return false; b.click(); return true; })()`,
+    );
+    await sleep(500);
+    if (!opened) {
+      problems.push(`${current}: subscription edit button did not click`);
+    } else {
+      const dialog = await evaluate(
+        `Boolean(document.querySelector('[role="dialog"]'))`,
+      );
+      if (!dialog) problems.push(`${current}: subscription editor did not open`);
+      await evaluate(
+        `(() => { const b = [...document.querySelectorAll("button")].find((x) => ["取消", "关闭"].includes(x.textContent.trim())); b?.click(); return true; })()`,
+      );
+    }
+  }
+
+  if (route === "node") {
+    await evaluate(`document.querySelector('[data-slot="list-row"] button')?.click()`);
+    await sleep(350);
+    await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.includes("详情")); b?.click(); return Boolean(b); })()`,
+    );
+    await sleep(450);
+    const detail = await evaluate(`document.body.innerText.includes("实时资源")`);
+    if (!detail) problems.push(`${current}: node detail dialog missing`);
+    await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.trim() === "关闭"); b?.click(); return true; })()`,
+    );
   }
 }
 
