@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"encoding/json"
 	"io"
+	"net"
 	"net/http"
 	"net/netip"
 	"net/url"
@@ -11,7 +12,65 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/oschwald/maxminddb-golang"
 )
+
+type geoMMDBRecord struct {
+	Country struct {
+		ISOCode string `maxminddb:"iso_code"`
+	} `maxminddb:"country"`
+}
+
+var (
+	geoMMDBOnce sync.Once
+	geoMMDB     *maxminddb.Reader
+)
+
+func loadGeoMMDB() {
+	paths := []string{strings.TrimSpace(os.Getenv("HOPLANE_GEOIP_MMDB"))}
+	paths = append(paths,
+		"/usr/share/hoplane/GeoLite2-Country.mmdb",
+		"/app/GeoLite2-Country.mmdb",
+		"GeoLite2-Country.mmdb",
+	)
+
+	for _, path := range paths {
+		if path == "" {
+			continue
+		}
+		if _, err := os.Stat(path); err != nil {
+			continue
+		}
+		reader, err := maxminddb.Open(path)
+		if err == nil {
+			geoMMDB = reader
+
+			return
+		}
+	}
+}
+
+func lookupGeoMMDB(ip string) string {
+	geoMMDBOnce.Do(loadGeoMMDB)
+	if geoMMDB == nil {
+		return ""
+	}
+	addr, err := netip.ParseAddr(strings.TrimSpace(ip))
+	if err != nil {
+		return ""
+	}
+	var record geoMMDBRecord
+	if err := geoMMDB.Lookup(net.IP(addr.AsSlice()), &record); err != nil {
+		return ""
+	}
+	code := strings.ToUpper(strings.TrimSpace(record.Country.ISOCode))
+	if len(code) != 2 {
+		return ""
+	}
+
+	return code
+}
 
 type geoCSVEntry struct {
 	prefix netip.Prefix
@@ -79,6 +138,9 @@ func lookupGeoCSV(ip string) string {
 // It is deliberately opt-in: a self-hosted panel should not send node IPs to
 // a third party unless the operator configures one.
 func (h *Handler) lookupNodeCountry(ip string) string {
+	if code := lookupGeoMMDB(ip); code != "" {
+		return code
+	}
 	if code := lookupGeoCSV(ip); code != "" {
 		return code
 	}

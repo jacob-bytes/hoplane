@@ -3,6 +3,7 @@ package handler
 import (
 	"os"
 	"path/filepath"
+	"sync"
 	"testing"
 )
 
@@ -24,5 +25,22 @@ func TestLookupNodeCountryFromOfflineCSV(t *testing.T) {
 	}
 	if got := h.lookupNodeCountry("192.0.2.1"); got != "" {
 		t.Fatalf("expected no match, got %q", got)
+	}
+}
+
+func TestLookupNodeCountryFromMMDB(t *testing.T) {
+	path := os.Getenv("HOPLANE_TEST_GEOIP_MMDB")
+	if path == "" {
+		t.Skip("HOPLANE_TEST_GEOIP_MMDB not set")
+	}
+
+	geoMMDBOnce = sync.Once{}
+	geoMMDB = nil
+	t.Setenv("HOPLANE_GEOIP_MMDB", path)
+	t.Setenv("HOPLANE_GEOIP_CSV", "")
+	t.Setenv("HOPLANE_GEOIP_URL", "")
+
+	if got := (&Handler{}).lookupNodeCountry("8.8.8.8"); got != "US" {
+		t.Fatalf("expected US from MMDB, got %q", got)
 	}
 }
