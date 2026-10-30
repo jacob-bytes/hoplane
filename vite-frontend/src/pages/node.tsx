@@ -50,6 +50,7 @@ import {
   batchDeleteNodes,
   upgradeNode,
   batchUpgradeNodes,
+  nodeTune,
   getNodeReleases,
   rollbackNode,
   getPeerRemoteUsageList,
@@ -358,6 +359,7 @@ export default function NodePage({
     useState<ReleaseChannel>("stable");
   const [selectedVersion, setSelectedVersion] = useState("");
   const [batchUpgradeLoading, setBatchUpgradeLoading] = useState(false);
+  const [batchTuneLoading, setBatchTuneLoading] = useState(false);
   // This month's traffic per node, for the rows.
   const [monthTraffic, setMonthTraffic] = useState<
     Record<string, [number, number]>
@@ -1011,6 +1013,35 @@ export default function NodePage({
   }, []);
 
   // 打开版本选择弹窗
+  const handleBatchTune = async () => {
+    const ids = displayNodes
+      .filter((node) => selectedIds.has(node.id) && node.isRemote !== 1)
+      .map((node) => node.id);
+
+    if (ids.length === 0 || batchTuneLoading) return;
+    if (!window.confirm(`对 ${ids.length} 台服务器应用推荐网络参数？`)) return;
+    setBatchTuneLoading(true);
+    let ok = 0;
+
+    try {
+      for (const id of ids) {
+        const status = await nodeTune(id, "status");
+
+        if (status.code !== 0 || !status.data) continue;
+        const result = await nodeTune(
+          id,
+          "apply",
+          status.data.groups.map((group) => group.id),
+        );
+
+        if (result.code === 0) ok += 1;
+      }
+      toast.success(`批量调优完成：${ok}/${ids.length}`);
+    } finally {
+      setBatchTuneLoading(false);
+    }
+  };
+
   const openUpgradeModal = async (
     target: "single" | "batch",
     nodeId?: number,
@@ -1699,6 +1730,12 @@ export default function NodePage({
               label: "升级",
               disabled: !canBatchUpgrade || batchUpgradeLoading,
               onClick: () => openUpgradeModal("batch"),
+            },
+            {
+              key: "tune",
+              label: "调优",
+              disabled: !canBatchUpgrade || batchTuneLoading,
+              onClick: () => void handleBatchTune(),
             },
             {
               key: "targets",

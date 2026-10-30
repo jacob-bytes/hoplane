@@ -25,6 +25,18 @@ type AuditLog struct {
 
 func (AuditLog) TableName() string { return "audit_log" }
 
+type NotifyLog struct {
+	ID        int64  `gorm:"primaryKey;autoIncrement"`
+	Event     string `gorm:"column:event;type:varchar(64);not null;default:''"`
+	Title     string `gorm:"column:title;type:varchar(255);not null;default:''"`
+	Message   string `gorm:"column:message;type:text;not null;default:''"`
+	Success   bool   `gorm:"column:success;not null;default:false"`
+	Error     string `gorm:"column:error;type:text;not null;default:''"`
+	CreatedAt int64  `gorm:"column:created_at;not null;index"`
+}
+
+func (NotifyLog) TableName() string { return "notify_log" }
+
 type UserSession struct {
 	ID         int64         `gorm:"primaryKey;autoIncrement"`
 	UserID     int64         `gorm:"column:user_id;not null;index"`

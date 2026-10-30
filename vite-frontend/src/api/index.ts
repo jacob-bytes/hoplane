@@ -24,6 +24,7 @@ import type {
   TunnelMutationPayload,
   UserSessionApiItem,
   AuditLogPage,
+  NotifyLogItem,
   UserQuotaResetPayload,
   UserTunnelAssignPayload,
   UserTunnelListQuery,
@@ -969,6 +970,11 @@ export interface UserSubscription {
 export const getMySubscriptions = () =>
   Network.post<UserSubscription[]>("/user/subscription/list");
 /** Gives one of the user's subscriptions a new link and credentials. */
+export const getNotifyLogs = () =>
+  Network.post<NotifyLogItem[]>("/notify/logs/list");
+export const resendNotifyLog = (id: number) =>
+  Network.post("/notify/logs/resend", { id });
+
 export const getAuditLogs = (
   page = 1,
   pageSize = 50,
@@ -1256,3 +1262,5 @@ export type { UserSessionApiItem } from "./types";
 export type { AuditLogApiItem, AuditLogPage } from "./types";
 
 export type { NodeMetricApiItem } from "./types";
+
+export type { NotifyLogItem } from "./types";

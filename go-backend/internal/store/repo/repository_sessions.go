@@ -106,3 +106,15 @@ func (r *Repository) HasUserSessionIP(userID int64, ip string) (bool, error) {
 
 	return count > 0, err
 }
+
+func (r *Repository) ListUserSessionIPs(userID int64) ([]string, error) {
+	if r == nil || r.db == nil {
+		return nil, errors.New("repository not initialized")
+	}
+	var ips []string
+	err := r.db.Model(&model.UserSession{}).
+		Where("user_id = ? AND revoked_at IS NULL", userID).
+		Distinct().Pluck("ip", &ips).Error
+
+	return ips, err
+}

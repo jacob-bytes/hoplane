@@ -1,9 +1,9 @@
-import { getNodeMetrics, type NodeMetricApiItem } from "@/api";
 import type { Node } from "@/pages/node/types";
 
 import { Activity, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 
+import { getNodeMetrics, type NodeMetricApiItem } from "@/api";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -59,6 +59,7 @@ export function NodeDetailDialog({
     }
     const end = Date.now();
     const start = end - 24 * 3600_000;
+
     getNodeMetrics(node.id, start, end)
       .then((res) => setMetrics(res.code === 0 ? res.data || [] : []))
       .catch(() => setMetrics([]));
@@ -236,9 +237,15 @@ function Spark({ label, values }: { label: string; values: number[] }) {
     <div className="min-w-0">
       <div className="mb-1 flex items-baseline justify-between text-[10px] text-muted-foreground">
         <span>{label}</span>
-        <span className="font-mono">{Math.round(values[values.length - 1])}</span>
+        <span className="font-mono">
+          {Math.round(values[values.length - 1])}
+        </span>
       </div>
-      <svg className="h-7 w-full text-primary" preserveAspectRatio="none" viewBox="0 0 100 30">
+      <svg
+        className="h-7 w-full text-primary"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 30"
+      >
         <polyline
           fill="none"
           points={points}

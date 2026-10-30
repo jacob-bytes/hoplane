@@ -248,6 +248,10 @@ async function answer(config: InternalAxiosRequestConfig) {
     return { code: 0, msg: "操作成功", data, ts: now };
   }
 
+  if (bare === "notify/logs/list") {
+    return { code: 0, msg: "操作成功", data: [], ts: Date.now() };
+  }
+
   if (bare === "user/session/list") {
     const now = Date.now();
 

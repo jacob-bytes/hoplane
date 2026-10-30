@@ -178,7 +178,19 @@ func (h *Handler) EnsureUserSession(userID int64, tokenID, ip, userAgent string,
 		key := fmt.Sprintf("login:%d:%s", userID, ip)
 		if h.notifier.alertOnce(key) {
 			username := h.repo.GetUsernameByID(userID)
-			h.notify(notifyEventSessionNew, "新 IP 登录",
+			title := "新 IP 登录"
+			if country := h.lookupNodeCountry(ip); country != "" {
+				if ips, err := h.repo.ListUserSessionIPs(userID); err == nil {
+					for _, previous := range ips {
+						oldCountry := h.lookupNodeCountry(previous)
+						if oldCountry != "" && oldCountry != country {
+							title = "新国家/地区登录"
+							break
+						}
+					}
+				}
+			}
+			h.notify(notifyEventSessionNew, title,
 				fmt.Sprintf("用户：%s\nIP：%s\n设备：%s", username, ip, userAgent))
 		}
 	}
@@ -290,6 +302,8 @@ func (h *Handler) Register(mux *http.ServeMux) {
 	mux.HandleFunc("/api/v1/node/route/probe", h.nodeRouteProbe)
 	mux.HandleFunc("/api/v1/inbound/batch-toggle", h.inboundBatchToggle)
 	mux.HandleFunc("/api/v1/notify/test", h.notifyTest)
+	mux.HandleFunc("/api/v1/notify/logs/list", h.notifyLogsList)
+	mux.HandleFunc("/api/v1/notify/logs/resend", h.notifyLogResend)
 	mux.HandleFunc("/api/v1/subscription/list", h.subscriptionList)
 	mux.HandleFunc("/api/v1/subscription/save", h.subscriptionSave)
 	mux.HandleFunc("/api/v1/subscription/delete", h.subscriptionDelete)

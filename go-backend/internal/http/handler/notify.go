@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"go-backend/internal/http/response"
+	"go-backend/internal/store/model"
 )
 
 // Notification events. An empty notify_events config enables all of them.
@@ -129,9 +130,16 @@ func (h *Handler) notify(event, title, message string) {
 	}
 	msg := notifyMessage{Event: event, Title: title, Message: message, Time: time.Now().UnixMilli(), App: app}
 	go func() {
-		if err := h.notifier.send(context.Background(), settings, msg); err != nil {
+		err := h.notifier.send(context.Background(), settings, msg)
+		entry := model.NotifyLog{
+			Event: event, Title: title, Message: message,
+			Success: err == nil, CreatedAt: time.Now().UnixMilli(),
+		}
+		if err != nil {
+			entry.Error = err.Error()
 			log.Printf("notify %s failed: %v", event, err)
 		}
+		_ = h.repo.CreateNotifyLog(entry)
 	}()
 }
 

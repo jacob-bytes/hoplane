@@ -218,6 +218,7 @@ func autoMigrateAll(db *gorm.DB) error {
 		&model.StatisticsFlow{},
 		&model.UserSession{},
 		&model.AuditLog{},
+		&model.NotifyLog{},
 		&model.Tunnel{},
 		&model.ChainTunnel{},
 		&model.UserTunnel{},

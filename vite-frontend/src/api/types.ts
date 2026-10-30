@@ -164,6 +164,16 @@ export interface AuditLogPage {
   pageSize: number;
 }
 
+export interface NotifyLogItem {
+  id: number;
+  event: string;
+  title: string;
+  message: string;
+  success: boolean;
+  error: string;
+  createdAt: number;
+}
+
 export interface SpeedLimitApiItem {
   id: number;
   name: string;

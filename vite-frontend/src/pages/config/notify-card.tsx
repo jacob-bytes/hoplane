@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { testNotify } from "@/api";
+import {
+  getNotifyLogs,
+  resendNotifyLog,
+  testNotify,
+  type NotifyLogItem,
+} from "@/api";
 import { Button } from "@/components/ui/button";
 import { Checkbox, checkboxHandler } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -102,6 +107,15 @@ export function NotifySettings({
   onChange,
 }: NotifySettingsProps) {
   const [testing, setTesting] = useState(false);
+  const [logs, setLogs] = useState<NotifyLogItem[]>([]);
+  const loadLogs = () =>
+    getNotifyLogs()
+      .then((res) => setLogs(res.code === 0 ? res.data || [] : []))
+      .catch(() => setLogs([]));
+
+  useEffect(() => {
+    void loadLogs();
+  }, []);
   const enabled = configs.notify_enabled === "true";
   const selected = selectedEvents(configs);
 
@@ -215,6 +229,16 @@ export function NotifySettings({
         ))}
       </div>
 
+      <SubHeading>告警阈值</SubHeading>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <Field help="1–100，默认 90" label="流量提醒比例（%）">
+          {input("notify_flow_warn_ratio", "90", "number")}
+        </Field>
+        <Field help="1–30，默认 3" label="到期提前提醒（天）">
+          {input("notify_expiry_days", "3", "number")}
+        </Field>
+      </div>
+
       {selected.includes("latency_bad") && (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <Field help="1–100，默认 20" label="丢包超过">
@@ -291,6 +315,42 @@ export function NotifySettings({
         >
           发送测试
         </Button>
+      </div>
+      <SubHeading>最近告警</SubHeading>
+      <div className="flex flex-col gap-2">
+        {logs.length === 0 ? (
+          <p className="text-xs text-muted-foreground">还没有发送记录</p>
+        ) : (
+          logs.slice(0, 6).map((log) => (
+            <div
+              key={log.id}
+              className="flex items-center justify-between gap-3 rounded-lg border border-hairline px-3 py-2"
+            >
+              <div className="min-w-0">
+                <div className="truncate text-sm">
+                  {log.title}
+                  <span
+                    className={`ml-2 text-[11px] ${log.success ? "text-success" : "text-destructive"}`}
+                  >
+                    {log.success ? "成功" : "失败"}
+                  </span>
+                </div>
+                <div className="truncate text-[11px] text-muted-foreground">
+                  {new Date(log.createdAt).toLocaleString()} · {log.event}
+                </div>
+              </div>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() =>
+                  void resendNotifyLog(log.id).then(() => loadLogs())
+                }
+              >
+                重发
+              </Button>
+            </div>
+          ))
+        )}
       </div>
     </>
   );

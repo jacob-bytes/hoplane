@@ -22,7 +22,28 @@ const (
 	notifyCheckInterval  = 10 * time.Minute
 	defaultDailyHour     = 9
 	notifyUserExpiryDays = 3
+	notifyConfigFlowWarn = "notify_flow_warn_ratio"
+	notifyConfigExpiry   = "notify_expiry_days"
 )
+
+func (h *Handler) notifyThresholds() (float64, int) {
+	ratio := notifyFlowWarnRatio
+	expiryDays := notifyUserExpiryDays
+	if cfg, err := h.repo.ListConfigs(); err == nil {
+		if raw := strings.TrimSpace(cfg[notifyConfigFlowWarn]); raw != "" {
+			if value, err := strconv.ParseFloat(raw, 64); err == nil && value >= 1 && value <= 100 {
+				ratio = value / 100
+			}
+		}
+		if raw := strings.TrimSpace(cfg[notifyConfigExpiry]); raw != "" {
+			if value, err := strconv.Atoi(raw); err == nil && value >= 1 && value <= 30 {
+				expiryDays = value
+			}
+		}
+	}
+
+	return ratio, expiryDays
+}
 
 func formatBytes(n int64) string {
 	units := []string{"B", "KB", "MB", "GB", "TB"}
@@ -76,7 +97,8 @@ func (h *Handler) checkUserReminders(now time.Time) {
 	if h.notifier == nil {
 		return
 	}
-	window := time.Duration(notifyUserExpiryDays) * 24 * time.Hour
+	ratio, expiryDays := h.notifyThresholds()
+	window := time.Duration(expiryDays) * 24 * time.Hour
 	if users, err := h.repo.ListUsersForNotify(); err == nil {
 		for _, u := range users {
 			if u.RoleID == 0 || u.Status != 1 {
@@ -93,7 +115,7 @@ func (h *Handler) checkUserReminders(now time.Time) {
 					h.notify(notifyEventUserQuota, "用户流量已用完",
 						fmt.Sprintf("用户：%s\n已用：%s / %s", u.User, formatBytes(used), formatBytes(limit)))
 				}
-			case float64(used) >= float64(limit)*notifyFlowWarnRatio:
+			case float64(used) >= float64(limit)*ratio:
 				if h.notifier.alertOnce(flowKey + "warn") {
 					h.notify(notifyEventUserQuota, "用户流量即将用完",
 						fmt.Sprintf("用户：%s\n已用：%s / %s（%.0f%%）", u.User, formatBytes(used), formatBytes(limit),
@@ -137,6 +159,7 @@ func (h *Handler) checkUserReminders(now time.Time) {
 
 // checkSubQuota reports a share subscription near or at its traffic limit.
 func (h *Handler) checkSubQuota(s *model.Subscription) {
+	ratio, _ := h.notifyThresholds()
 	key := fmt.Sprintf("subflow:%d:", s.ID)
 	used, limit := subUsed(s), s.TrafficLimit
 	switch {
@@ -147,7 +170,7 @@ func (h *Handler) checkSubQuota(s *model.Subscription) {
 			h.notify(notifyEventUserQuota, "分享订阅流量已用完，已断开",
 				fmt.Sprintf("订阅：%s\n已用：%s / %s", s.Name, formatBytes(used), formatBytes(limit)))
 		}
-	case float64(used) >= float64(limit)*notifyFlowWarnRatio:
+	case float64(used) >= float64(limit)*ratio:
 		if h.notifier.alertOnce(key + "warn") {
 			h.notify(notifyEventUserQuota, "分享订阅流量即将用完",
 				fmt.Sprintf("订阅：%s\n已用：%s / %s（%.0f%%）", s.Name, formatBytes(used), formatBytes(limit),
@@ -189,6 +212,7 @@ func (h *Handler) maybeDailyReport(now time.Time) {
 }
 
 func (h *Handler) dailyReportText(now time.Time) string {
+	_, expiryDays := h.notifyThresholds()
 	var lines []string
 	if online, total, err := h.repo.CountNodesOnline(); err == nil && total > 0 {
 		lines = append(lines, fmt.Sprintf("服务器在线：%d / %d", online, total))
@@ -241,7 +265,7 @@ func (h *Handler) dailyReportText(now time.Time) string {
 			total++
 			if subActive(&subs[i], now) {
 				active++
-				if subs[i].ExpireTime > 0 && time.UnixMilli(subs[i].ExpireTime).Sub(now) <= notifyUserExpiryDays*24*time.Hour {
+				if subs[i].ExpireTime > 0 && time.UnixMilli(subs[i].ExpireTime).Sub(now) <= time.Duration(expiryDays)*24*time.Hour {
 					soon++
 				}
 			}
