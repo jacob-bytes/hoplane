@@ -1,5 +1,4 @@
 import {
-  Activity,
   ArrowLeftRight,
   Globe,
   LayoutDashboard,
@@ -128,12 +127,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
       adminOnly: true,
     },
     {
-      path: "/monitor",
-      label: "监控",
-      icon: <Activity className="h-5 w-5" />,
-      userOnly: true,
-    },
-    {
       path: "/profile",
       label: "我的",
       adminLabel: "更多",
@@ -148,7 +141,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
     "/relay": "资源",
     "/tunnel": "资源",
     "/forward": "资源",
-    "/monitor": "资源",
     "/subscription": "分发",
     "/user": "分发",
     "/group": "分发",

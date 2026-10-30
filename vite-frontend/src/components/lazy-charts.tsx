@@ -48,11 +48,6 @@ export function LatencyTrendModal(
   return <LazyLatencyTrendModal {...props} />;
 }
 
-export const MonitorView = lazyNamed(
-  () => import("@/pages/node/monitor-view").then((m) => m.MonitorView),
-  loading,
-);
-
 export const TunnelMonitorView = lazyNamed(
   () =>
     import("@/pages/node/tunnel-monitor-view").then((m) => m.TunnelMonitorView),

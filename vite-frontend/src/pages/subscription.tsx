@@ -47,8 +47,6 @@ import {
   SortHeader,
   TablePagination,
 } from "@/components/page-kit";
-import { CARD_GRID, InfoCard } from "@/components/info-card";
-import { useViewMode } from "@/components/view-mode";
 import { ListPageSkeleton } from "@/components/page-state";
 import {
   markPageCached,
@@ -1148,7 +1146,6 @@ const PAGE = "subscription";
 export default function SubscriptionPage() {
   // A revisit shows the last data at once and reloads in the background.
   const [loading, setLoading] = useState(() => !pageCached(PAGE));
-  const [viewMode, setViewMode] = useViewMode("subscription");
   const [subs, setSubs] = useCachedState<SubscriptionItem[]>(PAGE, "subs", []);
   const [regions, setRegions] = useCachedState<string[]>(PAGE, "regions", []);
   const [ruleGroups, setRuleGroups] = useCachedState<SubRuleGroup[]>(
@@ -1420,59 +1417,6 @@ export default function SubscriptionPage() {
       />
     </>
   );
-  const subCard = (s: SubscriptionItem) => (
-    <InfoCard
-      key={s.id}
-      actions={[
-        {
-          key: "copy",
-          label: "复制链接",
-          color: "primary",
-          onClick: () => copyText(url(s), "订阅链接已复制"),
-        },
-        {
-          key: "import",
-          label: "导入客户端",
-          color: "secondary",
-          onClick: () => setDetail(s),
-        },
-      ]}
-      badges={s.options.rules && <Badge variant="default">分流</Badge>}
-      headerRight={
-        <Switch
-          aria-label={`${s.enabled ? "停用" : "启用"} ${s.name}`}
-          checked={s.enabled}
-          disabled={toggling === s.id}
-          onCheckedChange={() => toggle(s)}
-        />
-      }
-      rows={[
-        ["节点", `${s.nodeCount} 个`],
-        ["节点组", sourceText(s)],
-        ["到期", s.expireTime ? expiryLabel(s.expireTime) : "永不过期"],
-        ...(s.userId
-          ? ([["用户", s.userName || `#${s.userId}`]] as Array<
-              [string, string]
-            >)
-          : []),
-        ...(s.remark ? ([["备注", s.remark]] as Array<[string, string]>) : []),
-      ]}
-      status={
-        !s.enabled
-          ? "已停用"
-          : s.active
-            ? "生效中"
-            : s.overQuota
-              ? "流量用完"
-              : "已过期"
-      }
-      title={s.name}
-      tone={!s.enabled ? "default" : s.active ? "success" : "danger"}
-      onClick={() => setDetail(s)}
-    >
-      <Usage s={s} />
-    </InfoCard>
-  );
   const row = (s: SubscriptionItem) => (
     <div
       key={s.id}
@@ -1576,11 +1520,6 @@ export default function SubscriptionPage() {
       <PageToolbar
         placeholder={tab === "subs" ? "搜索订阅名称或备注" : "搜索节点组名称"}
         search={query}
-        view={
-          tab === "subs"
-            ? { value: viewMode, onChange: setViewMode }
-            : undefined
-        }
         onSearch={setQuery}
       />
 
@@ -1613,16 +1552,12 @@ export default function SubscriptionPage() {
       ) : (
         <>
           <div
-            aria-label={viewMode === "card" ? undefined : "订阅列表"}
-            className={
-              viewMode === "card"
-                ? CARD_GRID
-                : "list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised"
-            }
-            data-list={viewMode === "card" ? undefined : "subscription"}
-            role={viewMode === "card" ? undefined : "list"}
+            aria-label="订阅列表"
+            className="list-enter flex flex-col gap-2 lg:gap-0 lg:divide-y lg:divide-hairline lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised"
+            data-list="subscription"
+            role="list"
           >
-            {viewMode !== "card" && (
+            {
               <div
                 className="sticky top-0 z-10 hidden items-center gap-4 border-b border-hairline bg-surface px-4 py-2 text-[11px] font-medium text-muted-foreground lg:grid lg:[grid-template-columns:var(--list-cols)]"
                 data-slot="list-head"
@@ -1648,8 +1583,8 @@ export default function SubscriptionPage() {
                   操作
                 </div>
               </div>
-            )}
-            {pagedSubs.map(viewMode === "card" ? subCard : row)}
+            }
+            {pagedSubs.map(row)}
           </div>
           <TablePagination
             page={subPage}

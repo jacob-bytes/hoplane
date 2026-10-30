@@ -17,7 +17,6 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import {
-  Activity,
   BellOff,
   Crosshair,
   Eye,
@@ -167,13 +166,10 @@ const PAGE = "node";
 export default function NodePage({
   embedded = false,
   addRequest = 0,
-  onOpenMonitor,
 }: {
   embedded?: boolean;
   /** Bumped by the 节点 page header's 新建节点 when embedded. */
   addRequest?: number;
-  /** Opens a node's history charts and service monitors. */
-  onOpenMonitor?: (nodeId: number) => void;
 }) {
   // A revisit shows the last data at once and reloads in the background;
   // live metrics then arrive over the WebSocket as usual.
@@ -1714,9 +1710,7 @@ export default function NodePage({
           search={currentSearchKeyword}
           onSearch={setCurrentSearchKeyword}
         >
-          <ToolbarButton onClick={toggleSelectMode}>
-            多选
-          </ToolbarButton>
+          <ToolbarButton onClick={toggleSelectMode}>多选</ToolbarButton>
           {canUseExpiryFilter && (
             <ToolbarButton
               active={nodeFilterMode !== "all"}
@@ -1998,7 +1992,6 @@ export default function NodePage({
               setDetailNodeId(null);
               handleEdit(target);
             }}
-            onMonitor={(target) => onOpenMonitor?.(target.id)}
           />
         );
       })()}
@@ -2096,20 +2089,6 @@ export default function NodePage({
                           setDetailNodeId(node.id);
                         },
                       },
-                      ...(onOpenMonitor
-                        ? [
-                            {
-                              key: "monitor",
-                              label: "监控",
-                              section: "运行",
-                              description: "实时 CPU、内存与网络曲线",
-                              icon: Activity,
-                              hint: "打开",
-                              kind: "navigate" as const,
-                              onClick: () => onOpenMonitor(node.id),
-                            },
-                          ]
-                        : []),
                       {
                         key: "install",
                         label: "安装命令",

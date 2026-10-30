@@ -7,7 +7,6 @@ import { AnimatedPage } from "@/components/animated-page";
 import { PageHeader, PageTabs } from "@/components/page-kit";
 import NodePage from "@/pages/node";
 import { KernelsTab } from "@/pages/node/kernels-tab";
-import { NodeMonitorDetail } from "@/pages/monitor";
 
 type NodeTab = "nodes" | "kernels";
 
@@ -41,12 +40,9 @@ export default function NodeHubPage() {
     state.install ?? null,
   );
   const [addNode, setAddNode] = useState(0);
-  // A node's 监控 replaces the list; the list stays mounted underneath.
-  const [monitorNode, setMonitorNode] = useState<number | null>(null);
 
   const setTab = (t: NodeTab) => {
     setTabState(t);
-    setMonitorNode(null);
     try {
       localStorage.setItem(TAB_KEY, t);
     } catch {
@@ -69,7 +65,7 @@ export default function NodeHubPage() {
         }
         // The kernel tab has its own 安装内核 button.
         primary={
-          tab === "nodes" && monitorNode === null
+          tab === "nodes"
             ? {
                 key: "add",
                 label: "新建服务器",
@@ -93,22 +89,7 @@ export default function NodeHubPage() {
           onInstallRequestHandled={() => setInstall(null)}
         />
       ) : (
-        <>
-          {monitorNode !== null && (
-            <NodeMonitorDetail
-              key={monitorNode}
-              nodeId={monitorNode}
-              onBack={() => setMonitorNode(null)}
-            />
-          )}
-          <div className={monitorNode !== null ? "hidden" : ""}>
-            <NodePage
-              embedded
-              addRequest={addNode}
-              onOpenMonitor={setMonitorNode}
-            />
-          </div>
-        </>
+        <NodePage embedded addRequest={addNode} />
       )}
     </AnimatedPage>
   );

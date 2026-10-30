@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
-  Activity,
   ScrollText,
   ArrowLeftRight,
   ChevronRight,
@@ -122,14 +121,6 @@ export default function AdminLayout({
       label: "用户",
       icon: <Users className="h-5 w-5" />,
       adminOnly: true,
-    },
-    {
-      path: "/monitor",
-      // Admins find monitoring under 节点 and 中转.
-      userOnly: true,
-      section: "系统",
-      label: "监控",
-      icon: <Activity className="h-5 w-5" />,
     },
     {
       path: "/audit",

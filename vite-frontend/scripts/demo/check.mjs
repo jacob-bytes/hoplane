@@ -139,6 +139,10 @@ async function visit(role, route) {
       `[...document.querySelectorAll("button")].some((b) => (b.getAttribute("aria-label") || "").startsWith("编辑 "))`,
     );
     if (!hasEdit) problems.push(`${current}: subscription edit action missing`);
+    const hasViewToggle = await evaluate(
+      `Boolean(document.querySelector('[aria-label="展示方式"]'))`,
+    );
+    if (hasViewToggle) problems.push(`${current}: card/list toggle still present`);
     const opened = await evaluate(
       `(() => { const b = [...document.querySelectorAll("button")].find((x) => (x.getAttribute("aria-label") || "").startsWith("编辑 ")); if (!b) return false; b.click(); return true; })()`,
     );

@@ -1,6 +1,6 @@
 import type { Node } from "@/pages/node/types";
 
-import { Activity, Pencil } from "lucide-react";
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { getNodeMetrics, type NodeMetricApiItem } from "@/api";
@@ -39,14 +39,12 @@ export function NodeDetailDialog({
   online,
   onClose,
   onEdit,
-  onMonitor,
 }: {
   node: Node | null;
   month?: [number, number];
   online: boolean;
   onClose: () => void;
   onEdit: (node: Node) => void;
-  onMonitor?: (node: Node) => void;
 }) {
   const info = node?.systemInfo ?? null;
   const [metrics, setMetrics] = useState<NodeMetricApiItem[]>([]);
@@ -196,16 +194,6 @@ export function NodeDetailDialog({
               </section>
             </DialogBody>
             <DialogFooter>
-              {onMonitor && !node.isRemote && (
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => onMonitor(node)}
-                >
-                  <Activity className="h-4 w-4" />
-                  监控
-                </Button>
-              )}
               <Button size="sm" variant="outline" onClick={() => onEdit(node)}>
                 <Pencil className="h-4 w-4" />
                 编辑

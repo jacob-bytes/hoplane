@@ -33,7 +33,6 @@ const loadConfig = () => import("@/pages/config");
 const loadMySubscriptions = () => import("@/pages/my-subscriptions");
 
 const DashboardPage = lazy(loadDashboard);
-const MonitorPage = lazy(() => import("@/pages/monitor"));
 const ForwardPage = lazy(() => import("@/pages/forward"));
 const TunnelPage = lazy(() => import("@/pages/tunnel"));
 // 用户 hosts the 分组 and 限速 tabs; each tab keeps its address.
@@ -211,14 +210,6 @@ function App() {
           </ProtectedRoute>
         }
         path="/dashboard"
-      />
-      <Route
-        element={
-          <ProtectedRoute>
-            <MonitorPage />
-          </ProtectedRoute>
-        }
-        path="/monitor"
       />
       <Route
         element={
