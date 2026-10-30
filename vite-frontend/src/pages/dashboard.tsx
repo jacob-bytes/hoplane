@@ -6,6 +6,7 @@ import {
   Database,
   ListChecks,
   TimerReset,
+  TriangleAlert,
   Waypoints,
 } from "lucide-react";
 
@@ -282,6 +283,7 @@ function UserDashboard() {
     flowLimit > flowUsed && dailyAverage > 0
       ? Math.ceil((flowLimit - flowUsed) / dailyAverage)
       : null;
+  const flowUsagePct = flowLimit > 0 ? (flowUsed / flowLimit) * 100 : 0;
 
   const getExpStatus = (expTime?: string | number) => {
     if (!expTime)
@@ -616,6 +618,23 @@ function UserDashboard() {
           onClose={() => setIsAnnouncementModalOpen(false)}
           onDontShowAgain={dismissAnnouncementModal}
         />
+      )}
+      {flowLimit > 0 && flowUsagePct >= 80 && (
+        <div
+          className={`mb-4 flex items-start gap-2 rounded-xl border px-3 py-2.5 text-xs ${
+            flowUsagePct >= 95
+              ? "border-destructive/25 bg-destructive/5 text-destructive"
+              : "border-warning/30 bg-warning/5 text-foreground"
+          }`}
+          role="alert"
+        >
+          <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>
+            流量已使用 {flowUsagePct.toFixed(1)}%
+            {forecastDays !== null ? `，预计 ${forecastDays} 天用完` : ""}
+            ，请留意套餐余量。
+          </span>
+        </div>
       )}
       <div className="mb-6 grid grid-cols-2 gap-3 lg:mb-8 lg:grid-cols-4 lg:gap-4">
         <MetricCard

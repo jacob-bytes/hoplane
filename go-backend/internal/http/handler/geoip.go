@@ -1,14 +1,77 @@
 package handler
 
 import (
+	"encoding/csv"
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/netip"
 	"net/url"
 	"os"
 	"strings"
+	"sync"
 	"time"
 )
+
+type geoCSVEntry struct {
+	prefix netip.Prefix
+	code   string
+}
+
+var (
+	geoCSVOnce    sync.Once
+	geoCSVEntries []geoCSVEntry
+)
+
+func loadGeoCSV() {
+	path := strings.TrimSpace(os.Getenv("HOPLANE_GEOIP_CSV"))
+	if path == "" {
+		return
+	}
+	file, err := os.Open(path)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	reader := csv.NewReader(file)
+	reader.FieldsPerRecord = -1
+	records, err := reader.ReadAll()
+	if err != nil {
+		return
+	}
+	entries := make([]geoCSVEntry, 0, len(records))
+	for _, record := range records {
+		if len(record) < 2 {
+			continue
+		}
+		prefix, err := netip.ParsePrefix(strings.TrimSpace(record[0]))
+		if err != nil {
+			continue
+		}
+		code := strings.ToUpper(strings.TrimSpace(record[1]))
+		if len(code) != 2 {
+			continue
+		}
+		entries = append(entries, geoCSVEntry{prefix: prefix, code: code})
+	}
+	geoCSVEntries = entries
+}
+
+func lookupGeoCSV(ip string) string {
+	geoCSVOnce.Do(loadGeoCSV)
+	addr, err := netip.ParseAddr(strings.TrimSpace(ip))
+	if err != nil {
+		return ""
+	}
+	for _, entry := range geoCSVEntries {
+		if entry.prefix.Contains(addr) {
+			return entry.code
+		}
+	}
+
+	return ""
+}
 
 // lookupNodeCountry resolves an IP through an operator-supplied service.
 // HOPLANE_GEOIP_URL is a template such as "http://geoip.local/{ip}" and may
@@ -16,6 +79,10 @@ import (
 // It is deliberately opt-in: a self-hosted panel should not send node IPs to
 // a third party unless the operator configures one.
 func (h *Handler) lookupNodeCountry(ip string) string {
+	if code := lookupGeoCSV(ip); code != "" {
+		return code
+	}
+
 	template := strings.TrimSpace(os.Getenv("HOPLANE_GEOIP_URL"))
 	if template == "" || strings.TrimSpace(ip) == "" {
 		return ""
