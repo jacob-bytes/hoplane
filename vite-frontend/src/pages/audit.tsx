@@ -95,7 +95,7 @@ export default function AuditPage() {
                   {item.status || 200}
                 </Badge>,
               ]}
-              meta={`${formatDate(item.createdAt, true)} · ${item.action} · ${item.ip}`}
+              meta={`${item.username || `#${item.userId}`} · ${formatDate(item.createdAt, true)} · ${item.action} · ${item.ip}`}
               title={item.action}
               onClick={() => undefined}
             />
