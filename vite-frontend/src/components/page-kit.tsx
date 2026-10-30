@@ -591,6 +591,7 @@ export function ListGroup({
   columns,
   head,
   label,
+  className,
   children,
 }: {
   title?: React.ReactNode;
@@ -601,6 +602,7 @@ export function ListGroup({
   head?: React.ReactNode[];
   /** Accessible name for the table, e.g. "服务器". */
   label?: string;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
@@ -617,7 +619,7 @@ export function ListGroup({
       )}
       <div
         aria-label={label}
-        className="list-enter flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised"
+        className={`list-enter flex flex-col gap-2 bg-transparent lg:gap-0 lg:divide-y lg:divide-border lg:overflow-hidden lg:rounded-xl lg:border lg:border-hairline lg:bg-raised ${className ?? ""}`}
         role={columns ? "table" : undefined}
         style={
           columns

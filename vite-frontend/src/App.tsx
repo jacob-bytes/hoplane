@@ -16,7 +16,6 @@ import { getAdminFlag } from "@/utils/session";
 import { siteConfig, updateSiteConfig } from "@/config/site";
 import { useH5Mode } from "@/hooks/useH5Mode";
 import { SESSION_UPDATED_EVENT } from "@/utils/session";
-import { useThemeContext } from "@/themes/context";
 import { PageLoadingState } from "@/components/page-state";
 import { ErrorBoundary } from "@/components/error-boundary";
 
@@ -146,7 +145,6 @@ const LoginRoute = () => {
 function App() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { effectiveMode } = useThemeContext();
 
   useEffect(() => {
     if (isLoggedIn()) preloadPages();
@@ -166,55 +164,6 @@ function App() {
       window.removeEventListener(SESSION_UPDATED_EVENT, handleSessionUpdate);
     };
   }, [location.pathname, navigate]);
-
-  // 处理自定义背景图片
-  useEffect(() => {
-    const updateBg = () => {
-      const customBg =
-        (effectiveMode === "dark"
-          ? siteConfig.app_bg_image_dark
-          : siteConfig.app_bg_image_light) || siteConfig.app_bg_image;
-
-      const root = document.documentElement;
-      const isImage =
-        customBg.startsWith("http") ||
-        customBg.startsWith("data:") ||
-        customBg.startsWith("/") ||
-        customBg.startsWith("blob:");
-      // "" and "theme" are the default plain background; "wallpaper" is
-      // the built-in picture; anything else is an image URL or a colour.
-      const mode =
-        !customBg || customBg === "theme"
-          ? "plain"
-          : customBg === "wallpaper"
-            ? "wallpaper"
-            : "custom";
-
-      root.classList.toggle("has-wallpaper-bg", mode === "wallpaper");
-      root.classList.toggle("has-custom-bg", mode === "custom");
-      root.classList.remove("has-theme-bg");
-      if (mode === "custom") {
-        root.style.setProperty(
-          "--custom-bg-image",
-          isImage ? `url(${customBg})` : "none",
-        );
-        root.style.setProperty(
-          "--custom-bg-color",
-          isImage ? "transparent" : customBg,
-        );
-      } else {
-        root.style.removeProperty("--custom-bg-image");
-        root.style.removeProperty("--custom-bg-color");
-      }
-    };
-
-    updateBg();
-    window.addEventListener("site-config-updated", updateBg);
-
-    return () => {
-      window.removeEventListener("site-config-updated", updateBg);
-    };
-  }, [effectiveMode]);
 
   // 立即设置页面标题（使用已从缓存读取的配置）
   useEffect(() => {

@@ -361,7 +361,6 @@ src/themes/
 ├── default/                    # 默认主题 (参考实现)
 │   └── index.ts
 │
-├── example-cyberpunk/          # 示例主题 (可复制修改)
 │   ├── index.ts
 │   └── components/
 │       └── button.tsx

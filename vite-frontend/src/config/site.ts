@@ -13,9 +13,6 @@ const PUBLIC_BRAND_CONFIG_KEYS = [
   "app_name",
   "app_logo",
   "app_favicon",
-  "app_bg_image",
-  "app_bg_image_light",
-  "app_bg_image_dark",
   "hide_footer_brand",
 ] as const;
 const SENSITIVE_CONFIG_KEYS = new Set([
@@ -114,9 +111,6 @@ const getInitialConfig = () => {
       github_repo: GITHUB_REPO,
       app_logo: "",
       app_favicon: "",
-      app_bg_image: "",
-      app_bg_image_light: "",
-      app_bg_image_dark: "",
       hide_footer_brand: false,
     };
   }
@@ -127,12 +121,6 @@ const getInitialConfig = () => {
   const cachedAppLogo = localStorage.getItem(CACHE_PREFIX + "app_logo") || "";
   const cachedAppFavicon =
     localStorage.getItem(CACHE_PREFIX + "app_favicon") || "";
-  const cachedAppBgImage =
-    localStorage.getItem(CACHE_PREFIX + "app_bg_image") || "";
-  const cachedAppBgImageLight =
-    localStorage.getItem(CACHE_PREFIX + "app_bg_image_light") || "";
-  const cachedAppBgImageDark =
-    localStorage.getItem(CACHE_PREFIX + "app_bg_image_dark") || "";
   const hideFooterBrand =
     localStorage.getItem(CACHE_PREFIX + "hide_footer_brand") === "true";
 
@@ -144,9 +132,6 @@ const getInitialConfig = () => {
       github_repo: GITHUB_REPO,
       app_logo: cachedAppLogo,
       app_favicon: cachedAppFavicon,
-      app_bg_image: cachedAppBgImage,
-      app_bg_image_light: cachedAppBgImageLight,
-      app_bg_image_dark: cachedAppBgImageDark,
       hide_footer_brand: hideFooterBrand,
     };
   }
@@ -158,9 +143,6 @@ const getInitialConfig = () => {
     github_repo: GITHUB_REPO,
     app_logo: cachedAppLogo,
     app_favicon: cachedAppFavicon,
-    app_bg_image: cachedAppBgImage,
-    app_bg_image_light: cachedAppBgImageLight,
-    app_bg_image_dark: cachedAppBgImageDark,
     hide_footer_brand: hideFooterBrand,
   };
 };
@@ -384,18 +366,6 @@ export const updateSiteConfig = async (configMap?: Record<string, string>) => {
     resolvedConfigMap,
     "app_favicon",
   );
-  const hasAppBgImage = Object.prototype.hasOwnProperty.call(
-    resolvedConfigMap,
-    "app_bg_image",
-  );
-  const hasAppBgImageLight = Object.prototype.hasOwnProperty.call(
-    resolvedConfigMap,
-    "app_bg_image_light",
-  );
-  const hasAppBgImageDark = Object.prototype.hasOwnProperty.call(
-    resolvedConfigMap,
-    "app_bg_image_dark",
-  );
 
   const appName = hasAppName
     ? String(resolvedConfigMap.app_name || "").trim()
@@ -406,22 +376,10 @@ export const updateSiteConfig = async (configMap?: Record<string, string>) => {
   const appFavicon = hasAppFavicon
     ? String(resolvedConfigMap.app_favicon || "").trim()
     : (siteConfig.app_favicon || "").trim();
-  const appBgImage = hasAppBgImage
-    ? String(resolvedConfigMap.app_bg_image || "").trim()
-    : (siteConfig.app_bg_image || "").trim();
-  const appBgImageLight = hasAppBgImageLight
-    ? String(resolvedConfigMap.app_bg_image_light || "").trim()
-    : (siteConfig.app_bg_image_light || "").trim();
-  const appBgImageDark = hasAppBgImageDark
-    ? String(resolvedConfigMap.app_bg_image_dark || "").trim()
-    : (siteConfig.app_bg_image_dark || "").trim();
 
   siteConfig.name = appName || "Hoplane";
   siteConfig.app_logo = appLogo;
   siteConfig.app_favicon = appFavicon;
-  siteConfig.app_bg_image = appBgImage;
-  siteConfig.app_bg_image_light = appBgImageLight;
-  siteConfig.app_bg_image_dark = appBgImageDark;
   if (
     Object.prototype.hasOwnProperty.call(resolvedConfigMap, "hide_footer_brand")
   ) {

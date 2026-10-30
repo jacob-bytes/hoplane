@@ -72,13 +72,11 @@ interface ConfigItem {
   label: string;
   placeholder?: string;
   description?: string;
-  type: "input" | "switch" | "select" | "bg_image";
+  type: "input" | "switch" | "select";
   options?: { label: string; value: string; description?: string }[];
   dependsOn?: string; // 依赖的配置项key
   dependsValue?: string; // 依赖的配置项值
 }
-
-type BgImageKey = "app_bg_image" | "app_bg_image_light" | "app_bg_image_dark";
 
 const BRAND_PREVIEW_KEYS = ["app_logo", "app_favicon"] as const;
 
@@ -95,12 +93,6 @@ const toBrandAssetKind = (key: BrandPreviewKey): BrandAssetKind => {
 
 // 网站配置项定义
 const CONFIG_ITEMS: ConfigItem[] = [
-  {
-    key: "app_bg_image",
-    label: "背景壁纸",
-    description: "亮色、暗色可各设一张，没设的用默认背景；保存后随外观模式切换",
-    type: "bg_image",
-  },
   {
     key: "ip",
     label: "面板后端地址",
@@ -294,9 +286,6 @@ const getInitialConfigs = (): Record<string, string> => {
     "panel_domain",
     "app_logo",
     "app_favicon",
-    "app_bg_image",
-    "app_bg_image_light",
-    "app_bg_image_dark",
     "github_proxy_enabled",
     "github_proxy_url",
     "allow_local_remote_addr",
@@ -340,12 +329,7 @@ const SECTION_CONFIG_KEYS: Partial<Record<SectionKey, string[]>> = {
     "app_favicon",
     "hide_footer_brand",
   ],
-  appearance: [
-    "app_bg_image",
-    "app_bg_image_light",
-    "app_bg_image_dark",
-    "forward_compact_mode",
-  ],
+  appearance: ["forward_compact_mode"],
   security: [
     "captcha_enabled",
     "cloudflare_site_key",
@@ -364,15 +348,6 @@ const SECTION_CONFIG_KEYS: Partial<Record<SectionKey, string[]>> = {
     "github_proxy_enabled",
     "github_proxy_url",
   ],
-};
-
-const describeBackground = (value?: string) => {
-  if (!value) return "默认纯色背景";
-  if (value === "wallpaper") return "内置壁纸";
-  if (value === "theme") return "自适应纯色";
-  if (/^(https?:|data:|\/|blob:)/.test(value)) return "自定义图片";
-
-  return `纯色 ${value}`;
 };
 
 const DEFAULT_GITHUB_PROXY = "https://gcode.hostcentral.cc";
@@ -429,13 +404,6 @@ export default function ConfigPage() {
 
   const logoFileInputRef = useRef<HTMLInputElement>(null);
   const faviconFileInputRef = useRef<HTMLInputElement>(null);
-  const bgImageFileInputRefs = useRef<
-    Partial<Record<BgImageKey, HTMLInputElement>>
-  >({});
-  const [bgImageUploading, setBgImageUploading] = useState<BgImageKey | null>(
-    null,
-  );
-
   const [announcement, setAnnouncement] = useState<AnnouncementData>({
     content: "",
     enabled: 0,
@@ -757,14 +725,7 @@ export default function ConfigPage() {
 
         if (
           changedKeys.some((key) =>
-            [
-              "app_name",
-              "app_logo",
-              "app_favicon",
-              "app_bg_image",
-              "app_bg_image_light",
-              "app_bg_image_dark",
-            ].includes(key),
+            ["app_name", "app_logo", "app_favicon"].includes(key),
           )
         ) {
           await updateSiteConfig(configs);
@@ -864,179 +825,6 @@ export default function ConfigPage() {
       setBrandUploading((prev) => ({ ...prev, [key]: false }));
       event.target.value = "";
     }
-  };
-
-  const handleBgImageUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    key: BgImageKey,
-  ) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-
-    if (!file.type.startsWith("image/")) {
-      toast.error("只能上传图片文件");
-
-      return;
-    }
-
-    setBgImageUploading(key);
-    try {
-      const compressedImage = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = (event) => {
-          const img = new Image();
-
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            let width = img.width;
-            let height = img.height;
-            const MAX_WIDTH = 1920;
-            const MAX_HEIGHT = 1080;
-
-            if (width > height) {
-              if (width > MAX_WIDTH) {
-                height = Math.round((height * MAX_WIDTH) / width);
-                width = MAX_WIDTH;
-              }
-            } else {
-              if (height > MAX_HEIGHT) {
-                width = Math.round((width * MAX_HEIGHT) / height);
-                height = MAX_HEIGHT;
-              }
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext("2d");
-
-            if (!ctx) {
-              reject(new Error("Canvas context is null"));
-
-              return;
-            }
-            ctx.drawImage(img, 0, 0, width, height);
-
-            // Output as webp for better compression
-            const dataUrl = canvas.toDataURL("image/webp", 0.8);
-
-            resolve(dataUrl);
-          };
-          img.onerror = () => reject(new Error("图片加载失败"));
-          img.src = event.target?.result as string;
-        };
-        reader.onerror = () => reject(new Error("文件读取失败"));
-        reader.readAsDataURL(file);
-      });
-
-      handleConfigChange(key, compressedImage);
-      toast.success("壁纸上传成功，保存配置后生效");
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "图片处理失败");
-    } finally {
-      setBgImageUploading(null);
-      e.target.value = "";
-    }
-  };
-
-  const renderBgImageUploader = (key: BgImageKey, label: string) => {
-    const bgImage = configs[key] || "";
-    const isDefault = key === "app_bg_image";
-    const isImage =
-      bgImage.startsWith("http") ||
-      bgImage.startsWith("data:") ||
-      bgImage.startsWith("/") ||
-      bgImage.startsWith("blob:");
-    const isTheme = bgImage === "theme";
-    const isWallpaper = bgImage === "wallpaper";
-    const isSolidColor = bgImage && !isImage && !isTheme && !isWallpaper;
-    const isChanged = configs[key] !== originalConfigs[key];
-
-    return (
-      <div
-        className={`flex flex-col gap-2 rounded-lg border p-3 ${
-          isChanged ? "border-warning-300" : "border-hairline"
-        }`}
-      >
-        <div className="flex items-baseline justify-between gap-2">
-          <p className="text-sm font-medium">{label}</p>
-          <p className="truncate text-xs text-muted-foreground">
-            {!isDefault && !bgImage
-              ? "未单独设置，使用默认背景"
-              : describeBackground(bgImage)}
-          </p>
-        </div>
-
-        {bgImage && isImage && (
-          <img
-            alt={`${label}预览`}
-            className="h-20 w-full rounded-md border border-hairline object-cover"
-            src={bgImage}
-          />
-        )}
-
-        {bgImage && isSolidColor && (
-          <div
-            className="h-10 rounded-md border border-hairline"
-            style={{ backgroundColor: bgImage }}
-          />
-        )}
-
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            ref={(node) => {
-              if (node) bgImageFileInputRefs.current[key] = node;
-            }}
-            accept="image/*"
-            className="hidden"
-            type="file"
-            onChange={(event) => void handleBgImageUpload(event, key)}
-          />
-          <Button
-            disabled={
-              (bgImageUploading !== null && bgImageUploading !== key) ||
-              bgImageUploading === key
-            }
-            size="sm"
-            variant="secondary"
-            onClick={() => bgImageFileInputRefs.current[key]?.click()}
-          >
-            上传图片
-          </Button>
-          {isDefault && (
-            <Button
-              disabled={bgImageUploading !== null || isWallpaper}
-              size="sm"
-              variant="secondary"
-              onClick={() => handleConfigChange(key, "wallpaper")}
-            >
-              内置壁纸
-            </Button>
-          )}
-          {isDefault && (
-            <Button
-              disabled={bgImageUploading !== null || bgImage === "#ffffff"}
-              size="sm"
-              variant="secondary"
-              onClick={() => handleConfigChange(key, "#ffffff")}
-            >
-              白色纯色
-            </Button>
-          )}
-          {bgImage && (
-            <Button
-              disabled={bgImageUploading !== null}
-              size="sm"
-              variant="secondary"
-              onClick={() => handleConfigChange(key, "")}
-            >
-              {isDefault ? "恢复默认纯色" : "清除"}
-            </Button>
-          )}
-        </div>
-      </div>
-    );
   };
 
   const renderBrandPreview = (key: BrandPreviewKey) => {
@@ -1160,17 +948,6 @@ export default function ConfigPage() {
       hasChanges && configs[item.key] !== originalConfigs[item.key];
 
     switch (item.type) {
-      case "bg_image":
-        return (
-          <div className="grid grid-cols-1 gap-2 lg:grid-cols-2">
-            <div className="lg:col-span-2">
-              {renderBgImageUploader("app_bg_image", "默认背景")}
-            </div>
-            {renderBgImageUploader("app_bg_image_light", "亮色模式壁纸")}
-            {renderBgImageUploader("app_bg_image_dark", "暗色模式壁纸")}
-          </div>
-        );
-
       case "input": {
         if (isBrandPreviewKey(item.key)) {
           return renderBrandAssetUploader(item.key, isChanged);
@@ -1563,14 +1340,11 @@ export default function ConfigPage() {
 
             <ConfigSection
               {...sectionProps("appearance")}
-              summary={`${describeBackground(configs.app_bg_image)} · 规则精简模式${onOff(
-                "forward_compact_mode",
-              )}`}
+              summary={`规则页面精简模式${onOff("forward_compact_mode")}`}
               title="外观"
             >
-              {renderItem("app_bg_image")}
               {renderItem("forward_compact_mode")}
-              <SubHeading>主题（点选即生效，不需要保存）</SubHeading>
+              <SubHeading>显示模式（点选即生效，不需要保存）</SubHeading>
               <div className="[&_[data-slot=card-content]]:p-0! [&_h2]:hidden [&>[data-slot=card]]:rounded-none! [&>[data-slot=card]]:bg-none! [&>[data-slot=card]]:shadow-none! [&>[data-slot=card]]:-none!">
                 <ThemeSettings />
               </div>

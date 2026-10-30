@@ -12,11 +12,9 @@
 import { registerTheme } from "./registry";
 // ── Built-in themes ──────────────────────────────────────────────────────────
 import defaultTheme from "./default";
-import cyberpunkTheme from "./example-cyberpunk";
 
 // Register all themes
 registerTheme(defaultTheme);
-registerTheme(cyberpunkTheme);
 
 /*
  * ── ADDING YOUR OWN THEME ──────────────────────────────────────────────────

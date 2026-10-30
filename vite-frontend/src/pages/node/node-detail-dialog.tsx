@@ -1,3 +1,5 @@
+import type { Node } from "@/pages/node/types";
+
 import { Activity, Pencil } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -10,16 +12,11 @@ import {
   DialogHeader,
 } from "@/components/dialog";
 import { NodeFlag } from "@/components/node-flag";
-import {
-  NodeMeters,
-  NodeMonth,
-  NodeSpeed,
-} from "@/pages/node/node-live-stats";
+import { NodeMeters, NodeMonth, NodeSpeed } from "@/pages/node/node-live-stats";
 import {
   formatNodeRenewalTime,
   getNodeRenewalCycleLabel,
 } from "@/pages/node/renewal";
-import type { Node } from "@/pages/node/types";
 import { getNodeFlag } from "@/pages/node/display";
 import { formatTraffic } from "@/utils/traffic";
 

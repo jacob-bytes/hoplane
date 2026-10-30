@@ -478,9 +478,9 @@ body {
 }
 
 /*
- * Surfaces are a flat colour plus an optional wallpaper. The old glass
- * tokens stay (some themes still set them) but now resolve to solid
- * colours, so nothing renders blurred glass by default.
+ * Surfaces are a flat colour. The old glass tokens stay (some themes
+ * still set them) but resolve to solid colours, so nothing renders
+ * blurred glass by default.
  */
 :root {
   --glass-bg: #ffffff;
@@ -516,42 +516,6 @@ body {
   background-color: var(--background);
 }
 
-:root.has-wallpaper-bg .bg-mesh-gradient::before {
-  background: url("/images/bg-light.jpg") no-repeat center center;
-  background-size: cover;
-  opacity: 0.5;
-}
-
-:root.dark.has-wallpaper-bg .bg-mesh-gradient::before {
-  background: url("/images/bg-dark.jpg") no-repeat center center;
-  background-size: cover;
-  opacity: 0.5;
-}
-
-:root.has-theme-bg .bg-mesh-gradient {
-  background-image: none !important;
-  background-color: var(--background) !important;
-}
-
-:root.dark.has-theme-bg .bg-mesh-gradient {
-  background-color: var(--background) !important;
-}
-
-:root.has-theme-bg .bg-mesh-gradient::before {
-  background-image: none !important;
-}
-
-:root.has-custom-bg .bg-mesh-gradient {
-  background-image: none !important;
-  background-color: var(--custom-bg-color, transparent) !important;
-}
-
-:root.has-custom-bg .bg-mesh-gradient::before {
-  background-image: var(--custom-bg-image, none) !important;
-  background-size: cover !important;
-  background-position: center center !important;
-  background-repeat: no-repeat !important;
-}
 
 @layer utilities {
   /* Thin, token-coloured scrollbars so they read as part of the surface. */
@@ -590,4 +554,14 @@ body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Audit rows keep a visible divider even though ListRow removes its own
+ * desktop border. */
+.audit-list [data-slot="list-row"] {
+  border-bottom: 1px solid var(--hairline-strong);
+}
+
+.audit-list [data-slot="list-row"]:last-child {
+  border-bottom: 0;
 }

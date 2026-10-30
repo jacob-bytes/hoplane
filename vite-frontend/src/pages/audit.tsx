@@ -60,6 +60,7 @@ export default function AuditPage() {
         <EmptyHint text={query ? "没有匹配的日志" : "还没有审计记录"} />
       ) : (
         <ListGroup
+          className="audit-list"
           columns="170px minmax(0,0.8fr) minmax(0,1.2fr) 140px 80px"
           head={["时间", "用户", "操作", "IP", "状态"]}
         >
