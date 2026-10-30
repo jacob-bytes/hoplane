@@ -4,6 +4,16 @@
 
 完整的提交记录见 [GitHub Releases](https://github.com/jacob-bytes/hoplane/releases)。
 
+## 0.7.1
+
+2026-10-30
+
+- **修复 0.7.0 路由缺失**：会话管理接口（list/revoke/revoke-others/revoke-all）和审计日志接口没有注册到 HTTP 路由，前端调用会返回 404
+- **修复过期会话**：已过期的 token 不再被写入 session 表并放行
+- **测试加固**：新增会话生命周期、撤销、审计写入/读取、流量方向增量、迁移建表和 GeoIP 用例；演示站增加外观、审计和订阅编辑断言
+
+**升级**：只需升级面板，agent 无需变动。
+
 ## 0.7.0
 
 2026-10-30
