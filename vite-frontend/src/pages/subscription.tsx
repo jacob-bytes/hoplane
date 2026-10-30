@@ -16,7 +16,7 @@ import type { InboundApiItem } from "@/api/types";
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { ArrowDown, ArrowUp, Copy, LayoutTemplate, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Copy, LayoutTemplate, Pencil, X } from "lucide-react";
 
 import {
   deleteSubscription,
@@ -1389,6 +1389,14 @@ export default function SubscriptionPage() {
     );
   const actions = (s: SubscriptionItem) => (
     <>
+      <Button
+        aria-label={`编辑 ${s.name}`}
+        size="icon"
+        variant="ghost"
+        onClick={() => setDraft(draftFrom(s))}
+      >
+        <Pencil className="h-4 w-4" />
+      </Button>
       <Button
         aria-label={`复制 ${s.name} 的订阅链接`}
         size="icon"

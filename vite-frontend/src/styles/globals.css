@@ -389,7 +389,7 @@ body {
 }
 
 [data-list="subscription"] {
-  --list-cols: 14px minmax(0, 1fr) 240px 96px;
+  --list-cols: 14px minmax(0, 1fr) 240px 128px;
 }
 
 /* Lists stay compact on phones; desktop rows get the v3 48px rhythm. */
