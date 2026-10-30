@@ -63,6 +63,12 @@ func TestRunStatisticsFlowJobTracksIncrementAndPrunes(t *testing.T) {
 	if inFlow != 16 || outFlow != 34 {
 		t.Fatalf("expected fallback split 16/34, got %d/%d", inFlow, outFlow)
 	}
+	if oldAudit := mustQueryInt(t, r, `SELECT COUNT(1) FROM audit_log WHERE action = 'old'`); oldAudit != 0 {
+		t.Fatalf("stale audit rows were not purged: %d", oldAudit)
+	}
+	if freshAudit := mustQueryInt(t, r, `SELECT COUNT(1) FROM audit_log WHERE action = 'fresh'`); freshAudit != 1 {
+		t.Fatalf("fresh audit row was purged: %d", freshAudit)
+	}
 }
 
 func TestRunStatisticsFlowJobTracksDirectionDeltas(t *testing.T) {
@@ -94,12 +100,6 @@ func TestRunStatisticsFlowJobTracksDirectionDeltas(t *testing.T) {
 	}
 	if rowTime := mustQueryInt(t, r, `SELECT COUNT(1) FROM statistics_flow WHERE created_time = ?`, nowMs); rowTime != 1 {
 		t.Fatalf("expected one row at the hour mark, got %d", rowTime)
-	}
-	if oldAudit := mustQueryInt(t, r, `SELECT COUNT(1) FROM audit_log WHERE action = 'old'`); oldAudit != 0 {
-		t.Fatalf("stale audit rows were not purged: %d", oldAudit)
-	}
-	if freshAudit := mustQueryInt(t, r, `SELECT COUNT(1) FROM audit_log WHERE action = 'fresh'`); freshAudit != 1 {
-		t.Fatalf("fresh audit row was purged: %d", freshAudit)
 	}
 }
 
