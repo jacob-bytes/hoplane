@@ -476,12 +476,28 @@ export function ListRow({
 
       {cells && (
         <div
-          className="hidden items-center gap-4 px-4 py-3.5 lg:grid lg:[grid-template-columns:var(--list-cols)]"
+          className="relative hidden items-center gap-4 px-4 py-3.5 lg:grid lg:[grid-template-columns:var(--list-cols)]"
           data-slot="list-row-body"
           role="row"
         >
+          {selectMode && (
+            <div
+              className="absolute left-2 top-1/2 z-10 -translate-y-1/2"
+              role="presentation"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Checkbox
+                checked={selected}
+                onCheckedChange={checkboxHandler(() => onSelect?.())}
+              />
+            </div>
+          )}
           {cells.map((cell, i) => (
-            <div key={i} className="min-w-0" role="cell">
+            <div
+              key={i}
+              className={`min-w-0 ${selectMode && i === 0 ? "pl-7" : ""}`}
+              role="cell"
+            >
               {cell}
             </div>
           ))}

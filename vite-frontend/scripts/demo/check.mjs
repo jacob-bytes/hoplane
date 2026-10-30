@@ -168,6 +168,22 @@ async function visit(role, route) {
     await evaluate(
       `(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.trim() === "关闭"); b?.click(); return true; })()`,
     );
+
+    // Multi-select keeps the real list cells instead of switching to a
+    // compact name-only list.
+    await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.trim() === "多选"); b?.click(); return Boolean(b); })()`,
+    );
+    await sleep(400);
+    const selected = await evaluate(
+      `({ bar: document.body.innerText.includes("已选 0 个"), cpu: document.body.innerText.includes("CPU") })`,
+    );
+    if (!selected.bar || !selected.cpu) {
+      problems.push(`${current}: multi-select lost the list metrics`);
+    }
+    await evaluate(
+      `(() => { const b = [...document.querySelectorAll("button")].find((x) => x.textContent.trim() === "完成"); b?.click(); return true; })()`,
+    );
   }
 }
 
