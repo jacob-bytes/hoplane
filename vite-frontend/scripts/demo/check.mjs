@@ -203,6 +203,20 @@ await evaluate("localStorage.clear()");
 await page("Page.navigate", { url: `${origin}${BASE}` });
 await sleep(SETTLE_MS);
 for (const r of ADMIN_PAGES) await visit("admin", r);
+
+// Empty overview shows the four-step setup guide.
+current = "admin #/dashboard (empty)";
+await evaluate(`localStorage.setItem("demo-empty", "1")`);
+await page("Page.navigate", { url: `${origin}${BASE}#/dashboard` });
+await sleep(SETTLE_MS);
+const emptyText = await evaluate("document.body.innerText");
+if (!emptyText.includes("开始使用") || !emptyText.includes("添加服务器")) {
+  problems.push(`${current}: setup guide missing`);
+}
+await evaluate(`localStorage.removeItem("demo-empty")`);
+await page("Page.navigate", { url: `${origin}${BASE}#/dashboard` });
+await sleep(500);
+
 // The demo note starts collapsed; open it, then switch to the demo user.
 // Both are rendered on the next frame, so poll instead of relying on a fixed wait.
 const clickButton = async (predicate) => {

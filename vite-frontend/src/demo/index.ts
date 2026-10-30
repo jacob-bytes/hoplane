@@ -200,6 +200,10 @@ async function answer(config: InternalAxiosRequestConfig) {
     };
   }
 
+  if (bare === "node/list" && localStorage.getItem("demo-empty") === "1") {
+    return { code: 0, msg: "操作成功", data: [], ts: Date.now() };
+  }
+
   if (bare === "user/session/list") {
     const now = Date.now();
 
