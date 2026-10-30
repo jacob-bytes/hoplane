@@ -27,13 +27,13 @@ func TestRunStatisticsFlowJobTracksIncrementAndPrunes(t *testing.T) {
 	if err := r.DB().Exec(`INSERT INTO statistics_flow(user_id, flow, total_flow, time, created_time) VALUES(1, 250, 250, '11:00', ?)`, now.Add(-time.Hour).UnixMilli()).Error; err != nil {
 		t.Fatalf("seed recent statistics row: %v", err)
 	}
-	if err := r.DB().Exec(`INSERT INTO statistics_flow(user_id, flow, total_flow, time, created_time) VALUES(1, 10, 10, '00:00', ?)`, now.Add(-49*time.Hour).UnixMilli()).Error; err != nil {
+	if err := r.DB().Exec(`INSERT INTO statistics_flow(user_id, flow, total_flow, time, created_time) VALUES(1, 10, 10, '00:00', ?)`, now.Add(-32*24*time.Hour).UnixMilli()).Error; err != nil {
 		t.Fatalf("seed stale statistics row: %v", err)
 	}
 
 	h.runStatisticsFlowJob(now)
 
-	staleCount := mustQueryInt(t, r, `SELECT COUNT(1) FROM statistics_flow WHERE created_time < ?`, nowMs-int64((48*time.Hour)/time.Millisecond))
+	staleCount := mustQueryInt(t, r, `SELECT COUNT(1) FROM statistics_flow WHERE created_time < ?`, nowMs-int64((31*24*time.Hour)/time.Millisecond))
 	if staleCount != 0 {
 		t.Fatalf("expected stale statistics rows to be pruned, got %d", staleCount)
 	}
