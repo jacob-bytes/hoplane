@@ -7,7 +7,19 @@ import (
 )
 
 func (h *Handler) auditList(w http.ResponseWriter, r *http.Request) {
-	items, err := h.repo.ListAuditLogs(200)
+	var req struct {
+		Page     int `json:"page"`
+		PageSize int `json:"pageSize"`
+	}
+	_ = decodeJSON(r.Body, &req)
+	if req.Page <= 0 {
+		req.Page = 1
+	}
+	if req.PageSize <= 0 || req.PageSize > 200 {
+		req.PageSize = 50
+	}
+
+	items, total, err := h.repo.ListAuditLogs(req.PageSize, (req.Page-1)*req.PageSize)
 	if err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return
@@ -19,9 +31,11 @@ func (h *Handler) auditList(w http.ResponseWriter, r *http.Request) {
 			"id": item.ID, "userId": item.UserID, "username": item.Username,
 			"action": item.Action, "method": item.Method, "path": item.Path,
 			"ip": item.IP, "userAgent": item.UserAgent, "status": item.Status,
-			"createdAt": item.CreatedAt,
+			"code": item.Code, "createdAt": item.CreatedAt,
 		})
 	}
 
-	response.WriteJSON(w, response.OK(out))
+	response.WriteJSON(w, response.OK(map[string]interface{}{
+		"items": out, "total": total, "page": req.Page, "pageSize": req.PageSize,
+	}))
 }

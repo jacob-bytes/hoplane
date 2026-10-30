@@ -153,7 +153,15 @@ export interface AuditLogApiItem {
   ip: string;
   userAgent: string;
   status: number;
+  code: number;
   createdAt: number;
+}
+
+export interface AuditLogPage {
+  items: AuditLogApiItem[];
+  total: number;
+  page: number;
+  pageSize: number;
 }
 
 export interface SpeedLimitApiItem {

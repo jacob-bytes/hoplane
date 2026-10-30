@@ -158,50 +158,56 @@ async function answer(config: InternalAxiosRequestConfig) {
     return {
       code: 0,
       msg: "操作成功",
-      data: [
-        {
-          id: 3,
-          userId: 2,
-          username: "xiaoming",
-          action: "forward/update",
-          method: "POST",
-          path: "/api/v1/forward/update",
-          ip: "203.0.113.20",
-          userAgent: navigator.userAgent,
-          status: 200,
-          createdAt: now - 12 * 60_000,
-        },
-        {
-          id: 2,
-          userId: 1,
-          username: "admin_user",
-          action: "node/create",
-          method: "POST",
-          path: "/api/v1/node/create",
-          ip: "198.51.100.10",
-          userAgent: navigator.userAgent,
-          status: 200,
-          createdAt: now - 2 * 3600_000,
-        },
-        {
-          id: 1,
-          userId: 1,
-          username: "admin_user",
-          action: "user/session/revoke-others",
-          method: "POST",
-          path: "/api/v1/user/session/revoke-others",
-          ip: "198.51.100.10",
-          userAgent: navigator.userAgent,
-          status: 200,
-          createdAt: now - 26 * 3600_000,
-        },
-      ],
+      data: {
+        items: [
+          {
+            id: 3,
+            userId: 2,
+            username: "xiaoming",
+            action: "forward/update",
+            method: "POST",
+            path: "/api/v1/forward/update",
+            ip: "203.0.113.20",
+            userAgent: navigator.userAgent,
+            status: 200,
+            createdAt: now - 12 * 60_000,
+          },
+          {
+            id: 2,
+            userId: 1,
+            username: "admin_user",
+            action: "node/create",
+            method: "POST",
+            path: "/api/v1/node/create",
+            ip: "198.51.100.10",
+            userAgent: navigator.userAgent,
+            status: 200,
+            createdAt: now - 2 * 3600_000,
+          },
+          {
+            id: 1,
+            userId: 1,
+            username: "admin_user",
+            action: "user/session/revoke-others",
+            method: "POST",
+            path: "/api/v1/user/session/revoke-others",
+            ip: "198.51.100.10",
+            userAgent: navigator.userAgent,
+            status: 200,
+            createdAt: now - 26 * 3600_000,
+          },
+        ],
+        total: 3,
+        page: 1,
+        pageSize: 50,
+      },
       ts: now,
     };
   }
 
   if (bare === "user/package" && localStorage.getItem("demo-flow") === "high") {
     const hit = entries?.[0];
+
     if (hit) {
       const res = structuredClone(hit.res) as {
         data: { userInfo: { inFlow: number; outFlow: number } };

@@ -105,12 +105,14 @@ func TestAuditListEndpoint(t *testing.T) {
 	})(mux)
 
 	h.RecordAudit(1, "admin_user", "node/create", "POST", "/api/v1/node/create", "127.0.0.1", "ua", 0)
+	h.RecordAudit(1, "admin_user", "forward/update", "POST", "/api/v1/forward/update", "127.0.0.1", "ua", 0)
+	h.RecordAudit(1, "admin_user", "user/update", "POST", "/api/v1/user/update", "127.0.0.1", "ua", 0)
 
 	token, err := auth.GenerateToken(1, "admin_user", 0, "unit-test-secret")
 	if err != nil {
 		t.Fatal(err)
 	}
-	req := httptest.NewRequest(http.MethodPost, "/api/v1/audit/list", bytes.NewBufferString("{}"))
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/audit/list", bytes.NewBufferString(`{"page":2,"pageSize":2}`))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", token)
 	rec := httptest.NewRecorder()
@@ -121,11 +123,18 @@ func TestAuditListEndpoint(t *testing.T) {
 	if out.Code != 0 {
 		t.Fatalf("audit list failed: %+v", out)
 	}
-	raw, _ := json.Marshal(out.Data)
+	data, _ := out.Data.(map[string]interface{})
+	raw, _ := json.Marshal(data["items"])
 	var items []map[string]interface{}
 	_ = json.Unmarshal(raw, &items)
 	if len(items) != 1 || items[0]["action"] != "node/create" {
-		t.Fatalf("unexpected audit list: %s", raw)
+		t.Fatalf("unexpected audit page: %s", raw)
+	}
+	if total, _ := data["total"].(float64); total != 3 {
+		t.Fatalf("total = %v", data["total"])
+	}
+	if page, _ := data["page"].(float64); page != 2 {
+		t.Fatalf("page = %v", data["page"])
 	}
 }
 
@@ -205,7 +214,7 @@ func TestAuditListRequiresAdmin(t *testing.T) {
 		t.Fatal(err)
 	}
 	token, _ := auth.GenerateToken(2, "normal_user", 1, "unit-test-secret")
-	req := httptest.NewRequest(http.MethodPost, "/api/v1/audit/list", bytes.NewBufferString("{}"))
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/audit/list", bytes.NewBufferString(`{"page":2,"pageSize":2}`))
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", token)
 	rec := httptest.NewRecorder()

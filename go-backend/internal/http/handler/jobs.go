@@ -239,6 +239,7 @@ func (h *Handler) runStatisticsFlowJob(now time.Time) {
 	cutoffMs := nowMs - int64((31*24*time.Hour)/time.Millisecond)
 	_ = h.repo.PurgeOldStatisticsFlows(cutoffMs)
 	_ = h.repo.PurgeUserSessions(nowMs - int64((30*24*time.Hour)/time.Millisecond))
+	_ = h.repo.PurgeAuditLogs(nowMs - int64((90*24*time.Hour)/time.Millisecond))
 	_ = h.repo.PurgeSubscriptionTraffic(now.Add(-subTrafficRetention).UnixMilli())
 
 	hourMark := now.Truncate(time.Hour)

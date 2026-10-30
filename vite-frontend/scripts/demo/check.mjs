@@ -129,6 +129,9 @@ async function visit(role, route) {
     if (!text.includes("xiaoming")) {
       problems.push(`${current}: audit user missing`);
     }
+    if (!text.includes("失败")) {
+      problems.push(`${current}: failed audit row is not marked`);
+    }
   }
 
   if (route === "subscription") {
@@ -255,6 +258,30 @@ if (!flowText.includes("流量已使用")) {
   problems.push(`${current}: quota warning missing`);
 }
 await evaluate(`localStorage.removeItem("demo-flow")`);
+
+// 320px + dark layout regression on the phone pages.
+await page("Emulation.setDeviceMetricsOverride", {
+  width: 320,
+  height: 800,
+  deviceScaleFactor: 1,
+  mobile: true,
+});
+await evaluate(`localStorage.setItem("hoplane:theme", "dark")`);
+await page("Page.reload");
+await sleep(1200);
+for (const route of ["dashboard", "my-subscriptions", "forward", "profile"]) {
+  current = `320 dark #/${route}`;
+  await page("Page.navigate", { url: `${origin}${BASE}#/${route}` });
+  await sleep(1600);
+  const layout = await evaluate(
+    `({ overflow: document.documentElement.scrollWidth > innerWidth + 1, dark: document.documentElement.classList.contains("dark"), text: document.body.innerText.length })`,
+  );
+  if (layout.overflow) problems.push(`${current}: horizontal overflow`);
+  if (!layout.dark) problems.push(`${current}: dark class missing`);
+  if (layout.text < 40) problems.push(`${current}: blank page`);
+}
+await page("Emulation.clearDeviceMetricsOverride");
+await evaluate(`localStorage.setItem("hoplane:theme", "light")`);
 
 for (const n of notes) console.log(`note  ${n}`);
 for (const p of problems) console.log(`FAIL  ${p}`);

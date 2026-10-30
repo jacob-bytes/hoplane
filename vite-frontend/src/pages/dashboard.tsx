@@ -29,6 +29,7 @@ import { ListGroup, ListRow } from "@/components/page-kit";
 import { AnnouncementBanner } from "@/pages/dashboard/components/announcement-banner";
 import { AnnouncementModal } from "@/pages/dashboard/components/announcement-modal";
 import { FlowChartCard } from "@/components/lazy-charts";
+import { buildFlowChartData } from "@/pages/dashboard/flow-data.js";
 import { MetricCard } from "@/pages/dashboard/components/metric-card";
 import { getAdminFlag, getSessionName } from "@/utils/session";
 import { AdminOverview } from "@/pages/dashboard/admin-overview";
@@ -183,91 +184,6 @@ function UserDashboard() {
         )}
       </div>
     );
-  };
-
-  // 处理24小时流量统计数据
-  const processFlowChartData = (range: "24h" | "7d" | "30d") => {
-    if (range === "24h") {
-      const now = new Date();
-      const hours: string[] = [];
-
-      for (let i = 23; i >= 0; i--) {
-        const time = new Date(now.getTime() - i * 60 * 60 * 1000);
-
-        hours.push(time.getHours().toString().padStart(2, "0") + ":00");
-      }
-
-      const flowMap = new Map<
-        string,
-        { flow: number; in: number; out: number }
-      >();
-
-      statisticsFlows.forEach((item) => {
-        flowMap.set(item.time, {
-          flow: item.flow || 0,
-          in: item.inFlow || 0,
-          out: item.outFlow || 0,
-        });
-      });
-
-      return hours.map((hour) => {
-        const point = flowMap.get(hour);
-
-        return {
-          time: hour,
-          flow: point?.flow || 0,
-          in: point?.in || 0,
-          out: point?.out || 0,
-          formattedFlow: formatFlow(point?.flow || 0),
-        };
-      });
-    }
-
-    const days = range === "7d" ? 7 : 30;
-    const buckets = new Map<
-      string,
-      { flow: number; in: number; out: number }
-    >();
-    const labels: string[] = [];
-
-    for (let i = days - 1; i >= 0; i--) {
-      const day = new Date();
-
-      day.setHours(0, 0, 0, 0);
-      day.setDate(day.getDate() - i);
-      const key = day.toISOString().slice(0, 10);
-
-      buckets.set(key, { flow: 0, in: 0, out: 0 });
-      labels.push(
-        `${String(day.getMonth() + 1).padStart(2, "0")}-${String(day.getDate()).padStart(2, "0")}`,
-      );
-    }
-
-    statisticsFlows.forEach((item, index) => {
-      const stamp =
-        item.createdTime ??
-        Date.now() - (statisticsFlows.length - 1 - index) * 3600_000;
-      const key = new Date(stamp).toISOString().slice(0, 10);
-      const bucket = buckets.get(key);
-
-      if (!bucket) return;
-      bucket.flow += item.flow || 0;
-      bucket.in += item.inFlow || 0;
-      bucket.out += item.outFlow || 0;
-    });
-
-    return labels.map((time, index) => {
-      const key = [...buckets.keys()][index];
-      const bucket = buckets.get(key) ?? { flow: 0, in: 0, out: 0 };
-
-      return {
-        time,
-        flow: bucket.flow,
-        in: bucket.in,
-        out: bucket.out,
-        formattedFlow: formatFlow(bucket.flow),
-      };
-    });
   };
 
   const flowLimit = flowLimitBytes(userInfo.flow || 0, userInfo.flowMiB);
@@ -741,7 +657,7 @@ function UserDashboard() {
       </div>
 
       <FlowChartCard
-        chartData={processFlowChartData(flowRange)}
+        chartData={buildFlowChartData(statisticsFlows, flowRange, formatFlow)}
         formatFlow={formatFlow}
         range={flowRange}
         statisticsFlowsCount={statisticsFlows.length}

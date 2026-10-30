@@ -19,6 +19,7 @@ type AuditLog struct {
 	IP        string `gorm:"column:ip;type:varchar(100);not null;default:''"`
 	UserAgent string `gorm:"column:user_agent;type:text;not null;default:''"`
 	Status    int    `gorm:"column:status;not null;default:0"`
+	Code      int    `gorm:"column:code;not null;default:0"`
 	CreatedAt int64  `gorm:"column:created_at;not null;index"`
 }
 

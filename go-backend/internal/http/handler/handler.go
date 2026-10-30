@@ -175,11 +175,22 @@ func (h *Handler) EnsureUserSession(userID int64, tokenID, ip, userAgent string,
 	return h.repo.EnsureUserSession(userID, tokenID, ip, userAgent, expiresAt)
 }
 
-func (h *Handler) RecordAudit(userID int64, username, action, method, path, ip, userAgent string, status int) {
-	_ = h.repo.CreateAuditLog(model.AuditLog{
+func (h *Handler) RecordAudit(userID int64, username, action, method, path, ip, userAgent string, status int) int64 {
+	entry := model.AuditLog{
 		UserID: userID, Username: username, Action: action, Method: method,
 		Path: path, IP: ip, UserAgent: userAgent, Status: status,
-	})
+	}
+	if err := h.repo.CreateAuditLog(entry); err != nil {
+		return 0
+	}
+
+	return entry.ID
+}
+
+func (h *Handler) CompleteAudit(id int64, status, code int) {
+	if id > 0 {
+		_ = h.repo.CompleteAuditLog(id, status, code)
+	}
 }
 
 func (h *Handler) Register(mux *http.ServeMux) {

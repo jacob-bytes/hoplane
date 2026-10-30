@@ -23,7 +23,7 @@ import type {
   NodeMutationPayload,
   TunnelMutationPayload,
   UserSessionApiItem,
-  AuditLogApiItem,
+  AuditLogPage,
   UserQuotaResetPayload,
   UserTunnelAssignPayload,
   UserTunnelListQuery,
@@ -969,8 +969,8 @@ export interface UserSubscription {
 export const getMySubscriptions = () =>
   Network.post<UserSubscription[]>("/user/subscription/list");
 /** Gives one of the user's subscriptions a new link and credentials. */
-export const getAuditLogs = () =>
-  Network.post<AuditLogApiItem[]>("/audit/list");
+export const getAuditLogs = (page = 1, pageSize = 50) =>
+  Network.post<AuditLogPage>("/audit/list", { page, pageSize });
 
 export const getUserSessions = () =>
   Network.post<UserSessionApiItem[]>("/user/session/list");
@@ -1243,4 +1243,4 @@ export const deleteInboundRelay = (id: number, force = false) =>
 
 export type { UserSessionApiItem } from "./types";
 
-export type { AuditLogApiItem } from "./types";
+export type { AuditLogApiItem, AuditLogPage } from "./types";

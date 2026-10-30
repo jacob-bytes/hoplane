@@ -12,20 +12,31 @@ import {
   formatDate,
 } from "@/components/page-kit";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function AuditPage() {
   const [items, setItems] = useState<AuditLogApiItem[]>([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+  const pageSize = 50;
 
   useEffect(() => {
-    getAuditLogs()
+    setLoading(true);
+    getAuditLogs(page, pageSize)
       .then((res) => {
-        if (res.code === 0) setItems(res.data || []);
+        if (res.code === 0) {
+          setItems(res.data.items || []);
+          setTotal(res.data.total || 0);
+        }
       })
-      .catch(() => setItems([]))
+      .catch(() => {
+        setItems([]);
+        setTotal(0);
+      })
       .finally(() => setLoading(false));
-  }, []);
+  }, [page]);
 
   const filtered = useMemo(() => {
     const keyword = query.trim().toLowerCase();
@@ -91,9 +102,13 @@ export default function AuditPage() {
                 </span>,
                 <Badge
                   key="status"
-                  variant={item.status >= 400 ? "destructive" : "success"}
+                  variant={
+                    item.code === 0 && item.status < 400
+                      ? "success"
+                      : "destructive"
+                  }
                 >
-                  {item.status || 200}
+                  {item.code === 0 && item.status < 400 ? "成功" : "失败"}
                 </Badge>,
               ]}
               meta={`${item.username || `#${item.userId}`} · ${formatDate(item.createdAt, true)} · ${item.action} · ${item.ip}`}
@@ -102,6 +117,32 @@ export default function AuditPage() {
             />
           ))}
         </ListGroup>
+      )}
+
+      {!loading && total > pageSize && (
+        <div className="mt-3 flex items-center justify-between gap-3 text-xs text-muted-foreground">
+          <span>
+            共 {total} 条 · 第 {page} / {Math.ceil(total / pageSize)} 页
+          </span>
+          <div className="flex gap-2">
+            <Button
+              disabled={page <= 1}
+              size="sm"
+              variant="outline"
+              onClick={() => setPage((value) => Math.max(1, value - 1))}
+            >
+              上一页
+            </Button>
+            <Button
+              disabled={page >= Math.ceil(total / pageSize)}
+              size="sm"
+              variant="outline"
+              onClick={() => setPage((value) => value + 1)}
+            >
+              下一页
+            </Button>
+          </div>
+        </div>
       )}
     </AnimatedPage>
   );

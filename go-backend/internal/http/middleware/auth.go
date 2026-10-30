@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -19,8 +21,10 @@ type AuthOptions struct {
 	GetUserAuthState func(userID int64) (*auth.UserAuthState, error)
 	// EnsureUserSession records the session and rejects revoked tokens.
 	EnsureUserSession func(userID int64, tokenID, ip, userAgent string, expiresAt int64) (bool, error)
-	// Audit records successful authenticated mutations.
-	Audit func(userID int64, username, action, method, path, ip, userAgent string, status int)
+	// Audit records authenticated mutations and returns the row id.
+	Audit func(userID int64, username, action, method, path, ip, userAgent string, status int) int64
+	// AuditComplete fills in the HTTP status and API envelope code.
+	AuditComplete func(id int64, status, code int)
 }
 
 func JWT(opts AuthOptions) func(http.Handler) http.Handler {
@@ -98,11 +102,18 @@ func JWT(opts AuthOptions) func(http.Handler) http.Handler {
 			if opts.Audit != nil && shouldAudit(req) {
 				// Record before the handler so a successful create remains the
 				// last insert in SQLite; tests and callers rely on that.
-				opts.Audit(
+				id := opts.Audit(
 					userIDFromClaims(claims), claims.User,
 					auditAction(req.URL.Path), req.Method, req.URL.Path,
 					clientIP(req), req.UserAgent(), 0,
 				)
+				recorder := &auditWriter{ResponseWriter: w, status: http.StatusOK}
+				next.ServeHTTP(recorder, req)
+				if opts.AuditComplete != nil {
+					opts.AuditComplete(id, recorder.status, recorder.code())
+				}
+
+				return
 			}
 
 			next.ServeHTTP(w, req)
@@ -124,6 +135,36 @@ func RequireAdmin(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+type auditWriter struct {
+	http.ResponseWriter
+	status int
+	body   bytes.Buffer
+}
+
+func (w *auditWriter) WriteHeader(status int) {
+	w.status = status
+	w.ResponseWriter.WriteHeader(status)
+}
+
+func (w *auditWriter) Write(data []byte) (int, error) {
+	if w.body.Len() < 64*1024 {
+		_, _ = w.body.Write(data)
+	}
+
+	return w.ResponseWriter.Write(data)
+}
+
+func (w *auditWriter) code() int {
+	var payload struct {
+		Code int `json:"code"`
+	}
+	if json.Unmarshal(w.body.Bytes(), &payload) == nil {
+		return payload.Code
+	}
+
+	return 0
 }
 
 func shouldAudit(r *http.Request) bool {

@@ -30,6 +30,12 @@ func TestRunStatisticsFlowJobTracksIncrementAndPrunes(t *testing.T) {
 	if err := r.DB().Exec(`INSERT INTO statistics_flow(user_id, flow, total_flow, time, created_time) VALUES(1, 10, 10, '00:00', ?)`, now.Add(-32*24*time.Hour).UnixMilli()).Error; err != nil {
 		t.Fatalf("seed stale statistics row: %v", err)
 	}
+	if err := r.DB().Exec(`INSERT INTO audit_log(user_id, username, action, method, path, ip, user_agent, status, code, created_at) VALUES(1, 'admin', 'old', 'POST', '/old', '', '', 200, 0, ?)`, now.Add(-100*24*time.Hour).UnixMilli()).Error; err != nil {
+		t.Fatalf("seed stale audit row: %v", err)
+	}
+	if err := r.DB().Exec(`INSERT INTO audit_log(user_id, username, action, method, path, ip, user_agent, status, code, created_at) VALUES(1, 'admin', 'fresh', 'POST', '/fresh', '', '', 200, 0, ?)`, now.UnixMilli()).Error; err != nil {
+		t.Fatalf("seed fresh audit row: %v", err)
+	}
 
 	h.runStatisticsFlowJob(now)
 
@@ -88,6 +94,12 @@ func TestRunStatisticsFlowJobTracksDirectionDeltas(t *testing.T) {
 	}
 	if rowTime := mustQueryInt(t, r, `SELECT COUNT(1) FROM statistics_flow WHERE created_time = ?`, nowMs); rowTime != 1 {
 		t.Fatalf("expected one row at the hour mark, got %d", rowTime)
+	}
+	if oldAudit := mustQueryInt(t, r, `SELECT COUNT(1) FROM audit_log WHERE action = 'old'`); oldAudit != 0 {
+		t.Fatalf("stale audit rows were not purged: %d", oldAudit)
+	}
+	if freshAudit := mustQueryInt(t, r, `SELECT COUNT(1) FROM audit_log WHERE action = 'fresh'`); freshAudit != 1 {
+		t.Fatalf("fresh audit row was purged: %d", freshAudit)
 	}
 }
 

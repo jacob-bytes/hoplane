@@ -69,12 +69,13 @@ func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 	token := testToken(t)
 	var calls int
 	var action, username, auditedIP, auditedUA string
+	var completedStatus, completedCode int
 	handler := JWT(AuthOptions{
 		JWTSecret: "unit-test-secret",
 		GetUserAuthState: func(userID int64) (*auth.UserAuthState, error) {
 			return &auth.UserAuthState{ID: userID, RoleID: 0, Status: 1}, nil
 		},
-		Audit: func(userID int64, user, auditedAction, method, path, ip, ua string, status int) {
+		Audit: func(userID int64, user, auditedAction, method, path, ip, ua string, status int) int64 {
 			calls++
 			username = user
 			action = auditedAction
@@ -83,6 +84,15 @@ func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 			if status != 0 {
 				t.Fatalf("expected pre-handler status 0, got %d", status)
 			}
+
+			return 42
+		},
+		AuditComplete: func(id int64, status, code int) {
+			if id != 42 {
+				t.Fatalf("completed wrong audit row: %d", id)
+			}
+			completedStatus = status
+			completedCode = code
 		},
 	})(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
@@ -100,6 +110,9 @@ func TestAuditMiddlewareRecordsMutationsOnly(t *testing.T) {
 		auditedIP == "" || auditedUA != "audit-test-agent" {
 		t.Fatalf("unexpected audit: calls=%d action=%q user=%q ip=%q ua=%q",
 			calls, action, username, auditedIP, auditedUA)
+	}
+	if completedStatus != http.StatusNoContent || completedCode != 0 {
+		t.Fatalf("completed status/code = %d/%d", completedStatus, completedCode)
 	}
 
 	post("/api/v1/forward/list")
@@ -150,4 +163,36 @@ func TestLegacyTokenWithoutJTIStillWorks(t *testing.T) {
 
 func jsonNumber(value int64) string {
 	return strconv.FormatInt(value, 10)
+}
+
+func TestAuditCompleteCapturesAPICode(t *testing.T) {
+	token := testToken(t)
+	var gotStatus, gotCode int
+	handler := JWT(AuthOptions{
+		JWTSecret: "unit-test-secret",
+		GetUserAuthState: func(userID int64) (*auth.UserAuthState, error) {
+			return &auth.UserAuthState{ID: userID, RoleID: 0, Status: 1}, nil
+		},
+		Audit: func(int64, string, string, string, string, string, string, int) int64 {
+			return 7
+		},
+		AuditComplete: func(id int64, status, code int) {
+			if id != 7 {
+				t.Fatalf("id = %d", id)
+			}
+			gotStatus = status
+			gotCode = code
+		},
+	})(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"code":-1,"msg":"转发不存在"}`))
+	}))
+
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/forward/update", nil)
+	req.Header.Set("Authorization", token)
+	handler.ServeHTTP(httptest.NewRecorder(), req)
+	if gotStatus != http.StatusOK || gotCode != -1 {
+		t.Fatalf("status/code = %d/%d", gotStatus, gotCode)
+	}
 }

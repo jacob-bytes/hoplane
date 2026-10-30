@@ -2,6 +2,7 @@ package repo
 
 import (
 	"testing"
+	"time"
 
 	"go-backend/internal/store/model"
 )
@@ -22,7 +23,7 @@ func TestAuditLogCreateAndList(t *testing.T) {
 		}
 	}
 
-	items, err := r.ListAuditLogs(10)
+	items, _, err := r.ListAuditLogs(10, 0)
 	if err != nil {
 		t.Fatalf("ListAuditLogs() error = %v", err)
 	}
@@ -31,6 +32,37 @@ func TestAuditLogCreateAndList(t *testing.T) {
 	}
 	if items[0].CreatedAt == 0 {
 		t.Fatal("audit entry has no timestamp")
+	}
+
+	page, total, err := r.ListAuditLogs(2, 1)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if total != 2 || len(page) != 1 || page[0].Action != "node/create" {
+		t.Fatalf("pagination returned total=%d items=%+v", total, page)
+	}
+}
+
+func TestPurgeAuditLogs(t *testing.T) {
+	r, err := Open(t.TempDir() + "/audit-purge.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	now := time.Now().UnixMilli()
+	if err := r.CreateAuditLog(model.AuditLog{UserID: 1, Action: "old", CreatedAt: now - 100*24*3600_000}); err != nil {
+		t.Fatal(err)
+	}
+	if err := r.CreateAuditLog(model.AuditLog{UserID: 1, Action: "new", CreatedAt: now}); err != nil {
+		t.Fatal(err)
+	}
+	if err := r.PurgeAuditLogs(now - 90*24*3600_000); err != nil {
+		t.Fatal(err)
+	}
+	items, total, _ := r.ListAuditLogs(10, 0)
+	if total != 1 || len(items) != 1 || items[0].Action != "new" {
+		t.Fatalf("purge left total=%d items=%+v", total, items)
 	}
 }
 
