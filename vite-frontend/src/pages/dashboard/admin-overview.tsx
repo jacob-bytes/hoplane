@@ -609,6 +609,44 @@ export function AdminOverview() {
         </p>
       </div>
 
+      {nodes.length === 0 && (
+        <section className="rounded-xl border border-hairline bg-raised p-4 lg:p-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h2 className="text-[15px] font-medium">开始使用</h2>
+            <span className="text-xs text-muted-foreground">
+              按顺序完成下面四步
+            </span>
+          </div>
+          <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              ["1", "添加服务器", "填写 IP、端口和备注", "/node"],
+              ["2", "安装 agent", "在服务器执行安装命令", "/node"],
+              ["3", "配置节点", "创建入站和协议", "/inbound"],
+              ["4", "创建订阅", "选择节点组并分发给用户", "/subscription"],
+            ].map(([step, title, hint, path]) => (
+              <button
+                key={step}
+                className="flex min-w-0 items-start gap-3 rounded-lg border border-hairline bg-surface/50 p-3 text-left transition-colors hover:border-hairline-strong hover:bg-surface"
+                type="button"
+                onClick={() => navigate(path)}
+              >
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 font-mono text-xs text-primary">
+                  {step}
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate text-sm font-medium">
+                    {title}
+                  </span>
+                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                    {hint}
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <Metric
           delta={kpiDelta(kpiHistory.online)}
