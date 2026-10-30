@@ -168,7 +168,38 @@ async function visit(role, route) {
   }
 }
 
+// Login screen: a non-expiring but malformed demo token keeps the demo
+// adapter from auto-signing in, so the real login form renders.
+fs.writeFileSync(
+  path.join(dir, "login-check.html"),
+  `<script>localStorage.clear();localStorage.setItem("token","demo.invalid.demo");location.replace("${BASE}")</script>`,
+);
+current = "login";
+await page("Page.navigate", { url: `${origin}${BASE}login-check.html` });
+await sleep(1800);
+const loginText = await evaluate("document.body.innerText");
+if (!loginText.includes("登录以管理你的网络")) {
+  problems.push(`${current}: login form missing`);
+}
+const passwordType = await evaluate(
+  `document.querySelector("#login-password")?.getAttribute("type")`,
+);
+if (passwordType !== "password") {
+  problems.push(`${current}: password field is not masked`);
+}
+await evaluate(
+  `(() => { const b = document.querySelector('button[aria-label="显示密码"]'); b?.click(); return Boolean(b); })()`,
+);
+const revealed = await evaluate(
+  `document.querySelector("#login-password")?.getAttribute("type")`,
+);
+if (revealed !== "text") {
+  problems.push(`${current}: password visibility toggle failed`);
+}
+
 current = "admin (first load)";
+await page("Page.navigate", { url: `${origin}${BASE}` });
+await evaluate("localStorage.clear()");
 await page("Page.navigate", { url: `${origin}${BASE}` });
 await sleep(SETTLE_MS);
 for (const r of ADMIN_PAGES) await visit("admin", r);
