@@ -40,6 +40,11 @@ const NOTIFY_EVENTS = [
     description: "到期前 3 天提醒一次",
   },
   {
+    key: "user_session",
+    label: "新 IP 登录",
+    description: "同一账号从新的 IP 登录时提醒",
+  },
+  {
     key: "user_quota",
     label: "用户流量 / 到期",
     description: "转发用户流量用到 90%、用完或 3 天内到期，共享用户 3 天内到期",

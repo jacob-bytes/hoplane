@@ -179,3 +179,22 @@ func TestPurgeUserSessions(t *testing.T) {
 		t.Fatalf("revoked session was not purged: %+v", items)
 	}
 }
+
+func TestHasUserSessionIP(t *testing.T) {
+	r, err := Open(t.TempDir() + "/sessions-ip.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	expiry := time.Now().Add(time.Hour).Unix()
+	if _, err := r.EnsureUserSession(1, "known", "203.0.113.9", "ua", expiry); err != nil {
+		t.Fatal(err)
+	}
+	if known, err := r.HasUserSessionIP(1, "203.0.113.9"); err != nil || !known {
+		t.Fatalf("known IP = %v, %v", known, err)
+	}
+	if known, err := r.HasUserSessionIP(1, "203.0.113.10"); err != nil || known {
+		t.Fatalf("new IP = %v, %v", known, err)
+	}
+}

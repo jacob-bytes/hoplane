@@ -79,3 +79,37 @@ func TestAuditAndSessionTablesMigrate(t *testing.T) {
 		}
 	}
 }
+
+func TestAuditFilterSearchAndFailures(t *testing.T) {
+	r, err := Open(t.TempDir() + "/audit-filter.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	entries := []model.AuditLog{
+		{UserID: 1, Username: "alice", Action: "node/create", Path: "/api/v1/node/create", Status: 200, Code: 0},
+		{UserID: 2, Username: "bob", Action: "forward/update", Path: "/api/v1/forward/update", Status: 200, Code: -1},
+	}
+	for _, entry := range entries {
+		if err := r.CreateAuditLog(entry); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	items, total, err := r.ListAuditLogsFiltered(AuditFilter{Limit: 10, Search: "bob"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if total != 1 || len(items) != 1 || items[0].Username != "bob" {
+		t.Fatalf("search result total=%d items=%+v", total, items)
+	}
+
+	items, total, err = r.ListAuditLogsFiltered(AuditFilter{Limit: 10, FailedOnly: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if total != 1 || len(items) != 1 || items[0].Action != "forward/update" {
+		t.Fatalf("failure result total=%d items=%+v", total, items)
+	}
+}

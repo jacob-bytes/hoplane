@@ -224,6 +224,30 @@ async function answer(config: InternalAxiosRequestConfig) {
     return { code: 0, msg: "操作成功", data: [], ts: Date.now() };
   }
 
+  if (/^monitor\/nodes\/\d+\/metrics$/.test(bare)) {
+    const now = Date.now();
+    const data = Array.from({ length: 24 }, (_, index) => ({
+      id: index + 1,
+      nodeId: 1,
+      timestamp: now - (23 - index) * 3600_000,
+      cpuUsage: 20 + Math.sin(index / 3) * 10,
+      memoryUsage: 38 + Math.cos(index / 4) * 6,
+      diskUsage: 42,
+      netInBytes: 0,
+      netOutBytes: 0,
+      netInSpeed: 2_000_000 + Math.sin(index / 2) * 800_000,
+      netOutSpeed: 1_500_000 + Math.cos(index / 3) * 600_000,
+      load1: 0.4,
+      load5: 0.3,
+      load15: 0.2,
+      tcpConns: 12,
+      udpConns: 0,
+      uptime: 3600,
+    }));
+
+    return { code: 0, msg: "操作成功", data, ts: now };
+  }
+
   if (bare === "user/session/list") {
     const now = Date.now();
 

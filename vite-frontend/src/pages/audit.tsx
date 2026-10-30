@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { getAuditLogs, type AuditLogApiItem } from "@/api";
 import { AnimatedPage } from "@/components/animated-page";
 import {
@@ -17,14 +18,16 @@ import { Button } from "@/components/ui/button";
 export default function AuditPage() {
   const [items, setItems] = useState<AuditLogApiItem[]>([]);
   const [query, setQuery] = useState("");
+  const [failedOnly, setFailedOnly] = useState(false);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const pageSize = 50;
+  const debouncedQuery = useDebouncedValue(query, 300);
 
   useEffect(() => {
     setLoading(true);
-    getAuditLogs(page, pageSize)
+    getAuditLogs(page, pageSize, debouncedQuery, failedOnly)
       .then((res) => {
         if (res.code === 0) {
           setItems(res.data.items || []);
@@ -36,20 +39,11 @@ export default function AuditPage() {
         setTotal(0);
       })
       .finally(() => setLoading(false));
-  }, [page]);
+  }, [debouncedQuery, failedOnly, page]);
 
-  const filtered = useMemo(() => {
-    const keyword = query.trim().toLowerCase();
-
-    if (!keyword) return items;
-
-    return items.filter((item) =>
-      [item.username, item.action, item.ip, item.userAgent]
-        .join(" ")
-        .toLowerCase()
-        .includes(keyword),
-    );
-  }, [items, query]);
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedQuery, failedOnly]);
 
   return (
     <AnimatedPage className="mx-auto w-full max-w-[1440px] px-6 py-6">
@@ -62,12 +56,57 @@ export default function AuditPage() {
         search={query}
         onSearch={setQuery}
       />
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <Button
+          aria-pressed={failedOnly}
+          size="sm"
+          variant={failedOnly ? "secondary" : "outline"}
+          onClick={() => setFailedOnly((value) => !value)}
+        >
+          仅失败
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => {
+            const rows = [
+              ["时间", "用户", "操作", "IP", "状态", "结果"],
+              ...items.map((item) => [
+                formatDate(item.createdAt, true),
+                item.username || `#${item.userId}`,
+                item.action,
+                item.ip,
+                String(item.status),
+                item.code === 0 && item.status < 400 ? "成功" : "失败",
+              ]),
+            ];
+            const csv = rows
+              .map((row) =>
+                row
+                  .map((cell) => `"${String(cell).replace(/"/g, '""')}"`)
+                  .join(","),
+              )
+              .join("\n");
+            const url = URL.createObjectURL(
+              new Blob([csv], { type: "text/csv;charset=utf-8" }),
+            );
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = "hoplane-audit.csv";
+            link.click();
+            URL.revokeObjectURL(url);
+          }}
+        >
+          导出当前页 CSV
+        </Button>
+      </div>
 
       {loading ? (
         <p className="py-10 text-center text-sm text-muted-foreground">
           正在加载审计日志…
         </p>
-      ) : filtered.length === 0 ? (
+      ) : items.length === 0 ? (
         <EmptyHint text={query ? "没有匹配的日志" : "还没有审计记录"} />
       ) : (
         <ListGroup
@@ -75,7 +114,7 @@ export default function AuditPage() {
           columns="170px minmax(0,0.8fr) minmax(0,1.2fr) 140px 80px"
           head={["时间", "用户", "操作", "IP", "状态"]}
         >
-          {filtered.map((item) => (
+          {items.map((item) => (
             <ListRow
               key={item.id}
               cells={[

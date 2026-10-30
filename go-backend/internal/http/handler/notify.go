@@ -22,6 +22,7 @@ const (
 	notifyEventInboundDown = "inbound_down"
 	notifyEventKernelError = "kernel_error"
 	notifyEventNodeExpiry  = "node_expiry"
+	notifyEventSessionNew  = "user_session"
 	notifyEventTest        = "test"
 )
 

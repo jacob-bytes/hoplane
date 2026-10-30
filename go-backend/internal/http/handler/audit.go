@@ -4,12 +4,15 @@ import (
 	"net/http"
 
 	"go-backend/internal/http/response"
+	"go-backend/internal/store/repo"
 )
 
 func (h *Handler) auditList(w http.ResponseWriter, r *http.Request) {
 	var req struct {
-		Page     int `json:"page"`
-		PageSize int `json:"pageSize"`
+		Page       int    `json:"page"`
+		PageSize   int    `json:"pageSize"`
+		Search     string `json:"search"`
+		FailedOnly bool   `json:"failedOnly"`
 	}
 	_ = decodeJSON(r.Body, &req)
 	if req.Page <= 0 {
@@ -19,7 +22,10 @@ func (h *Handler) auditList(w http.ResponseWriter, r *http.Request) {
 		req.PageSize = 50
 	}
 
-	items, total, err := h.repo.ListAuditLogs(req.PageSize, (req.Page-1)*req.PageSize)
+	items, total, err := h.repo.ListAuditLogsFiltered(repo.AuditFilter{
+		Limit: req.PageSize, Offset: (req.Page - 1) * req.PageSize,
+		Search: req.Search, FailedOnly: req.FailedOnly,
+	})
 	if err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
 		return

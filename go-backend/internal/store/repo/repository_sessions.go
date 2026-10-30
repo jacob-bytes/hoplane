@@ -94,3 +94,15 @@ func (r *Repository) PurgeUserSessions(cutoffMs int64) error {
 		cutoffMs, cutoffMs,
 	).Delete(&model.UserSession{}).Error
 }
+
+func (r *Repository) HasUserSessionIP(userID int64, ip string) (bool, error) {
+	if r == nil || r.db == nil {
+		return false, errors.New("repository not initialized")
+	}
+	var count int64
+	err := r.db.Model(&model.UserSession{}).
+		Where("user_id = ? AND ip = ? AND revoked_at IS NULL", userID, ip).
+		Count(&count).Error
+
+	return count > 0, err
+}

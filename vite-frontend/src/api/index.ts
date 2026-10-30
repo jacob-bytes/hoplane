@@ -969,8 +969,18 @@ export interface UserSubscription {
 export const getMySubscriptions = () =>
   Network.post<UserSubscription[]>("/user/subscription/list");
 /** Gives one of the user's subscriptions a new link and credentials. */
-export const getAuditLogs = (page = 1, pageSize = 50) =>
-  Network.post<AuditLogPage>("/audit/list", { page, pageSize });
+export const getAuditLogs = (
+  page = 1,
+  pageSize = 50,
+  search = "",
+  failedOnly = false,
+) =>
+  Network.post<AuditLogPage>("/audit/list", {
+    page,
+    pageSize,
+    search,
+    failedOnly,
+  });
 
 export const getUserSessions = () =>
   Network.post<UserSessionApiItem[]>("/user/session/list");
@@ -1244,3 +1254,5 @@ export const deleteInboundRelay = (id: number, force = false) =>
 export type { UserSessionApiItem } from "./types";
 
 export type { AuditLogApiItem, AuditLogPage } from "./types";
+
+export type { NodeMetricApiItem } from "./types";

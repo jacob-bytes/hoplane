@@ -172,7 +172,18 @@ func (h *Handler) GetUserAuthState(userID int64) (*auth.UserAuthState, error) {
 }
 
 func (h *Handler) EnsureUserSession(userID int64, tokenID, ip, userAgent string, expiresAt int64) (bool, error) {
-	return h.repo.EnsureUserSession(userID, tokenID, ip, userAgent, expiresAt)
+	knownIP, _ := h.repo.HasUserSessionIP(userID, ip)
+	valid, err := h.repo.EnsureUserSession(userID, tokenID, ip, userAgent, expiresAt)
+	if valid && err == nil && !knownIP && h.notifier != nil {
+		key := fmt.Sprintf("login:%d:%s", userID, ip)
+		if h.notifier.alertOnce(key) {
+			username := h.repo.GetUsernameByID(userID)
+			h.notify(notifyEventSessionNew, "新 IP 登录",
+				fmt.Sprintf("用户：%s\nIP：%s\n设备：%s", username, ip, userAgent))
+		}
+	}
+
+	return valid, err
 }
 
 func (h *Handler) RecordAudit(userID int64, username, action, method, path, ip, userAgent string, status int) int64 {

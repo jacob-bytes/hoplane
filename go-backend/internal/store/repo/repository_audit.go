@@ -2,6 +2,7 @@ package repo
 
 import (
 	"errors"
+	"strings"
 	"time"
 
 	"go-backend/internal/store/model"
@@ -54,4 +55,47 @@ func (r *Repository) PurgeAuditLogs(cutoffMs int64) error {
 		return errors.New("repository not initialized")
 	}
 	return r.db.Where("created_at < ?", cutoffMs).Delete(&model.AuditLog{}).Error
+}
+
+type AuditFilter struct {
+	Limit      int
+	Offset     int
+	Search     string
+	FailedOnly bool
+}
+
+func (r *Repository) ListAuditLogsFiltered(filter AuditFilter) ([]model.AuditLog, int64, error) {
+	if r == nil || r.db == nil {
+		return nil, 0, errors.New("repository not initialized")
+	}
+	if filter.Limit <= 0 || filter.Limit > 200 {
+		filter.Limit = 50
+	}
+	if filter.Offset < 0 {
+		filter.Offset = 0
+	}
+
+	query := r.db.Model(&model.AuditLog{})
+	if search := strings.TrimSpace(filter.Search); search != "" {
+		like := "%" + search + "%"
+		query = query.Where(
+			"username LIKE ? OR action LIKE ? OR path LIKE ? OR ip LIKE ?",
+			like, like, like, like,
+		)
+	}
+	if filter.FailedOnly {
+		query = query.Where("code <> 0 OR status >= 400")
+	}
+
+	var total int64
+	if err := query.Count(&total).Error; err != nil {
+		return nil, 0, err
+	}
+	var items []model.AuditLog
+	err := query.Order("id DESC").Limit(filter.Limit).Offset(filter.Offset).Find(&items).Error
+	if err == nil && items == nil {
+		items = make([]model.AuditLog, 0)
+	}
+
+	return items, total, err
 }
