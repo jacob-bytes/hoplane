@@ -15,6 +15,8 @@ func NewRouter(h *handler.Handler, jwtSecret string) http.Handler {
 	wrapped := middleware.Recover(mux)
 	wrapped = middleware.JWT(middleware.AuthOptions{JWTSecret: jwtSecret, GetUserAuthState: h.GetUserAuthState, EnsureUserSession: h.EnsureUserSession, Audit: h.RecordAudit, AuditComplete: h.CompleteAudit})(wrapped)
 	wrapped = middleware.RequestLog(wrapped)
+	wrapped = middleware.SecurityHeaders(wrapped)
+	wrapped = middleware.LimitAPIBody(wrapped)
 	wrapped = middleware.CORS(wrapped)
 	return wrapped
 }
