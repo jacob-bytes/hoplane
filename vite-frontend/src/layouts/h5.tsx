@@ -8,11 +8,9 @@ import {
 } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { toast } from "sonner";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { siteConfig } from "@/config/site";
-import { getMonitorAccess } from "@/api";
 import { getAdminFlag } from "@/utils/session";
 import { useHasMySubscriptions } from "@/hooks/use-has-my-subscriptions";
 import { useScrollTopOnPathChange } from "@/hooks/useScrollTopOnPathChange";
@@ -32,10 +30,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [isAdmin, setIsAdmin] = useState(() => getAdminFlag());
   const hasMySubs = useHasMySubscriptions(isAdmin);
-  const [monitorAllowed, setMonitorAllowed] = useState<boolean | null>(null);
-  const [monitorAccessReason, setMonitorAccessReason] = useState<string | null>(
-    null,
-  );
 
   useScrollTopOnPathChange();
 
@@ -152,63 +146,11 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const adminFlag = getAdminFlag();
-
-    setIsAdmin(adminFlag);
-    if (adminFlag) {
-      setMonitorAllowed(true);
-      setMonitorAccessReason(null);
-
-      return;
-    }
-
-    let cancelled = false;
-
-    (async () => {
-      try {
-        const res = await getMonitorAccess();
-
-        if (cancelled) return;
-        if (res.code === 0 && res.data) {
-          setMonitorAllowed(Boolean(res.data.allowed));
-          setMonitorAccessReason(
-            res.data.allowed ? null : res.data.reason || null,
-          );
-
-          return;
-        }
-        setMonitorAllowed(true);
-        setMonitorAccessReason(null);
-      } catch {
-        if (cancelled) return;
-        setMonitorAllowed(true);
-        setMonitorAccessReason(null);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    setIsAdmin(getAdminFlag());
   }, []);
 
   // Tab点击处理
   const handleTabClick = (path: string) => {
-    if (path === "/monitor" && monitorAllowed !== true) {
-      if (monitorAllowed == null) {
-        toast("正在检查监控权限，请稍后重试");
-
-        return;
-      }
-
-      const hint =
-        monitorAccessReason === "need_admin_grant"
-          ? "暂无监控权限，请联系管理员授权"
-          : "暂无监控权限";
-
-      toast.error(hint);
-
-      return;
-    }
     navigate(path);
   };
 
@@ -216,17 +158,14 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
   const filteredTabItems = tabItems.filter(
     (item) =>
       (isAdmin ? !item.userOnly : !item.adminOnly) &&
-      (item.path !== "/my-subscriptions" || hasMySubs) &&
-      (item.path !== "/monitor" || isAdmin || monitorAllowed === true),
+      (item.path !== "/my-subscriptions" || hasMySubs),
   );
 
   const tabsRef = useRef(filteredTabItems);
   const pathRef = useRef(location.pathname);
-  const monitorRef = useRef(monitorAllowed);
 
   tabsRef.current = filteredTabItems;
   pathRef.current = location.pathname;
-  monitorRef.current = monitorAllowed;
 
   useEffect(() => {
     let start: { x: number; y: number } | null = null;
@@ -269,15 +208,9 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
           ["/tunnel", "/forward"].includes(path)) ||
         (itemPath === "/profile" &&
           isAdmin &&
-          [
-            "/node",
-            "/monitor",
-            "/user",
-            "/group",
-            "/limit",
-            "/config",
-            "/relay",
-          ].includes(path));
+          ["/node", "/user", "/group", "/limit", "/config", "/relay"].includes(
+            path,
+          ));
       const tabs = tabsRef.current;
       const index = tabs.findIndex((item) => isActive(item.path));
 
@@ -286,7 +219,6 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
       const next = tabs[index + (dx < 0 ? 1 : -1)];
 
       if (!next) return;
-      if (next.path === "/monitor" && monitorRef.current !== true) return;
 
       navigate(next.path);
     };
@@ -361,15 +293,12 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
               isAdmin &&
               [
                 "/node",
-                "/monitor",
                 "/user",
                 "/group",
                 "/limit",
                 "/config",
                 "/relay",
               ].includes(location.pathname));
-          const isMonitor = item.path === "/monitor";
-          const isMonitorBlocked = isMonitor && monitorAllowed !== true;
 
           return (
             <button
@@ -377,13 +306,10 @@ export default function H5Layout({ children }: { children: React.ReactNode }) {
               className={`
                 flex flex-col items-center justify-center flex-1 h-full pb-[var(--safe-area-bottom)]
                 transition-colors duration-200 min-h-[44px]
-                ${isMonitorBlocked ? "opacity-60" : ""}
                 ${
                   isActive
                     ? "text-primary"
-                    : isMonitorBlocked
-                      ? "text-muted-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
                 }
               `}
               onClick={() => handleTabClick(item.path)}
