@@ -113,3 +113,35 @@ func TestAuditFilterSearchAndFailures(t *testing.T) {
 		t.Fatalf("failure result total=%d items=%+v", total, items)
 	}
 }
+
+func TestAuditPaginationWithManyRows(t *testing.T) {
+	r, err := Open(t.TempDir() + "/audit-many.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	for i := 0; i < 250; i++ {
+		code := 0
+		action := "node/create"
+		if i%10 == 0 {
+			code = -1
+			action = "forward/update"
+		}
+		if err := r.CreateAuditLog(model.AuditLog{
+			UserID: 1, Username: "admin", Action: action,
+			Status: 200, Code: code,
+		}); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	items, total, err := r.ListAuditLogsFiltered(AuditFilter{Limit: 50, Offset: 200})
+	if err != nil || total != 250 || len(items) != 50 {
+		t.Fatalf("page total=%d items=%d err=%v", total, len(items), err)
+	}
+	failed, failedTotal, err := r.ListAuditLogsFiltered(AuditFilter{Limit: 50, FailedOnly: true})
+	if err != nil || failedTotal != 25 || len(failed) != 25 {
+		t.Fatalf("failed total=%d items=%d err=%v", failedTotal, len(failed), err)
+	}
+}
