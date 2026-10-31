@@ -1,6 +1,8 @@
 module go-backend
 
-go 1.26.10
+go 1.26.0
+
+toolchain go1.26.10
 
 require (
 	github.com/dlclark/regexp2/v2 v2.2.1
