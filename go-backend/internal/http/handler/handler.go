@@ -68,6 +68,7 @@ type Handler struct {
 	nodeRoutes    *nodeRouteStore
 	relayLatency  *relayLatencyStore
 	latencyAlerts *latencyAlertTracker
+	loginLimiter  *loginLimiter
 	notifier      *notifier
 	bestExit      *bestExitManager
 }
@@ -134,6 +135,7 @@ func New(repo *repo.Repository, jwtSecret string) *Handler {
 		nodeRoutes:               newNodeRouteStore(),
 		relayLatency:             newRelayLatencyStore(),
 		latencyAlerts:            newLatencyAlertTracker(),
+		loginLimiter:             newLoginLimiter(),
 		notifier:                 newNotifier(),
 		pingSlots:                newNodePingSlots(),
 	}
@@ -460,6 +462,12 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	limiterKey := loginKey(r, req.Username)
+	if h.loginLimiter != nil && !h.loginLimiter.allow(limiterKey, time.Now()) {
+		response.WriteJSON(w, response.Err(429, "登录尝试次数过多，请 15 分钟后再试"))
+		return
+	}
+
 	captchaEnabled, err := h.captchaEnabled()
 	if err != nil {
 		response.WriteJSON(w, response.Err(-2, err.Error()))
@@ -492,13 +500,22 @@ func (h *Handler) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if user == nil {
+		if h.loginLimiter != nil {
+			h.loginLimiter.fail(limiterKey, time.Now())
+		}
 		response.WriteJSON(w, response.ErrDefault("账号或密码错误"))
 		return
 	}
 	passwordMatched, passwordWasLegacy := security.VerifyPassword(user.Pwd, req.Password)
 	if !passwordMatched {
+		if h.loginLimiter != nil {
+			h.loginLimiter.fail(limiterKey, time.Now())
+		}
 		response.WriteJSON(w, response.ErrDefault("账号或密码错误"))
 		return
+	}
+	if h.loginLimiter != nil {
+		h.loginLimiter.reset(limiterKey)
 	}
 	if user.Status == 0 {
 		response.WriteJSON(w, response.ErrDefault("账号被停用"))
