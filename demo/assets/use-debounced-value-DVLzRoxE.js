@@ -1,0 +1,1 @@
+import{Ea as e,ka as t}from"./index-kZZ1j4_K.js";var n=t(e(),1);function r(e,t=150){let[r,i]=(0,n.useState)(e);return(0,n.useEffect)(()=>{let n=window.setTimeout(()=>i(e),t);return()=>window.clearTimeout(n)},[e,t]),r}export{r as t};
