@@ -1,6 +1,7 @@
 package repo
 
 import (
+	"errors"
 	"testing"
 	"time"
 
@@ -196,5 +197,41 @@ func TestHasUserSessionIP(t *testing.T) {
 	}
 	if known, err := r.HasUserSessionIP(1, "203.0.113.10"); err != nil || known {
 		t.Fatalf("new IP = %v, %v", known, err)
+	}
+}
+
+func TestEnsureUserSessionConcurrentFirstUse(t *testing.T) {
+	r, err := Open(t.TempDir() + "/sessions-race.db")
+	if err != nil {
+		t.Fatalf("Open() error = %v", err)
+	}
+	t.Cleanup(func() { _ = r.Close() })
+
+	expiry := time.Now().Add(time.Hour).Unix()
+	errs := make(chan error, 8)
+	for i := 0; i < 8; i++ {
+		go func() {
+			valid, err := r.EnsureUserSession(1, "race", "203.0.113.1", "ua", expiry)
+			if err != nil {
+				errs <- err
+
+				return
+			}
+			if !valid {
+				errs <- errors.New("concurrent session marked invalid")
+
+				return
+			}
+			errs <- nil
+		}()
+	}
+	for i := 0; i < 8; i++ {
+		if err := <-errs; err != nil {
+			t.Fatal(err)
+		}
+	}
+	items, _ := r.ListUserSessions(1)
+	if len(items) != 1 {
+		t.Fatalf("sessions = %d", len(items))
 	}
 }

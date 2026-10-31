@@ -27,12 +27,20 @@ func (r *Repository) EnsureUserSession(userID int64, tokenID, ip, userAgent stri
 	var session model.UserSession
 	err := r.db.Where("token_id = ?", tokenID).First(&session).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return true, r.db.Create(&model.UserSession{
+		created := model.UserSession{
 			UserID: userID, TokenID: tokenID, IP: ip, UserAgent: userAgent,
 			CreatedAt: now, LastSeenAt: now, ExpiresAt: expiresAt * 1000,
-		}).Error
-	}
-	if err != nil {
+		}
+		if err := r.db.Create(&created).Error; err != nil {
+			// Another request may have created the same session between the
+			// lookup and insert; read it back instead of failing the request.
+			if readErr := r.db.Where("token_id = ?", tokenID).First(&session).Error; readErr != nil {
+				return false, err
+			}
+		} else {
+			return true, nil
+		}
+	} else if err != nil {
 		return false, err
 	}
 	if session.UserID != userID || session.RevokedAt.Valid ||
