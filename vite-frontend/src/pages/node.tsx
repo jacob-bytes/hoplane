@@ -1922,11 +1922,16 @@ export default function NodePage({
                         ]}
                         footer={
                           !isRemoteNode && (
-                            <NodeLiveStats
-                              info={online ? (node.systemInfo ?? null) : null}
-                              month={monthTraffic[String(node.id)]}
-                              variant="footer"
-                            />
+                            <>
+                              <NodeLiveStats
+                                info={online ? (node.systemInfo ?? null) : null}
+                                month={monthTraffic[String(node.id)]}
+                                variant="footer"
+                              />
+                              <div className="mt-1 lg:hidden">
+                                {renderLatency(node)}
+                              </div>
+                            </>
                           )
                         }
                         meta={meta.filter(Boolean).join(" · ")}
@@ -1940,7 +1945,7 @@ export default function NodePage({
                               />
                             )}
                             {/* A fixed slot keeps the stats in line across rows. */}
-                            <div className="contents lg:flex lg:w-36 lg:justify-end">
+                            <div className="hidden lg:flex lg:w-36 lg:justify-end">
                               {renderLatency(node)}
                             </div>
                             {!isDisplayFiltered && (

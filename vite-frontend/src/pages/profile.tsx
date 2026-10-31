@@ -9,6 +9,7 @@ import {
   KeyRound,
   Link2,
   LogOut,
+  ScrollText,
   Settings,
   ShieldCheck,
   Users,
@@ -452,6 +453,14 @@ export default function ProfilePage() {
       icon: Link2,
       tone: "primary",
       onClick: go("/relay"),
+    },
+    {
+      key: "/audit",
+      label: "审计",
+      description: "登录与写操作记录",
+      icon: ScrollText,
+      tone: "primary",
+      onClick: go("/audit"),
     },
     {
       key: "/config",

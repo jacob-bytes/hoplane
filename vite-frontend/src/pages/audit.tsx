@@ -98,7 +98,7 @@ export default function AuditPage() {
             URL.revokeObjectURL(url);
           }}
         >
-          导出当前页 CSV
+          导出 CSV
         </Button>
       </div>
 
@@ -117,6 +117,17 @@ export default function AuditPage() {
           {items.map((item) => (
             <ListRow
               key={item.id}
+              badges={
+                <Badge
+                  variant={
+                    item.code === 0 && item.status < 400
+                      ? "success"
+                      : "destructive"
+                  }
+                >
+                  {item.code === 0 && item.status < 400 ? "成功" : "失败"}
+                </Badge>
+              }
               cells={[
                 <span
                   key="time"

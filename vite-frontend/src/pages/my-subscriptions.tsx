@@ -87,14 +87,19 @@ function Traffic({ s }: { s: UserSubscription }) {
 
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="flex items-baseline justify-between gap-2 text-xs text-muted-foreground">
-        <span className="font-mono">
-          {ymd(s.trafficSince)} 起已用 {formatTraffic(used)}
+      <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5 text-xs text-muted-foreground">
+        <span className="whitespace-nowrap font-mono">
+          {ymd(s.trafficSince)} 起
+        </span>
+        <span className="whitespace-nowrap font-mono">
+          已用 {formatTraffic(used)}
           {s.trafficLimit
             ? ` / ${formatTraffic(s.trafficLimit)}`
             : " · 不限流量"}
         </span>
-        {s.trafficLimit > 0 && <span>{Math.floor(pct)}%</span>}
+        {s.trafficLimit > 0 && (
+          <span className="whitespace-nowrap">{Math.floor(pct)}%</span>
+        )}
       </div>
       {s.trafficLimit > 0 && (
         <div className="h-2 overflow-hidden rounded-full bg-muted">

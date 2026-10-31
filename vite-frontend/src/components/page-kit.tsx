@@ -51,7 +51,7 @@ export function PageHeader({
   secondary?: PageAction;
 }) {
   return (
-    <div className="mb-4 flex items-start justify-between gap-3">
+    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
         <h1 className="text-[22px] leading-[30px] font-semibold tracking-[-0.01em] text-ink">
           {title}
@@ -63,7 +63,7 @@ export function PageHeader({
         )}
       </div>
       {(primary || secondary) && (
-        <div className="flex shrink-0 gap-2">
+        <div className="flex shrink-0 flex-wrap gap-2">
           {secondary && (
             <Button
               className="gap-1.5"
@@ -305,7 +305,7 @@ export function ToolbarButton({
 }) {
   return (
     <button
-      className={`flex h-9 shrink-0 items-center gap-1 rounded-md border px-3 text-[13px] transition-colors ${
+      className={`flex h-10 shrink-0 items-center gap-1 rounded-md border px-3 text-[13px] transition-colors sm:h-9 ${
         active
           ? "border-primary bg-primary-soft font-medium text-primary"
           : "border-hairline bg-raised text-muted-foreground hover:bg-surface"

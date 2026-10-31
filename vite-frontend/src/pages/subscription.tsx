@@ -1420,7 +1420,7 @@ export default function SubscriptionPage() {
   const row = (s: SubscriptionItem) => (
     <div
       key={s.id}
-      className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors max-lg:rounded-lg max-lg:border max-lg:border-hairline max-lg:bg-raised lg:grid lg:gap-4 lg:px-4 lg:hover:bg-surface lg:[grid-template-columns:var(--list-cols)]"
+      className="flex cursor-pointer items-center gap-3 px-3 py-2.5 transition-colors max-lg:flex-col max-lg:items-stretch max-lg:rounded-lg max-lg:border max-lg:border-hairline max-lg:bg-raised lg:grid lg:gap-4 lg:px-4 lg:hover:bg-surface lg:[grid-template-columns:var(--list-cols)]"
       data-slot="list-row"
       role="button"
       tabIndex={0}
@@ -1434,7 +1434,7 @@ export default function SubscriptionPage() {
       }}
     >
       <span
-        className={`h-2 w-2 shrink-0 rounded-full ${s.active ? "bg-success" : "bg-muted"}`}
+        className={`h-2 w-2 shrink-0 rounded-full max-lg:hidden ${s.active ? "bg-success" : "bg-muted"}`}
       />
       <div className="min-w-0 flex-1 lg:flex-none">
         <div className="flex items-center gap-1.5">
@@ -1449,7 +1449,7 @@ export default function SubscriptionPage() {
           {s.expireTime ? ` · ${expiryLabel(s.expireTime)}` : ""}
           {s.remark ? ` · ${s.remark}` : ""}
         </div>
-        <div className="mt-1.5 lg:hidden">
+        <div className="mt-1.5 w-full lg:hidden">
           <Usage compact s={s} />
         </div>
       </div>
@@ -1457,7 +1457,7 @@ export default function SubscriptionPage() {
         <Usage compact s={s} />
       </div>
       <div
-        className="relative z-10 flex shrink-0 items-center gap-2 max-lg:ml-auto lg:justify-end"
+        className="relative z-10 flex shrink-0 items-center gap-2 max-lg:mt-1 max-lg:w-full max-lg:justify-end lg:justify-end"
         role="presentation"
         onClick={(e) => e.stopPropagation()}
       >

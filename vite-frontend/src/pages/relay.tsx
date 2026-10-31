@@ -88,23 +88,34 @@ function RelayLines({
               className={`h-1.5 w-1.5 shrink-0 rounded-full ${ok ? "bg-success" : "bg-warning"}`}
               title={ok ? "转发正常" : "转发已暂停或被删除"}
             />
-            <span
-              className="shrink-0 truncate text-sm text-foreground"
-              title={l.name || l.tunnelName}
-            >
-              {relayLabel(l)}
-            </span>
-            <span
-              className="hidden min-w-0 flex-1 truncate font-mono text-[11px] text-muted-foreground md:block"
-              title={
-                entry
-                  ? `${l.shareHost || entry.Host}:${entry.Port}${l.remoteAddr ? ` → ${l.remoteAddr}` : ""}`
-                  : undefined
-              }
-            >
-              {entry ? `${l.shareHost || entry.Host}:${entry.Port}` : "-"}
-              {l.remoteAddr ? ` → ${l.remoteAddr}` : ""}
-            </span>
+            <div className="flex min-w-0 flex-1 flex-col md:flex-row md:items-center md:gap-2">
+              <span
+                className="shrink-0 truncate text-sm text-foreground"
+                title={l.name || l.tunnelName}
+              >
+                {relayLabel(l)}
+              </span>
+              <span
+                className="flex min-w-0 flex-wrap items-center gap-x-1 font-mono text-[11px] leading-4 text-muted-foreground md:flex-1 md:flex-nowrap"
+                title={
+                  entry
+                    ? `${l.shareHost || entry.Host}:${entry.Port}${l.remoteAddr ? ` → ${l.remoteAddr}` : ""}`
+                    : undefined
+                }
+              >
+                <span className="whitespace-nowrap">
+                  {entry ? `${l.shareHost || entry.Host}:${entry.Port}` : "-"}
+                </span>
+                {l.remoteAddr && (
+                  <>
+                    <span>→</span>
+                    <span className="min-w-0 truncate whitespace-nowrap">
+                      {l.remoteAddr}
+                    </span>
+                  </>
+                )}
+              </span>
+            </div>
             {(l.forwardName || l.tunnelName) && (
               <span
                 className="hidden max-w-[12rem] shrink-0 truncate text-[11px] text-muted-foreground md:block"

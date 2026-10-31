@@ -129,8 +129,11 @@ async function visit(role, route) {
     if (!text.includes("xiaoming")) {
       problems.push(`${current}: audit user missing`);
     }
-    if (!text.includes("失败")) {
+    if ((text.match(/失败/g) || []).length < 2) {
       problems.push(`${current}: failed audit row is not marked`);
+    }
+    if (!text.includes("成功")) {
+      problems.push(`${current}: successful audit row is not marked`);
     }
   }
 
