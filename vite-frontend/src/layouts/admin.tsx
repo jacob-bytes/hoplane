@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { toast } from "sonner";
 import { motion } from "framer-motion";
 import {
   ScrollText,
@@ -30,7 +29,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { getMonitorAccess } from "@/api";
 import { safeLogout } from "@/utils/logout";
 import { siteConfig } from "@/config/site";
 import { useMobileBreakpoint } from "@/hooks/useMobileBreakpoint";
@@ -62,10 +60,6 @@ export default function AdminLayout({
   );
   const [isAdmin, setIsAdmin] = useState(() => getAdminFlag());
   const hasMySubs = useHasMySubscriptions(isAdmin);
-  const [monitorAllowed, setMonitorAllowed] = useState<boolean | null>(null);
-  const [monitorAccessReason, setMonitorAccessReason] = useState<string | null>(
-    null,
-  );
   const sessionName = getSessionName() ?? "账户";
   const isMobile = useMobileBreakpoint();
 
@@ -138,49 +132,7 @@ export default function AdminLayout({
   ];
 
   useEffect(() => {
-    // 获取用户信息
-    const adminFlag = getAdminFlag();
-
-    setIsAdmin(adminFlag);
-
-    // Monitor permission is not strictly role-based; non-admin users may be
-    // granted access explicitly. Fetch a lightweight capability flag so we can
-    // avoid a confusing 403 navigation.
-    if (adminFlag) {
-      setMonitorAllowed(true);
-      setMonitorAccessReason(null);
-
-      return;
-    }
-
-    let cancelled = false;
-
-    (async () => {
-      try {
-        const res = await getMonitorAccess();
-
-        if (cancelled) return;
-        if (res.code === 0 && res.data) {
-          setMonitorAllowed(Boolean(res.data.allowed));
-          setMonitorAccessReason(
-            res.data.allowed ? null : res.data.reason || null,
-          );
-
-          return;
-        }
-        // Fail open to preserve legacy navigation behavior.
-        setMonitorAllowed(true);
-        setMonitorAccessReason(null);
-      } catch {
-        if (cancelled) return;
-        setMonitorAllowed(true);
-        setMonitorAccessReason(null);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
+    setIsAdmin(getAdminFlag());
   }, []);
 
   useEffect(() => {
@@ -223,23 +175,6 @@ export default function AdminLayout({
 
   // 菜单点击处理
   const handleMenuClick = (path: string) => {
-    if (path === "/monitor" && monitorAllowed !== true) {
-      if (monitorAllowed == null) {
-        toast("正在检查监控权限，请稍后重试");
-
-        return;
-      }
-
-      const hint =
-        monitorAccessReason === "need_admin_grant"
-          ? "暂无监控权限，请联系管理员在用户页面授予监控权限"
-          : "暂无监控权限，请联系管理员授权";
-
-      toast.error(hint);
-
-      return;
-    }
-
     navigate(path);
     if (isMobile) {
       hideMobileMenu();
@@ -250,7 +185,6 @@ export default function AdminLayout({
   const filteredMenuItems = menuItems
     .filter((item) => (isAdmin ? !item.userOnly : !item.adminOnly))
     .filter((item) => item.path !== "/my-subscriptions" || hasMySubs)
-    .filter((item) => item.path !== "/monitor" || monitorAllowed !== false)
     .map((item) =>
       isAdmin && item.adminLabel ? { ...item, label: item.adminLabel } : item,
     );
@@ -264,7 +198,6 @@ export default function AdminLayout({
     "/relay": ["资源", "中转"],
     "/tunnel": ["资源", "隧道"],
     "/forward": ["资源", "转发规则"],
-    "/monitor": ["资源", "监控"],
     "/audit": ["系统", "审计"],
     "/subscription": ["分发", "订阅"],
     "/user": ["分发", "用户"],
@@ -335,9 +268,6 @@ export default function AdminLayout({
                   ["/tunnel", "/forward"].includes(location.pathname)) ||
                 (item.path === "/user" &&
                   ["/group", "/limit"].includes(location.pathname));
-              const isMonitor = item.path === "/monitor";
-              const isMonitorBlocked = isMonitor && monitorAllowed !== true;
-
               return (
                 <li key={item.path}>
                   {isAdmin &&
@@ -353,26 +283,16 @@ export default function AdminLayout({
                     ))}
                   <motion.button
                     aria-current={isActive ? "page" : undefined}
-                    aria-disabled={isMonitorBlocked}
                     className={`
                        group w-full flex items-center px-2.5 py-1.5 rounded-md text-left
                        relative min-h-9 overflow-hidden transition-colors duration-150
-                       ${isMonitorBlocked ? "opacity-60" : ""}
                        ${
                          isActive
                            ? "text-primary font-medium"
-                           : isMonitorBlocked
-                             ? "text-muted-foreground font-normal"
-                             : "text-muted-foreground hover:text-foreground font-normal"
+                           : "text-muted-foreground hover:text-foreground font-normal"
                        }
                      `}
-                    title={
-                      isCollapsed
-                        ? isMonitorBlocked
-                          ? `${item.label} (无权限)`
-                          : item.label
-                        : undefined
-                    }
+                    title={isCollapsed ? item.label : undefined}
                     transition={{ duration: 0.15 }}
                     onClick={() => handleMenuClick(item.path)}
                   >
